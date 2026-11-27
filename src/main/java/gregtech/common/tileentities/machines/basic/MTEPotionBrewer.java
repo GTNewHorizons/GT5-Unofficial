@@ -10,15 +10,16 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.MachineType;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,7 +28,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 
@@ -189,9 +189,8 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                         default -> setOutput("potion.weakness");
                     };
                 }
-                if (GTUtility.areStacksEqual(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
-                    getInputAt(0))) {
+                if (GTUtility
+                    .areStacksEqual(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 1), getInputAt(0))) {
                     if (!tModifier.startsWith("strong")) {
                         return setOutput(
                             "potion." + tInputName + ".strong" + (tModifier.isEmpty() ? "" : "." + tModifier));
@@ -202,7 +201,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     return setOutput("potion.thick");
                 }
                 if (GTUtility
-                    .areStacksEqual(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), getInputAt(0))) {
+                    .areStacksEqual(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1), getInputAt(0))) {
                     if (!tModifier.startsWith("long")) {
                         return setOutput(
                             "potion." + tInputName + ".long" + (tModifier.isEmpty() ? "" : "." + tModifier));
@@ -212,9 +211,8 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     }
                     return setOutput("potion.mundane");
                 }
-                if (GTUtility.areStacksEqual(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L),
-                    getInputAt(0))) {
+                if (GTUtility
+                    .areStacksEqual(MaterialLibAPI.getStack(Materials.Gunpowder, Shapes.dust, 1), getInputAt(0))) {
                     if (!tInputName.endsWith(".splash")) {
                         return setOutput("potion." + tInputName + ".splash");
                     }

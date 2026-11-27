@@ -12,11 +12,11 @@ import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
@@ -58,7 +58,7 @@ public class MTEExoticModuleGui extends MTEBaseModuleGui<MTEExoticModule> {
             .background(GTGuiTextures.TT_BUTTON_CELESTIAL_32x32)
             .overlay(new DynamicDrawable(() -> {
                 if (magmatterMode.getBoolValue()) {
-                    return new ItemDrawable(GTOreDictUnificator.get(OrePrefixes.dust, Materials.MagMatter, 1));
+                    return new ItemDrawable(MaterialLibAPI.getStack(Materials.MagMatter, Shapes.dust, 1));
                 }
                 return new ItemDrawable(CustomItemList.Godforge_FakeItemQGP.get(1));
             }))

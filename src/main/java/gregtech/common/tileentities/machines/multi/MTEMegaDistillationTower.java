@@ -44,10 +44,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
@@ -55,6 +55,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
@@ -470,8 +471,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         boolean succeed = true;
 
         for (FluidStack stack : outputFluids) {
-            if (mergedFluids.isEmpty() || (stack.isFluidEqual(mergedFluids.getFirst())
-                && mergedFluids.getLast().amount == Integer.MAX_VALUE)) {
+            if (mergedFluids.isEmpty()) {
                 mergedFluids.add(stack);
                 continue;
             }
@@ -632,9 +632,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
             .addCasing("361", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("215", Casings.StrongBronzeMachineCasing.getLocalizedName(), false)
-            .addCasing("179", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("179", OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadah)), false)
             .addCasing("150-165", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
-            .addCasing("99", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("99", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.StainlessSteel)), false)
             .addCasing("80", Casings.BronzePipeCasing.getLocalizedName(), false)
             .addCasing("43-44", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addCasing("41", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
@@ -642,8 +642,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
             .addCasing("48", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("57", Casings.StrongBronzeMachineCasing.getLocalizedName(), false)
-            .addCasing("32", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
-            .addCasing("27", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StainlessSteel), false)
+            .addCasing("32", OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadah)), false)
+            .addCasing("27", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.StainlessSteel)), false)
             .addCasing("16", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
             .addCasing("14", Casings.BronzePipeCasing.getLocalizedName(), false)
             .addCasing("6", Casings.SteelPipeCasing.getLocalizedName(), false)

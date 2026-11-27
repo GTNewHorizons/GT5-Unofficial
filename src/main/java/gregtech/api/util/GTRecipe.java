@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D2;
+import static gregtech.api.util.GTUtility.addSafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,12 +27,12 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMap;
@@ -51,10 +53,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     private static ItemStack dataStick;
     private static ItemStack dataOrb;
-    private static ItemStack ic2FluidCell;
 
     public static void setItemStacks() {
-        ic2FluidCell = ItemList.Cell_Universal_Fluid.get(1);
         dataStick = ItemList.Tool_DataStick.get(1L);
         dataOrb = ItemList.Tool_DataOrb.get(1L);
     }
@@ -126,6 +126,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * If this is set to true, NBT equality is required for recipe check.
      */
     public boolean isNBTSensitive = false;
+    /// If true, each item input accepts only its own item rather than every item sharing its association.
+    public boolean exactItemInputs = false;
     /**
      * Used for describing recipes that do not fit the default recipe pattern (for example Large Boiler Fuels)
      */
@@ -173,6 +175,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mEUt = aRecipe.mEUt;
         mNeedsEmptyOutput = aRecipe.mNeedsEmptyOutput;
         isNBTSensitive = aRecipe.isNBTSensitive;
+        exactItemInputs = aRecipe.exactItemInputs;
         mCanBeBuffered = aRecipe.mCanBeBuffered;
         mFakeRecipe = aRecipe.mFakeRecipe;
         mEnabled = aRecipe.mEnabled;
@@ -228,8 +231,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (aFluidOutputs == null) aFluidOutputs = GTValues.emptyFluidStackArray;
         else aFluidOutputs = ArrayExt.removeNullFluids(aFluidOutputs);
 
-        GTOreDictUnificator.setStackArray(true, true, aInputs);
-        GTOreDictUnificator.setStackArray(true, true, aOutputs);
+        aInputs = GTUtility.copyItemArray(aInputs);
+        aOutputs = GTUtility.copyItemArray(aOutputs);
 
         for (final ItemStack s : aOutputs) GTUtility.updateItemStack(s);
 
@@ -395,16 +398,23 @@ public class GTRecipe implements Comparable<GTRecipe> {
         int tOutputAmount = GTModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(mOutputs);
 
         if (tInputAmount < tOutputAmount) {
-            if (!Materials.Tin.contains(mInputs)) {
+            if (!containsTin(mInputs)) {
                 GT_FML_LOGGER.error("You get more Cells, than you put in? There must be something wrong.");
                 GT_FML_LOGGER.error(new Exception());
             }
         } else if (tInputAmount > tOutputAmount) {
-            if (!Materials.Tin.contains(mOutputs)) {
+            if (!containsTin(mOutputs)) {
                 GT_FML_LOGGER.error("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
                 GT_FML_LOGGER.error(new Exception());
             }
         }
+    }
+
+    private static boolean containsTin(ItemStack[] stacks) {
+        for (ItemStack stack : stacks) {
+            if (MaterialParts.isPartOf(stack, Materials.Tin)) return true;
+        }
+        return false;
     }
 
     public GTRecipe copy() {
@@ -436,10 +446,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * href=https://github.com/GTNewHorizons/GT5-Unofficial/pull/183>the PR</a>.
      *
      * <p>
-     * It looks like it controls checking NBT. At this point, since we are still using universal fluid cells which store
-     * their fluids in NBT, it probably will not be safe to disable the NBT checks in the near future. Data sticks may
-     * be another case. Anyway, we probably can't get rid of this without some significant changes to clean up recipe
-     * inputs.
+     * It looks like it controls checking NBT, which is now limited to data sticks and data orbs. Anyway, we probably
+     * can't get rid of this without some significant changes to clean up recipe inputs.
      */
     public static boolean GTppRecipeHelper;
 
@@ -468,7 +476,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 .orElse(null);
 
             if (existingInput == null) {
-                RecipeItemInput newInput = new RecipeItemInput(itemStack, isNBTSensitive);
+                RecipeItemInput newInput = new RecipeItemInput(itemStack, isNBTSensitive, exactItemInputs);
                 // Initialize weighted amount: (actual stack size * chance percentage)
                 newInput.chanceWeightedAmount = (itemStack.stackSize * (double) chance) / 10000.0;
                 newCache.add(newInput);
@@ -566,11 +574,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     long totalAvailable = 0;
                     for (FluidStack provided : fluidInputs) {
                         if (provided != null && provided.isFluidEqual(alt)) {
-                            totalAvailable += provided.amount;
+                            totalAvailable = addSafe(totalAvailable, GTUtility.getFluidAmount(provided));
                         }
                     }
-                    if (totalAvailable > 0 && alt.amount > 0) {
-                        double parallelForThisAlt = (double) totalAvailable / alt.amount;
+                    if (totalAvailable > 0 && GTUtility.getFluidAmount(alt) > 0) {
+                        double parallelForThisAlt = (double) totalAvailable / GTUtility.getFluidAmount(alt);
                         if (parallelForThisAlt > bestParallelForSlot) {
                             bestParallelForSlot = parallelForThisAlt;
                             selectedAlt = alt;
@@ -592,18 +600,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     if (actualMultiplier <= 0) continue;
                 }
 
-                long remainingCost = (long) selectedAlt.amount * actualMultiplier;
+                long remainingCost = (long) GTUtility.getFluidAmount(selectedAlt) * actualMultiplier;
 
                 for (FluidStack providedFluid : fluidInputs) {
                     if (providedFluid == null || providedFluid.amount <= 0 || remainingCost <= 0) continue;
 
                     if (providedFluid.isFluidEqual(selectedAlt)) {
-                        if (providedFluid.amount >= remainingCost) {
-                            providedFluid.amount -= (int) remainingCost;
+                        if (GTUtility.getFluidAmount(providedFluid) >= remainingCost) {
+                            GTUtility.decFluidAmount(providedFluid, remainingCost);
                             remainingCost = 0;
                         } else {
-                            remainingCost -= providedFluid.amount;
-                            providedFluid.amount = 0;
+                            remainingCost -= GTUtility.getFluidAmount(providedFluid);
+                            GTUtility.setFluidAmount(providedFluid, 0);
                         }
                     }
                 }
@@ -614,11 +622,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
             return;
         }
 
-        final ItemData[] unifiedProvidedInputs = new ItemData[itemInputs.length];
-        for (int i = 0; i < itemInputs.length; i++) {
-            unifiedProvidedInputs[i] = GTOreDictUnificator.getAssociation(itemInputs[i]);
-        }
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
+        final String[] providedNames = associationNames(itemInputs);
 
         for (final RecipeItemInput recipeItemCost : combinedInputs) {
             long actualMultiplier = amountMultiplier;
@@ -645,7 +650,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     continue;
                 }
 
-                if (!recipeItemCost.matchesRecipe(unifiedProvidedInputs[iProvided], providedItem)) {
+                if (!recipeItemCost.matchesRecipe(providedItem, providedNames[iProvided])) {
                     continue;
                 }
 
@@ -677,7 +682,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
             Reference2LongMap<Fluid> fluidMap = new Reference2LongArrayMap<>(2);
             for (FluidStack fluidStack : aFluidInputs) {
                 if (fluidStack == null) continue;
-                fluidMap.mergeLong(fluidStack.getFluid(), fluidStack.amount, Long::sum);
+                fluidMap.mergeLong(fluidStack.getFluid(), GTUtility.getFluidAmount(fluidStack), GTUtility::addSafe);
             }
 
             for (int i = 0; i < mFluidInputs.length; i++) {
@@ -695,7 +700,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     if (alt == null) continue;
                     long available = fluidMap.getOrDefault(alt.getFluid(), 0L);
                     if (alt.amount > 0 && available > 0) {
-                        double parallelForThisAlt = (double) available / alt.amount;
+                        double parallelForThisAlt = (double) available / GTUtility.getFluidAmount(alt);
                         if (parallelForThisAlt > bestParallelForSlot) {
                             bestParallelForSlot = parallelForThisAlt;
                             selectedAlt = alt;
@@ -707,8 +712,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 // Consume from the chosen alternatives fluid pool
                 if (selectedAlt != null) {
-                    long consumed = (long) (selectedAlt.amount * Math.min(currentParallel, bestParallelForSlot));
-                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, Long::sum);
+                    long consumed = (long) (GTUtility.getFluidAmount(selectedAlt)
+                        * Math.min(currentParallel, bestParallelForSlot));
+                    fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, GTUtility::addSafe);
                 }
 
                 currentParallel = Math.min(currentParallel, bestParallelForSlot);
@@ -724,10 +730,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 return 0;
             }
 
-            final ItemData[] unifiedProvidedInputs = new ItemData[aInputs.length];
-            for (int i = 0; i < aInputs.length; i++) {
-                unifiedProvidedInputs[i] = GTOreDictUnificator.getAssociation(aInputs[i]);
-            }
+            final String[] providedNames = associationNames(aInputs);
 
             recipeItemLoop: for (final RecipeItemInput combinedInput : combinedInputs) {
                 double remainingCost = combinedInput.inputAmount * currentParallel;
@@ -735,7 +738,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 for (int i = 0; i < aInputs.length; i++) {
                     final ItemStack providedItem = aInputs[i];
-                    if (!combinedInput.matchesRecipe(unifiedProvidedInputs[i], providedItem)) {
+                    if (!combinedInput.matchesRecipe(providedItem, providedNames[i])) {
                         continue;
                     }
 
@@ -759,8 +762,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      */
     private static boolean shouldCheckNBT(ItemStack item) {
         if (GTppRecipeHelper) {
-            return GTUtility.areStacksEqual(item, ic2FluidCell, true) || GTUtility.areStacksEqual(item, dataStick, true)
-                || GTUtility.areStacksEqual(item, dataOrb, true);
+            return GTUtility.areStacksEqual(item, dataStick, true) || GTUtility.areStacksEqual(item, dataOrb, true);
         }
         return false;
     }
@@ -827,6 +829,98 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     // endregion
+
+    /// Whether `other` is the same recipe: equal item and fluid inputs and outputs, with stack sizes and NBT, and the
+    /// same chances, duration, power, special value and item, flags, category, NEI text and metadata. Recipes with
+    /// alternative inputs are never identical to another.
+    public boolean isIdenticalTo(GTRecipe other) {
+        if (other == this) return true;
+        if (getClass() != other.getClass() || this instanceof GTRecipe_WithAlt) return false;
+        return mDuration == other.mDuration && mEUt == other.mEUt
+            && mSpecialValue == other.mSpecialValue
+            && mEnabled == other.mEnabled
+            && mHidden == other.mHidden
+            && mFakeRecipe == other.mFakeRecipe
+            && mCanBeBuffered == other.mCanBeBuffered
+            && mNeedsEmptyOutput == other.mNeedsEmptyOutput
+            && isNBTSensitive == other.isNBTSensitive
+            && exactItemInputs == other.exactItemInputs
+            && recipeCategory == other.recipeCategory
+            && sameStacks(mInputs, other.mInputs)
+            && sameStacks(mOutputs, other.mOutputs)
+            && sameFluids(mFluidInputs, other.mFluidInputs)
+            && sameFluids(mFluidOutputs, other.mFluidOutputs)
+            && mAltFluidInputs == null
+            && other.mAltFluidInputs == null
+            && Arrays.equals(mInputChances, other.mInputChances)
+            && Arrays.equals(mOutputChances, other.mOutputChances)
+            && Arrays.equals(mFluidInputChances, other.mFluidInputChances)
+            && Arrays.equals(mFluidOutputChances, other.mFluidOutputChances)
+            && sameSpecialItems(mSpecialItems, other.mSpecialItems)
+            && Arrays.equals(neiDesc, other.neiDesc)
+            && metadataStorage.getEntries()
+                .equals(other.metadataStorage.getEntries());
+    }
+
+    /// A hash consistent with [#isIdenticalTo]: identical recipes hash alike.
+    public int identityHash() {
+        int hash = 31 * (31 * mDuration + mEUt) + mSpecialValue;
+        hash = 31 * hash + stacksHash(mInputs);
+        hash = 31 * hash + stacksHash(mOutputs);
+        hash = 31 * hash + fluidsHash(mFluidInputs);
+        return 31 * hash + fluidsHash(mFluidOutputs);
+    }
+
+    private static int stacksHash(ItemStack[] stacks) {
+        if (stacks == null) return 0;
+        int hash = 1;
+        for (ItemStack stack : stacks) {
+            hash = 31 * hash + (stack == null || stack.getItem() == null ? 0
+                : (Item.getIdFromItem(stack.getItem()) * 31 + stack.getItemDamage()) * 31 + stack.stackSize);
+        }
+        return hash;
+    }
+
+    private static int fluidsHash(FluidStack[] fluids) {
+        if (fluids == null) return 0;
+        int hash = 1;
+        for (FluidStack fluid : fluids) {
+            hash = 31 * hash + (fluid == null || fluid.getFluid() == null ? 0
+                : fluid.getFluid()
+                    .getName()
+                    .hashCode() * 31 + fluid.amount);
+        }
+        return hash;
+    }
+
+    private static boolean sameStacks(ItemStack[] a, ItemStack[] b) {
+        if (a == null || b == null) return a == b;
+        if (a.length != b.length) return false;
+        for (int i = 0; i < a.length; i++) {
+            if (!ItemStack.areItemStacksEqual(a[i], b[i])) return false;
+        }
+        return true;
+    }
+
+    private static boolean sameFluids(FluidStack[] a, FluidStack[] b) {
+        if (a == null || b == null) return a == b;
+        if (a.length != b.length) return false;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] == null || b[i] == null) {
+                if (a[i] != b[i]) return false;
+            } else if (!a[i].isFluidStackIdentical(b[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean sameSpecialItems(Object a, Object b) {
+        if (a instanceof ItemStack stackA && b instanceof ItemStack stackB) {
+            return ItemStack.areItemStacksEqual(stackA, stackB);
+        }
+        return Objects.equals(a, b);
+    }
 
     public RecipeCategory getRecipeCategory() {
         return recipeCategory;
@@ -968,6 +1062,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return this;
     }
 
+    private static String[] associationNames(ItemStack[] stacks) {
+        String[] names = new String[stacks.length];
+        for (int i = 0; i < stacks.length; i++) names[i] = OreDictUtils.associationName(stacks[i]);
+        return names;
+    }
+
     /** A single recipe input, used for an internal cache to speed up recipe matching */
     public static final class RecipeItemInput {
 
@@ -990,8 +1090,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
          */
         public final int oreDictId;
         private final ItemStack[] alternativeStacks;
+        /// [OreDictUtils#inputAssociationName] of [#unifiedStack] for a regular slot that ignores NBT and is not
+        /// exact; any item with the same association name also matches. Null otherwise.
+        private final @Nullable String associationName;
 
-        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
+        public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive, boolean exact) {
             Objects.requireNonNull(stack);
             this.inputAmount = stack.stackSize;
             // Initialize weighted amount with 100% chance by default.
@@ -1005,11 +1108,12 @@ public class GTRecipe implements Comparable<GTRecipe> {
             if (stackNeedsNBT) {
                 this.unifiedStack = stack;
             } else {
-                this.unifiedStack = GTOreDictUnificator.get_nocopy(true, stack);
+                this.unifiedStack = stack;
                 if (!this.usesNbtMatching) {
                     this.unifiedStack.setTagCompound(null);
                 }
             }
+            this.associationName = this.usesNbtMatching || exact ? null : OreDictUtils.inputAssociationName(stack);
         }
 
         /**
@@ -1023,12 +1127,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
         public RecipeItemInput(int oreDictId, ItemStack representative, long amount, boolean nbtSensitive,
             ItemStack[] alternativeStacks) {
             this.oreDictId = oreDictId;
-            this.unifiedStack = representative != null ? GTOreDictUnificator.get_nocopy(true, representative) : null;
+            this.unifiedStack = representative;
             this.inputAmount = amount;
             this.chanceWeightedAmount = amount;
             this.usesNbtMatching = nbtSensitive;
             this.alternativeStacks = alternativeStacks == null || alternativeStacks.length == 0 ? null
                 : alternativeStacks;
+            this.associationName = null;
         }
 
         /**
@@ -1044,17 +1149,20 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         /**
          * @return True if the given item can be used as a valid recipe ingredient for this input slot. For oredict
-         *         slots, checks the OreDict ID dynamically. For regular slots, uses GT unification matching.
+         *         slots, checks the OreDict ID dynamically. For regular slots, accepts the same item or any item
+         *         sharing its association ({@link OreDictUtils#inputAssociationName}).
          */
-        public boolean matchesRecipe(final ItemData oredictOther, final ItemStack other) {
+        public boolean matchesRecipe(final ItemStack other) {
+            return matchesRecipe(other, associationName == null ? null : OreDictUtils.associationName(other));
+        }
+
+        /// [#matchesRecipe(ItemStack)] with the association name of `other` already looked up.
+        public boolean matchesRecipe(final ItemStack other, @Nullable String otherAssociationName) {
             if (oreDictId >= 0) {
                 return hasOreDictId(other, oreDictId) || matchesAlternativeStack(other);
             }
-            if (usesNbtMatching) {
-                return GTUtility.areStacksEqual(this.unifiedStack, other, false);
-            } else {
-                return GTOreDictUnificator.isInputStackEqual(other, oredictOther, unifiedStack);
-            }
+            return GTUtility.areStacksEqual(this.unifiedStack, other, !usesNbtMatching)
+                || associationName != null && associationName.equals(otherAssociationName);
         }
 
         private boolean matchesAlternativeStack(final ItemStack other) {
@@ -1338,7 +1446,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     FluidStack fluid = meHatch.getFirstValidStack(true);
                     if (fluid == null) return 0;
                     if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                    fluidConsumptionsFromME.merge(fluid.getFluid(), (long) fluidConsumptions[i].amount, Long::sum);
+                    fluidConsumptionsFromME.merge(
+                        fluid.getFluid(),
+                        (long) GTUtility.getFluidAmount(fluidConsumptions[i]),
+                        GTUtility::addSafe);
                 }
             }
             // Calculate parallel from ME input hatches
@@ -1346,7 +1457,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 Fluid fluid = entry.getKey();
                 if (!fluidsFromME.containsKey(fluid)) return 0;
                 long consume = entry.getValue();
-                currentParallel = Math.min(currentParallel, (double) fluidsFromME.get(fluid).amount / consume);
+                currentParallel = Math
+                    .min(currentParallel, (double) GTUtility.getFluidAmount(fluidsFromME.get(fluid)) / consume);
                 if (currentParallel <= 0) return 0;
             }
 
@@ -1364,7 +1476,9 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
                 if (fluid == null) return 0;
                 if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                currentParallel = Math.min(currentParallel, (double) fluid.amount / fluidConsumptions[i].amount);
+                currentParallel = Math.min(
+                    currentParallel,
+                    (double) GTUtility.getFluidAmount(fluid) / GTUtility.getFluidAmount(fluidConsumptions[i]));
                 if (currentParallel <= 0) return 0;
             }
             return currentParallel;
@@ -1414,7 +1528,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 } else {
                     fluid = inputHatch.getFillableStack();
                 }
-                fluid.amount -= fluidConsumptions[i].amount * amountMultiplier;
+                GTUtility.decFluidAmount(fluid, GTUtility.getFluidAmount(fluidConsumptions[i]) * amountMultiplier);
             }
         }
     }
@@ -1592,7 +1706,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 } else {
                     RecipeItemInput ri = (slotOreDictId >= 0)
                         ? new RecipeItemInput(slotOreDictId, mInputs[i], amount, isNBTSensitive, alternatives)
-                        : new RecipeItemInput(mInputs[i], isNBTSensitive);
+                        : new RecipeItemInput(mInputs[i], isNBTSensitive, exactItemInputs);
                     ri.chanceWeightedAmount = weighted;
                     newCache.add(ri);
                 }

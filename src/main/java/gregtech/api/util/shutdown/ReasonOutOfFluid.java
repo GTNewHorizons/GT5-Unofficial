@@ -13,13 +13,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.enums.Materials;
-
 public class ReasonOutOfFluid implements ShutDownReason {
 
     private FluidStack requiredFluid;
 
-    ReasonOutOfFluid(@NotNull FluidStack requiredFluid) {
+    /// `requiredFluid` is null only for the registry sample and for the instance [#newInstance] hands back, both of
+    /// which are filled in by [#readFromNBT] or [#decode] before anything reads them.
+    ReasonOutOfFluid(FluidStack requiredFluid) {
         this.requiredFluid = requiredFluid;
     }
 
@@ -52,7 +52,7 @@ public class ReasonOutOfFluid implements ShutDownReason {
     @NotNull
     @Override
     public ShutDownReason newInstance() {
-        return new ReasonOutOfFluid(Materials.Water.getFluid(0));
+        return new ReasonOutOfFluid(null);
     }
 
     @Override

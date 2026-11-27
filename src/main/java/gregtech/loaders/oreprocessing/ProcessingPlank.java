@@ -16,18 +16,21 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableSet;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("ControlFlowStatementWithoutBraces")
-public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingPlank implements ForeignPartRule {
 
     /**
      * Sometimes automatically searching for recipes is not enough to ensure that the corresponding slab is correctly
@@ -73,19 +76,18 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
     private static final HashSet<Item> sGroupedOakSlabItems = new HashSet<>();
 
-    public ProcessingPlank() {
-        OrePrefixes.plank.add(this);
-    }
+    public static final ProcessingPlank INSTANCE = new ProcessingPlank();
+
+    private ProcessingPlank() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (!aOreDictName.startsWith("plankWood")) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+        if (!oreDictName.startsWith("plankWood")) {
             return;
         }
 
-        int tPlankMeta = aStack.getItemDamage();
-        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(aStack.getItem());
+        int tPlankMeta = stack.getItemDamage();
+        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(stack.getItem());
         String tHashPrefix = null;
         if (uid != null) {
             tHashPrefix = uid.modId + ":" + uid.name;
@@ -101,31 +103,31 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             return;
         }
 
-        if (aStack.getItem() instanceof MetaGeneratedItem) {
+        if (stack.getItem() instanceof MetaGeneratedItem) {
             // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19273
             // GT's own plankWood items conflict with existing cutter recipes, skip them.
             return;
         }
 
         int metaCount = 64;
-        if (aStack.getItem() instanceof ItemMultiTexture imt) {
+        if (stack.getItem() instanceof ItemMultiTexture imt) {
             metaCount = imt.field_150942_c.length;
         }
 
         if (tIsWildcard) {
-            processWildcardPlank(aStack, tHashPrefix, metaCount);
+            processWildcardPlank(stack, tHashPrefix, metaCount);
         } else {
-            processSinglePlank(aStack);
+            processSinglePlank(stack);
         }
     }
 
-    private void processWildcardPlank(ItemStack aStack, String tHashPrefix, int metaCount) {
+    private void processWildcardPlank(ItemStack stack, String tHashPrefix, int metaCount) {
         boolean anyOwnSlabRecipe = false;
         boolean anyOakSlabFallback = false;
-        List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(aStack, aStack, aStack);
+        List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(stack, stack, stack);
 
         for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
-            ItemStack tStack = GTUtility.copyMetaData(i, aStack);
+            ItemStack tStack = GTUtility.copyMetaData(i, stack);
             if ((tStack == null) && (i >= 16)) break;
             if (!sProcessedPlanks.add(tHashPrefix + ":" + i)) continue;
 
@@ -136,24 +138,24 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
 
-        if (anyOakSlabFallback && !anyOwnSlabRecipe && sGroupedOakSlabItems.add(aStack.getItem())) {
-            createGroupedOakSlabRecipe(aStack);
+        if (anyOakSlabFallback && !anyOwnSlabRecipe && sGroupedOakSlabItems.add(stack.getItem())) {
+            createGroupedOakSlabRecipe(stack);
         }
     }
 
-    private void processSinglePlank(ItemStack aStack) {
-        var result = convertSlabRecipe(aStack);
-        if (result == SlabRecipeResult.OAK_SLAB_FALLBACK && sGroupedOakSlabItems.add(aStack.getItem())) {
-            createGroupedOakSlabRecipe(aStack);
+    private void processSinglePlank(ItemStack stack) {
+        var result = convertSlabRecipe(stack);
+        if (result == SlabRecipeResult.OAK_SLAB_FALLBACK && sGroupedOakSlabItems.add(stack.getItem())) {
+            createGroupedOakSlabRecipe(stack);
         }
     }
 
-    private SlabRecipeResult convertSlabRecipe(ItemStack aStack) {
-        return convertSlabRecipe(aStack, null);
+    private SlabRecipeResult convertSlabRecipe(ItemStack stack) {
+        return convertSlabRecipe(stack, null);
     }
 
-    private SlabRecipeResult convertSlabRecipe(ItemStack aStack, List<IRecipe> recipeCandidates) {
-        SpecialSlabConversionResult tSpecialResult = trySpecialSlabConversion(aStack);
+    private SlabRecipeResult convertSlabRecipe(ItemStack stack, List<IRecipe> recipeCandidates) {
+        SpecialSlabConversionResult tSpecialResult = trySpecialSlabConversion(stack);
 
         boolean tSkipRecipeCreation = tSpecialResult.isSpecialConversion && tSpecialResult.resultingSlab == null;
         ItemStack tOutput = tSpecialResult.resultingSlab;
@@ -161,26 +163,26 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         if (tOutput == null) {
             // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19535
             // Prefer the mod's own slab recipe over the oredict "plankWood -> Oak Slab" fallback.
-            tOutput = recipeCandidates == null ? GTModHandler.getRecipeOutputPreferNonOreDict(aStack, aStack, aStack)
-                : GTModHandler.getRecipeOutputPreferNonOreDictFrom(recipeCandidates, aStack, aStack, aStack);
+            tOutput = recipeCandidates == null ? GTModHandler.getRecipeOutputPreferNonOreDict(stack, stack, stack)
+                : GTModHandler.getRecipeOutputPreferNonOreDictFrom(recipeCandidates, stack, stack, stack);
         }
 
         if (tOutput == null || tOutput.stackSize < 3) {
             return SlabRecipeResult.SKIPPED;
         }
 
-        if (isGenericOakSlabFallback(aStack, tOutput)) {
+        if (isGenericOakSlabFallback(stack, tOutput)) {
             return SlabRecipeResult.OAK_SLAB_FALLBACK;
         }
 
-        if (!isSlabRecipeRemovalBlacklisted(aStack)) {
-            GTModHandler.removeRecipeDelayed(aStack, aStack, aStack);
+        if (!isSlabRecipeRemovalBlacklisted(stack)) {
+            GTModHandler.removeRecipeDelayed(stack, stack, stack);
         }
         if (tSkipRecipeCreation) {
             return SlabRecipeResult.SKIPPED;
         }
 
-        addSlabRecipes(aStack, GTUtility.copyAmount(tOutput.stackSize / 3, tOutput));
+        addSlabRecipes(stack, GTUtility.copyAmount(tOutput.stackSize / 3, tOutput));
         return SlabRecipeResult.CREATED;
     }
 
@@ -201,9 +203,9 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         return isOakSlab && !isOakPlank;
     }
 
-    private void createGroupedOakSlabRecipe(ItemStack aStack) {
+    private void createGroupedOakSlabRecipe(ItemStack stack) {
         ensureOakPlankRecipesFirst();
-        ItemStack wildcardInput = new ItemStack(aStack.getItem(), 1, OreDictionary.WILDCARD_VALUE);
+        ItemStack wildcardInput = new ItemStack(stack.getItem(), 1, OreDictionary.WILDCARD_VALUE);
         ItemStack oakSlab = new ItemStack(Blocks.wooden_slab, 2, 0);
         addSlabRecipes(wildcardInput, oakSlab);
     }
@@ -219,7 +221,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(Materials.Water.getFluid(4))
+            .fluidInputs(GTUtility.getWater(4))
             .duration(2 * 25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);
@@ -233,14 +235,15 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(Materials.Lubricant.getFluid(1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1))
             .duration(25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
             .duration(10 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);
@@ -251,9 +254,9 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             new Object[] { "sP", 'P', plankInput });
     }
 
-    private SpecialSlabConversionResult trySpecialSlabConversion(ItemStack aPlankStack) {
-        UniqueIdentifier tIdentifier = GameRegistry.findUniqueIdentifierFor(aPlankStack.getItem());
-        int tPlankMeta = aPlankStack.getItemDamage();
+    private SpecialSlabConversionResult trySpecialSlabConversion(ItemStack plankStack) {
+        UniqueIdentifier tIdentifier = GameRegistry.findUniqueIdentifierFor(plankStack.getItem());
+        int tPlankMeta = plankStack.getItemDamage();
 
         for (int i = 0; i < SPECIAL_PLANKS.length; i++) {
             String tPlankUniqueId = SPECIAL_PLANKS[i];

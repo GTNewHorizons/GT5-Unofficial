@@ -2,15 +2,16 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class MTEHatchNanite extends MTEHatchNonConsumableBase {
 
@@ -31,20 +32,20 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
         return naniteCapacity;
     }
 
-    public Materials getStoredNaniteMaterial() {
+    public Material getStoredNaniteMaterial() {
         if (getItemStack() == null) return null;
-        ItemData data = GTOreDictUnificator.getAssociation(getItemStack());
+        ItemData data = MaterialData.getAssociation(getItemStack());
         if (data == null) return null;
-        return data.mMaterial.mMaterial;
+        return data.material.material;
     }
 
     @Override
     public boolean isValidItem(ItemStack item) {
-        ItemData data = GTOreDictUnificator.getAssociation(item);
+        ItemData data = MaterialData.getAssociation(item);
         if (data == null) {
             return false;
         }
-        OrePrefixes prefix = data.mPrefix;
+        OrePrefixes prefix = data.prefix;
         return prefix == OrePrefixes.nanite;
     }
 

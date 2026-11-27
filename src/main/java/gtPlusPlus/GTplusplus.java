@@ -23,20 +23,18 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;
+import gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelterGTNH;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
@@ -85,9 +83,6 @@ public class GTplusplus {
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         PacketHandler.init();
-
-        // Give this a go mate.
-        setupMaterialBlacklist();
 
         // Check for Dev
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -143,7 +138,9 @@ public class GTplusplus {
 
     protected void generateGregtechRecipeMaps() {
 
-        RecipeGenBlastSmelterGTNH.generateGTNHBlastSmelterRecipesFromEBFList();
+        ProcessingAlloyBlastSmelter.generateSingleDust();
+        ProcessingAlloyBlastSmelter.generateComposites();
+        ProcessingAlloyBlastSmelter.generateFromExistingBlastFurnaceRecipes();
         FishPondRecipes.generateFishPondRecipes();
         SemiFluidFuelHandler.generateFuels();
 
@@ -161,29 +158,6 @@ public class GTplusplus {
         RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             RecipeMaps.reactorProcessingUnitRecipes,
             RecipeMaps.nuclearSaltProcessingPlantRecipes);
-    }
-
-    private static void setupMaterialBlacklist() {
-        Material.invalidMaterials.add(Materials._NULL);
-        Material.invalidMaterials.add(Materials.Clay);
-        Material.invalidMaterials.add(Materials.Phosphorus);
-        Material.invalidMaterials.add(Materials.Steel);
-        Material.invalidMaterials.add(Materials.Bronze);
-        Material.invalidMaterials.add(Materials.Hydrogen);
-        // Infused TC stuff
-        Material.invalidMaterials.add(Materials.InfusedAir);
-        Material.invalidMaterials.add(Materials.InfusedEarth);
-        Material.invalidMaterials.add(Materials.InfusedFire);
-        Material.invalidMaterials.add(Materials.InfusedWater);
-        // EIO Materials
-        Material.invalidMaterials.add(Materials.SoulSand);
-        Material.invalidMaterials.add(Materials.EnderPearl);
-        Material.invalidMaterials.add(Materials.EnderEye);
-        Material.invalidMaterials.add(Materials.Redstone);
-        Material.invalidMaterials.add(Materials.Glowstone);
-        Material.invalidMaterials.add(Materials.Soularium);
-        Material.invalidMaterials.add(Materials.PhasedIron);
-
     }
 
     private static void fixVanillaOreDict() {

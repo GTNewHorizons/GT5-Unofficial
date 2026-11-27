@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
 import static gregtech.api.util.GTDataUtils.zip;
+import static gregtech.api.util.GTUtility.addSafe;
 import static gregtech.api.util.GTUtility.mulSafe;
 
 import java.util.ArrayList;
@@ -43,10 +44,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.OCMethod;
@@ -78,7 +79,8 @@ import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.bec.MTEBECIONodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
-import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Control;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.PauseMode;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchNaniteDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -277,8 +279,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                double parallels = recipe
-                    .maxParallelCalculatedByInputs(MTEBECIONode.this.maxParallel, this.inputFluids, this.inputItems);
+                double parallels = recipe.maxParallelCalculatedByInputs(
+                    MTEBECIONode.this.getControllerMaxParallel(),
+                    this.inputFluids,
+                    this.inputItems);
 
                 if (parallels >= minParallelParameter.getValue()) {
                     return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -297,7 +301,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputEu()));
         logic.setAvailableAmperage(1);
         logic.setUnlimitedTierSkips();
-        logic.setMaxParallel(this.maxParallel);
+        logic.setMaxParallel(getControllerMaxParallel());
     }
 
     @Override
@@ -546,7 +550,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         // if any controllers want the multi to pause immediately, then pause
         for (var controller : this.controllerHatches) {
-            if (controller.getMode() == Mode.PAUSE_INSTANT) {
+            if (controller.getControl() != Control.PAUSE) continue;
+            if (controller.getPauseMode() == PauseMode.PAUSE_INSTANT) {
                 if (controller.receivingSignal()) {
                     state = NodeState.PausedImmediate;
                     return;
@@ -586,7 +591,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         boolean shouldPauseStep = false;
 
         for (var controller : this.controllerHatches) {
-            if (controller.getMode() == Mode.PAUSE_STEP) {
+            if (controller.getControl() != Control.PAUSE) continue;
+            if (controller.getPauseMode() == MTEHatchIONodeController.PauseMode.PAUSE_STEP) {
                 if (controller.receivingSignal()) {
                     shouldPauseStep = true;
                     break;
@@ -698,6 +704,23 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
 
         return availableNanites / (float) parallelsDivisor / (float) aboveTierDivisor / (float) slowdownDivisor;
+    }
+
+    protected int getControllerMaxParallel() {
+        int maxParallel = this.maxParallel;
+
+        int overrideMaxParallel = 0;
+
+        for (var controller : this.controllerHatches) {
+            if (controller.getControl() != Control.PARALLEL) continue;
+
+            int parallel = controller.getParallel();
+            overrideMaxParallel = addSafe(overrideMaxParallel, parallel);
+        }
+
+        if (overrideMaxParallel != 0) maxParallel = overrideMaxParallel;
+
+        return maxParallel;
     }
 
     @OCMethod
@@ -841,17 +864,27 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         return ret.toString();
     }
 
-    private static int saveNanite(NaniteTier tier) {
-        return tier == null ? -1 : tier.getMaterial().mMetaItemSubID;
+    private static void saveNanite(NBTTagCompound tag, String key, @Nullable NaniteTier tier) {
+        if (tier != null) tag.setString(key, tier.name());
     }
 
-    private static NaniteTier loadNanite(int id) {
-        return NaniteTier.fromMaterial(GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, id));
+    private static @Nullable NaniteTier loadNanite(NBTTagCompound tag, String key) {
+        if (tag.hasKey(key, NBT.TAG_STRING)) {
+            for (NaniteTier tier : NaniteTier.values()) {
+                if (tier.name()
+                    .equals(tag.getString(key))) return tier;
+            }
+            return null;
+        }
+        // An int tag holds the tier material's legacy sub-id.
+        return tag.hasKey(key, NBT.TAG_INT) ? NaniteTier.fromMaterial(LegacyMaterialIDIndex.get(tag.getInteger(key)))
+            : null;
     }
 
     @Override
     public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
+        tag.setInteger("maxParallel", getControllerMaxParallel());
         tag.setFloat("speed", getProcessingSpeed());
         tag.setInteger("slowdowns", slowdowns);
     }
@@ -859,6 +892,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
         IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-max-parallel", tag.getInteger("maxParallel")));
         list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
         list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
@@ -871,7 +905,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             aNBT.setInteger("naniteCount", requiredNanites.length);
 
             for (int i = 0; i < requiredNanites.length; i++) {
-                aNBT.setInteger("nanite" + i, saveNanite(requiredNanites[i]));
+                saveNanite(aNBT, "nanite" + i, requiredNanites[i]);
             }
         }
 
@@ -891,7 +925,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 NBTTagCompound tag = new NBTTagCompound();
                 steps.appendTag(tag);
 
-                tag.setInteger("nanite", saveNanite(step.nanite));
+                saveNanite(tag, "nanite", step.nanite);
             }
         }
 
@@ -907,7 +941,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         requiredNanites = new NaniteTier[count];
 
         for (int i = 0; i < count; i++) {
-            requiredNanites[i] = loadNanite(aNBT.getInteger("nanite" + i));
+            requiredNanites[i] = loadNanite(aNBT, "nanite" + i);
         }
 
         if (aNBT.hasKey("required")) {
@@ -932,8 +966,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             List<NaniteTier> tiers = new ArrayList<>();
 
             // noinspection unchecked
-            for (NBTTagCompound tag : (List<NBTTagCompound>) steps.tagList) {
-                tiers.add(loadNanite(tag.getInteger("nanite")));
+            for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) steps.tagList) {
+                tiers.add(loadNanite(tag, "nanite"));
             }
 
             loadRequiredNanites(mMaxProgresstime, tiers);
@@ -1131,6 +1165,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
                     self.addIfSmartInput(hatch);
                     self.losHatch = hatch;
+
+                    MTEHatchLoS other = hatch.getConnectedHatch();
+                    if (other != null && other.getOwner() instanceof MTEBECAssembler assembler) {
+                        assembler.getIONodes(true);
+                    }
 
                     return true;
                 } else {

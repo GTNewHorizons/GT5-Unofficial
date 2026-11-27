@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 
 public class RecipeLoaderLFTR {
 
@@ -29,29 +29,29 @@ public class RecipeLoaderLFTR {
         if (mSpargeGases == null) {
             mSpargeGases = new ArrayList<>();
             mSpargeGases.add(
-                Materials.Helium.getGas(1)
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1)
                     .getFluid());
             mSpargeGases.add(
-                Materials.Fluorine.getGas(1)
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 1)
                     .getFluid());
         }
         if (mNobleGases == null) {
             mNobleGases = new ArrayList<>();
             mNobleGases.add(mSpargeGases.get(0));
-            mNobleGases.add(MaterialsElements.getInstance().XENON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().NEON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().ARGON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().KRYPTON.getFluid());
-            mNobleGases.add(MaterialsElements.getInstance().RADON.getFluid());
+            mNobleGases.add(MaterialLibAPI.getFluid(Materials.Xenon, FluidShapes.fluidLiquid));
+            mNobleGases.add(MaterialLibAPI.getFluid(Materials.Neon, FluidShapes.fluidLiquid));
+            mNobleGases.add(MaterialLibAPI.getFluid(Materials.Argon, FluidShapes.fluidGas));
+            mNobleGases.add(MaterialLibAPI.getFluid(Materials.Krypton, FluidShapes.fluidLiquid));
+            mNobleGases.add(MaterialLibAPI.getFluid(Materials.Radon, FluidShapes.fluidGas));
         }
         if (mFluorideGases == null) {
             mFluorideGases = new ArrayList<>();
             mFluorideGases.add(mSpargeGases.get(1));
-            mFluorideGases.add(MaterialsFluorides.LITHIUM_FLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.NEPTUNIUM_HEXAFLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.TECHNETIUM_HEXAFLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.SELENIUM_HEXAFLUORIDE.getFluid());
-            mFluorideGases.add(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluid());
+            mFluorideGases.add(MaterialLibAPI.getFluid(Materials.LithiumFluoride, FluidShapes.fluidLiquid));
+            mFluorideGases.add(MaterialLibAPI.getFluid(Materials.NeptuniumHexafluoride, FluidShapes.fluidGas));
+            mFluorideGases.add(MaterialLibAPI.getFluid(Materials.TechnetiumHexafluoride, FluidShapes.fluidGas));
+            mFluorideGases.add(MaterialLibAPI.getFluid(Materials.SeleniumHexafluoride, FluidShapes.fluidGas));
+            mFluorideGases.add(MaterialLibAPI.getFluid(Materials.ThoriumTetrafluoride, FluidShapes.fluidLiquid));
         }
     }
 
@@ -64,16 +64,18 @@ public class RecipeLoaderLFTR {
         // 1l/10t= 1000l/2.5hr LiFBeF2ZrF4U235
 
         configureSparging();
-        FluidStack Li2BeF4 = MaterialsNuclides.Li2BeF4.getFluidStack(200);
+        FluidStack Li2BeF4 = MaterialLibAPI
+            .getFluidStack(Materials.LithiumTetrafluoroberyllateLFTB, FluidShapes.fluidLiquid, 200);
 
         // LiFBeF2ThF4UF4 - T3
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ThF4UF4.getFluidStack(100), Li2BeF4)
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LFTRFuel3, FluidShapes.fluidLiquid, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(100),
-                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(200),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(20),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10))
+                MaterialLibAPI.getFluidStack(Materials.UraniumDepletedMoltenSaltUSalt, FluidShapes.fluidLiquid, 100),
+                MaterialLibAPI
+                    .getFluidStack(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, FluidShapes.fluidLiquid, 200),
+                MaterialLibAPI.getFluidStack(Materials.UraniumHexafluoride, FluidShapes.fluidLiquid, 20),
+                MaterialLibAPI.getFluidStack(Materials.UraniumHexafluoride, FluidShapes.fluidLiquid, 10))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 32768 * 4)
@@ -81,12 +83,13 @@ public class RecipeLoaderLFTR {
 
         // LiFBeF2ZrF4UF4 - T2
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4UF4.getFluidStack(100), Li2BeF4)
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LFTRFuel2, FluidShapes.fluidLiquid, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50),
-                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(100),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(10),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(5))
+                MaterialLibAPI.getFluidStack(Materials.UraniumDepletedMoltenSaltUSalt, FluidShapes.fluidLiquid, 50),
+                MaterialLibAPI
+                    .getFluidStack(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, FluidShapes.fluidLiquid, 100),
+                MaterialLibAPI.getFluidStack(Materials.UraniumHexafluoride, FluidShapes.fluidLiquid, 10),
+                MaterialLibAPI.getFluidStack(Materials.UraniumHexafluoride, FluidShapes.fluidLiquid, 5))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192 * 4)
@@ -94,12 +97,12 @@ public class RecipeLoaderLFTR {
 
         // LiFBeF2ZrF4U235 - T1
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(100), Li2BeF4)
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LFTRFuel1, FluidShapes.fluidLiquid, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(25),
-                MaterialsNuclides.LiFThF4.getFluidStack(50),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(4),
-                MaterialsFluorides.URANIUM_HEXAFLUORIDE.getFluidStack(2))
+                MaterialLibAPI.getFluidStack(Materials.UraniumDepletedMoltenSaltUSalt, FluidShapes.fluidLiquid, 25),
+                MaterialLibAPI.getFluidStack(Materials.ThoriumDepletedMoltenSaltTSalt, FluidShapes.fluidLiquid, 50),
+                MaterialLibAPI.getFluidStack(Materials.UraniumHexafluoride, FluidShapes.fluidLiquid, 4),
+                MaterialLibAPI.getFluidStack(Materials.UraniumHexafluoride, FluidShapes.fluidLiquid, 2))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192)
@@ -108,10 +111,12 @@ public class RecipeLoaderLFTR {
         // Sparging Recipes
         // For no randomization, set metadata to 0 with key SPARGE_MAX_BYPRODUCT.
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Helium.getGas(1_000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.UraniumDepletedMoltenSaltUSalt, FluidShapes.fluidLiquid, 50))
             .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
-                Materials.Helium.getGas(0),
+                MaterialLibAPI.getFluidStack(Materials.HeliumSpargedUSalt, FluidShapes.fluidLiquid, 50),
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 0),
                 new FluidStack(mNobleGases.get(1), 0),
                 new FluidStack(mNobleGases.get(2), 0),
                 new FluidStack(mNobleGases.get(3), 0),
@@ -123,10 +128,12 @@ public class RecipeLoaderLFTR {
             .addTo(spargeTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFThF4.getFluidStack(50))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 100),
+                MaterialLibAPI.getFluidStack(Materials.ThoriumDepletedMoltenSaltTSalt, FluidShapes.fluidLiquid, 50))
             .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(0),
+                MaterialLibAPI.getFluidStack(Materials.FluorineSpargedTSalt, FluidShapes.fluidLiquid, 50),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 0),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
                 new FluidStack(mFluorideGases.get(3), 0),
@@ -138,10 +145,13 @@ public class RecipeLoaderLFTR {
             .addTo(spargeTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFBeF2ThF4.getFluidStack(50))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 100),
+                MaterialLibAPI
+                    .getFluidStack(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, FluidShapes.fluidLiquid, 50))
             .fluidOutputs(
-                MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(0),
+                MaterialLibAPI.getFluidStack(Materials.FluorineSpargedTBSalt, FluidShapes.fluidLiquid, 50),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 0),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
                 new FluidStack(mFluorideGases.get(3), 0),

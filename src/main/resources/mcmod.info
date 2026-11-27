@@ -74,24 +74,6 @@
       "useDependencyInformation": false
     },
     {
-      "modid": "bartworkscrossmodtgregworkscontainer",
-      "name": "BartWorks Mod Additions - TGregworks Container",
-      "description": "",
-      "version": "${modVersion}",
-      "mcversion": "${minecraftVersion}",
-      "url": "https://github.com/bartimaeusnek/bartworks",
-      "updateUrl": "",
-      "authorList": ["bartimaeusnek"],
-      "credits": "",
-      "logoFile": "",
-      "screenshots": [],
-      "parent": "bartworks",
-      "requiredMods": [],
-      "dependencies": [],
-      "dependants": [],
-      "useDependencyInformation": false
-    },
-    {
       "modid": "galacticgreg",
       "name": "Galactic Greg",
       "description": "Adds Gregtech Oregen to Galacticraft Dimensions",

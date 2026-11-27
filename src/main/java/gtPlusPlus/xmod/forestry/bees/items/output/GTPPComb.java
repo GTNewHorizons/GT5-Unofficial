@@ -13,13 +13,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
@@ -116,8 +118,8 @@ public class GTPPComb extends Item {
 
     public static void addChemicalRecipe(GTPPCombType aInputStack, ItemStack[] aOutputs, int[] aChances) {
         Material aMat = aInputStack.mMaterial;
-        long aEU = aMat.voltageMultiplier;
-        int aTier = Math.max(aMat.tier / 2, 1);
+        long aEU = MaterialUtils.voltageMultiplier(aMat);
+        int aTier = Math.max(MaterialUtils.tier(aMat) / 2, 1);
         GTValues.RA.stdBuilder()
             .itemInputs(aInputStack.getStackForType(aTier))
             .itemOutputs(aOutputs)
@@ -126,4 +128,5 @@ public class GTPPComb extends Item {
             .metadata(CHEMPLANT_CASING_TIER, aTier)
             .addTo(chemicalPlantRecipes);
     }
+
 }

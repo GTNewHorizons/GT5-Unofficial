@@ -37,20 +37,22 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -89,12 +91,12 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     /**
      * Fluid that needs to be supplied to boost success chance
      */
-    private static final Materials INPUT_CHEMICAL = Materials.PolyAluminiumChloride;
+    private static final Material INPUT_CHEMICAL = Materials.PolyAluminiumChloride;
     /**
      * Output fluid to be produced as waste. The intended behaviour is that this output fluid can be cycled
      * semi-perfectly into the input fluid.
      */
-    private static final Materials OUTPUT_WASTE = Materials.FlocculationWasteLiquid;
+    private static final Material OUTPUT_WASTE = Materials.FlocculationWasteLiquid;
 
     /**
      * Total amount of input fluid consumed during this recipe cycle.
@@ -197,7 +199,10 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -273,8 +278,8 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 new ResourceLocation("gregtech", "purification-unit-flocculation"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
-                    .put("input", INPUT_CHEMICAL.getLocalizedName())
-                    .put("waste", OUTPUT_WASTE.getLocalizedName())
+                    .put("input", MaterialUtils.localizedName(INPUT_CHEMICAL))
+                    .put("waste", MaterialUtils.localizedName(OUTPUT_WASTE))
                     .put("per_level", INPUT_CHEMICAL_PER_LEVEL)
                     .put("success", SUCCESS_PER_LEVEL)
                     .build())
@@ -283,7 +288,10 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addCasing(MIN_CASING + "-63", Casings.SlickSterileFlocculationCasing.getLocalizedName(), false)
             .addCasing("30", Casings.SterileWaterPlantCasing.getLocalizedName(), false)
             .addCasing("16", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
-            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Adamantium), false)
+            .addCasing(
+                "12",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Adamantium)),
+                false)
             .addCasing("9", Casings.FilterMachineCasing.getLocalizedName(), false)
             .addCasing(
                 "6",
@@ -316,7 +324,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // NOTE: If this process ever PRODUCES excess chlorine, there is a recipe bug.
         int levels = calculateBoostLevels();
         long amount = levels * WASTE_WATER_PER_LEVEL;
-        this.addFluidOutputs(new FluidStack[] { OUTPUT_WASTE.getFluid(amount) });
+        this.addFluidOutputs(new FluidStack[] { MaterialUtils.fluid(OUTPUT_WASTE, amount) });
         // Make sure to reset consumed fluid (again)
         this.inputFluidConsumed = 0;
     }
@@ -332,7 +340,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             for (FluidStack fluid : fluids) {
                 // If this FluidStack is the input chemical, consume it all
                 if (fluid.getFluid()
-                    .equals(INPUT_CHEMICAL.mFluid)) {
+                    .equals(MaterialUtils.fluidOf(INPUT_CHEMICAL))) {
                     this.inputFluidConsumed += fluid.amount;
                     if (!this.depleteInput(fluid)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
@@ -388,7 +396,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         infoData.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
-                INPUT_CHEMICAL.getLocalizedName(),
+                MaterialUtils.localizedName(INPUT_CHEMICAL),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }

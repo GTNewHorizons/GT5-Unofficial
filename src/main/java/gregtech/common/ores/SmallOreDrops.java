@@ -6,10 +6,11 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;
+import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.material.MaterialParts;
+import gregtech.api.util.GTUtility;
 
 public enum SmallOreDrops {
 
@@ -33,12 +34,12 @@ public enum SmallOreDrops {
         this.weight = weight;
     }
 
-    public static ArrayList<ItemStack> getDropList(Materials material) {
+    public static ArrayList<ItemStack> getDropList(Material material) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         for (SmallOreDrops drop : DROPS) {
-            ItemStack fallback = drop.fallback == null ? null : GTOreDictUnificator.get(drop.fallback, material, 1L);
-            ItemStack primary = GTOreDictUnificator.get(drop.primary, material, fallback, 1L);
+            ItemStack fallback = drop.fallback == null ? null : MaterialParts.stack(drop.fallback, material, 1L);
+            ItemStack primary = GTUtility.copyAmount(1L, MaterialParts.stack(drop.primary, material, 1), fallback);
 
             if (primary != null) {
                 for (int i = 0; i < drop.weight; i++) {

@@ -1,0 +1,8 @@
+# The repository root ignores *.sh; these scripts are part of the tooling.
+!*.sh
+
+# Local census workspace (servers, checkouts, logs) created by census/env.sh.
+/census/work/
+
+# Census dumps and gate reports written by the scripts.
+/census/results/

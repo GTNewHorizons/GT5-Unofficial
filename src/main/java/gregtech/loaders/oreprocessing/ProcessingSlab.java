@@ -6,27 +6,30 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingSlab implements ForeignPartRule {
 
-    public ProcessingSlab() {
-        OrePrefixes.slab.add(this);
-    }
+    public static final ProcessingSlab INSTANCE = new ProcessingSlab();
+
+    private ProcessingSlab() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (aOreDictName.startsWith("slabWood")) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+        if (oreDictName.startsWith("slabWood")) {
             if (Railcraft.isModLoaded()) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(3, aStack))
+                    .itemInputs(GTUtility.copyAmount(3, stack))
                     .itemOutputs(ItemList.RC_Tie_Wood.get(3L))
-                    .fluidInputs(Materials.Creosote.getFluid(300L))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 300))
                     .duration(10 * SECONDS)
                     .eut(4)
                     .addTo(chemicalBathRecipes);

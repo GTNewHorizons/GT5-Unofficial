@@ -13,15 +13,15 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.hazards.IRadioactiveItem;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.BaseItemTickable;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 
-public class DustDecayable extends BaseItemTickable {
+public class DustDecayable extends BaseItemTickable implements IRadioactiveItem {
 
     private final ItemStack turnsIntoItem;
     private final int radLevel;
@@ -40,15 +40,15 @@ public class DustDecayable extends BaseItemTickable {
         this.decayResultKey = "gtplusplus.item." + unlocal + ".decay_result";
         this.decayProduct = decayProduct;
         this.maxStackSize = 64;
-        GTOreDictUnificator.registerOre(unlocal, new ItemStack(this));
+        OreDictUtils.registerOre(unlocal, new ItemStack(this));
         new DecayableRecipe(maxTicks, new ItemStack(this), turnsInto, decayType);
     }
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        String gt = GregTech.ID + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust";
+        String gt = GregTech.ID + ":" + "materials/" + "NUCLEAR" + "/" + "dust";
         this.mIcon[0] = reg.registerIcon(gt);
-        String gt2 = GregTech.ID + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust" + "_OVERLAY";
+        String gt2 = GregTech.ID + ":" + "materials/" + "NUCLEAR" + "/" + "dust" + "_OVERLAY";
         this.mIcon[1] = reg.registerIcon(gt2);
     }
 
@@ -71,15 +71,14 @@ public class DustDecayable extends BaseItemTickable {
                     .getDisplayName()));
     }
 
+    /// Decay advances only in a decayables chest or a decay warehouse, never in an inventory.
     @Override
     public void onUpdate(final ItemStack stack, final World world, final Entity entityHolding, final int slot,
-        final boolean heldInHand) {
-        if (world == null || stack == null || world.isRemote) {
-            return;
-        }
-        if (entityHolding instanceof EntityPlayer) {
-            EntityUtils.applyRadiationDamageToEntity(stack.stackSize, this.radLevel, world, entityHolding);
-        }
+        final boolean heldInHand) {}
+
+    @Override
+    public int getRadiationLevel(ItemStack stack) {
+        return radLevel;
     }
 
     public ItemStack getDecayResult() {

@@ -8,8 +8,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gtnhintergalactic.GTNHIntergalactic;
 
 /**
@@ -94,21 +96,21 @@ public class ItemMiningDrones extends Item {
         UXV(Materials.TranscendentMetal);
 
         /** Material for this drone tier */
-        private final Materials mat;
+        private final Material mat;
 
         /**
          * Register a new drone tier material
          *
          * @param aMat needed material
          */
-        DroneMaterials(Materials aMat) {
+        DroneMaterials(Material aMat) {
             mat = aMat;
         }
 
         /**
          * @return Material which this drone tier needs
          */
-        public Materials getMaterial() {
+        public Material getMaterial() {
             return mat;
         }
     }

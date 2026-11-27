@@ -8,11 +8,16 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
@@ -44,7 +49,7 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.Naquadah;
     }
 
@@ -64,7 +69,10 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
             .addCasing(minCasingAmount() + "-440", getCasing().getLocalizedName(), false)
             .addCasing("100", getRotorCasing().getLocalizedName(), false)
             .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
-            .addCasing("34", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing(
+                "34",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())),
+                false)
             .addCasing("20", Casings.MVSolenoidSuperconductorCoil.getLocalizedName(), false)
             .addCasing("16", Casings.TurbineShaft.getLocalizedName(), false)
             .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)
@@ -132,7 +140,9 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutputPartial(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(
+                MaterialLibAPI
+                    .getFluidStack(Materials.DenseSuperheatedSteam, FluidShapes.fluidGas, steamFlowForNextSteam));
         } else {
             addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         }

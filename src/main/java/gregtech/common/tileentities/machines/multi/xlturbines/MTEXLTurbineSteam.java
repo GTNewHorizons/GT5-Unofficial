@@ -14,6 +14,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
@@ -51,7 +52,10 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
             .addCasing(minCasingAmount() + "-440", getCasing().getLocalizedName(), false)
             .addCasing("100", getRotorCasing().getLocalizedName(), false)
             .addCasing("36", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
-            .addCasing("34", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing(
+                "34",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())),
+                false)
             .addCasing("20", Casings.MVSolenoidSuperconductorCoil.getLocalizedName(), false)
             .addCasing("16", Casings.TurbineShaft.getLocalizedName(), false)
             .addDynamoHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_turbine_casing"), 1)

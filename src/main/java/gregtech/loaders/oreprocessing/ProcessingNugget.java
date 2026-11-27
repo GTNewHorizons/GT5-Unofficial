@@ -9,83 +9,80 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingNugget implements PartRecipeGenerator {
 
-    public ProcessingNugget() {
-        OrePrefixes.nugget.add(this);
-    }
+    public static final ProcessingNugget INSTANCE = new ProcessingNugget();
+
+    private ProcessingNugget() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        // Blacklist materials which are handled by Werkstoff loader
-        if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
-
-        if (aMaterial.contains(SubTag.SMELTING_TO_GEM)
-            && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L) != null) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
+        Material target = MaterialUtils.smeltInto(material);
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM) && target.hasShape(Shapes.gem)) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Mold_Ball.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L))
+                .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ball.get(0L))
+                .itemOutputs(MaterialLibAPI.getStack(target, Shapes.gem, 1))
                 .duration(10 * SECONDS)
-                .eut(calculateRecipeEU(aMaterial, 2))
+                .eut(calculateRecipeEU(material, 2))
                 .addTo(alloySmelterRecipes);
         }
 
-        if ((!aMaterial.contains(SubTag.SMELTING_TO_GEM))
-            && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L) != null
-            && aMaterial != Materials.Aluminium) {
+        if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) && target.hasShape(Shapes.ingot)
+            && material != Materials.Aluminium) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Mold_Ingot.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))
+                .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
+                .itemOutputs(MaterialLibAPI.getStack(target, Shapes.ingot, 1))
                 .duration(10 * SECONDS)
-                .eut(calculateRecipeEU(aMaterial, 2))
+                .eut(calculateRecipeEU(material, 2))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
         }
 
-        if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
+        if (MaterialUtils.hasMolten(material)) {
+            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
-                    .fluidInputs(aMaterial.getMolten(1 * NUGGETS))
+                    .itemOutputs(GTUtility.copyAmount(1, stack))
+                    .fluidInputs(MaterialUtils.molten(material, 1 * NUGGETS))
                     .duration(16 * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .eut(calculateRecipeEU(material, 4))
                     .addTo(fluidSolidifierRecipes);
             }
         }
 
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
+        GTRecipeRegistrator.registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
         GTRecipeRegistrator
-            .registerReverseMacerating(aStack, aMaterial, aPrefix.getMaterialAmount(), null, null, null, false, true);
-        if (!aMaterial.contains(SubTag.NO_SMELTING)
-            && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+            .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING) && material.hasShape(Shapes.ingot)) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                    ItemList.Shape_Mold_Nugget.get(0L))
-                .itemOutputs(GTUtility.copyAmount(9, aStack))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Mold_Nugget.get(0L))
+                .itemOutputs(GTUtility.copyAmount(9, stack))
                 .duration(5 * SECONDS)
-                .eut(calculateRecipeEU(aMaterial, 1))
+                .eut(calculateRecipeEU(material, 1))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
-            if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aMaterial != Materials.Unstable) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),
+                    GTUtility.copyAmount(8, stack),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                    new Object[] { "sI ", 'I', OrePrefixes.ingot.get(aMaterial) });
+                    new Object[] { "sI ", 'I', OrePrefixes.ingot.ingredient(material) });
             }
         }
     }

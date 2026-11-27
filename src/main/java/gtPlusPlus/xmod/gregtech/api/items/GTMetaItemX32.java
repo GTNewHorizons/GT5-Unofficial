@@ -1,181 +1,26 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import java.util.Arrays;
-import java.util.List;
-
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
-
-/**
- * @author Gregorius Techneticies
- *         <p/>
- *         One Item for everything!
- *         <p/>
- *         This brilliant Item Class is used for automatically generating all possible variations of Material Items,
- *         like Dusts, Ingots, Gems, Plates and similar. It saves me a ton of work, when adding Items, because I always
- *         have to make a new Item SubType for each OreDict Prefix, when adding a new Material.
- *         <p/>
- *         As you can see, up to 32766 Items can be generated using this Class. And the last 766 Items can be custom
- *         defined, just to save space and MetaData.
- *         <p/>
- *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike
- *         Item.
- */
+/// A GT++ meta-item whose custom items occupy damage 32000 to 32765.
 public abstract class GTMetaItemX32 extends GTMetaItem {
 
-    protected final OrePrefixes[] mGeneratedPrefixList;
-
-    /**
-     * Creates the Item using these Parameters.
-     *
-     * @param aUnlocalized         The Unlocalized Name of this Item.
-     * @param aGeneratedPrefixList The OreDict Prefixes you want to have generated.
-     */
-    public GTMetaItemX32(final String aUnlocalized, final OrePrefixes... aGeneratedPrefixList) {
+    public GTMetaItemX32(final String aUnlocalized) {
         super(aUnlocalized, (short) 32000, (short) 766);
-        this.mGeneratedPrefixList = Arrays.copyOf(aGeneratedPrefixList, 32);
-
-        for (int i = 0; i < 32000; i++) {
-            final OrePrefixes tPrefix = this.mGeneratedPrefixList[i / 1000];
-            if (tPrefix == null) {
-                continue;
-            }
-            final Materials tMaterial = GregTechAPI.sGeneratedMaterials[i % 1000];
-            if (tMaterial == null) {
-                continue;
-            }
-            if (this.doesMaterialAllowGeneration(tPrefix, tMaterial)) {
-                final ItemStack tStack = new ItemStack(this, 1, i);
-                GTLanguageManager.addStringLocalization(
-                    this.getUnlocalizedName(tStack) + ".name",
-                    this.getDefaultLocalization(tPrefix, tMaterial, i));
-                GTLanguageManager.addStringLocalization(
-                    this.getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
-                if (tPrefix.isUnifiable()) {
-                    GTOreDictUnificator.add(tPrefix, tMaterial, tStack);
-                } else {
-                    GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
-                }
-                if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
-                    && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)
-                        || (tMaterial == Materials.SolderingAlloy))) {
-                    GregTechAPI.sSolderingMetalList.add(tStack);
-                }
-            }
-        }
     }
-
-    /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
-
-    /**
-     * @param aPrefix   this can be null, you have to return false in that case
-     * @param aMaterial this can be null, you have to return false in that case
-     * @return if this Item should be generated and visible.
-     */
-    public boolean doesMaterialAllowGeneration(final OrePrefixes aPrefix, final Materials aMaterial) {
-        // You have to check for at least these Conditions in every Case! So add a super Call like the following for
-        // this before executing your Code:
-        // if (!super.doesMaterialAllowGeneration(aPrefix, aMaterial)) return false;
-        return aPrefix != null && aPrefix.doGenerateItem(aMaterial);
-    }
-
-    /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
-
-    /**
-     * @param aPrefix   the OreDict Prefix
-     * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
-     * @return the Localized Name when default LangFiles are used.
-     */
-    public String getDefaultLocalization(final OrePrefixes aPrefix, final Materials aMaterial, final int aMetaData) {
-        return aPrefix.getDefaultLocalNameForItem(aMaterial);
-    }
-
-    /**
-     * @param aMetaData a Index from [0 - 31999]
-     * @param aMaterial the Material
-     * @return an Icon Container for the Item Display.
-     */
-    public final IIconContainer getIconContainer(final int aMetaData, final Materials aMaterial) {
-        return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
-            && (this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0)
-                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
-                : null;
-    }
-
-    /* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
     public ItemStack getContainerItem(final ItemStack aStack) {
-        final int aDamage = aStack.getItemDamage();
-        if (Materials.isMaterialItem(aDamage)) {
-            final Materials aMaterial = GregTechAPI.sGeneratedMaterials[aDamage % 1000];
-            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
-                final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];
-                if (aPrefix != null) {
-                    return GTUtility.copyAmount(1, aPrefix.mContainerItem);
-                }
-            }
-        }
         return null;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public final void getSubItems(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
-        for (int i = 0; i < 32000; i++) {
-            if (this.doesMaterialAllowGeneration(
-                this.mGeneratedPrefixList[i / 1000],
-                GregTechAPI.sGeneratedMaterials[i % 1000])) {
-                final ItemStack tStack = new ItemStack(this, 1, i);
-                this.isItemStackUsable(tStack);
-                list.add(tStack);
-            }
-        }
-        super.getSubItems(item, tab, list);
-    }
-
-    @Override
     public final IIcon getIconFromDamage(final int aMetaData) {
-        if (aMetaData < 0) {
-            return null;
-        }
         if (aMetaData < 32000) {
-            final Materials tMaterial = GregTechAPI.sGeneratedMaterials[aMetaData % 1000];
-            if (tMaterial == null) {
-                return null;
-            }
-            final IIconContainer tIcon = this.getIconContainer(aMetaData, tMaterial);
-            if (tIcon != null) {
-                return tIcon.getIcon();
-            }
             return null;
         }
         return (aMetaData - 32000) < this.mIconList.length ? this.mIconList[aMetaData - 32000][0] : null;
-    }
-
-    @Override
-    public int getItemStackLimit(final ItemStack aStack) {
-        final int tDamage = this.getDamage(aStack);
-        if (Materials.isMaterialItem(tDamage) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
-            return Math
-                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
-        }
-        return super.getItemStackLimit(aStack);
     }
 
     @Override

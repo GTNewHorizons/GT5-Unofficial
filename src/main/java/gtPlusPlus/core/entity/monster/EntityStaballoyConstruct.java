@@ -8,9 +8,12 @@ import net.minecraft.item.Item;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.material.MaterialsAlloy;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
 
@@ -73,7 +76,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         }
 
         if (ingots > 0) {
-            this.entityDropItem(MaterialsAlloy.STABALLOY.getIngot(ingots), 0.0f);
+            this.entityDropItem(MaterialLibAPI.getStack(Materials.Staballoy, Shapes.ingot, ingots), 0.0f);
         }
     }
 

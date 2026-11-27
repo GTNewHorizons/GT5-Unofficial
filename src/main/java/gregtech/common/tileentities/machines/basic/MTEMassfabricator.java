@@ -31,13 +31,15 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.primitives.Ints;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -152,7 +154,6 @@ public class MTEMassfabricator extends MTEBasicMachine {
         sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
         sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
         sRequiresUUA = MachineStats.massFabricator.requiresUUA;
-        Materials.UUAmplifier.setChemicalFormula("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus, true);
     }
 
     @Override
@@ -169,7 +170,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
     public int checkRecipe() {
         FluidStack tFluid = getDrainableStack();
         if ((tFluid == null) || (tFluid.amount < getCapacity())) {
-            this.mOutputFluid = Materials.UUMatter.getFluid(1L);
+            this.mOutputFluid = MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1);
             calculateCustomOverclock(containsUUA(getFillableStack()) ? uuaRecipe : nonUUARecipe);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
@@ -193,7 +194,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
+        return aFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, 1));
     }
 
     @Override
@@ -202,7 +203,8 @@ public class MTEMassfabricator extends MTEBasicMachine {
     }
 
     private boolean containsUUA(FluidStack aFluid) {
-        return aFluid != null && aFluid.amount >= sUUAperUUM && aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
+        return aFluid != null && aFluid.amount >= sUUAperUUM
+            && aFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, 1));
     }
 
     @ParametersAreNonnullByDefault

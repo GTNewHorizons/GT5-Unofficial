@@ -6,7 +6,10 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.XModMaterials;
 import gregtech.api.util.GTLanguageManager;
 
 public enum CombType {
@@ -56,7 +59,7 @@ public enum CombType {
     // Gem Line
     STONE(33, "stone", true, Materials._NULL, 70, 0x808080, 0x999999, ItemComb.Voltage.LV),
     CERTUS(34, "certus", true, Materials.CertusQuartz, 100, 0x57CFFB, 0xBBEEFF, ItemComb.Voltage.LV),
-    FLUIX(35, "fluix", true, Materials.Fluix, 100, 0xA375FF, 0xB591FF, ItemComb.Voltage.LV),
+    FLUIX(35, "fluix", true, XModMaterials.Fluix, 100, 0xA375FF, 0xB591FF, ItemComb.Voltage.LV),
     REDSTONE(36, "redstone", true, Materials.Redstone, 100, 0x7D0F0F, 0xD11919, ItemComb.Voltage.LV),
     RAREEARTH(37, "rare_earth", true, Materials.RareEarth, 100, 0x555643, 0x343428, ItemComb.Voltage.LV),
     LAPIS(38, "lapis", true, Materials.Lapis, 100, 0x1947D1, 0x476CDA, ItemComb.Voltage.LV),
@@ -231,24 +234,20 @@ public enum CombType {
     GAIASPIRIT(177, "gaia_spirit", true, Materials.GaiaSpirit, 50, 0x758997, 0xB7D6EB, ItemComb.Voltage.LuV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
-    _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
+    _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0, null);
 
     public static final CombType[] VALUES = values();
     public boolean showInList;
     public final boolean customIcon;
     public final ItemComb.Voltage voltage;
-    public final Materials material;
+    public final Material material;
     public final int chance;
 
     private final int id;
     private final String name;
     private final int[] color;
 
-    CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2) {
-        this(id, pName, show, material, chance, color1, color2, null);
-    }
-
-    CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2,
+    CombType(int id, String pName, boolean show, Material material, int chance, int color1, int color2,
         ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;
@@ -263,7 +262,7 @@ public enum CombType {
             .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replace("_", " ")) + " Comb");
     }
 
-    CombType(int id, String pName, boolean show, Materials material, int chance, ItemComb.Voltage voltage) {
+    CombType(int id, String pName, boolean show, Material material, int chance, ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;
         this.voltage = voltage;

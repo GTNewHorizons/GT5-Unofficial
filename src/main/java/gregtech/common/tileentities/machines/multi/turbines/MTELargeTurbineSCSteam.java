@@ -9,15 +9,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -59,7 +62,7 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
     }
 
     @Override
-    public Materials getFrameMaterial() {
+    public Material getFrameMaterial() {
         return Materials.Polybenzimidazole;
     }
 
@@ -146,7 +149,10 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
             .addMarkdown(new ResourceLocation("gregtech", "large-sc-steam-turbine"))
             .beginStructureBlock(3, 3, 6, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("14", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing(
+                "14",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())),
+                false)
             .addCasing("8-14", getTurbineCasing().getLocalizedName(), false)
             .addCasing("12", getPipeCasing().getLocalizedName(), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_turbine_casing"), 2)

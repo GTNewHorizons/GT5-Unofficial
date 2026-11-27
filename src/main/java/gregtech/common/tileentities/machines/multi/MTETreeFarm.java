@@ -56,22 +56,24 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.ruling_0.materiallib.api.Material;
 
 import forestry.api.arboriculture.IToolGrafter;
 import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
@@ -164,7 +166,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addCasing("60", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("60", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)), false)
             .addCasing("57", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("45-55", Casings.SterileFarmCasing.getLocalizedName(), false)
             .addCasing("25", StatCollector.translateToLocalFormatted("gt.mbtt.structure.either_block", Blocks.dirt.getLocalizedName(), Blocks.grass.getLocalizedName()), false)
@@ -831,28 +833,28 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         MetaGeneratedTool toolInstance = MetaGeneratedTool01.INSTANCE;
         altToolsForNEI = new ItemStack[][] {
             // Mode.LOG
-            { toolInstance.getToolWithStats(SAW.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(POCKET_SAW.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, null, null, null), },
+            { toolInstance.getToolWithStats(SAW.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(POCKET_SAW.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_LV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_LV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_MV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_MV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.BUZZSAW_HV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(CHAINSAW_HV.ID, 1, (Material) null, null, null), },
             // Mode.SAPLING
-            { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, null, null, null),
+            { toolInstance.getToolWithStats(IDMetaTool01.BRANCHCUTTER.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_BRANCHCUTTER.ID, 1, (Material) null, null, null),
                 GTModHandler.getModItem(Mods.Forestry.ID, "grafter", 1, 0), },
             // Mode.LEAVES
             { new ItemStack(Items.shears),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_LV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_MV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_HV.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, null, null, null), },
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_LV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_MV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.WIRECUTTER_HV.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_WIRECUTTER.ID, 1, (Material) null, null, null), },
             // Mode.FRUIT
-            { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, null, null, null),
-                toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, null, null, null), } };
+            { toolInstance.getToolWithStats(IDMetaTool01.KNIFE.ID, 1, (Material) null, null, null),
+                toolInstance.getToolWithStats(IDMetaTool01.POCKET_KNIFE.ID, 1, (Material) null, null, null), } };
     }
 
     /**

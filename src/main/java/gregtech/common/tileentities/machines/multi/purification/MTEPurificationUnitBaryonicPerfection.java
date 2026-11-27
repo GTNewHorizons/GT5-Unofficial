@@ -34,19 +34,22 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -269,20 +272,23 @@ public class MTEPurificationUnitBaryonicPerfection
                     .put("catalyst_cost", CATALYST_BASE_COST)
                     .put(
                         "catalyst_fluid",
-                        Materials.Infinity.getMolten(1)
+                        MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 1)
                             .getLocalizedName())
                     .put("output", BARYONIC_MATTER_OUTPUT)
                     .put("extra_output", PurifiedWaterRecipes.extraBaryonicOutput)
                     .put(
                         "output_fluid",
-                        Materials.StableBaryonicMatter.getFluid(1)
+                        MaterialLibAPI.getFluidStack(Materials.StableBaryonicMatter, FluidShapes.fluidLiquid, 1)
                             .getLocalizedName())
                     .build())
             .beginStructureBlock(17, 17, 17, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(MIN_CASINGS + "-339", Casings.QuarkExclusionCasing.getLocalizedName(), false)
             .addCasing("240", Casings.NonPhotonicMatterExclusionGlass.getLocalizedName(), false)
-            .addCasing("108", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bedrockium), false)
+            .addCasing(
+                "108",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Bedrockium)),
+                false)
             .addCasing("96", Casings.FemtometerCalibratedParticleBeamCasing.getLocalizedName(), false)
             .addCasing("37", Casings.ParticleBeamGuidancePipeCasing.getLocalizedName(), false)
             .addInputBus(
@@ -379,7 +385,8 @@ public class MTEPurificationUnitBaryonicPerfection
                 if (isCatalyst(stack)) {
                     // Try to deplete catalyst cost first
                     int cost = calculateCatalystCost(stack);
-                    FluidStack inputCost = Materials.Infinity.getMolten(cost);
+                    FluidStack inputCost = MaterialLibAPI
+                        .getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, cost);
                     // Drain the input cost directly from a hatch since we are not inside
                     // recipe processing
                     boolean drained = false;
@@ -415,8 +422,11 @@ public class MTEPurificationUnitBaryonicPerfection
             // Now check the sequence for a correct combination
             correctStartIndex = checkSequence();
             // If we found something, immediately output stable baryonic matter
-            if (correctStartIndex != -1)
-                addOutputPartial(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
+            if (correctStartIndex != -1) addOutputPartial(
+                MaterialLibAPI.getFluidStack(
+                    Materials.StableBaryonicMatter,
+                    FluidShapes.fluidLiquid,
+                    (int) BARYONIC_MATTER_OUTPUT));
         }
     }
 

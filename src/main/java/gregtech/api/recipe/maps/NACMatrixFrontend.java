@@ -61,7 +61,6 @@ public class NACMatrixFrontend extends AssemblyLineFrontend {
                         neiStack.relx,
                         neiStack.rely + 18,
                         10000 - cc.xorSuccessChance,
-                        false,
                         false));
             }
         }

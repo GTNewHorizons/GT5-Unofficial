@@ -16,10 +16,6 @@ public class CharExchanger {
         EnumChatFormatting.DARK_RED + "UHV" + EnumChatFormatting.RESET,
         EnumChatFormatting.GREEN + "UEV" + EnumChatFormatting.RESET, };
 
-    public static char shifter(int unicode) {
-        return (char) unicode;
-    }
-
     public static String formatNumber(String exp) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < exp.length(); ++i) {

@@ -33,10 +33,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -145,7 +145,7 @@ public class BlockReinforced extends GTGenericBlock {
         GTModHandler.addCraftingRecipe(
             ItemList.Block_Powderbarrel.get(1L),
             GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "WSW", "GGG", "WGW", 'W', OrePrefixes.plate.get(Materials.Wood), 'G',
+            new Object[] { "WSW", "GGG", "WGW", 'W', OrePrefixes.plate.ingredient(Materials.Wood), 'G',
                 new ItemStack(Items.gunpowder, 1), 'S', new ItemStack(Items.string, 1) });
         BlockDispenser.dispenseBehaviorRegistry
             .putObject(ItemList.Block_Powderbarrel.getItem(), new BehaviorDefaultDispenseItem() {

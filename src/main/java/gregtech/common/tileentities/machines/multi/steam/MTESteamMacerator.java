@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -32,19 +31,21 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -82,7 +83,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_LEGACY = "legacy";
 
     private IStructureDefinition<MTESteamMacerator> STRUCTURE_DEFINITION = null;
 
@@ -124,9 +124,9 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Nullable
     public static Integer getTierFrame(Block block, int meta) {
-        if (block == GregTechAPI.sBlockFrames) {
-            if (meta == Materials.Bronze.mMetaItemSubID) return 1;
-            if (meta == Materials.Steel.mMetaItemSubID) return 2;
+        if (block == MaterialLibAPI.getBlock(TEBlockShapes.frameGt)) {
+            if (meta == Materials.Bronze.getIndex()) return 1;
+            if (meta == Materials.Steel.getIndex()) return 2;
         }
         return null;
     }
@@ -177,11 +177,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMacerator>builder()
                 // spotless:off
-                // TODO remove legacy structure by 2.10/2.11
-                .addShape(STRUCTURE_PIECE_LEGACY, transpose(new String[][] {
-                    { "AAA", "AAA", "AAA" },
-                    { "A~A", "A-A", "AAA" },
-                    { "AAA", "AAA", "AAA" }}))
                 .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
                     {" A ", "CAC", "C~C", "AAA"},
                     {"ABA", "A A", "A A", "AAA"},
@@ -218,8 +213,8 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                     ofBlocksTiered(
                         MTESteamMacerator::getTierFrame,
                         ImmutableList.of(
-                            Pair.of(GregTechAPI.sBlockFrames, Materials.Bronze.mMetaItemSubID),
-                            Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)),
+                            Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Bronze.getIndex()),
+                            Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierFrame = m,
                         t -> t.tierFrame))
@@ -250,28 +245,6 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        tierMachineCasing = -1;
-        tierGearboxCasing = -1;
-        tierFrame = -1;
-        casingAmount = 0;
-
-        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0, null)) {
-            // Legacy structure shape matched — commit to it
-            checkCasingMin(errors, casingAmount, 14);
-            if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
-                tierMachine = tierMachineCasing;
-                updateHatchTexture();
-            } else {
-                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
-                return;
-            }
-            checkHasSteamInput(errors);
-            checkHasSteamInputBus(errors);
-            checkHasSteamOutputBus(errors);
-            return;
-        }
-
-        // Try new structure
         tierMachineCasing = -1;
         tierGearboxCasing = -1;
         tierFrame = -1;
@@ -354,12 +327,18 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
             .addCasing("14-17", Casings.BronzePlatedBricks.getLocalizedName(), false)
-            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bronze), false)
+            .addCasing(
+                "8",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Bronze)),
+                false)
             .addCasing("1", Casings.BronzeGearBoxCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
             .addCasing("14-17", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing(
+                "8",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)),
+                false)
             .addCasing("1", Casings.SteelGearBoxCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))

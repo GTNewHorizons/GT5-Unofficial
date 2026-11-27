@@ -16,15 +16,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 
 public class FuelLoader implements Runnable {
@@ -33,52 +35,52 @@ public class FuelLoader implements Runnable {
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Initializing various Fuels.");
         ItemList.sBlueVitriol = GTFluidFactory
-            .of("solution.bluevitriol", "Blue Vitriol Water Solution", null, FluidState.LIQUID, 295);
+            .of("solution.bluevitriol", "Blue Vitriol Water Solution", FluidState.LIQUID, 295);
         ItemList.sNickelSulfate = GTFluidFactory
-            .of("solution.nickelsulfate", "Nickel Sulfate Water Solution", null, FluidState.LIQUID, 295);
+            .of("solution.nickelsulfate", "Nickel Sulfate Water Solution", FluidState.LIQUID, 295);
         ItemList.sGreenVitriol = GTFluidFactory
-            .of("solution.greenvitriol", "Green Vitriol Water Solution", null, FluidState.LIQUID, 295);
+            .of("solution.greenvitriol", "Green Vitriol Water Solution", FluidState.LIQUID, 295);
         ItemList.sIndiumConcentrate = GTFluidFactory
-            .of("indiumconcentrate", "Indium Concentrate", null, FluidState.LIQUID, 295); // TODO CHECK NEW x3
+            .of("indiumconcentrate", "Indium Concentrate", FluidState.LIQUID, 295); // TODO CHECK NEW x3
         ItemList.sLeadZincSolution = GTFluidFactory
-            .of("leadzincsolution", "Lead-Zinc Solution", null, FluidState.LIQUID, 295);
-        ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", null, FluidState.LIQUID, 295);
+            .of("leadzincsolution", "Lead-Zinc Solution", FluidState.LIQUID, 295);
+        ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", FluidState.LIQUID, 295);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.bolt, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.bolt, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 50_000)
             .addTo(smallNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.stick, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stick, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(largeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadah, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.stickLong, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stickLong, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 500_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadria, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Naquadah, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Shapes.bolt, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.bolt, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(extremeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadria, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Shapes.stick, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stick, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 1_000_000)
@@ -138,8 +140,8 @@ public class FuelLoader implements Runnable {
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.beacon, 1))
-            .metadata(FUEL_VALUE, Materials.NetherStar.mFuelPower * 2)
-            .metadata(FUEL_TYPE, Materials.NetherStar.mFuelType)
+            .metadata(FUEL_VALUE, MaterialUtils.fuelPower(Materials.NetherStar) * 2)
+            .metadata(FUEL_TYPE, MaterialUtils.fuelType(Materials.NetherStar))
             .addTo(GTRecipeConstants.Fuel);
         if (Mods.EnderIO.isModLoaded()) {
             GTValues.RA.stdBuilder()

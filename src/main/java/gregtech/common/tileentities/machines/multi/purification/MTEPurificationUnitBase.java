@@ -28,12 +28,13 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -42,6 +43,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -226,7 +228,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             long amountAvailable = 0;
             for (FluidStack fluid : this.storedFluids) {
                 if (fluid.isFluidEqual(waterInput)) {
-                    amountAvailable += fluid.amount;
+                    amountAvailable += GTUtility.getFluidAmount(fluid);
                 }
             }
 
@@ -291,8 +293,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public FluidStack getWaterBoostAmount(GTRecipe recipe) {
         // Recipes should always be constructed so that output water is always the first fluid output
         FluidStack outputWater = recipe.mFluidOutputs[0];
-        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
-        return new FluidStack(outputWater.getFluid(), amount);
+        long outputWaterAmount = GTUtility.getFluidAmount(outputWater);
+        long amount = Math.round(outputWaterAmount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
+        return GTUtility.createFluidStack(outputWater.getFluid(), amount);
     }
 
     /**
@@ -314,9 +317,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public void depleteRecipeInputs() {
         for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
             FluidStack input = this.currentRecipe.mFluidInputs[i];
-            FluidStack copyWithParallel = input.copy();
+            long inputAmount = GTUtility.getFluidAmount(input);
+            FluidStack copyWithParallel = GTUtility.createFluidStack(input.getFluid(), inputAmount);
             if (i == 0) {
-                copyWithParallel.amount = input.amount * effectiveParallel;
+                long waterAmount = effectiveParallel * GTUtility.getFluidAmount(input);
+                GTUtility.setFluidAmount(copyWithParallel, waterAmount);
             }
             this.depleteInput(copyWithParallel);
         }
@@ -356,9 +361,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
         for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
             fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
-            // Clamp the fluid output to max int to avoid overflow at extreme parallels
-            fluidOutputs[i].amount = (int) Math
-                .min((long) effectiveParallel * fluidOutputs[i].amount, Integer.MAX_VALUE);
+            long outputAmount = (long) effectiveParallel * GTUtility.getFluidAmount(fluidOutputs[i]);
+            GTUtility.setFluidAmount(fluidOutputs[i], outputAmount);
         }
 
         ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
@@ -451,13 +455,16 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             roll = random.nextInt(0, 2);
             if (roll == 1) {
                 // Rolled good, stop the loop and output water below current tier
-                int amount = mOutputFluids[0].amount;
+                long amount = GTUtility.getFluidAmount(mOutputFluids[0]);
                 // For tier 1, this is distilled water, so we cannot use the helper function!
                 if (waterTier == 1) {
-                    return GTModHandler.getDistilledWater(amount);
+                    FluidStack waterStack = GTUtility.createFluidStack(GTModHandler.getDistilledWater(1));
+                    GTUtility.setFluidAmount(waterStack, amount);
+
+                    return waterStack;
                 }
-                Materials water = PurifiedWaterHelpers.getPurifiedWaterTier(waterTier - 1);
-                return water.getFluid(amount);
+                Material water = PurifiedWaterHelpers.getPurifiedWaterTier(waterTier - 1);
+                return MaterialUtils.fluid(water, amount);
             }
             // Bad roll, keep looping and degrade quality even further
         }

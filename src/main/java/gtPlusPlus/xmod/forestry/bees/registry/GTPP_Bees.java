@@ -4,8 +4,9 @@ import static gregtech.api.enums.Mods.Forestry;
 
 import java.util.HashMap;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.GTMod;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPollenType;

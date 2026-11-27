@@ -14,13 +14,18 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -51,7 +56,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
     }
 
     @Override
-    public Materials getFrameMaterial() {
+    public Material getFrameMaterial() {
         return Materials.Titanium;
     }
 
@@ -83,7 +88,10 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
             .addMarkdown(new ResourceLocation("gregtech", "large-hp-steam-turbine"))
             .beginStructureBlock(3, 3, 6, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("14", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing(
+                "14",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())),
+                false)
             .addCasing("8-14", getTurbineCasing().getLocalizedName(), false)
             .addCasing("12", getPipeCasing().getLocalizedName(), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_turbine_casing"), 2)
@@ -138,7 +146,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
 
         tEU = totalFlow;
         // HP steam outputs regular steam instead of distilled water
-        addOutputPartial(Materials.Steam.getGas(totalFlow));
+        addOutputPartial(MaterialLibAPI.getFluidStack(Materials.Steam, FluidShapes.fluidGas, totalFlow));
 
         if (totalFlow == GTUtility.safeInt((long) realOptFlow)) {
             tEU = GTUtility

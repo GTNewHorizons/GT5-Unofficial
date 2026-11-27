@@ -12,15 +12,17 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.SolidifierHatch;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasingAdvanced;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
+import static gregtech.api.util.GTStructureUtility.ofStorageBlock;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
@@ -48,45 +50,41 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.I3DGeometryRenderer;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.PostProcessingManager;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.WerkstoffLoader;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -106,10 +104,6 @@ import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.gui.modularui.multiblock.MTEExoFoundryGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.IMTERenderer;
-import gregtech.common.render.shader.ShaderHandle;
-import gregtech.common.render.shader.ShaderRecipe;
-import gregtech.common.render.shader.Uniform;
-import gregtech.common.render.shader.VertexAttribute;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import io.netty.buffer.ByteBuf;
@@ -272,14 +266,14 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
                 }
             ))
-        .addElement('a', lazy(()->ofSheetMetal(GGMaterial.preciousMetalAlloy)))
+        .addElement('a', lazy(()->ofSheetMetal(Materials.PreciousMetalsAlloy)))
         .addElement('b', ofBlock(GregTechAPI.sBlockCasings10, 13))
         .addElement('c', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('d', ofFrame(Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
         .addElement('f', ofSheetMetal(Materials.Erbium))
-        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
-        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+        .addElement('g', ofBlockCasingAdvanced(Materials.PreciousMetalsAlloy))
+        .addElement('h', ofBlockCasing(Materials.PreciousMetalsAlloy))
         .addShape(
             FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(
@@ -381,9 +375,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('T', ofFrame(Materials.MHDCSM))
         .addElement('U', ofFrame(Materials.WhiteDwarfMatter))
         .addElement('V', ofFrame(Materials.BlackDwarfMatter))
-        .addElement('W', ofBlock(GregTechAPI.sBlockMetal9, 6))
-        .addElement('X',ofBlock(GregTechAPI.sBlockMetal9, 7))
-        .addElement('Y',ofBlock(GregTechAPI.sBlockMetal9, 13))
+        .addElement('W', ofStorageBlock(Materials.WhiteDwarfMatter))
+        .addElement('X',ofStorageBlock(Materials.BlackDwarfMatter))
+        .addElement('Y',ofStorageBlock(Materials.MHDCSM))
         .addElement('Z', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
         .addShape(
             FoundryModule.UNSET.structureID,
@@ -490,7 +484,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addCasing(MIN_CASINGS + "-485", Casings.PrimaryExoFoundryCasing.getLocalizedName(), false)
             .addCasing("282", Casings.InnerExoFoundrySiphonCasing.getLocalizedName(), false)
             .addCasing("260", StatCollector.translateToLocal("gt.mbtt.structure.magnetic_chassis"), true)
-            .addCasing("224", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Netherite), false)
+            .addCasing("224", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Netherite)), false)
             .addCasing("196", Casings.CentralCasingExoFoundryCasing.getLocalizedName(), false)
             .addCasing("173", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_primary_casing"), 1)
@@ -632,7 +626,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             }
         }
         return true;
-
     }
 
     public boolean addCoolantInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -811,7 +804,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        foundryData.setModule(index, ordinal, false);
+        foundryData.setModule(index, ordinal, true);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
@@ -831,63 +824,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     // Render code
     private boolean shouldRender = true;
-    private static boolean renderInitialized;
-    private static IVertexArrayObject ffpRing; // The universium path draws via FFP
-    private static IVertexArrayObject ring;
-
-    private static final ShaderRecipe FOUNDRY = ShaderRecipe.of(GregTech.resourceDomain, "foundry")
-        .required("u_Color")
-        .modelUniform("u_ModelMatrix")
-        .attribute("a_Position", VertexAttribute.POSITION);
-
-    private static final Uniform RING_COLOR = FOUNDRY.uniform("u_Color");
-
-    private static ShaderHandle ringShader;
-
-    private static final Matrix4f ringMatrix = new Matrix4f();
-
-    public static void reloadRender() {
-        renderInitialized = false;
-        releaseRender();
-        // spotless:off
-        ringShader = FOUNDRY.bake();
-        if (!ringShader.isValid()) {
-            GTLoggers.GT_FML_LOGGER.error("Failed to initialize exo foundry shader");
-            releaseRender();
-            return;
-        }
-
-        try {
-            final ResourceLocation model = new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ring.obj"
-            );
-            ring = WavefrontVBOBuilder.compileToVBO(model, ringShader.vertexFormat());
-            ffpRing = WavefrontVBOBuilder.compileToVBO(model);
-        } catch (RuntimeException e) {
-            GTLoggers.GT_FML_LOGGER.error("Failed to load exo foundry ring model", e);
-            releaseRender();
-            return;
-        }
-
-        renderInitialized = true;
-        // spotless:on
-    }
-
-    private static void releaseRender() {
-        if (ringShader != null) {
-            ringShader.release();
-            ringShader = null;
-        }
-        if (ring != null) {
-            ring.delete();
-            ring = null;
-        }
-        if (ffpRing != null) {
-            ffpRing.delete();
-            ffpRing = null;
-        }
-    }
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
@@ -895,7 +831,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             return;
         }
 
-        if (!renderInitialized) return;
+        if (!FoundryRenderUtils.renderInitialized) return;
 
         ForgeDirection dir = getDirection();
         PostProcessingManager.getInstance()
@@ -944,13 +880,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     private static void renderStandardRing(int index, float red, float green, float blue) {
-        ringShader.use();
-        GL20.glUniform3f(ringShader.loc(RING_COLOR), red, green, blue);
+        FoundryRenderUtils.ringShader.use();
+        GL20.glUniform3f(FoundryRenderUtils.ringShader.loc(FoundryRenderUtils.RING_COLOR), red, green, blue);
 
-        ringMatrix.translation(0, ringHeight(index), 0)
+        FoundryRenderUtils.ringMatrix.translation(0, ringHeight(index), 0)
             .scale(0.8f, 1.2f, 0.8f);
-        ringShader.uploadModel(ringMatrix);
-        ring.render();
+        FoundryRenderUtils.ringShader.uploadModel(FoundryRenderUtils.ringMatrix);
+        FoundryRenderUtils.ring.render();
     }
 
     private static void renderUniversiumRing(int index, boolean bloom) {
@@ -989,7 +925,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glPushMatrix();
         GL11.glTranslatef(0, ringHeight(index), 0);
         GL11.glScalef(0.8f, 1.2f, 0.8f);
-        ffpRing.render();
+        FoundryRenderUtils.ffpRing.render();
         GL11.glPopMatrix();
     }
 
@@ -1094,20 +1030,20 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     // data class
     public static class CoolingFluid {
 
-        public Materials material;
+        public Material material;
         public int grantedOC;
         public int amount;
 
-        public CoolingFluid(Materials material, int grantedOC, int amount) {
+        public CoolingFluid(Material material, int grantedOC, int amount) {
             this.material = material;
             this.grantedOC = grantedOC;
             this.amount = amount;
         }
 
         public FluidStack getStack() {
-            FluidStack stack = material.getFluid(amount);
+            FluidStack stack = MaterialUtils.fluid(material, amount);
             if (stack == null) {
-                return material.getMolten(amount);
+                return MaterialUtils.molten(material, amount);
             }
             return stack;
         }

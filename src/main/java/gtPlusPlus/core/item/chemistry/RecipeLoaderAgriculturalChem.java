@@ -13,12 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
@@ -171,11 +174,11 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(chemicalPlantRecipes);
 
         // Sugar Beet
-        if (!GTOreDictUnificator.getOres("cropSugarbeet")
+        if (!OreDictionary.getOres("cropSugarbeet")
             .isEmpty()) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("cropSugarbeet", 4))
+                .itemInputs(new OreDictItemStack("cropSugarbeet", 4))
                 .circuit(4)
                 .fluidInputs(GTModHandler.getDistilledWater(1_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
@@ -185,7 +188,7 @@ public class RecipeLoaderAgriculturalChem {
                 .addTo(chemicalPlantRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get("cropSugarbeet", 4), GregtechItemList.CalciumCarbonateDust.get(2))
+                .itemInputs(new OreDictItemStack("cropSugarbeet", 4), GregtechItemList.CalciumCarbonateDust.get(2))
                 .circuit(5)
                 .fluidInputs(GTModHandler.getHotWater(2_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
@@ -202,8 +205,8 @@ public class RecipeLoaderAgriculturalChem {
             .fluidInputs(new FluidStack(GTPPFluids.FermentationBase, 48_000))
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18_000),
-                Materials.Acetone.getFluid(9_000),
-                Materials.Ethanol.getFluid(3_000))
+                MaterialLibAPI.getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, 9_000),
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 3_000))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -215,15 +218,15 @@ public class RecipeLoaderAgriculturalChem {
         GTValues.RA.stdBuilder()
             .circuit(10)
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tin, 1),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Sulfur, 1),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Nickel, 1),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dustTiny, 1),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.dustTiny, 1))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1_000))
-            .fluidOutputs(Materials.Water.getFluid(500))
+            .fluidOutputs(GTUtility.getWater(500))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);

@@ -24,10 +24,10 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -174,11 +174,11 @@ public class BaseItemMetaFood extends ItemFood {
         }
         mOreDictNames.put(aMetaID, aOreDictNames);
         if (aOreDictNames.contains("listAllmeatraw")) {
-            GTOreDictUnificator.addItemData(
+            MaterialData.add(
                 new ItemStack(this, 1, aMetaID),
                 new ItemData(Materials.MeatRaw, GTValues.M, new MaterialStack(Materials.Bone, GTValues.M / 9)));
         } else if (aOreDictNames.contains("listAllmeatcooked")) {
-            GTOreDictUnificator.addItemData(
+            MaterialData.add(
                 new ItemStack(this, 1, aMetaID),
                 new ItemData(Materials.MeatCooked, GTValues.M, new MaterialStack(Materials.Bone, GTValues.M / 9)));
         }

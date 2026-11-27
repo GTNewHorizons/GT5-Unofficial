@@ -21,10 +21,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialData;
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.MTETypeFilterGui;
@@ -120,9 +120,9 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     private void copyHeldItemPrefix(ItemStack handStack) {
-        ItemData data = GTOreDictUnificator.getAssociation(handStack);
+        ItemData data = MaterialData.getAssociation(handStack);
         if (data != null && data.hasValidPrefixData()) {
-            this.mPrefix = data.mPrefix;
+            this.mPrefix = data.prefix;
             this.mRotationIndex = -1;
         }
     }
@@ -140,7 +140,7 @@ public class MTETypeFilter extends MTESpecialFilter {
             .map(offset -> start + (rightClick ? -offset : offset))                        // search up/down from start
             .map(index -> (index + OrePrefixes.VALUES.length) % OrePrefixes.VALUES.length) // wrap around
             .mapToObj(index -> OrePrefixes.VALUES[index])                                  // map to prefix
-            .filter(prefix -> !prefix.mPrefixedItems.isEmpty())                            // only prefixes with items
+            .filter(prefix -> !prefix.prefixedItems.isEmpty())                            // only prefixes with items
             .findFirst()
             .orElse(mPrefix);                                                              // fallback to current prefix
         // spotless:on
@@ -150,14 +150,14 @@ public class MTETypeFilter extends MTESpecialFilter {
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((!getBaseMetaTileEntity().isServerSide()) || ((aTick % 8L != 0L) && mRotationIndex != -1)) return;
-        if (this.mPrefix.mPrefixedItems.isEmpty()) {
+        if (this.mPrefix.prefixedItems.isEmpty()) {
             this.mInventory[FILTER_SLOT_INDEX] = null;
             return;
         }
         this.mInventory[FILTER_SLOT_INDEX] = GTUtility.copyAmount(
             1,
-            this.mPrefix.mPrefixedItems
-                .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
+            this.mPrefix.prefixedItems
+                .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.prefixedItems.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
         if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == WILDCARD) this.mInventory[9].setItemDamage(0);
     }
@@ -182,8 +182,8 @@ public class MTETypeFilter extends MTESpecialFilter {
     @Override
     protected boolean isStackAllowed(ItemStack aStack) {
         if (this.mPrefix == OrePrefixes.ore) {
-            ItemData data = GTOreDictUnificator.getItemData(aStack);
-            if (data != null && data.mPrefix != null && OREBLOCK_PREFIXES.contains(data.mPrefix)) {
+            ItemData data = MaterialData.get(aStack);
+            if (data != null && data.prefix != null && OREBLOCK_PREFIXES.contains(data.prefix)) {
                 return true;
             }
         }

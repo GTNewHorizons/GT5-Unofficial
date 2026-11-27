@@ -25,11 +25,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -37,7 +39,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -107,7 +108,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
                         " DDD "
                     }})
                 //spotless:on
-                .addElement('A', ofFrame(MaterialsAlloy.POTIN))
+                .addElement('A', ofFrame(Materials.Potin))
                 .addElement('B', Casings.BrassItemPipeCasing.asElement())
                 .addElement('C', Casings.TinItemPipeCasing.asElement())
                 .addElement(
@@ -153,7 +154,10 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .beginStructureBlock(5, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_3rd_layer"))
             .addCasing("6-43", Casings.ElectrolyzerCasing.getLocalizedName(), false)
-            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.POTIN), false)
+            .addCasing(
+                "12",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Potin)),
+                false)
             .addCasing("4", Casings.TinItemPipeCasing.getLocalizedName(), false)
             .addCasing("4", Casings.BrassItemPipeCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_electrolyzer_casing"), 1)

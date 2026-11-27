@@ -33,19 +33,21 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -112,7 +114,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
     @Nullable
     public static Integer getTierSimpleBlock(Block block, int meta) {
         if (block == Blocks.iron_block && meta == 0) return 1;
-        if (block == GregTechAPI.sBlockMetal6 && meta == 13) return 2;
+        if (block == MaterialLibAPI.getBlock(BlockShapes.block) && meta == Materials.Steel.getIndex()) return 2;
         return null;
     }
 
@@ -197,7 +199,9 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
                     'C',
                     ofBlocksTiered(
                         MTESteamForgeHammer::getTierSimpleBlock,
-                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(GregTechAPI.sBlockMetal6, 13)),
+                        ImmutableList.of(
+                            Pair.of(Blocks.iron_block, 0),
+                            Pair.of(MaterialLibAPI.getBlock(BlockShapes.block), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierSimpleBlock = m,
                         t -> t.tierSimpleBlock))
@@ -332,12 +336,18 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
             .addCasing("35-39", Casings.BronzePlatedBricks.getLocalizedName(), false)
             .addCasing("2", Casings.BronzePipeCasing.getLocalizedName(), false)
-            .addCasing("2", OrePrefixes.block.getLocalizedNameForItem(Materials.Iron), false)
+            .addCasing(
+                "2",
+                OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Iron)),
+                false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
             .addCasing("35-39", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
             .addCasing("2", Casings.SteelPipeCasing.getLocalizedName(), false)
-            .addCasing("2", OrePrefixes.block.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing(
+                "2",
+                OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)),
+                false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher();

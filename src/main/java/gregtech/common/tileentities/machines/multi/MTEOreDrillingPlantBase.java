@@ -37,22 +37,23 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -512,7 +513,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())), false)
             .addCasing("5-7", casings, false)
             .addEnergyHatch("1-2", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
@@ -604,14 +605,17 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         // use corner closest to the drill as mining area center
         return new ChunkCoordIntPair(
             drillPos.chunkXPos + xMultiplier * chunkRadiusConfig
-                + ((getXDrill() - (drillPos.chunkXPos << 4)) < 8 ? 0 : 1),
+                + ((getBaseMetaTileEntity().getXCoord() - (drillPos.chunkXPos << 4)) < 8 ? 0 : 1),
             drillPos.chunkZPos + zMultiplier * chunkRadiusConfig
-                + ((getZDrill() - (drillPos.chunkZPos << 4)) < 8 ? 0 : 1));
+                + ((getBaseMetaTileEntity().getZCoord() - (drillPos.chunkZPos << 4)) < 8 ? 0 : 1));
     }
 
     @NotNull
     private ChunkCoordIntPair getDrillCoords() {
-        return new ChunkCoordIntPair(getXDrill() >> 4, getZDrill() >> 4);
+        // Use tile coordinates because cached drill coordinates are initialized only during a structure check.
+        return new ChunkCoordIntPair(
+            getBaseMetaTileEntity().getXCoord() >> 4,
+            getBaseMetaTileEntity().getZCoord() >> 4);
     }
 
     private ItemStack @NotNull [] getOutputByDrops(@NotNull List<ItemStack> oreBlockDrops) {
@@ -936,16 +940,16 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {
-        ItemData itemData = GTOreDictUnificator.getItemData(currentItem);
-        return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
-            && itemData.mPrefix != OrePrefixes.dust
-            && itemData.mPrefix != OrePrefixes.gem
-            && itemData.mPrefix != OrePrefixes.gemChipped
-            && itemData.mPrefix != OrePrefixes.gemExquisite
-            && itemData.mPrefix != OrePrefixes.gemFlawed
-            && itemData.mPrefix != OrePrefixes.gemFlawless
-            && itemData.mMaterial.mMaterial != Materials.Oilsands
-            && !itemData.mMaterial.mMaterial.contains(SubTag.ICE_ORE);
+        ItemData itemData = MaterialData.get(currentItem);
+        return itemData == null || itemData.prefix != OrePrefixes.crushed && itemData.prefix != OrePrefixes.dustImpure
+            && itemData.prefix != OrePrefixes.dust
+            && itemData.prefix != OrePrefixes.gem
+            && itemData.prefix != OrePrefixes.gemChipped
+            && itemData.prefix != OrePrefixes.gemExquisite
+            && itemData.prefix != OrePrefixes.gemFlawed
+            && itemData.prefix != OrePrefixes.gemFlawless
+            && itemData.material.material != Materials.Oilsands
+            && !MaterialUtils.hasFlag(itemData.material.material, GTMaterialFlag.ICE_ORE);
     }
 
     private boolean tryConsumeDrillingFluid(boolean simulate) {

@@ -121,6 +121,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.ProxiedMteGui.ProxiedMteGuiData;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
@@ -183,9 +184,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < fluidInv.tagCount(); i++) {
                 NBTTagCompound tagFluidStack = fluidInv.getCompoundTagAt(i);
-                FluidStack fluid = FluidStack.loadFluidStackFromNBT(tagFluidStack);
+                FluidStack fluid = GTUtility.loadFluid(tagFluidStack);
                 if (fluid != null) {
-                    if (fluid.amount > 0) {
+                    if (GTUtility.getFluidAmount(fluid) > 0) {
                         fluidInventory.add(fluid);
                     }
                 } else {
@@ -333,44 +334,51 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             IMEMonitor<IAEFluidStack> fsg = proxy.getStorage()
                 .getFluidInventory();
             for (FluidStack fluidStack : fluidInventory) {
-                if (fluidStack == null || fluidStack.amount == 0) continue;
+                if (fluidStack == null || GTUtility.getFluidAmount(fluidStack) == 0) continue;
                 IAEFluidStack rest = Platform.poweredInsert(
                     proxy.getEnergy(),
                     fsg,
                     AEApi.instance()
                         .storage()
-                        .createFluidStack(fluidStack),
+                        .createFluidStack(fluidStack)
+                        .setStackSize(GTUtility.getFluidAmount(fluidStack)),
                     src);
-                fluidStack.amount = rest != null && rest.getStackSize() > 0 ? (int) rest.getStackSize() : 0;
+                GTUtility.setFluidAmount(fluidStack, rest != null && rest.getStackSize() > 0 ? rest.getStackSize() : 0);
 
-                if (Gregtech.machines.allowCribDropItems && shouldDrop && fluidStack.amount > 0) {
-                    World world = parentMTE.getBaseMetaTileEntity()
-                        .getWorld();
-
-                    ItemStack fluidPacketItemStack = ItemFluidPacket.newStack(fluidStack);
-                    if (fluidPacketItemStack == null) continue;
-
-                    EntityItem entityItem = new EntityItem(
-                        world,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        parentMTE.getBaseMetaTileEntity()
-                            .getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
-                            + 0.1F,
-                        fluidPacketItemStack);
-                    entityItem.motionX = XSTR_INSTANCE.nextGaussian() * 0.05;
-                    entityItem.motionY = XSTR_INSTANCE.nextGaussian() * 0.25;
-                    entityItem.motionZ = XSTR_INSTANCE.nextGaussian() * 0.05;
-                    world.spawnEntityInWorld(entityItem);
+                if (Gregtech.machines.allowCribDropItems && shouldDrop && GTUtility.getFluidAmount(fluidStack) > 0) {
+                    dropFluid(fluidStack);
                 }
             }
 
             // Delete zero size stacks
             this.isEmpty();
+        }
+
+        void dropFluid(FluidStack fluidStack) {
+            if (GTUtility.getFluidAmount(fluidStack) <= 0) return;
+            World world = parentMTE.getBaseMetaTileEntity()
+                .getWorld();
+
+            ItemStack fluidPacketItemStack = ItemFluidPacket.newStack(fluidStack);
+            if (fluidPacketItemStack == null) return;
+
+            EntityItem entityItem = new EntityItem(
+                world,
+                parentMTE.getBaseMetaTileEntity()
+                    .getXCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                parentMTE.getBaseMetaTileEntity()
+                    .getYCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                parentMTE.getBaseMetaTileEntity()
+                    .getZCoord() + XSTR_INSTANCE.nextFloat() * 0.8F
+                    + 0.1F,
+                fluidPacketItemStack);
+            entityItem.motionX = XSTR_INSTANCE.nextGaussian() * 0.05;
+            entityItem.motionY = XSTR_INSTANCE.nextGaussian() * 0.25;
+            entityItem.motionZ = XSTR_INSTANCE.nextGaussian() * 0.05;
+            world.spawnEntityInWorld(entityItem);
+            GTUtility.setFluidAmount(fluidStack, 0);
         }
 
         private void insertItem(IAEItemStack inserted) {
@@ -403,32 +411,24 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         }
 
         private void insertFluid(IAEFluidStack inserted) {
-            final List<FluidStack> temp = new ArrayList<>();
-            final FluidStack compareStack = inserted.getFluidStack();
+            final FluidStack compareStack = GTUtility
+                .createFluidStack(inserted.getFluidStack(), inserted.getStackSize());
+
+            // BigInt fluid mayhaps:tm:
             for (FluidStack fluidStack : fluidInventory) {
-                if (fluidStack.amount == Integer.MAX_VALUE) continue;
+                if (GTUtility.getFluidAmount(fluidStack) == Long.MAX_VALUE) continue;
                 if (GTUtility.areFluidsEqual(compareStack, fluidStack)) {
-                    if (inserted.getStackSize() > Integer.MAX_VALUE
-                        || fluidStack.amount > Integer.MAX_VALUE - inserted.getStackSize()) {
-                        inserted.decStackSize(Integer.MAX_VALUE - fluidStack.amount);
-                        fluidStack.amount = Integer.MAX_VALUE;
-                    } else {
-                        fluidStack.amount += (int) inserted.getStackSize();
-                        return;
-                    }
+                    long maxInsertAmount = Long.MAX_VALUE - GTUtility.getFluidAmount(fluidStack);
+                    long insertAmount = Math.min(maxInsertAmount, inserted.getStackSize());
+
+                    GTUtility.setFluidAmount(fluidStack, GTUtility.getFluidAmount(fluidStack) + insertAmount);
+                    inserted.decStackSize(insertAmount);
                 }
             }
 
-            while (inserted.getStackSize() > Integer.MAX_VALUE) {
-                temp.add(inserted.getFluidStack());
-                inserted.decStackSize(Integer.MAX_VALUE);
-            }
-
             if (inserted.getStackSize() > 0) {
-                fluidInventory.add(inserted.getFluidStack());
+                fluidInventory.add(GTUtility.createFluidStack(inserted.getFluid(), inserted.getStackSize()));
             }
-
-            if (!temp.isEmpty()) fluidInventory.addAll(temp);
         }
 
         public boolean insertItemsAndFluids(MEInventoryCrafting inventoryCrafting) {
@@ -470,7 +470,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     }
 
     // mInventory is used for storing patterns, circuit and manual slot (typically NC items)
-    private static final int MAX_PATTERN_COUNT = 4 * 9;
+    public static final int MAX_PATTERN_COUNT = 4 * 9;
     private static final int SLOT_MANUAL_SIZE = 9;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
     private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
@@ -982,6 +982,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         return new MTEHatchCraftingInputMEGui(this).build(data, syncManager, uiSettings);
     }
 
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings,
+        ProxiedMteGuiData proxyData) {
+        return new MTEHatchCraftingInputMEGui(this, proxyData).build(data, syncManager, uiSettings);
+    }
+
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
@@ -1210,9 +1215,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 }
             }
             for (FluidStack fluid : i.fluidInventory) {
-                if (fluid != null && fluid.amount > 0) {
+                if (fluid != null && GTUtility.getFluidAmount(fluid) > 0) {
                     String name = fluid.getLocalizedName();
-                    nameToAmount.merge(name, (long) fluid.amount, Long::sum);
+                    nameToAmount.merge(name, GTUtility.getFluidAmount(fluid), GTUtility::addSafe);
                 }
             }
         }
@@ -1295,6 +1300,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesReversed() {
         return IntStream.range(0, internalInventory.length)
             .map(i -> internalInventory.length - 1 - i)
+            .mapToObj(i -> internalInventory[i])
+            .filter(Objects::nonNull)
+            .iterator();
+    }
+
+    public Iterator<PatternSlot<MTEHatchCraftingInputME>> inventoriesInOrder(int[] indices) {
+        return Arrays.stream(indices)
             .mapToObj(i -> internalInventory[i])
             .filter(Objects::nonNull)
             .iterator();

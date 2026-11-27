@@ -15,17 +15,12 @@ package bwcrossmod;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
 
-import java.io.StringReader;
-
-import net.minecraft.util.StringTranslate;
 import net.minecraftforge.common.MinecraftForge;
 
-import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bartworks.common.configs.Configuration;
-import bwcrossmod.GTpp.loader.RadioHatchCompat;
 import bwcrossmod.galacticraft.atmosphere.BWAtmosphereManager;
 import bwcrossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import bwcrossmod.tectech.TecTechResearchLoader;
@@ -33,7 +28,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import gregtech.GT_Version;
 
 @Mod(
@@ -78,14 +72,7 @@ public class BartWorksCrossmod {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent init) {
-        RadioHatchCompat.run();
         TecTechResearchLoader.runResearches();
     }
 
-    @Mod.EventHandler
-    public void onFMLServerStart(FMLServerStartingEvent event) {
-        for (String s : RadioHatchCompat.TranslateSet) {
-            StringTranslate.inject(new ReaderInputStream(new StringReader(s)));
-        }
-    }
 }

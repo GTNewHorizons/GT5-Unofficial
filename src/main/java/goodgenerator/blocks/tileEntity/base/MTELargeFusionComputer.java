@@ -33,18 +33,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -53,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -72,9 +66,12 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTELargeFusionComputerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessMulti;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -84,6 +81,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 public abstract class MTELargeFusionComputer extends TTMultiblockBase
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
+    // TODO remove after 2.9
     public Parameters.Group.ParameterIn batchSetting;
 
     /** Name of the batch setting */
@@ -124,7 +122,9 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                     'E',
                     lazy(
                         x -> HatchElementBuilder.<MTELargeFusionComputer>builder()
-                            .anyOf(HatchElement.EnergyMulti.or(gregtech.api.enums.HatchElement.Energy))
+                            .anyOf(
+                                gregtech.api.enums.HatchElement.MultiAmpEnergy
+                                    .or(gregtech.api.enums.HatchElement.Energy))
                             .adder(MTELargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.tier(), Integer.MAX_VALUE))
@@ -197,12 +197,12 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                     .put("eu_per_oc", fod.getEUtIncreasePerOC())
                     .put("time_per_oc", fod.getDurationDecreasePerOC())
                     .build())
-            .addSupportAny()
+            .addSupportMultiAmp()
             .beginStructureBlock(47, 7, 47, false)
             .addController(translateToLocal("gt.mbtt.structure.middle_center_4th_layer"))
             .addCasing("1662-1695", new ItemStack(getCasingBlock(), 1, getCasingMeta()).getDisplayName(), false)
             .addCasing("560", new ItemStack(getCoilBlock(), 1, getCoilMeta()).getDisplayName(), false)
-            .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameBox()), false)
+            .addCasing("128", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameBox())), false)
             .addCasing("63-93", new ItemStack(getGlassBlock(), 1, getGlassMeta()).getDisplayName(), false)
             .addEnergyHatch("1-32", StatCollector.translateToLocalFormatted("gt.mbtt.structure.specific_casings_on_each_curve", GTValues.VN[tier()]), 2)
             .addInputHatch("1+", translateToLocal("gt.mbtt.structure.specific_glass_on_each_side"), 1)
@@ -261,7 +261,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         return ofBlock(glass, getGlassMeta());
     }
 
-    public abstract Materials getFrameBox();
+    public abstract Material getFrameBox();
 
     public int getMaxPara() {
         return 64;
@@ -554,6 +554,10 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 return mEnergyHatches.add(tHatch);
             }
             case MTEHatchEnergyMulti tHatch -> {
+                if (tHatch.getClass() != MTEHatchEnergyMulti.class
+                    && !(tHatch instanceof MTEHatchWirelessMulti)) {
+                    return false;
+                }
                 if (tHatch.getTierForStructure() < tier()) return false;
                 tHatch.updateTexture(aBaseCasingIndex);
                 return eEnergyMulti.add(tHatch);
@@ -608,41 +612,10 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
-    protected long energyStorageCache;
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget().setStringSupplier(
-                    () -> translateToLocal("gui.LargeFusion.0") + " " + numberFormat.format(energyStorageCache) + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> translateToLocal("gui.LargeFusion.1") + " " + numberFormat.format(getEUVar()) + " EU")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));
-    }
-
     @Override
     protected void parametersInstantiation_EM() {
         batchSetting = parametrization.getGroup(9, false)
             .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
-
-    @Override
-    protected int getMaxBatchSize() {
-        // Batch size 1~128
-        return (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
     }
 
     @Override
@@ -759,4 +732,14 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         "           CHHHHHHHCC     CCHHHHHHHC           ", "            CCHHHHHHHHHHHHHHHHHHHCC            ",
         "              CCHHHHHHHHHHHHHHHCC              ", "                CCCHHHHHHHHHCCC                ",
         "                   CC     CC                   ", "                    FCIBICF                    ", };
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeFusionComputerGui(this);
+    }
 }

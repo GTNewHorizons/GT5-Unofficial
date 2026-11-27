@@ -2,42 +2,40 @@ package gregtech.loaders.oreprocessing;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.Shape;
+
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingBolt implements PartRecipeGenerator {
 
-    public ProcessingBolt() {
-        OrePrefixes.bolt.add(this);
-    }
+    public static final ProcessingBolt INSTANCE = new ProcessingBolt();
+
+    private ProcessingBolt() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if (aMaterial.getProcessingMaterialTierEU() >= TierEU.IV) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
+        if (MaterialUtils.processingMaterialTierEU(material) >= TierEU.IV) {
             return;
         }
 
-        if (!aMaterial.mUnifiable) {
+        if (!MaterialUtils.unifiable(material)) {
             return;
         }
 
-        if ((aMaterial.mMaterialInto != aMaterial)) {
-            return;
-        }
-
-        if (aMaterial.contains(SubTag.NO_WORKING)) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             return;
         }
 
         GTModHandler.addCraftingRecipe(
-            GTUtility.copyAmount(2, aStack),
+            GTUtility.copyAmount(2, stack),
             GTModHandler.RecipeBits.BITS_STD,
-            new Object[] { "s ", " X", 'X', OrePrefixes.stick.get(aMaterial) });
+            new Object[] { "s ", " X", 'X', OrePrefixes.stick.ingredient(material) });
 
     }
 }

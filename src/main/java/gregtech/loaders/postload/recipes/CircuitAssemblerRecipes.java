@@ -11,13 +11,16 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.SubstituteFluidStack;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class CircuitAssemblerRecipes implements Runnable {
 
@@ -38,7 +41,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1),
+                Circuits.LV.get(1),
                 ItemList.Cover_Controller.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -47,10 +50,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .addTo(circuitAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1),
-                ItemList.Sensor_LV.get(1))
+            .itemInputs(ItemList.Circuit_Board_Coated_Basic.get(1), Circuits.LV.get(1), ItemList.Sensor_LV.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
             .duration(15 * SECONDS)
@@ -60,7 +60,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 1),
+                Circuits.LV.get(1),
                 getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 4L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -71,7 +71,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
+                Circuits.MV.get(1),
                 ItemList.Cover_Controller.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -80,10 +80,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .addTo(circuitAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
-                ItemList.Sensor_LV.get(1))
+            .itemInputs(ItemList.Circuit_Board_Phenolic_Good.get(1), Circuits.MV.get(1), ItemList.Sensor_LV.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
             .duration(20 * SECONDS)
@@ -93,7 +90,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1),
+                Circuits.MV.get(1),
                 getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 8L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -104,7 +101,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Epoxy_Advanced.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1),
+                Circuits.HV.get(1),
                 ItemList.Cover_Controller.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -113,10 +110,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .addTo(circuitAssemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Circuit_Board_Epoxy_Advanced.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1),
-                ItemList.Sensor_LV.get(1))
+            .itemInputs(ItemList.Circuit_Board_Epoxy_Advanced.get(1), Circuits.HV.get(1), ItemList.Sensor_LV.get(1))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
             .duration(25 * SECONDS)
@@ -126,7 +120,7 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Epoxy_Advanced.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1),
+                Circuits.HV.get(1),
                 getModItem(Railcraft.ID, "part.signal.lamp", 1L, 0))
             .itemOutputs(getModItem(Railcraft.ID, "part.circuit", 16L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(HALF_INGOTS))
@@ -144,12 +138,12 @@ public class CircuitAssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1),
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 2),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.AnnealedCopper, 2))
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, 2),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.stickLong, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 0))
-            .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -158,41 +152,40 @@ public class CircuitAssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1),
-                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 2),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.CastIron, 2))
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, 2),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
+                MaterialLibAPI.getStack(Materials.CastIron, Shapes.stickLong, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
-            .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
 
-        ItemStack[] rodMaterials = new ItemStack[] {
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Copper, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Tin, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Bronze, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Iron, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Gold, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Diamond, 2L),
+        ItemStack[] rodMaterials = new ItemStack[] { MaterialLibAPI.getStack(Materials.Copper, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Tin, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Iron, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Gold, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Diamond, Shapes.stickLong, 2),
             getModItem(NewHorizonsCoreMod.ID, "LongObsidianRod", 2L, 0),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Blaze, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Rubber, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Emerald, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Apatite, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Lapis, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.EnderEye, 2L),
-            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Uranium, 2L), };
+            MaterialLibAPI.getStack(Materials.Blaze, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Rubber, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Emerald, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Apatite, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Lapis, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.EnderEye, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Uranium, Shapes.stickLong, 2), };
 
         for (int metaid = 0; metaid < rodMaterials.length; metaid++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1),
-                    GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 2),
-                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2),
+                    MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, 2),
+                    MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
                     rodMaterials[metaid])
                 .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaid))
-                .fluidInputs(Materials.Glass.getMolten(4 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);
@@ -201,10 +194,10 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Iron, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Iron, 1))
+                Circuits.ULV.get(2),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(4 * INGOTS))
@@ -215,10 +208,10 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Bronze, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Bronze, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Bronze, 1))
+                Circuits.LV.get(2),
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(4 * INGOTS))
@@ -229,10 +222,10 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Steel, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1))
+                Circuits.MV.get(2),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(576))
@@ -243,10 +236,10 @@ public class CircuitAssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 2),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Electrum, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1))
+                Circuits.HV.get(2),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 3))
             .fluidInputs(SubstituteFluidStack.soldering(576))

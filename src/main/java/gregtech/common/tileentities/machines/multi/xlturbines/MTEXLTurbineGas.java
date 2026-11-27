@@ -21,12 +21,16 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -50,7 +54,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
 
     static {
         BLACKLIST.add(
-            Materials.Benzene.getFluid(0)
+            MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 0)
                 .getFluid());
     }
 
@@ -169,7 +173,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.StainlessSteel;
     }
 
@@ -189,7 +193,10 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_5th_layer"))
             .addCasing(minCasingAmount() + "-346", getCasing().getLocalizedName(), false)
             .addCasing("104", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
-            .addCasing("80", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing(
+                "80",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())),
+                false)
             .addCasing("76", getRotorCasing().getLocalizedName(), false)
             .addCasing("20", Casings.MVSolenoidSuperconductorCoil.getLocalizedName(), false)
             .addCasing("16", Casings.TurbineShaft.getLocalizedName(), false)

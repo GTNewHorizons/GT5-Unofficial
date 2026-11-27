@@ -58,6 +58,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -285,7 +286,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())), false)
             .addCasing("7-8", casings, false)
             .addEnergyHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_bottom_casing_min_tier", VN[getMinTier()]), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)

@@ -45,10 +45,10 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;

@@ -8,10 +8,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import bartworks.system.material.WerkstoffLoader;
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 
 /**
  * Available fluids for space pumping are defined here
@@ -28,59 +31,73 @@ public class SpacePumpingRecipes {
      */
     public static void addPumpingRecipes() {
         // T2
-        RECIPES.put(Pair.of(2, 1), Materials.Chlorobenzene.getFluid(896_000));
+        RECIPES.put(
+            Pair.of(2, 1),
+            MaterialLibAPI.getFluidStack(Materials.Chlorobenzene, FluidShapes.fluidLiquid, 896_000));
 
         // T3
         if (Mods.HardcoreEnderExpansion.isModLoaded()) {
             RECIPES.put(Pair.of(3, 1), FluidRegistry.getFluidStack("endergoo", 32_000));
         }
-        RECIPES.put(Pair.of(3, 2), Materials.OilExtraHeavy.getFluid(1_400_000));
-        RECIPES.put(Pair.of(3, 3), Materials.Lava.getFluid(1_800_000));
-        RECIPES.put(Pair.of(3, 4), Materials.NaturalGas.getGas(1_400_000));
+        RECIPES.put(
+            Pair.of(3, 2),
+            MaterialLibAPI.getFluidStack(Materials.OilExtraHeavy, FluidShapes.fluidLiquid, 1_400_000));
+        RECIPES.put(Pair.of(3, 3), GTUtility.getLava(1_800_000));
+        RECIPES.put(Pair.of(3, 4), MaterialLibAPI.getFluidStack(Materials.NaturalGas, FluidShapes.fluidGas, 1_400_000));
 
         // T4
-        RECIPES.put(Pair.of(4, 1), Materials.SulfuricAcid.getFluid(784_000));
-        RECIPES.put(Pair.of(4, 2), Materials.Iron.getMolten(896_000));
-        RECIPES.put(Pair.of(4, 3), Materials.Oil.getFluid(1_400_000));
-        RECIPES.put(Pair.of(4, 4), Materials.OilHeavy.getFluid(1_792_000));
-        RECIPES.put(Pair.of(4, 5), Materials.Lead.getMolten(896_000));
-        RECIPES.put(Pair.of(4, 6), Materials.OilMedium.getFluid(1_400_000));
-        RECIPES.put(Pair.of(4, 7), Materials.OilLight.getFluid(780_000));
+        RECIPES
+            .put(Pair.of(4, 1), MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 784_000));
+        RECIPES.put(Pair.of(4, 2), MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, 896_000));
+        RECIPES.put(Pair.of(4, 3), MaterialLibAPI.getFluidStack(Materials.Oil, FluidShapes.fluidLiquid, 1_400_000));
+        RECIPES
+            .put(Pair.of(4, 4), MaterialLibAPI.getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, 1_792_000));
+        RECIPES.put(Pair.of(4, 5), MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, 896_000));
+        RECIPES
+            .put(Pair.of(4, 6), MaterialLibAPI.getFluidStack(Materials.OilMedium, FluidShapes.fluidLiquid, 1_400_000));
+        RECIPES.put(Pair.of(4, 7), MaterialLibAPI.getFluidStack(Materials.OilLight, FluidShapes.fluidLiquid, 780_000));
         RECIPES.put(Pair.of(4, 8), FluidRegistry.getFluidStack("carbondioxide", 1_680_000));
 
         // T5
-        RECIPES.put(Pair.of(5, 1), Materials.CarbonMonoxide.getGas(4_480_000));
-        RECIPES.put(Pair.of(5, 2), Materials.Helium3.getGas(2_800_000));
-        RECIPES.put(Pair.of(5, 3), Materials.SaltWater.getFluid(2_800_000));
-        RECIPES.put(Pair.of(5, 4), Materials.Helium.getGas(1_400_000));
-        RECIPES.put(Pair.of(5, 5), Materials.LiquidOxygen.getFluid(896_000));
-        RECIPES.put(Pair.of(5, 6), WerkstoffLoader.Neon.getFluidOrGas(32_000));
-        RECIPES.put(Pair.of(5, 7), Materials.Argon.getGas(32_000));
-        RECIPES.put(Pair.of(5, 8), WerkstoffLoader.Krypton.getFluidOrGas(8_000));
-        RECIPES.put(Pair.of(5, 9), Materials.Methane.getGas(1_792_000));
-        RECIPES.put(Pair.of(5, 10), Materials.HydricSulfide.getGas(392_000));
-        RECIPES.put(Pair.of(5, 11), Materials.Ethane.getGas(1_194_000));
+        RECIPES.put(
+            Pair.of(5, 1),
+            MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 4_480_000));
+        RECIPES.put(Pair.of(5, 2), MaterialLibAPI.getFluidStack(Materials.Helium3, FluidShapes.fluidGas, 2_800_000));
+        RECIPES
+            .put(Pair.of(5, 3), MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 2_800_000));
+        RECIPES.put(Pair.of(5, 4), MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1_400_000));
+        RECIPES
+            .put(Pair.of(5, 5), MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidLiquid, 896_000));
+        RECIPES.put(Pair.of(5, 6), MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 32_000));
+        RECIPES.put(Pair.of(5, 7), MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 32_000));
+        RECIPES.put(Pair.of(5, 8), MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 8_000));
+        RECIPES.put(Pair.of(5, 9), MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 1_792_000));
+        RECIPES
+            .put(Pair.of(5, 10), MaterialLibAPI.getFluidStack(Materials.HydricSulfide, FluidShapes.fluidGas, 392_000));
+        RECIPES.put(Pair.of(5, 11), MaterialLibAPI.getFluidStack(Materials.Ethane, FluidShapes.fluidGas, 1_194_000));
 
         // T6
-        RECIPES.put(Pair.of(6, 1), Materials.Deuterium.getGas(1_568_000));
-        RECIPES.put(Pair.of(6, 2), Materials.Tritium.getGas(240_000));
-        RECIPES.put(Pair.of(6, 3), Materials.Ammonia.getGas(240_000));
-        RECIPES.put(Pair.of(6, 4), WerkstoffLoader.Xenon.getFluidOrGas(16_000));
-        RECIPES.put(Pair.of(6, 5), Materials.Ethylene.getGas(1_792_000));
+        RECIPES.put(Pair.of(6, 1), MaterialLibAPI.getFluidStack(Materials.Deuterium, FluidShapes.fluidGas, 1_568_000));
+        RECIPES.put(Pair.of(6, 2), MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidGas, 240_000));
+        RECIPES.put(Pair.of(6, 3), MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 240_000));
+        RECIPES.put(Pair.of(6, 4), MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, 16_000));
+        RECIPES.put(Pair.of(6, 5), MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_792_000));
 
         // T7
-        RECIPES.put(Pair.of(7, 1), Materials.HydrofluoricAcid.getFluid(672_000));
-        RECIPES.put(Pair.of(7, 2), Materials.Fluorine.getGas(1_792_000));
-        RECIPES.put(Pair.of(7, 3), Materials.Nitrogen.getGas(1_792_000));
-        RECIPES.put(Pair.of(7, 4), Materials.Oxygen.getGas(1_792_000));
+        RECIPES.put(
+            Pair.of(7, 1),
+            MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcid, FluidShapes.fluidLiquid, 672_000));
+        RECIPES.put(Pair.of(7, 2), MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 1_792_000));
+        RECIPES.put(Pair.of(7, 3), MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 1_792_000));
+        RECIPES.put(Pair.of(7, 4), MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_792_000));
 
         // T8
-        RECIPES.put(Pair.of(8, 1), Materials.Hydrogen.getGas(1_568_000));
-        RECIPES.put(Pair.of(8, 2), Materials.LiquidAir.getFluid(875_000));
-        RECIPES.put(Pair.of(8, 3), Materials.Copper.getMolten(672_000));
+        RECIPES.put(Pair.of(8, 1), MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_568_000));
+        RECIPES.put(Pair.of(8, 2), MaterialLibAPI.getFluidStack(Materials.LiquidAir, FluidShapes.fluidLiquid, 875_000));
+        RECIPES.put(Pair.of(8, 3), MaterialLibAPI.getFluidStack(Materials.Copper, FluidShapes.fluidMolten, 672_000));
         RECIPES.put(Pair.of(8, 5), GTModHandler.getDistilledWater(17_920_000));
-        RECIPES.put(Pair.of(8, 6), Materials.Radon.getGas(64_000));
-        RECIPES.put(Pair.of(8, 7), Materials.Tin.getMolten(672_000));
+        RECIPES.put(Pair.of(8, 6), MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, 64_000));
+        RECIPES.put(Pair.of(8, 7), MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 672_000));
 
         if (Mods.GalaxySpace.isModLoaded()) {
             // T8

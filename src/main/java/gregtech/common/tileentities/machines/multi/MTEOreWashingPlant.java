@@ -39,16 +39,17 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
@@ -119,7 +120,10 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .beginStructureBlock(5, 4, 9, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("70-85", Casings.WashPlantCasing.getLocalizedName(), false)
-            .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing(
+                "15",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)),
+                false)
             .addCasing("7", Casings.SteelGearBoxCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_wash_plant_casing"), 1)
@@ -143,7 +147,10 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,

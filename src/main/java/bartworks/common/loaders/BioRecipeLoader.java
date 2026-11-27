@@ -25,14 +25,17 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.API.enums.BioCultureEnum;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -44,7 +47,7 @@ public class BioRecipeLoader {
     }
 
     public static void registerWaterBasedBioLabIncubations() {
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
+        FluidStack[] easyFluids = { GTUtility.getWater(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
 
             GTValues.RA.stdBuilder()
@@ -123,8 +126,8 @@ public class BioRecipeLoader {
 
     @SuppressWarnings({ "PointlessArithmeticExpression", "RedundantSuppression" })
     public static void registerWaterBasedBacterialVatRecipes() {
-        FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
-        for (ItemStack grape : GTOreDictUnificator.getOres("cropGrape")) {
+        FluidStack[] easyFluids = { GTUtility.getWater(1_000), GTModHandler.getDistilledWater(1_000) };
+        for (ItemStack grape : OreDictionary.getOres("cropGrape")) {
             for (FluidStack fluidStack : easyFluids) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(16, grape))
@@ -154,7 +157,7 @@ public class BioRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .special(BioCultureEnum.getPetriDish(BioCultureLoader.anaerobicOil))
-            .fluidInputs(Materials.FermentedBiomass.getFluid(10_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.FermentedBiomass, FluidShapes.fluidLiquid, 10_000))
             .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1_000))
             .metadata(GLASS, 3)
             .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS)

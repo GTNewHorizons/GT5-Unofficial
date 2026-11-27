@@ -30,16 +30,17 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -230,7 +231,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasing("55", StatCollector.translateToLocal("gt.blockcasings2.5.name"), false)
             .addCasing("43", StatCollector.translateToLocal("componentAssemblyLineCasing.name"), true)
             .addCasing("30", StatCollector.translateToLocal("gt.blockcasings2.9.name"), false)
-            .addCasing("2-4", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addCasing("2-4", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.TungstenSteel)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_outer_iridium_casing_2nd_to_top_layer"), 3)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing_around_controller"), 4)
             .addInputBus("1-8", StatCollector.translateToLocal("gt.mbtt.structure.any_casing_or_frame_box_at_conveyor_start"), 1)

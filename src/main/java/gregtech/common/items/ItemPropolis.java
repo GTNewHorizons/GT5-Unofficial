@@ -16,16 +16,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class ItemPropolis extends Item {
 
@@ -99,7 +100,7 @@ public class ItemPropolis extends Item {
         tPropolis = getStackForType(PropolisType.Silverfish);
         addProcessEV(tPropolis, GTModHandler.getModItem(HardcoreEnderExpansion.ID, "silverfish_blood", 1, 0));
         tPropolis = getStackForType(PropolisType.Endium);
-        addProcessHV(tPropolis, GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Endium, 1));
+        addProcessHV(tPropolis, MaterialLibAPI.getStack(Materials.Endium, Shapes.dustSmall, 1));
         tPropolis = getStackForType(PropolisType.Fireessence);
         addProcessIV(tPropolis, GTModHandler.getModItem(HardcoreEnderExpansion.ID, "essence", 16, 1));
 

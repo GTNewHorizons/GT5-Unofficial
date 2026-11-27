@@ -2,13 +2,20 @@ package gtnhintergalactic.recipe;
 
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.util.GTUtility;
+import gregtech.common.ores.GTOreAdapter;
 
 public class AsteroidData {
 
@@ -22,16 +29,16 @@ public class AsteroidData {
     public final int minDroneTier;
     public final int maxDroneTier;
     public final ItemStack[] outputItems;
-    public final Materials[] output;
-    public final OrePrefixes orePrefixes;
+    public final Material[] output;
+    public final StoneType stoneType;
     public final int[] chances;
     public final int requiredModuleTier;
     public final int duration;
     public final int eut;
 
     public AsteroidData(String asteroidName, int minDistance, int maxDistance, int minSize, int maxSize,
-        int computation, int recipeWeight, int minDroneTier, int maxDroneTier, Materials[] output,
-        OrePrefixes orePrefixes, int[] chances, int requiredModuleTier, int duration, int eut) {
+        int computation, int recipeWeight, int minDroneTier, int maxDroneTier, Material[] output, StoneType stoneType,
+        int[] chances, int requiredModuleTier, int duration, int eut) {
         this.asteroidName = asteroidName;
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
@@ -42,7 +49,7 @@ public class AsteroidData {
         this.minDroneTier = minDroneTier;
         this.maxDroneTier = maxDroneTier;
         this.output = output;
-        this.orePrefixes = orePrefixes;
+        this.stoneType = stoneType;
         this.chances = chances;
         this.requiredModuleTier = requiredModuleTier;
         this.outputItems = null;
@@ -65,10 +72,23 @@ public class AsteroidData {
         this.outputItems = outputItems;
         this.chances = chances;
         this.requiredModuleTier = requiredModuleTier;
-        this.orePrefixes = null;
+        this.stoneType = null;
         this.output = null;
         this.duration = duration;
         this.eut = eut;
+    }
+
+    /// The stack a space mining recipe yields of `material`: its ore block in `stoneType`, or its dust when
+    /// `stoneType` is null. Null when the material has no such stack.
+    public static @Nullable ItemStack oreStack(Material material, @Nullable StoneType stoneType, int amount) {
+        if (stoneType == null) return MaterialLibAPI.findStack(material, Shapes.dust, amount);
+        ItemStack ore = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, false);
+        return ore == null ? null : GTUtility.copyAmount(amount, ore);
+    }
+
+    /// The stack of this asteroid's `index`th output: the declared item, or else [#oreStack] of its material.
+    public ItemStack getOutputStack(int index) {
+        return outputItems != null ? outputItems[index] : oreStack(output[index], stoneType, 1);
     }
 
     public String getAsteroidNameLocalized() {

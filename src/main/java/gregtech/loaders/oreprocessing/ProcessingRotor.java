@@ -9,71 +9,74 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingRotor implements PartRecipeGenerator {
 
-    public ProcessingRotor() {
-        OrePrefixes.rotor.add(this);
-    }
+    public static final ProcessingRotor INSTANCE = new ProcessingRotor();
+
+    private ProcessingRotor() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)
-            && !aMaterial.contains(SubTag.NO_WORKING)) {
-            ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L);
-            ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L);
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
+        if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+            ItemStack tPlate = MaterialLibAPI.findStack(material, Shapes.plate, 4);
+            ItemStack tRing = MaterialLibAPI.findStack(material, Shapes.ring, 1);
             if (GTUtility.isStackValid(tPlate) && GTUtility.isStackValid(tRing)) {
 
-                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L),
+                        MaterialLibAPI.getStack(material, Shapes.rotor, 1),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "PhP", "SRf", "PdP", 'P',
-                            aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
-                                : OrePrefixes.plate.get(aMaterial),
-                            'R', OrePrefixes.ring.get(aMaterial), 'S', OrePrefixes.screw.get(aMaterial) });
+                            material == Materials.Wood ? OrePrefixes.plank.ingredient(material)
+                                : OrePrefixes.plate.ingredient(material),
+                            'R', OrePrefixes.ring.ingredient(material), 'S', OrePrefixes.screw.ingredient(material) });
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(tPlate.copy(), tRing.copy())
                     .circuit(4)
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
                     .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
-                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 24))
                     .addTo(assemblerRecipes);
             }
 
-            if (GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
+            if (material.hasShape(Shapes.ingot)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 5L),
+                        MaterialLibAPI.getStack(material, Shapes.ingot, 5),
                         ItemList.Shape_Extruder_Rotor.get(0L))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                    .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                    .eut(calculateRecipeEU(aMaterial, 24))
+                    .itemOutputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
+                    .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
+                    .eut(calculateRecipeEU(material, 24))
                     .addTo(extruderRecipes);
             }
-            if (aMaterial.mStandardMoltenFluid != null) {
-                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
+            if (MaterialUtils.hasMolten(material)) {
+                if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Rotor.get(0L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.rotor, aMaterial, 1L))
-                        .fluidInputs(aMaterial.getMolten(612L))
-                        .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
-                        .eut(calculateRecipeEU(aMaterial, 24))
+                        .itemOutputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
+                        .fluidInputs(MaterialUtils.molten(material, 612L))
+                        .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
+                        .eut(calculateRecipeEU(material, 24))
                         .addTo(fluidSolidifierRecipes);
                 }
             }

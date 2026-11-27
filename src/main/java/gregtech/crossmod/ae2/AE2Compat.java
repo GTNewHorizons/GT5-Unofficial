@@ -20,11 +20,10 @@ import appeng.api.AEApi;
 import appeng.api.features.IBlockingModeIgnoreItemRegistry;
 import appeng.api.features.IInterfaceTerminalRegistry;
 import appeng.api.storage.IExternalStorageRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.ItemShapeExtruder;
 import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.objects.AE2NonconsumableHatchHandler;
 import gregtech.common.covers.CoverFacadeAE;
@@ -94,24 +93,16 @@ public final class AE2Compat {
             ItemList.Shape_Mold_Pipe_Tiny, ItemList.Shape_Mold_Pipe_Small, ItemList.Shape_Mold_Pipe_Medium,
             ItemList.Shape_Mold_Pipe_Large, ItemList.Shape_Mold_Pipe_Huge, ItemList.Shape_Mold_ToolHeadDrill,
 
-            ItemList.Shape_Slicer_Flat, ItemList.Shape_Slicer_Stripes, ItemList.Shape_Extruder_Bottle,
-            ItemList.Shape_Extruder_Plate, ItemList.Shape_Extruder_Cell, ItemList.Shape_Extruder_Ring,
-            ItemList.Shape_Extruder_Rod, ItemList.Shape_Extruder_Bolt, ItemList.Shape_Extruder_Ingot,
-            ItemList.Shape_Extruder_Wire, ItemList.Shape_Extruder_Casing, ItemList.Shape_Extruder_Pipe_Tiny,
-            ItemList.Shape_Extruder_Pipe_Small, ItemList.Shape_Extruder_Pipe_Medium, ItemList.Shape_Extruder_Pipe_Large,
-            ItemList.Shape_Extruder_Pipe_Huge, ItemList.Shape_Extruder_Block, ItemList.Shape_Extruder_Sword,
-            ItemList.Shape_Extruder_Pickaxe, ItemList.Shape_Extruder_Shovel, ItemList.Shape_Extruder_Axe,
-            ItemList.Shape_Extruder_Hoe, ItemList.Shape_Extruder_Hammer, ItemList.Shape_Extruder_File,
-            ItemList.Shape_Extruder_Saw, ItemList.Shape_Extruder_Gear, ItemList.Shape_Extruder_Rotor,
-            ItemList.Shape_Extruder_Turbine_Blade, ItemList.Shape_Extruder_Small_Gear,
-            ItemList.Shape_Extruder_ToolHeadDrill, };
+            ItemList.Shape_Slicer_Flat, ItemList.Shape_Slicer_Stripes };
         for (ItemList item : nonConsumables) {
             registry.register(item.get(1));
         }
 
+        for (ItemShapeExtruder shape : ItemShapeExtruder.shapes) {
+            registry.register(new ItemStack(shape, 1));
+        }
+
         registry.register(ItemList.Circuit_Integrated.getItem());
-        // GT lenses are registered by ProcessingLens
-        registry.register(WerkstoffLoader.items.get(OrePrefixes.lens));
 
         // Exclude woodglass and quantum anomaly
         registry.register(Laser_Lens_WoodsGlass.get(1));

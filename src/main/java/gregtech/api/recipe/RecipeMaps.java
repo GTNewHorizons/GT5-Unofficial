@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
-import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.TickTime.TICK;
@@ -47,24 +46,33 @@ import net.minecraftforge.fluids.FluidStack;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioCultureLoader;
+import bwcrossmod.galacticgreg.VoidMinerFrontend;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AlgaePondFrontend;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
 import gregtech.api.recipe.maps.CauldronFrontend;
+import gregtech.api.recipe.maps.CentrifugeFrontend;
 import gregtech.api.recipe.maps.ChemicalPlantFrontend;
 import gregtech.api.recipe.maps.ChiselBackend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
@@ -82,6 +90,7 @@ import gregtech.api.recipe.maps.IceCreamMachineFrontend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
+import gregtech.api.recipe.maps.LargeCentrifugeFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
@@ -111,7 +120,6 @@ import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
@@ -692,12 +700,11 @@ public final class RecipeMaps {
                 aInput = (aInput + tScale - 1) / tScale;
                 aOutput = aOutput / tScale;
                 if (!isArrayEmptyOrNull(r.mOutputs)) {
-                    ItemData tData = GTOreDictUnificator.getItemData(r.mOutputs[0]);
-                    if (tData != null && (tData.mPrefix == OrePrefixes.dust
-                        || OrePrefixes.dust.mFamiliarPrefixes.contains(tData.mPrefix))) {
-                        r.mOutputs[0] = GTOreDictUnificator.getDust(
-                            tData.mMaterial.mMaterial,
-                            tData.mMaterial.mAmount * r.mOutputs[0].stackSize / tScale);
+                    ItemData tData = MaterialData.get(r.mOutputs[0]);
+                    if (tData != null && (tData.prefix == OrePrefixes.dust
+                        || OrePrefixes.dust.familiarPrefixes.contains(tData.prefix))) {
+                        r.mOutputs[0] = MaterialParts
+                            .dustOf(tData.material.material, tData.material.amount * r.mOutputs[0].stackSize / tScale);
                     } else {
                         if (r.mOutputs[0].stackSize / tScale == 0) r.mOutputs[0] = GTValues.NI;
                         else r.mOutputs[0] = copyAmount(r.mOutputs[0].stackSize / tScale, r.mOutputs[0]);
@@ -786,7 +793,7 @@ public final class RecipeMaps {
         .frontend(FluidOnlyFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeRecipes = RecipeMapBuilder.of("gt.recipe.centrifuge")
-        .maxIO(2, 6, 1, 1)
+        .maxIO(2, 9, 1, 1)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
                 return null;
@@ -815,6 +822,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
+        .frontend(CentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerRecipes = RecipeMapBuilder.of("gt.recipe.electrolyzer")
         .maxIO(2, 6, 1, 1)
@@ -940,14 +948,26 @@ public final class RecipeMaps {
             }
 
             GTRecipeTemplate coll = asTemplate(rr.get());
-            for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
+            for (Material coal : new Material[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
-                    .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
+                    .setInputs(
+                        aInput1,
+                        aInput2,
+                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.getStack(coal, Shapes.gem, 1)))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, Math.min(64, aDustAmount)))
                     .setOutputChances(coalChances);
                 coll.derive()
-                    .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
+                    .setInputs(
+                        aInput1,
+                        aInput2,
+                        GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.getStack(coal, Shapes.dust, 1)))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, Math.min(64, aDustAmount)))
                     .setOutputChances(coalChances);
             }
             int aDuration = builder.getDuration();
@@ -963,7 +983,10 @@ public final class RecipeMaps {
                 }
                 coll.derive()
                     .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCokeAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aDustAmount)))
                     .setDuration(aDuration * 2 / 3)
                     .setOutputChances(cokeChances);
             }
@@ -982,12 +1005,18 @@ public final class RecipeMaps {
             ItemStack sugarCoke = GregtechItemList.SugarCoke.get(aCactusSugarCokeAmount);
             coll.derive()
                 .setInputs(aInput1, aInput2, cactusCoke)
-                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                .setOutputs(
+                    aOutput1,
+                    aOutput2,
+                    MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             coll.derive()
                 .setInputs(aInput1, aInput2, sugarCoke)
-                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                .setOutputs(
+                    aOutput1,
+                    aOutput2,
+                    MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
@@ -998,33 +1027,51 @@ public final class RecipeMaps {
                 aInput2 = multiplyStack(10, aInput2);
                 aOutput1 = multiplyStack(10, aOutput1);
                 aOutput2 = multiplyStack(10, aOutput2);
-                for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
+                for (Material coal : new Material[] { Materials.Coal, Materials.Charcoal }) {
                     coll.derive()
-                        .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                        .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aCoalAmount))
+                        .setInputs(
+                            aInput1,
+                            aInput2,
+                            GTUtility.copyAmount(aCoalAmount, MaterialLibAPI.getStack(coal, BlockShapes.block, 1)))
+                        .setOutputs(
+                            aOutput1,
+                            aOutput2,
+                            MaterialLibAPI.getStack(Materials.AshDark, Shapes.dust, Math.min(64, aCoalAmount)))
                         .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {
                     coll.derive()
                         .setInputs(aInput1, aInput2, EnumCube.COKE_BLOCK.getItem(aCoalAmount / 2))
-                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
+                        .setOutputs(
+                            aOutput1,
+                            aOutput2,
+                            MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount / 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
                 ItemStack cactusCokeBlock = GregtechItemList.BlockCactusCoke.get(aCoalAmount * 2L);
                 ItemStack sugarCokeBlock = GregtechItemList.BlockSugarCoke.get(aCoalAmount * 2L);
                 coll.derive()
                     .setInputs(aInput1, aInput2, cactusCokeBlock)
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 coll.derive()
                     .setInputs(aInput1, aInput2, sugarCokeBlock)
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 if (Thaumcraft.isModLoaded()) {
                     ItemStack alumentum = GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", aCoalAmount * 2L, 0);
                     coll.derive()
                         .setInputs(aInput1, aInput2, alumentum)
-                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                        .setOutputs(
+                            aOutput1,
+                            aOutput2,
+                            MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
             }
@@ -1086,7 +1133,7 @@ public final class RecipeMaps {
             if (tGunpowder < 65) coll.derive()
                 .setInputs(input, ItemList.Block_Powderbarrel.get(tGunpowder));
             if (tDynamite < 17) coll.derive()
-                .setInputs(input, GTModHandler.getIC2Item("dynamite", tDynamite, null));
+                .setInputs(input, ItemList.Dynamite.get(tDynamite));
             coll.derive()
                 .setInputs(input, new ItemStack(Blocks.tnt, tTNT));
             coll.derive()
@@ -1247,7 +1294,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .recipeEmitter(b -> {
-            if (Materials.Graphite.contains(b.getItemInputBasic(0))) return Collections.emptyList();
+            if (MaterialParts.isPartOf(b.getItemInputBasic(0), Materials.Graphite)) return Collections.emptyList();
             if (GTUtility.isArrayOfLength(b.getItemInputsBasic(), 1)) {
                 ItemStack aInput1 = b.getItemInputBasic(0);
                 if (((OrePrefixes.ingot.contains(aInput1)) || (OrePrefixes.dust.contains(aInput1))
@@ -1283,7 +1330,6 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTGuiTextures.OVERLAY_SLOT_CIRCUIT : null)
         .progressBar(GTUITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
-        .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
         .build();
     public static final RecipeMap<FluidCannerBackend> cannerRecipes = RecipeMapBuilder
         .of("gt.recipe.canner", FluidCannerBackend::new)
@@ -1409,7 +1455,7 @@ public final class RecipeMaps {
             int aDuration = b.getDuration(), aEUt = b.getEUt();
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
-                .fluidInputs(Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)))
+                .fluidInputs(GTUtility.getWater(clamp(aDuration * aEUt / 320, 4, 1000)))
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
@@ -1419,11 +1465,19 @@ public final class RecipeMaps {
                 .build()
                 .ifPresent(ret::add);
             b.copy()
-                .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials.Lubricant,
+                        FluidShapes.fluidLiquid,
+                        (int) (clamp(aDuration * aEUt / 1280, 1, 250))))
                 .duration(aDuration)
                 .build()
                 .ifPresent(ret::add);
-            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
+            b.fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials.DimensionallyShiftedSuperfluid,
+                    FluidShapes.fluidLiquid,
+                    clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);
@@ -1628,13 +1682,13 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLE)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ASSEMBLE)
         .neiItemInputsGetter(recipe -> {
-            Materials naniteMaterial = recipe.getMetadata(PCB_NANITE_MATERIAL);
+            Material naniteMaterial = recipe.getMetadata(PCB_NANITE_MATERIAL);
             if (naniteMaterial == null) {
                 return recipe.mInputs;
             }
             List<ItemStack> inputs = new ArrayList<>();
             inputs.add(recipe.mInputs[0]);
-            ItemStack naniteStack = naniteMaterial.getNanite(1);
+            ItemStack naniteStack = MaterialLibAPI.getStack(naniteMaterial, Shapes.nanite, 1);
             inputs.add(new ItemStack(naniteStack.getItem(), 0, naniteStack.getItemDamage()));
             inputs.addAll(Arrays.asList(Arrays.copyOfRange(recipe.mInputs, 1, recipe.mInputs.length)));
             return inputs.toArray(new ItemStack[0]);
@@ -2145,9 +2199,6 @@ public final class RecipeMaps {
                 StatCollector.translateToLocal("gt.nei.solar_tower.3")))
         .frontend(FluidOnlyFrontend::new)
         .build();
-    public static final RecipeMap<RecipeMapBackend> cyclotronRecipes = RecipeMapBuilder.of("gt.recipe.cyclotron")
-        .maxIO(9, 9, 1, 1)
-        .build();
     public static final RecipeMap<RecipeMapBackend> fishPondRecipes = RecipeMapBuilder.of("gt.recipe.fishpond")
         .maxIO(1, 25, 0, 0)
         .slotOverlays(
@@ -2166,10 +2217,10 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.multicentrifuge")
-        .maxIO(6, 6, 6, 6)
+        .maxIO(9, 9, 6, 6)
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT)
-        .frontend(LargeNEIFrontend::new)
+        .frontend(LargeCentrifugeFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> electrolyzerNonCellRecipes = RecipeMapBuilder
         .of("gt.recipe.multielectro")
@@ -2216,11 +2267,22 @@ public final class RecipeMaps {
         .useSpecialSlot()
         .frontend(TGSFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> voidMinerRecipes = RecipeMapBuilder.of("gt.recipe.voidminer")
+        .maxIO(1, VoidMinerFrontend.MAX_ITEM_OUTPUTS, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
+        .progressBarPos(75, 26)
+        .logoPos(10, 10)
+        .neiHandlerInfo(
+            builder -> builder.setHeight(240)
+                .setMultipleWidgetsAllowed(false))
+        .frontend(VoidMinerFrontend::new)
+        .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
         .of("gt.recipe.multiblockrockbreaker")
         .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
-        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { GTUtility.getWater(0), GTUtility.getLava(0) })
         .build();
     public static final RecipeMap<RecipeMapBackend> layeringMachineRecipes = RecipeMapBuilder
         .of("gt.recipe.layeringmachine")
@@ -2240,13 +2302,13 @@ public final class RecipeMaps {
     }
 
     private static boolean isGemUpgradeRecipe(GTRecipeBuilder builder) {
-        ItemData inputData = GTOreDictUnificator.getAssociation(builder.getItemInputBasic(0));
-        ItemData outputData = GTOreDictUnificator.getAssociation(builder.getItemOutput(0));
+        ItemData inputData = MaterialData.getAssociation(builder.getItemInputBasic(0));
+        ItemData outputData = MaterialData.getAssociation(builder.getItemOutput(0));
 
         if (inputData == null || outputData == null) return false;
-        if (inputData.mMaterial.mMaterial != outputData.mMaterial.mMaterial) return false;
+        if (inputData.material.material != outputData.material.material) return false;
 
-        return isGemUpgradeStep(inputData.mPrefix, outputData.mPrefix);
+        return isGemUpgradeStep(inputData.prefix, outputData.prefix);
     }
 
     private static boolean isGemUpgradeStep(OrePrefixes inputPrefix, OrePrefixes outputPrefix) {

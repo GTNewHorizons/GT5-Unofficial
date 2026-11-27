@@ -11,10 +11,10 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -47,10 +47,10 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -61,6 +61,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
@@ -237,10 +238,10 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             side,
             aFacing,
             aActive,
-            OVERLAY_FRONT_DIESEL_ENGINE,
-            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+            OVERLAY_FRONT_COMBUSTION_ENGINE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW);
     }
 
     @Override
@@ -261,8 +262,8 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         IToolStats stats = tool.getToolStats(aStack);
         if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
 
-        Materials material = MetaGeneratedTool.getPrimaryMaterial(aStack);
-        return material != null && material.mToolSpeed > 0;
+        Material material = MetaGeneratedTool.getPrimaryMaterialML(aStack);
+        return material != null && MaterialUtils.toolSpeed(material) > 0;
     }
 
     private float getTurbineDamage(ItemStack aStack) {

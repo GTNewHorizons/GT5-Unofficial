@@ -2,8 +2,6 @@ package gregtech.api.fluid;
 
 import static com.google.common.primitives.Ints.saturatedCast;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -457,19 +455,6 @@ public class GTFluidTank implements IFluidStore {
     @Override
     public FluidTankInfo getInfo() {
         return new FluidTankInfo(isEmpty() ? null : mFluid.copy(), saturatedCast(capacity()));
-    }
-
-    public static FluidStack[] getFluidsFromTanks(GTFluidTank[] tanks) {
-        if (tanks == null) {
-            return null;
-        }
-        List<FluidStack> fluidStacks = new ArrayList<>();
-        for (GTFluidTank tank : tanks) {
-            if (tank.getFluid() != null) {
-                fluidStacks.add(tank.getFluid());
-            }
-        }
-        return fluidStacks.toArray(new FluidStack[0]);
     }
 
     @Override

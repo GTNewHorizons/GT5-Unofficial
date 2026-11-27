@@ -7,9 +7,10 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 
 public abstract class ToolTurbine extends GTTool {
 
@@ -20,15 +21,12 @@ public abstract class ToolTurbine extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_TURBINE
-                .ordinal()]
-            : null;
+        return aIsToolHead ? GTMaterialIcons.item("toolTurbine", MetaGeneratedTool.getPrimaryMaterialML(aStack)) : null;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : null;
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack)) : null;
     }
 
     @Override

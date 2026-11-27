@@ -1,12 +1,9 @@
 package gtPlusPlus.core.util.minecraft;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
 
@@ -17,15 +14,6 @@ public class EntityUtils {
         final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY);
         final int blockZ = MathHelper.floor_double(parEntity.posZ);
         return new BlockPos(blockX, blockY, blockZ, parEntity.worldObj);
-    }
-
-    public static void applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world,
-        final Entity entityHolding) {
-        if (!world.isRemote && entityHolding instanceof EntityPlayer player) {
-            if (!player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(player, radiationLevel, stackSize);
-            }
-        }
     }
 
     /**

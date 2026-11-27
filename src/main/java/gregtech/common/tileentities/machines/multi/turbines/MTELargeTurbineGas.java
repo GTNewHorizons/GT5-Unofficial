@@ -13,13 +13,16 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -50,7 +53,7 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
     }
 
     @Override
-    public Materials getFrameMaterial() {
+    public Material getFrameMaterial() {
         return Materials.StainlessSteel;
     }
 
@@ -88,7 +91,10 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 6, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("14", OrePrefixes.frameGt.getLocalizedNameForItem(getFrameMaterial()), false)
+            .addCasing(
+                "14",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(getFrameMaterial())),
+                false)
             .addCasing("8-13", getTurbineCasing().getLocalizedName(), false)
             .addCasing("12", getPipeCasing().getLocalizedName(), false)
             .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_turbine_casing"), 2)

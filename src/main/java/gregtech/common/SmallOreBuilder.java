@@ -4,8 +4,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ruling_0.materiallib.api.Material;
+
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 
 public class SmallOreBuilder {
@@ -15,7 +16,7 @@ public class SmallOreBuilder {
     /** {full dimension name} */
     public Set<String> dimsEnabled = new HashSet<>();
     public int minY, maxY, amount;
-    public IOreMaterial ore;
+    public Material ore;
     public Set<IStoneCategory> stoneCategories;
     public boolean defaultStoneCategories = true;
 
@@ -54,7 +55,7 @@ public class SmallOreBuilder {
         return this;
     }
 
-    public SmallOreBuilder ore(IOreMaterial ore) {
+    public SmallOreBuilder ore(Material ore) {
         this.ore = ore;
         return this;
     }

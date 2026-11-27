@@ -34,7 +34,6 @@ import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
 import bartworks.client.renderer.CircuitPartItemsRenderer;
-import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.loaders.ArtificialMicaLine;
@@ -47,11 +46,10 @@ import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
+import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.CircuitGeneration.CircuitWraps;
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeRecipes;
-import bartworks.system.oredict.OreDictHandler;
+import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.util.ResultWrongSievert;
 import bwcrossmod.galacticgreg.VoidMinerUtility;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -144,22 +142,16 @@ public final class MainMod {
 
         GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass, BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass2, BWItemBlocks.class, "BW_GlasBlocks2");
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass));
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass2));
 
-        WerkstoffLoader.setUp();
-
         BioCultureLoader.run();
 
-        Werkstoff.init();
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isClient()) {
             GregTechAPI.sAfterGTPostload.add(CircuitPartItemsRenderer::new);
-        }
-        if (event.getSide()
-            .isClient()) {
-            GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
         }
     }
 
@@ -179,8 +171,6 @@ public final class MainMod {
             .register(serverEventHandler);
         BioLabLoader.run(event);
 
-        WerkstoffLoader.runInit();
-
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();
         CasingTier.RegisterCasingTiers.run();
@@ -196,7 +186,8 @@ public final class MainMod {
         ArtificialMicaLine.runArtificialMicaRecipe();
         BioObjectAdder.regenerateBioFluids();
 
-        WerkstoffLoader.run();
+        CircuitPartsItem.init();
+        AdditionalRecipes.run();
 
         CheckRecipeResultRegistry.register(new ResultWrongSievert(0, ResultWrongSievert.NeededSievertType.EXACTLY));
 
@@ -219,15 +210,12 @@ public final class MainMod {
         PlatinumSludgeRecipes.register();
 
         runOnServerStarted();
-        StaticRecipeChangeLoaders.unificationRecipeEnforcer();
         VoidMinerUtility.generateDropMaps();
     }
 
     private static boolean recipesAdded;
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
-        OreDictHandler.adaptCacheForWorld();
-
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()
             .forEach(

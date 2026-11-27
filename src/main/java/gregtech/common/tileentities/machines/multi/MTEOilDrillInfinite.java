@@ -21,14 +21,16 @@ import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -111,12 +113,12 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .beginStructureBlock(9, 14, 9, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("90-103", Casings.MiningNeutroniumCasing.getLocalizedName(), false)
-            .addCasing("38", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Neutronium), false)
+            .addCasing("38", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Neutronium)), false)
             .addCasing("20", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("12", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
             .addCasing("12", Casings.AdvancedComputerCasing.getLocalizedName(), false)
             .addCasing("9", Casings.PBIPipeCasing.getLocalizedName(), false)
-            .addCasing("8", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Infinity), false)
+            .addCasing("8", OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Infinity)), false)
             .addEnergyHatch("1", StatCollector.translateToLocalFormatted("gt.mbtt.structure.any_mining_casing_min_tier", GTValues.VN[getMinTier()]), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
             .addInputBus("0-1", StatCollector.translateToLocal("gt.mbtt.structure.any_mining_casing"), 1)
@@ -198,7 +200,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
     }
 
     @Override
-    protected Materials getFrameMaterial() {
+    protected Material getFrameMaterial() {
         return Materials.Neutronium;
     }
 

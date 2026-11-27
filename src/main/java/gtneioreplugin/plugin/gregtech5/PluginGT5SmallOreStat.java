@@ -8,12 +8,13 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
+import com.ruling_0.materiallib.api.Material;
+
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.ores.IOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -43,7 +44,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        IOreMaterial mat = OreManager.getMaterial(stack);
+        Material mat = OreManager.getMaterial(stack);
 
         if (mat == null) {
             mat = GT5OreSmallHelper.ORE_DROP_TO_MAT.get(stack.getUnlocalizedName());
@@ -59,13 +60,10 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         for (ParsedOreDictName oredict : OrePrefixes.detectPrefix(stack)) {
             if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(oredict.prefix)) continue;
 
-            mat = IOreMaterial.findMaterial(oredict.material);
+            Material legacyMat = MaterialUtils.byLegacyName(oredict.material);
 
-            if (mat != null) {
-                isMatItem |= loadSmallOre(mat);
-                if (!(mat instanceof Materials)) {
-                    isMatItem |= loadSmallOre(mat.getGTMaterial());
-                }
+            if (legacyMat != null) {
+                isMatItem |= loadSmallOre(legacyMat);
             }
         }
 
@@ -87,7 +85,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         }
     }
 
-    private boolean loadSmallOre(IOreMaterial material) {
+    private boolean loadSmallOre(Material material) {
         OreSmallWrapper smallOre = GT5OreSmallHelper.SMALL_ORES_BY_MAT.get(material);
 
         if (smallOre != null) {
@@ -118,11 +116,11 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
 
     private void getOresAndDusts(OreSmallWrapper smallOre, Iterable<StoneType> stoneTypes, List<ItemStack> ores,
         List<ItemStack> dusts) {
-        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
             info.material = smallOre.material;
             info.isSmall = true;
 
-            IOreAdapter<?> adapter = OreManager.getAdapter(info);
+            IOreAdapter adapter = OreManager.getAdapter(info);
             assert adapter != null;
             for (StoneType stoneType : stoneTypes) {
                 info.stoneType = stoneType;

@@ -35,17 +35,17 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import bartworks.MainMod;
-import bartworks.system.material.Werkstoff;
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
 
@@ -54,9 +54,8 @@ public class BWUtil {
     @Deprecated
     public static final int CLEANROOM = -200;
 
-    public static int calculateRecipeEU(Werkstoff werkstoff, int defaultRecipeEUPerTick) {
-        int tier = werkstoff.getStats()
-            .getProcessingMaterialTierEU();
+    public static int calculateRecipeEU(Material material, int defaultRecipeEUPerTick) {
+        int tier = MaterialUtils.processingMaterialTierEU(material);
         return tier == 0 ? defaultRecipeEUPerTick : tier;
     }
 
@@ -65,8 +64,9 @@ public class BWUtil {
         String ret = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
         if (!ret.contains("%material")) return ret;
         String matname = "";
-        if (BWUtil.checkStackAndPrefix(itemStack))
-            matname = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial.mDefaultLocalName;
+        if (BWUtil.checkStackAndPrefix(itemStack)) {
+            matname = MaterialUtils.localName(MaterialData.getAssociation(itemStack).material.material);
+        }
         return ret.replace("%material", matname);
     }
 
@@ -80,81 +80,15 @@ public class BWUtil {
         return array[index];
     }
 
-    public static String subscriptNumbers(String b) {
-        char[] chars = b.toCharArray();
-        char[] nu = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            nu[i] = switch (chars[i]) {
-                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
-                case '1' -> '\u2081';
-                case '2' -> '\u2082';
-                case '3' -> '\u2083';
-                case '4' -> '\u2084';
-                case '5' -> '\u2085';
-                case '6' -> '\u2086';
-                case '7' -> '\u2087';
-                case '8' -> '\u2088';
-                case '9' -> '\u2089';
-                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
-                default -> chars[i];
-            };
-        }
-        return new String(nu);
-    }
-
-    public static String subscriptNumber(Number b) {
-        char[] chars = Long.toString(b.longValue())
-            .toCharArray();
-        char[] nu = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            nu[i] = switch (chars[i]) {
-                case '0' -> CustomGlyphs.SUBSCRIPT0.charAt(0);
-                case '1' -> '\u2081';
-                case '2' -> '\u2082';
-                case '3' -> '\u2083';
-                case '4' -> '\u2084';
-                case '5' -> '\u2085';
-                case '6' -> '\u2086';
-                case '7' -> '\u2087';
-                case '8' -> '\u2088';
-                case '9' -> '\u2089';
-                case '?' -> CustomGlyphs.SUBSCRIPT_QUESTION_MARK.charAt(0);
-                default -> chars[i];
-            };
-        }
-        return new String(nu);
-    }
-
-    public static String superscriptNumbers(String b) {
-        char[] chars = b.toCharArray();
-        char[] nu = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            nu[i] = switch (chars[i]) {
-                case '0' -> CustomGlyphs.SUPERSCRIPT0.charAt(0);
-                case '1' -> CustomGlyphs.SUPERSCRIPT1.charAt(0);
-                case '2' -> CustomGlyphs.SUPERSCRIPT2.charAt(0);
-                case '3' -> CustomGlyphs.SUPERSCRIPT3.charAt(0);
-                case '4' -> CustomGlyphs.SUPERSCRIPT4.charAt(0);
-                case '5' -> CustomGlyphs.SUPERSCRIPT5.charAt(0);
-                case '6' -> CustomGlyphs.SUPERSCRIPT6.charAt(0);
-                case '7' -> CustomGlyphs.SUPERSCRIPT7.charAt(0);
-                case '8' -> CustomGlyphs.SUPERSCRIPT8.charAt(0);
-                case '9' -> CustomGlyphs.SUPERSCRIPT9.charAt(0);
-                default -> chars[i];
-            };
-        }
-        return new String(nu);
-    }
-
     @SuppressWarnings("unused") // Used in NHCoreMod
-    public static int calculateSv(Materials materials) {
+    public static int calculateSv(Material materials) {
         // TODO: Implement this method properly by giving materials actual radiation values
         // TODO: instead of using the material's atomic number.
 
-        return (int) (materials.getProtons() == 43L
-            ? materials.equals(Materials.NaquadahEnriched) ? 140
-                : materials.equals(Materials.Naquadria) ? 150 : materials.equals(Materials.Naquadah) ? 130 : 43
-            : materials.getProtons());
+        return (int) (MaterialUtils.protons(materials) == 43L
+            ? materials == Materials.NaquadahEnriched ? 140
+                : materials == Materials.Naquadria ? 150 : materials == Materials.Naquadah ? 130 : 43
+            : MaterialUtils.protons(materials));
     }
 
     public static ItemStack setStackSize(ItemStack stack, int size) {
@@ -163,13 +97,13 @@ public class BWUtil {
     }
 
     public static boolean checkStackAndPrefix(ItemStack itemStack) {
-        return checkStackAndPrefix(GTOreDictUnificator.getAssociation(itemStack));
+        return checkStackAndPrefix(MaterialData.getAssociation(itemStack));
     }
 
     public static boolean checkStackAndPrefix(ItemData association) {
-        return association != null && association.mPrefix != null
-            && association.mMaterial != null
-            && association.mMaterial.mMaterial != null;
+        return association != null && association.prefix != null
+            && association.material != null
+            && association.material.material != null;
     }
 
     @Deprecated
@@ -289,7 +223,7 @@ public class BWUtil {
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
-        aResult = GTOreDictUnificator.get(true, aResult);
+        aResult = GTUtility.copyOrNull(aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return null;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return null;
@@ -411,7 +345,7 @@ public class BWUtil {
             switch (in) {
                 case ItemStack itemStack -> {
                     tItemStackMap.put(chr, GTUtility.copy(in));
-                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(itemStack));
+                    tItemDataMap.put(chr, MaterialData.get(itemStack));
                 }
                 case ItemData itemData -> {
                     String tString = in.toString();
@@ -432,7 +366,7 @@ public class BWUtil {
                             tItemDataMap.put(chr, itemData);
                             break;
                     }
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = GTModHandler.collisionProbe(itemData);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                     aRecipe[idx + 1] = in.toString();
@@ -450,7 +384,7 @@ public class BWUtil {
                         tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
                     else if (in.equals(OreDictNames.craftingAnvil.toString()))
                         tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    ItemStack tStack = GTModHandler.collisionProbe(s);
                     if (tStack == null) tRemoveRecipe = false;
                     else tItemStackMap.put(chr, tStack);
                 }
@@ -466,7 +400,7 @@ public class BWUtil {
                 x++;
                 tData[x] = tItemDataMap.get(chr);
             }
-            if (GTUtility.arrayContainsNonNull(tData)) GTOreDictUnificator.addItemData(aResult, new ItemData(tData));
+            if (GTUtility.arrayContainsNonNull(tData)) MaterialData.add(aResult, new ItemData(tData));
         }
 
         if (aCheckForCollisions && tRemoveRecipe) {
@@ -503,7 +437,7 @@ public class BWUtil {
                     tRecipe.getClass()
                         .getName()))
                     continue;
-                if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
+                if (GTUtility.areStacksEqual(tRecipe.getRecipeOutput(), aResult, true)) {
                     tList.remove(i);
                     i--;
                     tList_sS = tList.size();
@@ -524,74 +458,5 @@ public class BWUtil {
             aEnchantmentsAdded,
             aEnchantmentLevelsAdded,
             aRecipe).setMirrored(aMirrored);
-    }
-
-    public static boolean areCraftingInputsOnlyMaterial(Object input, Materials material) {
-        if (!(input instanceof List<?>) && !(input instanceof Object[])) {
-            return false;
-        }
-
-        ArrayList<List<?>> lists = new ArrayList<>();
-        ArrayList<ItemStack> stacks = new ArrayList<>();
-
-        if (input instanceof List<?>listInput) {
-            for (Object entry : listInput) {
-                if (entry instanceof List<?>list) {
-                    lists.add(list);
-                } else if (entry instanceof ItemStack stack) {
-                    stacks.add(stack);
-                }
-            }
-        } else if (input instanceof Object[]arrayInput) {
-            for (Object entry : arrayInput) {
-                if (entry instanceof List<?>list) {
-                    lists.add(list);
-                } else if (entry instanceof ItemStack stack) {
-                    stacks.add(stack);
-                }
-            }
-        }
-
-        for (List<?> list : lists) {
-            if (list.isEmpty()) {
-                continue;
-            }
-
-            Object first = list.get(0);
-            if (!(first instanceof ItemStack stack)) {
-                return false;
-            }
-
-            stacks.add(stack);
-        }
-
-        if (stacks.isEmpty()) {
-            return false;
-        }
-
-        for (ItemStack stack : stacks) {
-            ItemData association = GTOreDictUnificator.getAssociation(stack);
-            if (!BWUtil.checkStackAndPrefix(association)) {
-                return false;
-            }
-
-            if (association.mMaterial.mMaterial != material) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static void shortSleep(long nanos) {
-        try {
-            long start = System.nanoTime();
-            long end;
-            do {
-                end = System.nanoTime();
-            } while (start + nanos >= end);
-        } catch (Exception e) {
-            MainMod.LOGGER.catching(e);
-        }
     }
 }

@@ -21,13 +21,20 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.system.material.WerkstoffLoader;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.GTShapeProperties;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -56,7 +63,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
             .itemOutputs(new ItemStack(highDensityPlutonium, 1))
-            .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, HALF_INGOTS))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -64,7 +71,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityUraniumNugget, 5))
             .itemOutputs(new ItemStack(highDensityUranium, 1))
-            .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, HALF_INGOTS))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -72,7 +79,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityThoriumNugget, 5))
             .itemOutputs(new ItemStack(highDensityThorium, 1))
-            .fluidInputs(Materials.Neutronium.getMolten(1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, HALF_INGOTS))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -80,18 +87,18 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Magneto material recipe for base fluid.
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.WhiteDwarfMatter, 1L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 1L))
-            .fluidInputs(Materials.RawStarMatter.getFluid(1 * STACKS))
-            .fluidOutputs(Materials.MHDCSM.getMolten(16 * INGOTS))
+                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.nanite, 1),
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 1),
+                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.nanite, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, STACKS))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);
 
         // Infinity Catalyst
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfinityCatalyst, 64L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, 64))
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
@@ -99,9 +106,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // MHDCSM V2
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Eternity.getNanite(1))
-            .fluidInputs(Materials.RawStarMatter.getFluid(4 * STACKS))
-            .fluidOutputs(Materials.MHDCSM.getMolten(72 * INGOTS))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Eternity, Shapes.nanite, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 4 * STACKS))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.MHDCSM, FluidShapes.fluidMolten, 72 * INGOTS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
@@ -109,14 +116,14 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Flawed Amalgatite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
-                GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Amalgatite, 3),
-                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Spinel, 64),
-                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amethyst, 64),
-                WerkstoffLoader.Fluorspar.get(OrePrefixes.gemFlawless, 64),
-                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Tanzanite, 64))
-            .fluidInputs(Materials.PhononCrystalSolution.getFluid(500))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawed, Materials.Amalgatite, 1))
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.MagMatter, Shapes.nanite, 1)),
+                MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, 3),
+                MaterialLibAPI.getStack(Materials.Spinel, Shapes.gemFlawless, 64),
+                MaterialLibAPI.getStack(Materials.Amethyst, Shapes.gemFlawless, 64),
+                MaterialLibAPI.getStack(Materials.Fluorspar, Shapes.gemFlawless, 64),
+                MaterialLibAPI.getStack(Materials.Tanzanite, Shapes.gemFlawless, 64))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhononCrystalSolution, FluidShapes.fluidLiquid, 500))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
@@ -125,42 +132,42 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
     }
 
     private void addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes() {
+        if (!SuperSolarPanels.isModLoaded() || !OpenComputers.isModLoaded()) return;
 
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.frameGt, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.nugget, 9, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ingot, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plate, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.plateDense, 1, 3);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stick, 2, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.round, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.bolt, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.screw, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.ring, 4, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.foil, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.itemCasing, 2, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGtSmall, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.rotor, 1, 2);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.stickLong, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.springSmall, 2, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.spring, 1, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.gearGt, 1, 2);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.wireFine, 8, 1);
-        this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.block, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(TEBlockShapes.frameGt, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.nugget, 9, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.ingot, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.plate, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.plateDense, 1, 3);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.stick, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.round, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.bolt, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.screw, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.ring, 4, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.foil, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.itemCasing, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.gearGtSmall, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.rotor, 1, 2);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.stickLong, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.springSmall, 2, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.spring, 1, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.gearGt, 1, 2);
+        this.addWhiteDwarfMagnetoEICRecipe(Shapes.wireFine, 8, 1);
+        this.addWhiteDwarfMagnetoEICRecipe(BlockShapes.block, 1, 1);
     }
 
-    private void addWhiteDwarfMagnetoEICRecipe(final OrePrefixes part, final int multiplier,
-        final int circuitMultiplier) {
+    private void addWhiteDwarfMagnetoEICRecipe(final Shape part, final int multiplier, final int circuitMultiplier) {
 
-        final int partFraction = (int) (part.getMaterialAmount() * INGOTS / M);
+        final int partFraction = (int) (part.getProperty(GTShapeProperties.MATERIAL_AMOUNT) * INGOTS / M);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new Object[] { OrePrefixes.circuit.get(Materials.UHV), circuitMultiplier },
+                new Object[] { Circuits.UHV.getIngredient(), circuitMultiplier },
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                GTOreDictUnificator.get(part, Materials.Eternity, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(part, Materials.MHDCSM, multiplier))
-            .fluidInputs(Materials.MHDCSM.getMolten((long) partFraction * multiplier))
+                MaterialLibAPI.getStack(Materials.Eternity, part, multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.MHDCSM, part, multiplier))
+            .fluidInputs(MaterialUtils.molten(Materials.MHDCSM, (long) partFraction * multiplier))
             .duration((int) (multiplier * (20 * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);

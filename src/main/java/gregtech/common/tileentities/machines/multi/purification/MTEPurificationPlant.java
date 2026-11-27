@@ -44,15 +44,16 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
@@ -138,7 +139,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
@@ -170,7 +174,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addCasing("77", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
             .addCasing("71-72", Casings.SterileWaterPlantCasing.getLocalizedName(), false)
             .addCasing("56", Casings.SuperplasticizerTreatedHighStrengthConcrete.getLocalizedName(), false)
-            .addCasing("30", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing(
+                "30",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Tungsten)),
+                false)
             .addCasing(
                 "6",
                 StatCollector.translateToLocalFormatted(

@@ -26,38 +26,31 @@ import goodgenerator.blocks.tileEntity.MTECoolantTower;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.blocks.tileEntity.MTEExtremeHeatExchanger;
-import goodgenerator.blocks.tileEntity.MTEFuelRefineFactoryLegacy;
 import goodgenerator.blocks.tileEntity.MTELargeEssentiaSmeltery;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer1;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer2;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer3;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer4;
 import goodgenerator.blocks.tileEntity.MTELargeFusionComputer5;
-import goodgenerator.blocks.tileEntity.MTEMultiNqGeneratorLegacy;
 import goodgenerator.blocks.tileEntity.MTENeutronActivator;
 import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
-import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbineLegacy;
-import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngineLegacy;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.crossmod.nei.NEIConfig;
 import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
-import goodgenerator.items.GGMaterial;
 import goodgenerator.items.RadioactiveItem;
 import goodgenerator.main.GoodGenerator;
-import goodgenerator.util.CrackRecipeAdder;
-import goodgenerator.util.MaterialFix;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.generators.MTEDieselGenerator;
 import kekztech.common.blocks.BlockTFFTStorageField;
@@ -256,14 +249,10 @@ public class Loaders {
             Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/12", // UXV
             Mods.ModIDs.GOOD_GENERATOR + ":compAsslineCasing/13" // MAX
         });
-    public static ItemStack MAR;
-    public static ItemStack FRF;
-    public static ItemStack UCFE;
     public static ItemStack NS;
     public static ItemStack NA;
     public static ItemStack YFT;
     public static ItemStack YFH;
-    public static ItemStack SCTurbine;
     public static ItemStack XHE;
     public static ItemStack PA;
     public static ItemStack LES;
@@ -280,18 +269,6 @@ public class Loaders {
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
-        Loaders.MAR = new MTEMultiNqGeneratorLegacy(
-            MetaTileEntityIDs.MultiNqGenerator.ID,
-            "NaG",
-            "Large Naquadah Reactor").getStackForm(1L);
-        Loaders.FRF = new MTEFuelRefineFactoryLegacy(
-            MetaTileEntityIDs.FuelRefineFactory.ID,
-            "FRF",
-            "Naquadah Fuel Refinery").getStackForm(1L);
-        Loaders.UCFE = new MTEUniversalChemicalFuelEngineLegacy(
-            MetaTileEntityIDs.LegacyUniversalChemicalFuelEngine.ID,
-            "UniversalChemicalFuelEngine",
-            "Universal Chemical Fuel Engine").getStackForm(1L);
         int[] neutronAcceleratorIDs = new int[] { MetaTileEntityIDs.NeutronAcceleratorULV.ID,
             MetaTileEntityIDs.NeutronAcceleratorLV.ID, MetaTileEntityIDs.NeutronAcceleratorMV.ID,
             MetaTileEntityIDs.NeutronAcceleratorHV.ID, MetaTileEntityIDs.NeutronAcceleratorEV.ID,
@@ -320,10 +297,6 @@ public class Loaders {
             MetaTileEntityIDs.AntimatterHatch.ID,
             "AntimatterHatch",
             "Antimatter Hatch").getStackForm(1L);
-        Loaders.SCTurbine = new MTESupercriticalFluidTurbineLegacy(
-            MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
-            "SupercriticalSteamTurbine",
-            "Large Supercritical Steam Turbine").getStackForm(1L);
         Loaders.XHE = new MTEExtremeHeatExchanger(
             MetaTileEntityIDs.ExtremeHeatExchanger.ID,
             "ExtremeHeatExchanger",
@@ -370,9 +343,6 @@ public class Loaders {
             MetaTileEntityIDs.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
-        CrackRecipeAdder.registerPipe(MetaTileEntityIDs.PipeIncoloy903.ID, GGMaterial.incoloy903, 15000, 8000, true);
-        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 32, true);
-        CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
         Loaders.AMForge = new AntimatterForge(
             MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",
@@ -495,21 +465,11 @@ public class Loaders {
     public static void addOreDic() {
         OreDictionary.registerOre("dustAluminumNitride", aluminumNitride);
 
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.ULV, new ItemStack(circuitWrap, 1, 0));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.LV, new ItemStack(circuitWrap, 1, 1));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.MV, new ItemStack(circuitWrap, 1, 2));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.HV, new ItemStack(circuitWrap, 1, 3));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.EV, new ItemStack(circuitWrap, 1, 4));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.IV, new ItemStack(circuitWrap, 1, 5));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.LuV, new ItemStack(circuitWrap, 1, 6));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.ZPM, new ItemStack(circuitWrap, 1, 7));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UV, new ItemStack(circuitWrap, 1, 8));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UHV, new ItemStack(circuitWrap, 1, 9));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UEV, new ItemStack(circuitWrap, 1, 10));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UIV, new ItemStack(circuitWrap, 1, 11));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UMV, new ItemStack(circuitWrap, 1, 12));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.UXV, new ItemStack(circuitWrap, 1, 13));
-        GTOreDictUnificator.registerOre(OrePrefixes.wrapCircuit, Materials.MAX, new ItemStack(circuitWrap, 1, 14));
+        for (Circuits circuit : Circuits.values()) {
+            OreDictUtils.registerOre(
+                OrePrefixes.wrapCircuit.oreDictName(circuit.materialName()),
+                new ItemStack(circuitWrap, 1, circuit.ordinal()));
+        }
     }
 
     public static void addTexturePage() {
@@ -559,10 +519,8 @@ public class Loaders {
 
     public static void postInitLoad() {
         RecipeLoader.RecipeLoad();
-        RecipeLoader.Fixer();
         RecipeLoader2.RecipeLoad();
         NeutronActivatorLoader.NARecipeLoad();
-        MaterialFix.addRecipeForMultiItems();
         ComponentAssemblyLineLoader.run();
     }
 

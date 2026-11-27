@@ -4,11 +4,14 @@ import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import tectech.thing.CustomItemList;
 
 public class CircuitAssembler implements Runnable {
@@ -17,11 +20,9 @@ public class CircuitAssembler implements Runnable {
     public void run() {
         // Parametrizer Memory Card
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 4))
+            .itemInputs(Circuits.LV.get(2), MaterialLibAPI.getStack(Materials.Gold, Shapes.foil, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
-            .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polyethylene, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
             .requiresCleanRoom()
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

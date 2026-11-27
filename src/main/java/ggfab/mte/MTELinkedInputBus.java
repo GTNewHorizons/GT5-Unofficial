@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizons.postea.api.CustomDataReplacementManager;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
@@ -37,7 +38,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTELinkedInputBusGui;
@@ -185,8 +185,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     @Override
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
         for (int i = 0; i < SIZE_INVENTORY; i++)
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
-                return i == aIndex - 1;
+            if (GTUtility.areStacksEqual(aStack, mRealInventory.stacks[i])) return i == aIndex - 1;
         return mRealInventory.stacks[aIndex - 1] == null;
     }
 
@@ -588,9 +587,16 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         }
     }
 
+    /// The world's linked input bus channels, with saved item stacks migrated through Postea under the storage id
+    /// `gregtech:linkedInputBusses`. The saved root holds one compound per channel, beside Postea's stamps.
+    ///
+    /// `MapStorage` swallows load exceptions and keeps the half-read table. A table whose migration failed is never
+    /// saved, and every read or change of it rethrows the failure.
     public static class WorldSave extends WorldSavedData {
 
         private final Map<String, SharedInventory> data = new HashMap<>();
+        private RuntimeException loadFailure;
+        private NBTTagCompound savedStamps;
 
         public WorldSave(String p_i2141_1_) {
             super(p_i2141_1_);
@@ -598,10 +604,18 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
         @Override
         public void readFromNBT(NBTTagCompound tag) {
-            data.clear();
+            try {
+                CustomDataReplacementManager.transform("gregtech:linkedInputBusses", tag);
+            } catch (RuntimeException e) {
+                loadFailure = e;
+                throw e;
+            }
+            savedStamps = CustomDataReplacementManager.savedStamps(tag);
             @SuppressWarnings("unchecked")
             Set<Map.Entry<String, NBTBase>> set = tag.tagMap.entrySet();
             for (Map.Entry<String, NBTBase> e : set) {
+                if (e.getValue()
+                    .equals(savedStamps)) continue;
                 data.put(e.getKey(), new SharedInventory((NBTTagCompound) e.getValue()));
             }
         }
@@ -614,15 +628,27 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     e.getValue()
                         .save());
             }
+            CustomDataReplacementManager.stamp(tag, savedStamps);
+        }
+
+        @Override
+        public boolean isDirty() {
+            return loadFailure == null && super.isDirty();
         }
 
         public SharedInventory get(Object channel) {
+            throwIfLoadFailed();
             return data.computeIfAbsent(channel.toString(), k -> new SharedInventory());
         }
 
         public void remove(Object channel) {
+            throwIfLoadFailed();
             data.remove(channel.toString());
             markDirty();
+        }
+
+        private void throwIfLoadFailed() {
+            if (loadFailure != null) throw loadFailure;
         }
     }
 

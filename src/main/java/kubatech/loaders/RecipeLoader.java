@@ -89,14 +89,17 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrode;
 import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
@@ -160,7 +163,7 @@ public class RecipeLoader {
                 ItemList.ExtremeEntityCrusher.get(1),
                 GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "RCR", "CHC", "VVV", 'R', gregtech.api.enums.ItemList.Robot_Arm_EV, 'C',
-                    OrePrefixes.circuit.get(Materials.EV), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
+                    Circuits.EV.getIngredient(), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
                     GTModHandler.getModItem(OpenBlocks.ID, "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
         }
 
@@ -174,10 +177,11 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_Acceleration_8_Upgraded.get(64L),
                     gregtech.api.enums.ItemList.IndustrialApiary_Upgrade_STABILIZER.get(64L),
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
+                    new Object[] { Circuits.UV.getIngredient(), 16L })
                 .fluidInputs(
-                    MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS),
-                    Materials.Honey.getFluid(20_000))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 3 * STACKS + 8 * INGOTS),
+                    MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 20_000))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -191,7 +195,7 @@ public class RecipeLoader {
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
                 GTModHandler.getModItem(EnderIO.ID, "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
-                gregtech.api.enums.ItemList.AcceleratorIV.get(1), 'Z', OrePrefixes.circuit.get(Materials.ZPM) });
+                gregtech.api.enums.ItemList.AcceleratorIV.get(1), 'Z', Circuits.ZPM.getIngredient() });
 
         // Vanilla should always be loaded
         MTEExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
@@ -238,7 +242,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(TeaLeafDehydrated.get(1))
                 .itemOutputs(SteamedTeaLeaf.get(1))
-                .fluidInputs(Materials.Water.getFluid(50))
+                .fluidInputs(GTUtility.getWater(50))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -340,7 +344,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(Materials.Milk.getFluid(100))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 100))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -350,7 +354,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTModHandler.getModItem(PamsHarvestCraft.ID, "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
-                .fluidInputs(Materials.Water.getFluid(1_000))
+                .fluidInputs(GTUtility.getWater(1_000))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -369,8 +373,10 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Machine_Multi_NeutroniumCompressor.get(1),
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
-                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS))
+                    new Object[] { Circuits.UV.getIngredient(), 16L })
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 3 * STACKS + 8 * INGOTS))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)

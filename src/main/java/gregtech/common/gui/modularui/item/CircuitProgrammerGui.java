@@ -16,12 +16,12 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import bartworks.common.items.ItemCircuitProgrammer;
-import bartworks.util.BWUtil;
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTUtility;
 
 public class CircuitProgrammerGui {
@@ -143,8 +143,8 @@ public class CircuitProgrammerGui {
     }
 
     private boolean isLVCircuit(ItemStack stack) {
-        return BWUtil.checkStackAndPrefix(stack)
-            && OrePrefixes.circuit.equals(GTOreDictUnificator.getAssociation(stack).mPrefix)
-            && GTOreDictUnificator.getAssociation(stack).mMaterial.mMaterial.equals(Materials.LV);
+        ItemData data = MaterialData.get(stack);
+        return data != null && OrePrefixes.circuit.oreDictName(Circuits.LV.materialName())
+            .equals(data.toString());
     }
 }

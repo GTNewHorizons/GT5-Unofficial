@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gregtech.api.enums.MetaTileEntityIDs.AlgaeFarm_Controller;
 import static gregtech.api.enums.MetaTileEntityIDs.Bus_Catalysts;
 import static gregtech.api.enums.MetaTileEntityIDs.ChemicalPlant_Controller;
 
@@ -8,7 +7,6 @@ import gregtech.api.GregTechAPI;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchCatalysts;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.algae.MTEAlgaePondBaseLegacy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class GregtechAlgaeContent {
@@ -18,12 +16,6 @@ public class GregtechAlgaeContent {
     }
 
     private static void run1() {
-
-        // Algae Pond
-        GregtechItemList.AlgaeFarm_Controller.set(
-            new MTEAlgaePondBaseLegacy(AlgaeFarm_Controller.ID, "algaefarm.controller.tier.single", "Algae Farm")
-                .getStackForm(1L));
-
         // Chemical Plant
         GregtechItemList.ChemicalPlant_Controller.set(
             new MTEChemicalPlant(

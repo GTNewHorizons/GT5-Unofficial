@@ -21,6 +21,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import detrav.DetravScannerMod;
@@ -28,7 +29,7 @@ import detrav.gui.DetravScannerGUI;
 import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.utils.FluidColors;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.ores.OreManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -57,10 +58,10 @@ public class ProspectingPacket extends DetravPacket {
         public BlockInfo(ItemStack stack) {
             this.stack = stack;
             this.name = stack.getDisplayName();
-            IOreMaterial mat = OreManager.getMaterial(stack);
-            short[] rgba1 = mat == null ? new short[] { 125, 125, 125, 255 } : mat.getRGBA();
+            Material mat = OreManager.getMaterial(stack);
+            short[] rgba1 = mat == null ? new short[] { 125, 125, 125, 255 } : MaterialUtils.rgba(mat);
             this.rgba = rgba(rgba1);
-            this.internalName = mat == null ? "" : mat.getInternalName();
+            this.internalName = mat == null ? "" : MaterialUtils.internalName(mat);
         }
     }
 

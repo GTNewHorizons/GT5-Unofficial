@@ -2,23 +2,25 @@ package gregtech.api.util;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MaterialUtils;
 
 public class TurbineStatCalculator {
 
     public MetaGeneratedTool turbine;
     public ItemStack item;
     public long tMaxDamage;
-    public Materials tMaterial;
+    public Material tMaterial;
     public IToolStats tStats;
 
     public TurbineStatCalculator(MetaGeneratedTool turbineItem, ItemStack aStack) {
         turbine = turbineItem;
         item = aStack;
         tMaxDamage = MetaGeneratedTool.getToolMaxDamage(aStack);
-        tMaterial = MetaGeneratedTool.getPrimaryMaterial(aStack);
+        tMaterial = MetaGeneratedTool.getPrimaryMaterialML(aStack);
         tStats = turbine.getToolStats(aStack);
     }
 
@@ -69,20 +71,20 @@ public class TurbineStatCalculator {
     // Base optimal flows
 
     public float getOptimalFlow() {
-        return tStats.getSpeedMultiplier() * tMaterial.mToolSpeed * 50F;
+        return tStats.getSpeedMultiplier() * MaterialUtils.toolSpeed(tMaterial) * 50F;
     }
 
     // All values are in EU/t before efficiency
     public float getOptimalSteamFlow() {
-        return getOptimalFlow() * tMaterial.mSteamMultiplier;
+        return getOptimalFlow() * MaterialUtils.steamMultiplier(tMaterial);
     }
 
     public float getOptimalGasFlow() {
-        return getOptimalFlow() * tMaterial.mGasMultiplier;
+        return getOptimalFlow() * MaterialUtils.gasMultiplier(tMaterial);
     }
 
     public float getOptimalPlasmaFlow() {
-        return getOptimalFlow() * tMaterial.mPlasmaMultiplier * 42;
+        return getOptimalFlow() * MaterialUtils.plasmaMultiplier(tMaterial) * 42;
     }
 
     // Loose optimal flows
@@ -131,7 +133,7 @@ public class TurbineStatCalculator {
     }
 
     public int getOverflowEfficiency() {
-        return (int) (1 + Math.min(2.0, tMaterial.mToolQuality / 3));
+        return (int) (1 + Math.min(2.0, MaterialUtils.toolQuality(tMaterial) / 3));
     }
 
 }

@@ -9,9 +9,10 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTToolHarvestHelper;
 
 public class ToolKnife extends GTTool {
@@ -76,16 +77,13 @@ public class ToolKnife extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_KNIFE
-                .ordinal()]
-            : null;
+        return aIsToolHead ? GTMaterialIcons.item("toolKnife", MetaGeneratedTool.getPrimaryMaterialML(aStack)) : null;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

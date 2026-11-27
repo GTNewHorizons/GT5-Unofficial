@@ -24,12 +24,14 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cofh.api.energy.IEnergyContainerItem;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -211,7 +213,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                     if (item.isRepairable()) {
                         FluidStack uum = getStoredFluids().stream()
                             .filter(
-                                fluid -> Materials.UUMatter.getFluid(1)
+                                fluid -> MaterialLibAPI.getFluidStack(Materials.UUMatter, FluidShapes.fluidLiquid, 1)
                                     .isFluidEqual(fluid))
                             .findAny()
                             .orElse(null);
@@ -220,7 +222,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                                 .min(item.getDamage(itemStackInBus), maxRepairedDamagePerOperation);
                             long euCost = repairedDamage * usedEuPerDurability;
                             if (getEUVar() >= euCost && depleteInput(
-                                new FluidStack(Materials.UUMatter.mFluid, repairedDamage * usedUumPerDurability))) {
+                                new FluidStack(
+                                    MaterialLibAPI.getFluid(Materials.UUMatter, FluidShapes.fluidLiquid),
+                                    repairedDamage * usedUumPerDurability))) {
                                 item.setDamage(
                                     itemStackInBus,
                                     Math.max(item.getDamage(itemStackInBus) - repairedDamage, 0));

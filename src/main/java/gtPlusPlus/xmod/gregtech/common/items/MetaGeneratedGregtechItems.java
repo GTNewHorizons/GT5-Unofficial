@@ -29,7 +29,6 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_PO210;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_PU238;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Pellet_RTG_SR90;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Shape_Extruder_WindmillShaft;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_EV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_HV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.TransmissionComponent_IV;
@@ -44,7 +43,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.Textures;
@@ -70,17 +68,10 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
     }
 
     public MetaGeneratedGregtechItems() {
-        super("MU-metaitem.01", new OrePrefixes[] { null });
+        super("MU-metaitem.01");
     }
 
     public void generateMetaItems() {
-
-        // Extruder Shape
-        GregtechItemList.Shape_Extruder_WindmillShaft.set(
-            this.addItem(
-                Shape_Extruder_WindmillShaft.ID,
-                "Extruder Shape (Shaft)",
-                "Extruder Shape for making Windmill Shafts"));
 
         // Batteries
         GregtechItemList.Battery_RE_EV_Sodium.set(

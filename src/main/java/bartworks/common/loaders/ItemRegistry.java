@@ -42,13 +42,7 @@ import bartworks.common.tileentities.debug.MTECreativeScanner;
 import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
-import bartworks.common.tileentities.multis.MTEElectricImplosionCompressorLegacy;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
-import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnaceLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaDistillTowerLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaOilCrackerLegacy;
-import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezerLegacy;
 import bartworks.common.tileentities.tiered.MTEAcidGenerator;
 import bartworks.common.tileentities.tiered.MTECompressedFluidHatch;
 import bartworks.common.tileentities.tiered.MTEDiode;
@@ -60,11 +54,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.util.OreDictUtils;
 import ic2.api.item.IKineticRotor;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
@@ -213,11 +207,9 @@ public class ItemRegistry {
     public static ItemStack[] energyDistributor = new ItemStack[GTValues.VN.length];
     public static ItemStack[] acidGens = new ItemStack[4];
     public static ItemStack acidGensLV;
-    public static ItemStack[] megaMachines = new ItemStack[5];
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
-    public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack vat;
     public static ItemStack compressedHatch;
@@ -225,8 +217,6 @@ public class ItemRegistry {
     public static ItemStack humongousInputHatch;
 
     public static void run() {
-
-        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BWItemBlocks.class, "BW_Machinery_Casings");
         GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
         GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
         GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
@@ -254,22 +244,10 @@ public class ItemRegistry {
             "Creative Debug Scanner",
             "Creative Debug Scanner",
             14);
-        ItemRegistry.eic = new MTEElectricImplosionCompressorLegacy(
-            LegacyElectricImplosionCompressor.ID,
-            "ElectricImplosionCompressor",
-            "Electric Implosion Compressor").getStackForm(1L);
-
-        // EIC depend on neutronium block to pass on structure updates
-        int bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal5, 0) | 1 << 2;
-        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal5, bitmask);
-
-        // Also spacetime, transcendent metal, and universium
-        bitmask = GregTechAPI.sMachineIDs.getOrDefault(GregTechAPI.sBlockMetal9, 0) | 1 << 3 | 1 << 4 | 1 << 8;
-        GregTechAPI.registerMachineBlock(GregTechAPI.sBlockMetal9, bitmask);
 
         if (Mods.Avaritia.isModLoaded()) {
-            // Also infinity
-            bitmask = GregTechAPI.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
+            // EIC depends on the infinity block to pass on structure updates
+            int bitmask = GregTechAPI.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | 1 << 1;
             GregTechAPI.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
         }
 
@@ -282,9 +260,7 @@ public class ItemRegistry {
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
 
-        GTOreDictUnificator
-            .add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
-        GTOreDictUnificator
+        OreDictUtils
             .registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
 
         int[] Diode2A = new int[] { Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID,
@@ -336,14 +312,6 @@ public class ItemRegistry {
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
-        ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnaceLegacy(
-            LegacyMegaBlastFurnace.ID,
-            "MegaBlastFurnace",
-            StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-        ItemRegistry.megaMachines[1] = new MTEMegaVacuumFreezerLegacy(
-            LegacyMegaVacuumFreezer.ID,
-            "MegaVacuumFreezer",
-            StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
         ItemRegistry.cal = new MTECircuitAssemblyLine(
             CircuitAssemblyLine.ID,
             "CircuitAssemblyLine",
@@ -360,18 +328,6 @@ public class ItemRegistry {
             HumongousInputHatch.ID,
             "HumongousInputHatch",
             "Humongous Input Hatch").getStackForm(1L);
-        ItemRegistry.megaMachines[2] = new MTEMegaDistillTowerLegacy(
-            LegacyMegaDistillationTower.ID,
-            "MegaDistillationTower",
-            "Mega Distillation Tower").getStackForm(1L);
-        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactorLegacy(
-            LegacyMegaChemicalReactor.ID,
-            "MegaChemicalReactor",
-            "Mega Chemical Reactor").getStackForm(1L);
-        ItemRegistry.megaMachines[4] = new MTEMegaOilCrackerLegacy(
-            LegacyMegaOilCracker.ID,
-            "MegaOilCracker",
-            "Mega Oil Cracker").getStackForm(1L);
 
         ItemRegistry.voidminer[2] = new MTEVoidMiners.VMUV(VoidMinerIII.ID, "VoidMiner3", "Void Miner III")
             .getStackForm(1L);

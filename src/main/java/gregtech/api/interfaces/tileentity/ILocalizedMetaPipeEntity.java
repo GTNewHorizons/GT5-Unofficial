@@ -2,20 +2,20 @@ package gregtech.api.interfaces.tileentity;
 
 import java.util.List;
 
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MaterialUtils;
 
 /**
  * Interface to provide localization for meta pipe entity with a united format.
  */
 public interface ILocalizedMetaPipeEntity {
 
-    /**
-     * Get the GT material of the pipe.
-     *
-     * @apiNote if this returns <code>null</code>, you need to rewrite {@link #getLocalizedName()}.
-     */
-    IOreMaterial getMaterial();
+    /// The material of the pipe.
+    ///
+    /// @apiNote a null return here requires overriding [#getLocalizedName()].
+    Material getMaterial();
 
     /**
      * Get the language key of the unformatted name.
@@ -39,13 +39,14 @@ public interface ILocalizedMetaPipeEntity {
      */
     default String getLocalizedName() {
         final String prefixKey = getPrefixKey();
-        final IOreMaterial material = getMaterial();
+        final Material material = getMaterial();
         if (prefixKey != null && material != null) {
             final String materialKeyOverride = getMaterialKeyOverride();
             if (materialKeyOverride == null) {
-                return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, material);
+                return OrePrefixes
+                    .getLocalizedNameForItemWithInflection(prefixKey, MaterialUtils.internalName(material));
             }
-            return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, materialKeyOverride);
+            return OrePrefixes.getLocalizedNameForItemWithInflectionForKey(prefixKey, materialKeyOverride);
         }
         return "Unnamed with ILocalizedMetaPipeEntity";
     }
@@ -64,7 +65,6 @@ public interface ILocalizedMetaPipeEntity {
      */
     default void addMaterialTooltip(List<String> desc) {
         if (shouldSkipMaterialTooltip()) return;
-        if (getMaterial() == null) return;
-        getMaterial().addTooltips(desc);
+        MaterialUtils.addTooltips(getMaterial(), desc);
     }
 }

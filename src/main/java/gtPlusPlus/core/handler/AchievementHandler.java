@@ -13,16 +13,17 @@ import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -52,13 +53,6 @@ public class AchievementHandler {
             "",
             true);
 
-        this.registerAchievement(
-            "hatch.dynamo.buffered",
-            2,
-            -2,
-            GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1),
-            aBaseAchievementName,
-            false);
         // First multi anyone really needs
         this.registerAchievement(
             "multi.abs",
@@ -69,15 +63,39 @@ public class AchievementHandler {
             true);
 
         // Material Advancement
-        this.registerAchievement("dust.potin", 0, 2, MaterialsAlloy.POTIN.getDust(1), aBaseAchievementName, false);
-        this.registerAchievement("dust.eglin", 0, 4, MaterialsAlloy.EGLIN_STEEL.getDust(1), "dust.potin", false);
-        this.registerAchievement("dust.staballoy", 0, 6, MaterialsAlloy.STABALLOY.getDust(1), "dust.eglin", false);
-        this.registerAchievement("dust.quantum", 0, 8, MaterialsAlloy.QUANTUM.getDust(1), "dust.staballoy", true);
+        this.registerAchievement(
+            "dust.potin",
+            0,
+            2,
+            MaterialLibAPI.getStack(Materials.Potin, Shapes.dust, 1),
+            aBaseAchievementName,
+            false);
+        this.registerAchievement(
+            "dust.eglin",
+            0,
+            4,
+            MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.dust, 1),
+            "dust.potin",
+            false);
+        this.registerAchievement(
+            "dust.staballoy",
+            0,
+            6,
+            MaterialLibAPI.getStack(Materials.Staballoy, Shapes.dust, 1),
+            "dust.eglin",
+            false);
+        this.registerAchievement(
+            "dust.quantum",
+            0,
+            8,
+            MaterialLibAPI.getStack(Materials.Quantum, Shapes.dust, 1),
+            "dust.staballoy",
+            true);
         this.registerAchievement(
             "dust.hypogen",
             0,
             10,
-            MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
+            MaterialLibAPI.getStack(Materials.Hypogen, Shapes.dust, 1),
             "dust.quantum",
             true);
 
@@ -127,7 +145,6 @@ public class AchievementHandler {
 
         // Multis (-4/-2/0)
         this.registerAchievement("multi.pss", -16, -7, GregtechItemList.PowerSubStation.get(1), "multi.abs", false);
-        this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
         this.registerAchievement("multi.sifter", -14, -7, ItemList.LargeSifter.get(1), "dust.eglin", false);
         this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
         this.registerAchievement("multi.boiler.thermal", -12, -7, ItemList.ThermalBoiler.get(1), "multi.abs", false);
@@ -169,9 +186,9 @@ public class AchievementHandler {
             11,
             8,
             GregtechItemList.Neptunium238Dust.get(1),
-            "multi.cyclo",
+            "multi.abs",
             false);
-        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.cyclo", false);
+        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.abs", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(
@@ -343,10 +360,6 @@ public class AchievementHandler {
                 else if (aUnlocalName.startsWith(aStartsWith + "transformer.ha.tier.")) {
                     this.issueAchievement(aPlayer, "hiampxform");
                 }
-                // Buffered Dynamos
-                else if (aUnlocalName.startsWith(aStartsWith + "hatch.dynamo.buffer.tier.")) {
-                    this.issueAchievement(aPlayer, "hatch.dynamo.buffered");
-                }
                 // Control Core Hatch
                 else if (aUnlocalName.startsWith(aStartsWith + "hatch.control.adv")) {
                     this.issueAchievement(aPlayer, "hatch.control");
@@ -363,10 +376,6 @@ public class AchievementHandler {
                 // PSS
                 else if (aUnlocalName.equals(aStartsWith + "substation.01.input.single")) {
                     this.issueAchievement(aPlayer, "multi.pss");
-                }
-                // Cyclotron
-                else if (aUnlocalName.startsWith(aStartsWith + "cyclotron.tier.single")) {
-                    this.issueAchievement(aPlayer, "multi.cyclo");
                 }
                 // Sifter
                 else if (aUnlocalName.equals(aStartsWith + "industrialsifter.controller.tier.single")) {

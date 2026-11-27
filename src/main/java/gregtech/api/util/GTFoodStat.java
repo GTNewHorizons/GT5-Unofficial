@@ -74,7 +74,7 @@ public class GTFoodStat implements IFoodStat {
     @Override
     public void onEaten(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer) {
         aStack.stackSize--;
-        ItemStack tStack = GTOreDictUnificator.get(GTUtility.copyOrNull(mEmptyContainer));
+        ItemStack tStack = GTUtility.copyOrNull(mEmptyContainer);
         if (tStack != null && !aPlayer.inventory.addItemStackToInventory(tStack))
             aPlayer.dropPlayerItemWithRandomChoice(tStack, true);
 

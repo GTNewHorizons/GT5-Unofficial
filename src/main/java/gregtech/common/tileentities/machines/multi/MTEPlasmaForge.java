@@ -49,6 +49,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,9 +59,10 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -67,6 +70,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -106,35 +110,31 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final int DISCOUNT_BITMAP = 0b10;
 
     // Valid fuels which the discount will get applied to.
-    private static final FluidStack[] valid_fuels = { Materials.ExcitedDTCC.getFluid(1L),
-        Materials.ExcitedDTPC.getFluid(1L), Materials.ExcitedDTRC.getFluid(1L), Materials.ExcitedDTEC.getFluid(1L),
-        Materials.ExcitedDTSC.getFluid(1L) };
+    private static final FluidStack[] valid_fuels = {
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 1) };
 
-    private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
+    /// Keyed by fluid name: loading a world rebinds each registered name to the instance that save recorded as
+    /// its default, so a `Fluid` captured at class init goes stale.
+    private static final HashMap<String, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {
-            put(
-                Materials.ExcitedDTCC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(14_514_983L, 1 / 8f));
-            put(
-                Materials.ExcitedDTPC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(66_768_460L, 1 / 4f));
-            put(
-                Materials.ExcitedDTRC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(269_326_451L, 1 / 2f));
-            put(
-                Materials.ExcitedDTEC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(1_073_007_393L, 1f));
-            put(
-                Materials.ExcitedDTSC.getFluid(1L)
-                    .getFluid(),
-                Pair.of(4_276_767_521L, 2f));
+            put(fuelName(Materials.ExcitedDTCC), Pair.of(14_514_983L, 1 / 8f));
+            put(fuelName(Materials.ExcitedDTPC), Pair.of(66_768_460L, 1 / 4f));
+            put(fuelName(Materials.ExcitedDTRC), Pair.of(269_326_451L, 1 / 2f));
+            put(fuelName(Materials.ExcitedDTEC), Pair.of(1_073_007_393L, 1f));
+            put(fuelName(Materials.ExcitedDTSC), Pair.of(4_276_767_521L, 2f));
         }
     };
+
+    private static String fuelName(Material material) {
+        return MaterialLibAPI.getFluidStack(material, FluidShapes.fluidLiquid, 1)
+            .getFluid()
+            .getName();
+    }
 
     // Current discount rate. 1 = 0%, 0 = 100%.
     private double discount = 1;
@@ -691,11 +691,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 // Allow recipes to start without having 100% of the catalyst required, aka discount > 0%
                 FluidStack[] queryFluids = new FluidStack[inputFluids.length];
                 for (int i = 0; i < inputFluids.length; i++) {
-                    queryFluids[i] = new FluidStack(inputFluids[i].getFluid(), inputFluids[i].amount);
+                    queryFluids[i] = inputFluids[i].copy();
                     for (FluidStack fuel : valid_fuels) {
                         if (queryFluids[i].isFluidEqual(fuel)) {
-                            queryFluids[i].amount = (int) Math
-                                .min(Math.round(queryFluids[i].amount / discount), Integer.MAX_VALUE);
+                            long fuelAmount = Math.round(GTUtility.getFluidAmount(queryFluids[i]) / discount);
+                            GTUtility.setFluidAmount(queryFluids[i], fuelAmount);
                             break;
                         }
                     }
@@ -748,7 +748,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                         getBaseMetaTileEntity()
                             .sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
                     }
-                    tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * discount);
+                    long discountAmount = Math.round(GTUtility.getFluidAmount(tRecipe.mFluidInputs[i]) * discount);
+                    GTUtility.setFluidAmount(tRecipe.mFluidInputs[i], discountAmount);
                     return tRecipe;
                 }
             }
@@ -760,9 +761,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
                 fluidInputsWithCatalyst[i] = tRecipe.mFluidInputs[i].copy();
             }
-            fluidInputsWithCatalyst[tRecipe.mFluidInputs.length] = new FluidStack(
-                valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1],
-                0);
+            fluidInputsWithCatalyst[tRecipe.mFluidInputs.length] = GTUtility
+                .createFluidStack(valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1], 0);
             tRecipe.mFluidInputs = fluidInputsWithCatalyst;
 
             // Append 0 residue to output fluids for calculations.
@@ -770,13 +770,14 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
                 fluidOutputsWithResidue[i] = tRecipe.mFluidOutputs[i].copy();
             }
-            fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = Materials.DTR.getFluid(0);
+            fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = MaterialUtils.fluid(Materials.DTR, 0);
             tRecipe.mFluidOutputs = fluidOutputsWithResidue;
             recalculateDiscount();
 
             calculateCatalystIncrease(tRecipe, inputFluids, tRecipe.mFluidInputs.length - 1);
             // We know that we have max discount here, so divide by 2.
-            tRecipe.mFluidInputs[tRecipe.mFluidInputs.length - 1].amount /= 2;
+            long halvedAmount = GTUtility.getFluidAmount(tRecipe.mFluidInputs[tRecipe.mFluidInputs.length - 1]) / 2;
+            GTUtility.setFluidAmount(tRecipe.mFluidInputs[tRecipe.mFluidInputs.length - 1], halvedAmount);
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
         return tRecipe;
@@ -839,7 +840,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         if (aLiquid == null) return false;
         FluidStack tLiquid = aLiquid.copy();
         addOutputPartial(tLiquid);
-        return tLiquid.amount == 0;
+        return GTUtility.getFluidAmount(tLiquid) == 0;
     }
 
     @Override
@@ -888,32 +889,37 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     private int catalystTypeForRecipesWithoutCatalyst = 1;
 
-    private int extraCatalystNeeded = 0;
+    private long extraCatalystNeeded = 0;
 
     private void calculateCatalystIncrease(GTRecipe recipe, FluidStack[] inputFluids, int fuelIndex) {
         FluidStack validFuelStack = recipe.mFluidInputs[fuelIndex];
         Fluid validFuel = validFuelStack.getFluid();
+        Pair<Long, Float> fuelEnergy = validFuel == null ? null : FUEL_ENERGY_VALUES.get(validFuel.getName());
+        if (fuelEnergy == null) {
+            extraCatalystNeeded = 0;
+            enoughCatalyst = false;
+            return;
+        }
 
         long numberOfOverclocks = GTUtility.log4(getMaxInputEu() / recipe.mEUt);
         long machineConsumption = recipe.mEUt * (1L << (2 * numberOfOverclocks));
         double recipeDuration = recipe.mDuration / GTUtility.powInt(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) (((1L << numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
-        extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
-            .getLeft());
+        extraCatalystNeeded = extraPowerNeeded / fuelEnergy.getLeft();
 
         // Check if we have enough catalyst,
         // if we don't leave the recipe unchanged.
         // if we do then enable perfect overclocks and update the recipe.
         enoughCatalyst = true;
-        int needed = (validFuelStack.amount + extraCatalystNeeded) / 2;
+        long needed = (GTUtility.getFluidAmount(validFuelStack) + extraCatalystNeeded) / 2;
         for (FluidStack stack : inputFluids) {
             if (needed <= 0) {
                 break;
             }
 
             if (stack.isFluidEqual(validFuelStack)) {
-                needed -= stack.amount;
+                needed -= GTUtility.getFluidAmount(stack);
             }
         }
         if (needed > 0) {
@@ -921,13 +927,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             return;
         }
 
-        recipe.mFluidInputs[fuelIndex].amount += extraCatalystNeeded;
+        GTUtility.incFluidAmount(recipe.mFluidInputs[fuelIndex], extraCatalystNeeded);
 
         // Increase present catalyst and residue by calculated amount
         for (FluidStack outputFluid : recipe.mFluidOutputs) {
-            if (outputFluid.isFluidEqual(Materials.DTR.getFluid(1))) {
-                outputFluid.amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
-                    .getRight());
+            if (outputFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.DTR, FluidShapes.fluidLiquid, 1))) {
+                long increaseAmount = (long) (extraCatalystNeeded * fuelEnergy.getRight());
+                GTUtility.incFluidAmount(outputFluid, increaseAmount);
             }
         }
     }

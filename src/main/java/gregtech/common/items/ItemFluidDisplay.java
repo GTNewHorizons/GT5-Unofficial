@@ -23,20 +23,16 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
-import gregtech.common.fluid.GTFluid;
-import gtPlusPlus.api.objects.minecraft.FluidGT6;
-import gtPlusPlus.core.material.Material;
 
 public class ItemFluidDisplay extends GTGenericItem {
 
@@ -133,27 +129,15 @@ public class ItemFluidDisplay extends GTGenericItem {
     }
 
     @SideOnly(Side.CLIENT)
-    public static IOreMaterial getMaterial(Fluid fluid) {
-        final Werkstoff w = WerkstoffLoader.fluids.inverse()
-            .get(fluid);
-        if (w != null) {
-            return w;
-        }
-        if (fluid instanceof FluidGT6 gtppFluid) {
-            final Material material = gtppFluid.getMaterial();
-            if (material != null) return material;
-        }
-        if (fluid instanceof GTFluid gtFluid) {
-            return Materials.FLUID_MAP.get(gtFluid);
-        }
-        return null;
+    public static Material getMaterial(Fluid fluid) {
+        return MaterialUtils.materialOfFluid(fluid);
     }
 
     @SideOnly(Side.CLIENT)
     public static void addTooltipForFluid(Fluid fluid, List<String> list) {
-        IOreMaterial material = getMaterial(fluid);
+        Material material = getMaterial(fluid);
         if (material != null) {
-            material.addTooltips(list);
+            MaterialUtils.addTooltips(material, list);
         }
     }
 
@@ -177,18 +161,5 @@ public class ItemFluidDisplay extends GTGenericItem {
             if (tOreDictName.startsWith("cell")) return true;
         }
         return false;
-    }
-
-    public static Materials getMaterialFromCell(ItemStack tItemStack) {
-        for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
-            String tOreDictName = OreDictionary.getOreName(tOreDict);
-            if (tOreDictName.startsWith("cell")) {
-                return Materials.getRealMaterial(
-                    tOreDictName.replace("cell", "")
-                        .replace("Molten", "")
-                        .replace("Plasma", ""));
-            }
-        }
-        return Materials._NULL;
     }
 }

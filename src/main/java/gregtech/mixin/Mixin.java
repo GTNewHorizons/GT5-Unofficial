@@ -102,6 +102,10 @@ public enum Mixin implements IMixins {
         .setPhase(Phase.LATE)
         .addCommonMixins("advanced_solar_panels.MixinAdvancedSolarHelmet")
         .addRequiredMod(TargetedMod.ADVANCED_SOLAR_PANELS)),
+    RAILCRAFT_FIRESTONE(new MixinBuilder("Lets Firestone parts burn like Railcraft firestone")
+        .setPhase(Phase.LATE)
+        .addCommonMixins("railcraft.MixinFirestoneTickHandler")
+        .addRequiredMod(TargetedMod.RAILCRAFT)),
 
     VANILLA_TRADING(new MixinBuilder()
         .setPhase(Phase.EARLY)

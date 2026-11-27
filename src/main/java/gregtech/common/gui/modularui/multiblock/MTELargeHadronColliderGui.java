@@ -33,7 +33,8 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -105,9 +106,10 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         return switch (boostMode) {
             case MTELargeHadronCollider.BOOST_QGP -> StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.LHC.boostmode.fluid",
-                Materials.QuarkGluonPlasma.getLocalizedName());
-            case MTELargeHadronCollider.BOOST_MAGMATTER -> StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.LHC.boostmode.fluid", Materials.MagMatter.getLocalizedName());
+                MaterialUtils.localizedName(Materials.QuarkGluonPlasma));
+            case MTELargeHadronCollider.BOOST_MAGMATTER -> StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.LHC.boostmode.fluid",
+                MaterialUtils.localizedName(Materials.MagMatter));
             default -> "GT5U.gui.text.LHC.boostmode.none";
         };
     }

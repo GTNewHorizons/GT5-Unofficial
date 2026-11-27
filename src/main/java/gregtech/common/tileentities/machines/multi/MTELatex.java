@@ -43,18 +43,21 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -157,8 +160,10 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
 
     private int itemPipeTier = -1;
     private int base_parallel = 8;
-    private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
-        Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
+    private static final FluidStack[] valid_rubbers = {
+        MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials.RubberSilicone, FluidShapes.fluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials.StyreneButadieneRubber, FluidShapes.fluidMolten, 1) };
     private static ItemStack SINGULARITY;
 
     @Override
@@ -313,7 +318,10 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("14-36", Casings.ChemicallyInertMachineCasing.getLocalizedName(), false)
             .addCasing("32", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
-            .addCasing("16", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.PolyvinylChloride), false)
+            .addCasing(
+                "16",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.PolyvinylChloride)),
+                false)
             .addCasing("6", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)

@@ -22,10 +22,11 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public abstract class GTMetaItem extends GTMetaItemBase {
@@ -141,7 +142,7 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                         continue;
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
-                        GTOreDictUnificator.addToBlacklist(rStack);
+                        OreDictUtils.addToBlacklist(rStack);
                     }
                 }
             }
@@ -163,14 +164,14 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                     }
                     if (tRandomData instanceof ItemData) {
                         if (GTUtility.isStringValid(tRandomData)) {
-                            GTOreDictUnificator.registerOre(tRandomData, rStack);
+                            OreDictUtils.registerOre(tRandomData, rStack);
                         } else {
-                            GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                            MaterialData.add(rStack, (ItemData) tRandomData);
                         }
                         continue;
                     }
                     if (tUseOreDict) {
-                        GTOreDictUnificator.registerOre(tRandomData, rStack);
+                        OreDictUtils.registerOre(tRandomData, rStack);
                     }
                 }
             }

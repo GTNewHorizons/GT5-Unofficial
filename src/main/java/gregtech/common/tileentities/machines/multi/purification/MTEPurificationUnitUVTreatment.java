@@ -34,21 +34,23 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -229,14 +231,17 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     .put("success", SUCCESS_PER_LENS)
                     .put(
                         "first_lens",
-                        GGMaterial.orundum.get(OrePrefixes.lens, 1)
+                        MaterialLibAPI.getStack(Materials.Orundum, Shapes.lens, 1)
                             .getDisplayName())
                     .build())
             .beginStructureBlock(13, 9, 9, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("144-153", Casings.NaquadriaReinforcedWaterPlantCasing.getLocalizedName(), false)
             .addCasing("144", Casings.ElectronPermeableNeutroniumCoatedGlass.getLocalizedName(), false)
-            .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.StellarAlloy), false)
+            .addCasing(
+                "56",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.StellarAlloy)),
+                false)
             .addCasing("29", Casings.HighEnergyUltravioletEmitterCasing.getLocalizedName(), false)
             .addMiscHatch(
                 "1",

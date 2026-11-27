@@ -19,11 +19,9 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.system.material.WerkstoffLoader;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import gregtech.api.enums.OrePrefixes;
 
 public class NEIBWConfig implements IConfigureNEI {
 
@@ -45,35 +43,6 @@ public class NEIBWConfig implements IConfigureNEI {
     public void loadConfig() {
         API.hideItem(new ItemStack(ItemRegistry.TAB));
         API.hideItem(new ItemStack(FluidLoader.bioFluidBlock));
-        ItemStack[] prefixesToHide = {
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustTiny, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustSmall, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushed, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedPurified, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.crushedCentrifuged, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.nugget, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemChipped, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawed, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemFlawless, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.gemExquisite, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustImpure, WerkstoffLoader.Bismutite)
-                .copy(),
-            WerkstoffLoader.getCorrespondingItemStack(OrePrefixes.dustPure, WerkstoffLoader.Bismutite)
-                .copy(), };
-        for (ItemStack stack : prefixesToHide) {
-            stack.setItemDamage(Short.MAX_VALUE);
-            API.hideItem(stack);
-        }
 
         NEIBWConfig.sIsAdded = false;
         new BioVatNEIHandler(BartWorksRecipeMaps.bacterialVatRecipes.getDefaultRecipeCategory());

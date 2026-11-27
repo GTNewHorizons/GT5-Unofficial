@@ -136,7 +136,6 @@ kubatech.chat.mia.not_empty=§cCan't swap between Swarmer/Normal mode while Bees
 # info data
 ## general
 kubatech.infodata.running_mode=Running in mode:
-kubatech.infodata.running_mode.fmt=Running in mode: §a%s§r
 
 ## Extreme Entity Crusher
 kubatech.infodata.eec.current_mob=Current Mob: §e%s
@@ -162,8 +161,6 @@ kubatech.infodata.eec.weapon.looting_level=Weapon looting level: §e%s
 kubatech.infodata.eec.total_damage=Total attack damage: §e%s
 
 ## Extreme Industrial Greenhouse
-kubatech.infodata.eig.running_mode.setup_mode.input=Running in mode: §aSetup mode (input)§r
-kubatech.infodata.eig.running_mode.setup_mode.output=Running in mode: §aSetup mode (output)§r
 kubatech.infodata.eig.uses.water=Uses %sL/operation of water
 kubatech.infodata.eig.uses.weedex=Uses %sL/second of Weed-EX 9000
 kubatech.infodata.eig.max_slots=Max slots: §a%s§r
@@ -232,20 +229,10 @@ item.htgr_item.incomplete_triso_fuel.name=Incomplete TRISO Fuel (%s)
 item.htgr_item.triso_fuel.name=TRISO Fuel (%s)
 item.htgr_item.burned.name=Burned Out TRISO Fuel (%s)
 
-item.arc_furnace_electrode.GraphiteElectrode.name=Graphite Electrode
-item.arc_furnace_electrode.TantalumElectrode.name=Tantalum Electrode
-item.arc_furnace_electrode.MolybdenumElectrode.name=Molybdenum Electrode
-item.arc_furnace_electrode.TungstenElectrode.name=Tungsten Electrode
-item.arc_furnace_electrode.TungstenSteelElectrode.name=Tungstensteel Electrode
-item.arc_furnace_electrode.GrapheneElectrode.name=Graphene Electrode
-item.arc_furnace_electrode.YBCOElectrode.name=YBCO Electrode
-item.arc_furnace_electrode.NetheriteElectrode.name=Netherite Electrode
-item.arc_furnace_electrode.TritaniumElectrode.name=Tritanium Electrode
-item.arc_furnace_electrode.InfinityElectrode.name=Infinity Electrode
-item.arc_furnace_electrode.HypogenElectrode.name=Hypogen Electrode
-item.arc_furnace_electrode.NeutroniumNaniteElectrode.name=Neutronium Nanite Electrode
-item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode
-item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
+shape.gregtech.electrode.gregtech.YttriumBariumCuprate=YBCO Electrode
+shape.gregtech.electrode.gregtech.Neutronium=Neutronium Nanite Electrode
+shape.gregtech.electrode.gregtech.TranscendentMetal=Transcendent Nanite Electrode
+shape.gregtech.electrode.gregtech.Universium=Universium Nanite Electrode
 
 item.arc_furnace_electrode.tip.durability=Durability: %s/%s
 item.arc_furnace_electrode.tip.speed=Speed: %s
@@ -377,6 +364,9 @@ kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt=Fertilized Dirt 
 kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp=Purple Lamp (ProjectRed Illumination, regular or inverted)
 kubatech.multiblock.ExtremeIndustrialGreenhouse.footer=The dirt is tilled and the water is spawned for free once formed
 
+kubatech.infodata.eig.running_mode.operational=Running in mode: §aOperating§r
+kubatech.infodata.eig.running_mode.setup_mode.input=Running in mode: §eInput§r
+kubatech.infodata.eig.running_mode.setup_mode.output=Running in mode: §eOutput§r
 
 kubatech.multiblock.MegaIndustrialApiary.machine_type=Mega Apiary, Mapiary
 kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass=Dirt or Grass

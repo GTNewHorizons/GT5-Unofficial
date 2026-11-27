@@ -9,11 +9,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
-import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.ItemIcons;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.tools.ToolWireCutter;
 
 public class ToolElectricSnips extends ToolWireCutter {
@@ -41,15 +42,14 @@ public class ToolElectricSnips extends ToolWireCutter {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_HEAD_ELECTRIC_SNIPS
-                    .ordinal()]
+            ? GTMaterialIcons.item("toolHeadElectricSnips", MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : ItemIcons.POWER_UNIT_MV;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.TungstenSteel.mRGBa;
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(Materials.TungstenSteel);
     }
 
     @Override

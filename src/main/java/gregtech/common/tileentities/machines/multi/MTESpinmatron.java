@@ -16,6 +16,7 @@ import static gregtech.api.structure.error.StructureErrorRegistry.UNKNOWN_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofStorageBlock;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.collect.ImmutableMap;
@@ -44,15 +46,20 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -62,6 +69,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -87,12 +95,13 @@ import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+    implements ISurvivalConstructable, ICasingTextureProvider, IDataCopyable {
+
+    private static final String COPY_PASTE_IDENTIFIER = "spinmatron";
 
     private static final int TURBINE_SLOTS_PER_TIER = 2;
     private static final int PARALLELS_PER_ROTOR_LEVEL = 4;
@@ -238,28 +247,28 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
         .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches
-        .addElement('a', ofBlock(GregTechAPI.sBlockMetal4, 13)) // t1 block, Naq Alloy
+        .addElement('a', ofStorageBlock(Materials.NaquadahAlloy)) // t1 block, Naq Alloy
         .addElement(
             'b',
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialsAlloy.PIKYONIUM.getFrameBox(1)
+                        MaterialLibAPI.getStack(Materials.Pikyonium64B, TEBlockShapes.frameGt, 1)
                             .getItem()),
                     0))) // t1 frame, Pikyonium
         .addElement(
             'c',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 0)
-                    : ofBlock(GregTechAPI.sBlockMetal5, 2))) // t2 block, Cosmic Neutronium. fallback included for dev
+                    : ofStorageBlock(Materials.Neutronium))) // t2 block, Cosmic Neutronium. fallback included for dev
         .addElement('d', ofFrame(Materials.Neutronium)) // t2 frame, Neutronium
         .addElement(
             'e',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 1)
-                    : ofBlock(GregTechAPI.sBlockMetal5, 3))) // t3 block, Infinity. fallback included for dev
+                    : ofStorageBlock(Materials.Nichrome))) // t3 block, Infinity. fallback included for dev
         .addElement('f', ofFrame(Materials.Infinity)) // t3 frame, Infinity
-        .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6)) // t4 block, WDM.
+        .addElement('g', ofStorageBlock(Materials.WhiteDwarfMatter)) // t4 block, WDM.
         .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
         .build();
 
@@ -424,20 +433,20 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_vibration_safe_casing"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
-            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.PIKYONIUM), false)
+            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.NaquadahAlloy)), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Pikyonium64B)), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 0).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(Materials.CosmicNeutronium), false)
-            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Neutronium), false)
+            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 0).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.CosmicNeutronium)), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Neutronium)), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
-            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 1).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(Materials.Infinity), false)
-            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Infinity), false)
+            .addCasing("56", Mods.Avaritia.isModLoaded() ? new ItemStack(LudicrousBlocks.resource_block, 1, 1).getDisplayName() : OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Infinity)), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Infinity)), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Four"))
-            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(Materials.WhiteDwarfMatter), false)
-            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.SpaceTime), false)
+            .addCasing("56", OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.WhiteDwarfMatter)), false)
+            .addCasing("9", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.SpaceTime)), false)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.rotors_go_in_controller"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
@@ -624,8 +633,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         IToolStats stats = tool.getToolStats(aStack);
         if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
 
-        Materials material = MetaGeneratedTool.getPrimaryMaterial(aStack);
-        return material != null && material.mToolSpeed > 0;
+        Material material = MetaGeneratedTool.getPrimaryMaterialML(aStack);
+        return material != null && MaterialUtils.toolSpeed(material) > 0;
     }
 
     private int getSumRotorLevels() {
@@ -662,7 +671,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private boolean checkFluid(int amount) {
         // checks for fluid in hatch, does not drain it.
-        final FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
+        final FluidStack tFluid = tier2Fluid
+            ? MaterialLibAPI.getFluidStack(Materials.BiocatalyzedPropulsionFluid, FluidShapes.fluidLiquid, amount)
             : new FluidStack(GTPPFluids.Kerosene, amount);
 
         return this.depleteInput(tFluid, true);
@@ -716,7 +726,9 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         // might need a cleanup here
         if (ticker % 21 == 0) {
 
-            FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
+            FluidStack tFluid = tier2Fluid
+                ? MaterialLibAPI
+                    .getFluidStack(Materials.BiocatalyzedPropulsionFluid, FluidShapes.fluidLiquid, amountToDrain)
                 : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {
@@ -817,6 +829,61 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     @Override
     public boolean supportsInputSeparation() {
         return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPY_PASTE_IDENTIFIER;
+    }
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPY_PASTE_IDENTIFIER);
+        tag.setBoolean("tier2FluidOn", tier2Fluid);
+        tag.setDouble("multiMode", mode);
+        tag.setBoolean("turbineAnimationsStatic", staticAnimations);
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null) return false;
+        if (!COPY_PASTE_IDENTIFIER.equals(nbt.getString("type"))) return false;
+
+        this.tier2Fluid = nbt.getBoolean("tier2FluidOn");
+        this.mode = nbt.getDouble("multiMode");
+        this.staticAnimations = nbt.getBoolean("turbineAnimationsStatic");
+
+        return true;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        // The controller reserve 2 slots
+        // We add 8 more for turbines
+        return 2 + 8;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        if (index < 2) return super.isItemValidForSlot(index, itemStack);
+        else return isTurbine(itemStack);
+    }
+
+    @Override
+    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
+        if (aIndex < 2) super.setInventorySlotContents(aIndex, aStack);
+        else {
+            turbineHolder.setStackInSlot(aIndex - 2, aStack);
+            markDirty();
+        }
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        if (index < 2) return super.getStackInSlot(index);
+        else return turbineHolder.getStackInSlot(index - 2);
     }
 
     private enum CentrifugeHatchElement implements IHatchElement<MTESpinmatron> {

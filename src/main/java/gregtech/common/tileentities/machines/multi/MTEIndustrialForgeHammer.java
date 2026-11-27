@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -10,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasingAdvanced;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
 
 import java.util.List;
@@ -24,13 +24,15 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -55,6 +57,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
     private static final int OFFSET_Y = 7;
     private static final int OFFSET_Z = 1;
     private static final int PARALLEL_PER_TIER = 6;
+    private static final int TOP_CASING_AMOUNT = 8;
 
     private Byte solenoidLevel = null;
     private int casingAmount;
@@ -86,7 +89,11 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
             .beginStructureBlock(5, 9, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("10-29", Casings.ForgeCasing.getLocalizedName(), false)
-            .addCasing("20", new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 1, 32100).getDisplayName(), false)
+            .addCasing(
+                "20",
+                MaterialLibAPI.getStack(Materials.BlackSteel, BlockShapes.blockCasingAdvanced, 1)
+                    .getDisplayName(),
+                false)
             .addCasing("3", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Solenoid"), true)
             .addCasing("2", Casings.RefinedGraphiteBlock.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_base_forge_casing"), 1)
@@ -128,7 +135,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
                         .casingIndex(Casings.ForgeCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.ForgeCasing.asElement())))
-                .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 32100))
+                .addElement('D', ofBlockCasingAdvanced(Materials.BlackSteel))
                 .addElement('E', Casings.ForgeCasing.asElement())
                 .build();
         }
@@ -160,7 +167,7 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
         casingAmount = 0;
         solenoidLevel = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors, casingAmount, 10);
+        checkCasingMin(errors, casingAmount + TOP_CASING_AMOUNT, 10);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);

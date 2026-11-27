@@ -44,7 +44,6 @@ import gregtech.loaders.postload.recipes.LayeringMachineRecipes;
 import gregtech.loaders.postload.recipes.MatterAmplifierRecipes;
 import gregtech.loaders.postload.recipes.MixerRecipes;
 import gregtech.loaders.postload.recipes.NEIHiding;
-import gregtech.loaders.postload.recipes.OreDictUnification;
 import gregtech.loaders.postload.recipes.PackagerRecipes;
 import gregtech.loaders.postload.recipes.PlasmaForgeRecipes;
 import gregtech.loaders.postload.recipes.PrinterRecipes;
@@ -107,7 +106,6 @@ public class MachineRecipeLoader implements Runnable {
         new MatterAmplifierRecipes().run();
         new MixerRecipes().run();
         new NEIHiding().run();
-        new OreDictUnification().run();
         new PackagerRecipes().run();
         new PlasmaForgeRecipes().run();
         new PrinterRecipes().run();

@@ -13,10 +13,10 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -42,13 +42,11 @@ public class ToolJackHammerLV extends ToolDrillLV {
         int rConversions = 0;
         GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
             .items(new ItemStack(aBlock, 1, aMetaData))
-            .notUnificated(true)
             .find();
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
                 tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
                     .items(GTUtility.copyAmount(1, tDrop))
-                    .notUnificated(true)
                     .find();
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
@@ -78,9 +76,7 @@ public class ToolJackHammerLV extends ToolDrillLV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_JACKHAMMER.ordinal()]
+        return aIsToolHead ? GTMaterialIcons.item("toolJackHammer", MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : Textures.ItemIcons.JACKHAMMER_BASE;
     }
 

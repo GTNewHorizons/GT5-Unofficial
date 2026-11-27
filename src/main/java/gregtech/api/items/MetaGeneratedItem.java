@@ -30,20 +30,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.api.material.MaterialData;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
@@ -82,6 +84,14 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final BitSet mVisibleItems;
     public final IIcon[][] mIconList;
     private final BitSet mItemsWithoutBaseIcon = new BitSet();
+    private final ConcurrentHashMap<Short, String> mBaseIconNames = new ConcurrentHashMap<>();
+
+    // Reuse immutable keys without caching values from the public concurrent maps
+    private static final Short[] METADATA_KEYS = new Short[1 << Short.SIZE];
+
+    static {
+        Arrays.setAll(METADATA_KEYS, value -> (short) value);
+    }
 
     public final ConcurrentHashMap<Short, IFoodStat> mFoodStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
@@ -142,7 +152,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     continue;
                 }
                 if (tRandomData == SubTag.NO_UNIFICATION) {
-                    GTOreDictUnificator.addToBlacklist(rStack);
+                    OreDictUtils.addToBlacklist(rStack);
                 }
             }
             // now check for the rest
@@ -184,12 +194,12 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     continue;
                 }
                 if (tRandomData instanceof ItemData) {
-                    if (GTUtility.isStringValid(tRandomData)) GTOreDictUnificator.registerOre(tRandomData, rStack);
-                    else GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                    if (GTUtility.isStringValid(tRandomData)) OreDictUtils.registerOre(tRandomData, rStack);
+                    else MaterialData.add(rStack, (ItemData) tRandomData);
                     continue;
                 }
                 if (tUseOreDict) {
-                    GTOreDictUnificator.registerOre(tRandomData, rStack);
+                    OreDictUtils.registerOre(tRandomData, rStack);
                 }
             }
             if (GregTechAPI.sThaumcraftCompat != null)
@@ -298,6 +308,12 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         if (itemId >= 0 && itemId < mItemAmount) mItemsWithoutBaseIcon.set(itemId);
     }
 
+    /// Draws item `itemId` with the `"<domain>:<path>"` item icon `iconName` instead of the texture under this
+    /// item's own resource path.
+    protected final void setBaseIconName(int itemId, String iconName) {
+        if (itemId >= 0 && itemId < mItemAmount) mBaseIconNames.put((short) itemId, iconName);
+    }
+
     /**
      *
      * @param aMetaValue the Meta Value of the Item you want to set it to. [0 - 32765]
@@ -335,7 +351,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return Materials._NULL.getRGBA();
+        return MaterialUtils.rgba(Materials._NULL);
     }
 
     /**
@@ -452,8 +468,11 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
             Long[] electricStats = mElectricStats.get((short) (i + mOffset));
+            String baseIconName = mBaseIconNames.get(i);
             if (mItemsWithoutBaseIcon.get(i)) {
                 mIconList[i][0] = Textures.InvisibleIcon.INVISIBLE_ICON;
+            } else if (baseIconName != null) {
+                mIconList[i][0] = aIconRegister.registerIcon(baseIconName);
             } else if (mIconList[i].length > 1 && electricStats != null && electricStats[3] < 0) {
                 mIconList[i][0] = mIconList[i][1];
             } else {
@@ -465,11 +484,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
 
     @Override
     public final Long[] getElectricStats(ItemStack aStack) {
-        return mElectricStats.get((short) aStack.getItemDamage());
+        return mElectricStats.get(metadataKey(aStack.getItemDamage()));
     }
 
     @Override
     public final Long[] getFluidContainerStats(ItemStack aStack) {
-        return mFluidContainerStats.get((short) aStack.getItemDamage());
+        return mFluidContainerStats.get(metadataKey(aStack.getItemDamage()));
+    }
+
+    private static Short metadataKey(int metadata) {
+        return METADATA_KEYS[metadata & 0xFFFF];
     }
 }

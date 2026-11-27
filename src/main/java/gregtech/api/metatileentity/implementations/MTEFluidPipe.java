@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.BOTTOM;
@@ -29,11 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -43,34 +40,38 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.PipeMaterials;
+import gregtech.api.enums.materials.PipeProperties;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.PipeStats;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.blocks.ItemMachines;
+import gregtech.common.blocks.PipeShapeBlock;
+import gregtech.common.blocks.PipeShapeItemBlock;
 import gregtech.common.config.Other;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDrain;
@@ -113,54 +114,35 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR);
     }
 
-    public final float mThickNess;
-    public final Materials mMaterial;
-    public final int mCapacity, mHeatResistance, mPipeAmount;
-    public final boolean mGasProof;
+    private final float mThickNess;
+    public final int mPipeAmount;
     public final FluidStack[] mFluids;
     public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
     /**
      * Bitmask for whether disable fluid input form each side.
      */
     public byte mDisableInput = 0;
-    private String mPrefixKey;
-    private String materialKeyOverride;
-    private boolean shouldSkipMaterialTooltip = false;
+    private final String mPrefixKey;
 
-    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
-        int aHeatResistance, boolean aGasProof) {
-        this(aID, aName, aPrefixKey, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
-    }
-
-    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
-        int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aID, aName, 0, false);
-        mPrefixKey = aPrefixKey;
-        mThickNess = aThickNess;
-        mMaterial = aMaterial;
-        mCapacity = aCapacity;
-        mGasProof = aGasProof;
-        mHeatResistance = aHeatResistance;
-        mPipeAmount = aFluidTypes;
+    public MTEFluidPipe(int aID, String aName, PipeShapeBlock shape) {
+        super(aID, aName, 0, false, shape, shape.getSizeIndex());
+        mPrefixKey = shape.getPrefixKey();
+        mThickNess = shape.getThickness();
+        mPipeAmount = shape.getPipeAmount();
         mFluids = new FluidStack[mPipeAmount];
-        addInfo(aID);
     }
 
-    public MTEFluidPipe(String aName, float aThickNess, Materials aMaterial, int aCapacity, int aHeatResistance,
-        boolean aGasProof, int aFluidTypes) {
-        super(aName, 0);
-        mThickNess = aThickNess;
-        mMaterial = aMaterial;
-        mCapacity = aCapacity;
-        mGasProof = aGasProof;
-        mHeatResistance = aHeatResistance;
-        mPipeAmount = aFluidTypes;
+    public MTEFluidPipe(String aName, PipeShapeBlock shape) {
+        super(aName, 0, shape, shape.getSizeIndex());
+        mPrefixKey = shape.getPrefixKey();
+        mThickNess = shape.getThickness();
+        mPipeAmount = shape.getPipeAmount();
         mFluids = new FluidStack[mPipeAmount];
     }
 
     @Override
     public byte getTileEntityBaseType() {
-        final int level = (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
+        final int level = GTUtility.clamp(MaterialUtils.toolQuality(shapeMaterial()), 0, 3);
 
         HarvestTool tool = switch (level) {
             case 0 -> HarvestTool.WrenchPipeLevel0;
@@ -175,7 +157,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEFluidPipe(mName, mThickNess, mMaterial, mCapacity, mHeatResistance, mGasProof, mPipeAmount);
+        return new MTEFluidPipe(mName, (PipeShapeBlock) getShapeHost());
     }
 
     @Override
@@ -198,35 +180,15 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         return textures.toArray(new ITexture[0]);
     }
 
+    /// The pipe body, or the smaller end-face art when this side connects to nothing.
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
-        return getBaseTexture(mThickNess, mPipeAmount, mMaterial.mIconSet, mMaterial.mRGBa, connected, colorIndex);
-    }
-
-    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
-        boolean connected, int colorIndex) {
-        IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()];
-
-        if (!connected) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
-        } else if (aPipeAmount >= 9) {
-            texture = textureSet.mTextures[OrePrefixes.pipeNonuple.getTextureIndex()];
-        } else if (aPipeAmount >= 4) {
-            texture = textureSet.mTextures[OrePrefixes.pipeQuadruple.getTextureIndex()];
-        } else if (aThickNess < 0.124F) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
-        } else if (aThickNess < 0.374F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()];
-        } else if (aThickNess < 0.499F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()];
-        } else if (aThickNess < 0.749F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()];
-        } else if (aThickNess < 0.874F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()];
-        }
-
-        rgba = Dyes.getModulation(colorIndex, rgba);
-
-        return TextureFactory.of(texture, rgba);
+        Material material = getMaterial();
+        short[] materialRgba = MaterialUtils.rgba(material);
+        if (material == null || materialRgba == null) return Textures.BlockIcons.ERROR_RENDERING[0];
+        String iconName = connected ? getShapeHost().getName() : "pipeSide";
+        IIconContainer body = GTMaterialIcons.block(iconName, material);
+        short[] rgba = body.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
+        return TextureFactory.of(body, Dyes.getModulation(colorIndex, rgba));
     }
 
     protected static ITexture getRestrictorTexture(int borderMask) {
@@ -349,7 +311,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         if (tFluid != null && tFluid.amount > 0) {
             final int tTemperature = tFluid.getFluid()
                 .getTemperature(tFluid);
-            if (tTemperature > mHeatResistance) {
+            if (tTemperature > getHeatResistance()) {
                 if (aBaseMetaTileEntity.getRandomNumber(100) == 0) {
                     // Poof
                     GTLog.writeExplosionLog(aBaseMetaTileEntity, mName, "set to fire due to low heat resistance");
@@ -364,7 +326,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
                     mName,
                     "set blocks around to fire due to low heat resistance");
             }
-            if (!mGasProof && tFluid.getFluid()
+            if (!isGasProof() && tFluid.getFluid()
                 .isGaseous(tFluid)) {
                 tFluid.amount -= 5;
                 sendSound((byte) 9);
@@ -430,7 +392,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         }
 
         // How much of this fluid is available for distribution?
-        final double tAmount = Math.max(1, Math.min(mCapacity * 10, tFluid.amount));
+        final double tAmount = Math.max(1, Math.min(getBaseCapacity() * 10, tFluid.amount));
 
         final FluidStack maxFluid = tFluid.copy();
         maxFluid.amount = Integer.MAX_VALUE;
@@ -483,137 +445,12 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        // Only trigger if the player is sneaking
-        if (!aPlayer.isSneaking()) {
-            return;
-        }
+        if (!aPlayer.isSneaking()) return;
 
-        // Retrieve the item's MetaTileEntity
         final ItemStack handItem = aPlayer.inventory.getCurrentItem();
         if (handItem == null) return;
 
-        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
-        if (!(meta instanceof MTEFluidPipe handFluid)) return;
-
-        // Preserve old connections and meta ID
-        byte oldConnections = this.mConnections;
-        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
-
-        // Create the new fluid pipe
-        MTEFluidPipe newPipe = (MTEFluidPipe) handFluid.newMetaEntity(aBaseMetaTileEntity);
-        if (newPipe == null) return;
-
-        // Preserve old connections
-        newPipe.mConnections = oldConnections;
-        newPipe.mDisableInput = this.mDisableInput;
-
-        // Record old pipe parameters
-        long oldCapacity = this.mCapacity;
-        boolean oldGasProof = this.mGasProof;
-        int oldHeatResistance = this.mHeatResistance;
-
-        // Add fluid to the new pipe
-        if (this.mPipeAmount <= newPipe.mPipeAmount) {
-            for (int i = 0; i < mPipeAmount; i++) {
-                if (this.mFluids[i] != null) {
-                    newPipe.mFluids[i] = this.mFluids[i].copy();
-                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.getCapacity());
-                }
-            }
-        }
-
-        // Update to the new pipe
-        aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
-        newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
-
-        // Construct a change message if needed
-        IChatComponent message = new ChatComponentText("");
-        boolean hasContent = false;
-
-        // Compare capacity changes
-        if (oldCapacity != newPipe.mCapacity) {
-            EnumChatFormatting capacityColor = newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN
-                : EnumChatFormatting.RED;
-            message.appendText(formatNumber(oldCapacity * 20));
-            message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
-            message.appendText(" → ");
-            message.appendSibling(
-                new ChatComponentText(formatNumber(newPipe.mCapacity * 20L))
-                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
-            message.appendSibling(
-                new ChatComponentTranslation("gt.unit.liter_per_second")
-                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
-            hasContent = true;
-        }
-
-        // Compare heat resistance
-        if (oldHeatResistance != newPipe.mHeatResistance) {
-            if (hasContent) message.appendText(" | ");
-            EnumChatFormatting heatColor = newPipe.mHeatResistance > oldHeatResistance ? EnumChatFormatting.GREEN
-                : EnumChatFormatting.RED;
-            message.appendText(formatNumber(oldHeatResistance) + "K → ");
-            message.appendSibling(
-                new ChatComponentText(formatNumber(newPipe.mHeatResistance) + "K")
-                    .setChatStyle(new ChatStyle().setColor(heatColor)));
-            hasContent = true;
-        }
-
-        // Compare gas handling
-        if (oldGasProof != newPipe.mGasProof) {
-            if (hasContent) message.appendText(" | ");
-            EnumChatFormatting gasProofColor = newPipe.mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED;
-            message.appendSibling(
-                new ChatComponentTranslation(
-                    newPipe.mGasProof ? "GT5U.item.pipe.swap.now_gas_proof" : "GT5U.item.pipe.swap.no_longer_gas_proof")
-                        .setChatStyle(new ChatStyle().setColor(gasProofColor)));
-            hasContent = true;
-        }
-
-        // Send a chat message if anything changed. Only send server-side, since this method also runs
-        // client-side for responsive placement and would otherwise send the message twice.
-        if (hasContent && aBaseMetaTileEntity.isServerSide()) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.pipe.swap.s", message);
-        }
-
-        // Force updates to sync changes
-        aBaseMetaTileEntity.markDirty();
-        aBaseMetaTileEntity.issueTextureUpdate();
-        aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueTileUpdate();
-
-        // Handle inventory operations unless in creative mode
-        if (!aPlayer.capabilities.isCreativeMode) {
-            ItemStack oldPipe = new ItemStack(handItem.getItem(), 1, oldMetaID);
-            boolean addedToInventory = false;
-
-            // Attempt to stack with existing items
-            if (oldPipe != null) {
-                for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
-                    ItemStack slot = aPlayer.inventory.mainInventory[i];
-                    if (slot != null && slot.getItem() == oldPipe.getItem()
-                        && slot.getItemDamage() == oldPipe.getItemDamage()
-                        && slot.stackSize < slot.getMaxStackSize()) {
-                        slot.stackSize++;
-                        addedToInventory = true;
-                        break;
-                    }
-                }
-                // Add new stack if stacking failed
-                if (!addedToInventory) {
-                    addedToInventory = aPlayer.inventory.addItemStackToInventory(oldPipe);
-                }
-                // If still unsuccessful, drop the item
-                if (!addedToInventory) {
-                    aPlayer.dropPlayerItemWithRandomChoice(oldPipe, false);
-                }
-            }
-
-            // Decrement the placed pipe from the player's hand
-            handItem.stackSize--;
-            if (handItem.stackSize <= 0) {
-                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
-            }
-        }
+        trySwapShape(aBaseMetaTileEntity, aPlayer, handItem);
     }
 
     @Override
@@ -791,22 +628,22 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public final int getCapacity() {
-        return mCapacity * 20 * mPipeAmount;
+        return getBaseCapacity() * 20 * mPipeAmount;
     }
 
     @Override
     public FluidTankInfo getInfo() {
         for (FluidStack tFluid : mFluids) {
-            if (tFluid != null) return new FluidTankInfo(tFluid, mCapacity * 20);
+            if (tFluid != null) return new FluidTankInfo(tFluid, getBaseCapacity() * 20);
         }
-        return new FluidTankInfo(null, mCapacity * 20);
+        return new FluidTankInfo(null, getBaseCapacity() * 20);
     }
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         if (getCapacity() <= 0 && !getBaseMetaTileEntity().isSteampowered()) return GTValues.emptyFluidTankInfo;
         ArrayList<FluidTankInfo> tList = new ArrayList<>();
-        for (FluidStack tFluid : mFluids) tList.add(new FluidTankInfo(tFluid, mCapacity * 20));
+        for (FluidStack tFluid : mFluids) tList.add(new FluidTankInfo(tFluid, getBaseCapacity() * 20));
         return tList.toArray(new FluidTankInfo[mPipeAmount]);
     }
 
@@ -937,12 +774,13 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatNumber(mCapacity * 20L)));
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.fluidpipe.capacity.desc",
+                formatNumber(getBaseCapacity() * 20L)));
         descriptions.add(
             StatCollector
-                .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
-        if (!mGasProof) {
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(getHeatResistance())));
+        if (!isGasProof()) {
             descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }
         if (mPipeAmount != 1) {
@@ -990,17 +828,17 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
                 + EnumChatFormatting.BLUE
-                + formatNumber(mCapacity * 20L)
+                + formatNumber(getBaseCapacity() * 20L)
                 + " L/s");
 
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
                 + EnumChatFormatting.RED
-                + formatNumber(mHeatResistance)
+                + formatNumber(getHeatResistance())
                 + "K");
 
         // Gas handling info
-        if (mGasProof) {
+        if (isGasProof()) {
             currenttip.add(
                 StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
                     + EnumChatFormatting.GREEN
@@ -1034,9 +872,47 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             .get(border);
     }
 
+    /// The per-channel throughput in liters per tick; see [#getCapacity] for the total tank volume.
+    public int getBaseCapacity() {
+        Material material = shapeMaterial();
+        if (material == null) return 0;
+        if (material == Materials.Wood) {
+            return bespokeCapacity(PipeMaterials.WOOD_FLUID_PIPE_CAPACITY);
+        }
+        if (material == Materials.Redstone) {
+            return bespokeCapacity(PipeMaterials.HIGH_PRESSURE_FLUID_PIPE_CAPACITY);
+        }
+        Integer base = material.getProperty(PipeProperties.BASE_PIPE_FLOW);
+        if (base == null) return 0;
+        return switch (mPipeAmount) {
+            case PipeStats.QUADRUPLE_PIPE_AMOUNT -> PipeStats.quadrupleFluidPipeCapacity(base);
+            case PipeStats.NONUPLE_PIPE_AMOUNT -> PipeStats.nonupleFluidPipeCapacity(base);
+            default -> PipeStats.fluidPipeCapacity(base, getShapeSizeIndex());
+        };
+    }
+
+    /// A per-size capacity from the wooden/High Pressure constant arrays, which cover the small, medium,
+    /// and large sizes only (size steps 1 to 3).
+    private int bespokeCapacity(int[] capacities) {
+        int step = getShapeSizeIndex() - 1;
+        return step >= 0 && step < capacities.length ? capacities[step] : 0;
+    }
+
+    public int getHeatResistance() {
+        Material material = shapeMaterial();
+        if (material == null) return 0;
+        Integer heatResistance = material.getProperty(PipeProperties.PIPE_HEAT_RESISTANCE);
+        return heatResistance == null ? 0 : heatResistance;
+    }
+
+    public boolean isGasProof() {
+        Material material = shapeMaterial();
+        return material == null || material.getProperty(PipeProperties.PIPE_GAS_PROOF);
+    }
+
     @Override
-    public IOreMaterial getMaterial() {
-        return mMaterial;
+    public Material getMaterial() {
+        return shapeMaterial();
     }
 
     @Override
@@ -1046,25 +922,23 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public String getMaterialKeyOverride() {
-        return materialKeyOverride;
+        return PipeShapeItemBlock.overrideKeyFor(shapeMaterial(), ".fluidpipe.newname");
     }
 
     @Override
     public boolean shouldSkipMaterialTooltip() {
-        return shouldSkipMaterialTooltip;
+        return PipeShapeItemBlock.skipsMaterialTooltip(shapeMaterial());
     }
 
-    public MTEFluidPipe renameMaterial(String newName) {
-        if (newName == null) return this;
-        final String key = mMaterial.getLocalizedNameKey() + ".fluidpipe.newname";
-        GTLanguageManager.addStringLocalization(key, newName);
-        this.materialKeyOverride = key;
-        return this;
-    }
-
-    public MTEFluidPipe setShouldSkipMaterialTooltip(boolean shouldSkipMaterialTooltip) {
-        this.shouldSkipMaterialTooltip = shouldSkipMaterialTooltip;
-        return this;
+    /// Clamps carried fluid volumes to the new material's capacity after an in-place shape swap.
+    @Override
+    protected void onShapeSwapped() {
+        int perChannel = getCapacity() / mPipeAmount;
+        for (int i = 0; i < mPipeAmount; i++) {
+            if (mFluids[i] != null && mFluids[i].amount > perChannel) {
+                mFluids[i].amount = perChannel;
+            }
+        }
     }
 
     protected enum Border {

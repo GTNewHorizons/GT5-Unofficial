@@ -3,15 +3,13 @@ package kekztech.common.recipeLoaders;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import net.minecraft.item.ItemStack;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import kekztech.Items;
-import kekztech.common.items.ErrorItem;
 import kekztech.common.items.MetaItemCraftingComponent;
 
 public class Mixer implements Runnable {
@@ -32,8 +30,7 @@ public class Mixer implements Runnable {
         // GDC Ceramic Dust
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator
-                    .get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
+                MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 1),
                 craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9))
             .circuit(6)
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10))

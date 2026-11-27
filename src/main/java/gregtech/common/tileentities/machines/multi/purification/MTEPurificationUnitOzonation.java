@@ -30,18 +30,21 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -186,7 +189,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     "bonus",
                     SUCCESS_PER_OZONE_DOUBLING,
                     "ozone",
-                    Materials.Ozone.getGas(1)
+                    MaterialLibAPI.getFluidStack(Materials.Ozone, FluidShapes.fluidGas, 1)
                         .getLocalizedName()))
             .beginStructureBlock(9, 10, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
@@ -198,7 +201,10 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     "GT5U.tooltip.windmill.any_color",
                     StatCollector.translateToLocal("gt.blocktintedglass.name")),
                 false)
-            .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.TungstenSteel), false)
+            .addCasing(
+                "6",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.TungstenSteel)),
+                false)
             .addCasing("3", Casings.PTFEPipeCasing.getLocalizedName(), false)
             .addInputHatch("2+", StatCollector.translateToLocal("gt.mbtt.structure.ozonation_input_hatch"), 1, 2)
             .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_filtration_casing"), 1)
@@ -222,7 +228,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         if (!result.wasSuccessful()) return result;
         // Look for ozone, blow up if more than max allowed
         for (FluidStack fluid : this.storedFluids) {
-            if (fluid.isFluidEqual(Materials.Ozone.getGas(1L))) {
+            if (fluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Ozone, FluidShapes.fluidGas, 1))) {
                 if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
                     this.explodeMultiblock();
                 }

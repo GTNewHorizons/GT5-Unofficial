@@ -2,10 +2,8 @@ package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
-import static gregtech.api.GregTechAPI.sBlockMetal6;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -35,18 +33,21 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -83,7 +84,6 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_LEGACY = "legacy";
 
     private IStructureDefinition<MTESteamCompressor> STRUCTURE_DEFINITION = null;
 
@@ -128,7 +128,7 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         if (block == Blocks.iron_block) {
             return 1;
         }
-        if (block == sBlockMetal6 && meta == 13) {
+        if (block == MaterialLibAPI.getBlock(BlockShapes.block) && meta == Materials.Steel.getIndex()) {
             return 2;
         }
         return null;
@@ -192,10 +192,6 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamCompressor>builder()
                 // spotless:off
-                .addShape(STRUCTURE_PIECE_LEGACY, transpose( new String[][] {
-                    { "AAA", "AAA", "AAA", "AAA" },
-                    { "A~A", "A-A", "A-A", "AAA" },
-                    { "AAA", "AAA", "AAA", "AAA" }}))
                 .addShape(STRUCTURE_PIECE_MAIN, new String[][]{
                     {"CCC", "C~C", "CCC"},
                     {"AAA", "AAA", "AAA"},
@@ -236,7 +232,9 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
                     'E',
                     ofBlocksTiered(
                         MTESteamCompressor::getTierBlock,
-                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
+                        ImmutableList.of(
+                            Pair.of(Blocks.iron_block, 0),
+                            Pair.of(MaterialLibAPI.getBlock(BlockShapes.block), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierBlock = m,
                         t -> t.tierBlock))
@@ -266,31 +264,6 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        tierMachineCasing = -1;
-        tierBlock = -1;
-        tierPipeCasing = -1;
-        casingAmount = 0;
-
-        if (checkPiece(STRUCTURE_PIECE_LEGACY, 1, 1, 0, null)) {
-            // Legacy structure shape matched — commit to it
-            checkCasingMin(errors, casingAmount, 14);
-            if (tierMachineCasing >= 1 && tierMachineCasing <= 2) {
-                tierMachine = tierMachineCasing;
-                updateHatchTexture();
-            } else {
-                // We *could* also check for modern structure
-                // However, since this pass checkPiece for legacy, most likely this cannot happen anyway
-                // This branch means that the component tier mismatched
-                errors.add(StructureErrorRegistry.UNKNOWN_TIER);
-                return;
-            }
-            checkHasSteamInput(errors);
-            checkHasSteamInputBus(errors);
-            checkHasSteamOutputBus(errors);
-            return;
-        }
-
-        // Try new structure
         tierMachineCasing = -1;
         tierBlock = -1;
         tierPipeCasing = -1;
@@ -372,12 +345,18 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
             .addCasing("14-27", Casings.BronzePlatedBricks.getLocalizedName(), false)
             .addCasing("10", Casings.BronzePipeCasing.getLocalizedName(), false)
-            .addCasing("6", OrePrefixes.block.getLocalizedNameForItem(Materials.Iron), false)
+            .addCasing(
+                "6",
+                OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Iron)),
+                false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
             .addCasing("14-27", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
             .addCasing("10", Casings.SteelPipeCasing.getLocalizedName(), false)
-            .addCasing("6", OrePrefixes.block.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing(
+                "6",
+                OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)),
+                false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher();

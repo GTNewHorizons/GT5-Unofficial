@@ -23,10 +23,11 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 
 // mostly stolen from gt5 itself.
 public class GGMetaItemDumbItems extends MetaBaseItem {
@@ -69,7 +70,7 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
                 continue;
             }
             if (tRandomData == SubTag.NO_UNIFICATION) {
-                GTOreDictUnificator.addToBlacklist(rStack);
+                OreDictUtils.addToBlacklist(rStack);
             }
         }
         // now check for the rest
@@ -94,12 +95,12 @@ public class GGMetaItemDumbItems extends MetaBaseItem {
                 ((TCAspects.TC_AspectStack) tRandomData).addToAspectList(tAspects);
             } else if (tRandomData instanceof ItemData) {
                 if (GTUtility.isStringValid(tRandomData)) {
-                    GTOreDictUnificator.registerOre(tRandomData, rStack);
+                    OreDictUtils.registerOre(tRandomData, rStack);
                 } else {
-                    GTOreDictUnificator.addItemData(rStack, (ItemData) tRandomData);
+                    MaterialData.add(rStack, (ItemData) tRandomData);
                 }
             } else if (tUseOreDict) {
-                GTOreDictUnificator.registerOre(tRandomData, rStack);
+                OreDictUtils.registerOre(tRandomData, rStack);
             }
         }
         if (GregTechAPI.sThaumcraftCompat != null)

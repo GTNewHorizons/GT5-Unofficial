@@ -39,8 +39,6 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import gregtech.GTLoggers;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTModHandler;
@@ -240,14 +238,6 @@ public abstract class MetaBaseItem extends GTGenericItem
             GTLoggers.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
-    }
-
-    /** Returns null for item damage out of bounds. */
-    public Materials getMaterial(int damage) {
-        if (!Materials.isMaterialItem(damage)) {
-            return null;
-        }
-        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
     }
 
     @Override

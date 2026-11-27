@@ -41,15 +41,16 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
@@ -422,7 +423,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     .put("low_output_mult", LOW_OUTPUT_MULT * 100)
                     .put("high_output_mult", HIGH_OUTPUT_MULT * 100)
                     .build())
-            .addSupportAny()
             .beginStructureBlock(9, 10, 8, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_machine_casing"), 1)
@@ -434,11 +434,17 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
             .addCasing("15-36", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("24", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
-            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DamascusSteel), false)
+            .addCasing(
+                "20",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.DamascusSteel)),
+                false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
             .addCasing("35-96", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
-            .addCasing("75", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing(
+                "75",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Tungsten)),
+                false)
             .addCasing("74", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("20", StatCollector.translateToLocal("preciseUnitCasing.name"), true)
             .addStructureInfo("")
@@ -446,7 +452,10 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addCasing("50-134", Casings.AdvancedIridiumPlatedMachineCasing.getLocalizedName(), false)
             .addCasing("67", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("26", StatCollector.translateToLocal("preciseUnitCasing.name"), true)
-            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)
+            .addCasing(
+                "24",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Tungsten)),
+                false)
             .addCasing("6", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))

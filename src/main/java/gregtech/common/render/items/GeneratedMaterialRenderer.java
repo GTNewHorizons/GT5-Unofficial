@@ -1,5 +1,6 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
 
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtility;
 
 public class GeneratedMaterialRenderer implements IItemRenderer {
@@ -48,7 +50,10 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem == null) return;
+
+        IIconContainer container = aItem.getIconContainer(aMetaData);
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {
@@ -56,34 +61,63 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
         }
 
         for (int pass = 0; pass < passes; pass++) {
-            IIcon tIcon = aItem.getIcon(aMetaData, pass);
-            IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
             FluidStack aFluid = GTUtility.getFluidForFilledItem(aStack, true);
 
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-            if (tIcon != null) {
-                renderRegularItem(type, aStack, tIcon, aFluid == null, pass, data);
-            }
+            if (container != null) {
+                IIcon base = container.getLayerIcon(0);
+                if (base != null && base != INVISIBLE_ICON) {
+                    renderRegularItem(type, aStack, base, aFluid == null, pass, data);
+                }
 
-            if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
-                IIcon fluidIcon = aFluid.getFluid()
-                    .getIcon(aFluid);
-                if (fluidIcon != null) {
-                    // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
-                    renderContainedFluid(type, aFluid, fluidIcon);
+                if (container.getIconPasses() > 1 && aFluid != null && aFluid.getFluid() != null) {
+                    renderContainedFluid(type, aFluid);
+                }
+
+                renderUpperLayers(type, aStack, aItem, container);
+            } else {
+                IIcon tIcon = aItem.getIcon(aMetaData, pass);
+                IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
+
+                if (tIcon != null) {
+                    renderRegularItem(type, aStack, tIcon, aFluid == null, pass, data);
+                }
+
+                if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
+                    renderContainedFluid(type, aFluid);
+                }
+
+                if (tOverlay != null && tOverlay != INVISIBLE_ICON) {
+                    GL11.glColor3f(1.0F, 1.0F, 1.0F);
+                    TextureUtils.bindAtlas(aItem.getSpriteNumber());
+                    renderItemOverlay(type, tOverlay);
                 }
             }
 
-            if (tOverlay != null && tOverlay != INVISIBLE_ICON) {
-                GL11.glColor3f(1.0F, 1.0F, 1.0F);
-                TextureUtils.bindAtlas(aItem.getSpriteNumber());
-                renderItemOverlay(type, tOverlay);
-            }
-
             GL11.glDisable(GL11.GL_BLEND);
+        }
+    }
+
+    /**
+     * Draws every icon layer of {@code container} above layer 0 through {@link #renderItemOverlay}, tinted with the
+     * layer's color, or with the stack's color for a color-modulated layer. Override icons draw untinted. Binds the
+     * item atlas ahead of them.
+     */
+    protected void renderUpperLayers(ItemRenderType type, ItemStack aStack, IGT_ItemWithMaterialRenderer aItem,
+        IIconContainer container) {
+        int passes = container.getIconPasses();
+        if (passes > 1) TextureUtils.bindAtlas(aItem.getSpriteNumber());
+
+        for (int layer = 1; layer < passes; layer++) {
+            IIcon icon = container.getLayerIcon(layer);
+            if (icon == null || icon == INVISIBLE_ICON) continue;
+            short[] color = container.hasOverrideIcon() ? UNCOLORED_RGBA
+                : container.isUsingColorModulation(layer) ? aItem.getRGBa(aStack) : container.getIconColor(layer);
+            GL11.glColor3f(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F);
+            renderItemOverlay(type, icon);
         }
     }
 
@@ -93,7 +127,8 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
     }
 
     protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
+        IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
+        if (aItem == null) return;
 
         if (shouldModulateColor) {
             short[] tModulation = aItem.getRGBa(aStack);
@@ -101,6 +136,24 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
         }
 
         ItemRenderUtil.renderItem(type, icon);
+    }
+
+    /**
+     * @return Whether {@code stack} renders from a resource pack override icon, which carries its own colors. See
+     *         {@link IGT_ItemWithMaterialRenderer#hasOverrideIcon}.
+     */
+    protected static boolean hasOverrideIcon(ItemStack stack) {
+        IGT_ItemWithMaterialRenderer item = IGT_ItemWithMaterialRenderer.resolve(stack);
+        return item != null && item.hasOverrideIcon(stack);
+    }
+
+    /**
+     * Draws the fluid {@code aFluidStack} holds, clipped to the art already drawn, when that fluid has an icon.
+     */
+    protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack) {
+        IIcon fluidIcon = aFluidStack.getFluid()
+            .getIcon(aFluidStack);
+        if (fluidIcon != null) renderContainedFluid(type, aFluidStack, fluidIcon);
     }
 
     protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {

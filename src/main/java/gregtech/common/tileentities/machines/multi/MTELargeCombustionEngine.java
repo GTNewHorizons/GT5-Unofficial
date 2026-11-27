@@ -6,10 +6,10 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -31,16 +31,19 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
@@ -122,7 +125,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.large_combustion_engine.machine_type"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "large-combustion-engine"),
                 ImmutableMap.<String, Object>builder()
@@ -162,10 +165,10 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             side,
             aFacing,
             aActive,
-            OVERLAY_FRONT_DIESEL_ENGINE,
-            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
-            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+            OVERLAY_FRONT_COMBUSTION_ENGINE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_GLOW,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE,
+            OVERLAY_FRONT_COMBUSTION_ENGINE_ACTIVE_GLOW);
     }
 
     @Override
@@ -201,7 +204,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     protected FluidStack getBooster(long amount) {
-        return Materials.Oxygen.getGas(amount);
+        return MaterialUtils.gas(Materials.Oxygen, amount);
     }
 
     /**
@@ -274,8 +277,11 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                 }
 
                 // Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-                if ((mRuntime % 72 == 0 || mRuntime == 0)
-                    && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
+                if ((mRuntime % 72 == 0 || mRuntime == 0) && !depleteInput(
+                    MaterialLibAPI.getFluidStack(
+                        Materials.Lubricant,
+                        FluidShapes.fluidLiquid,
+                        (int) ((boostEu ? 2 : 1) * getAdditiveFactor()))))
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel

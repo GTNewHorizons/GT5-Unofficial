@@ -49,9 +49,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -482,7 +482,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private void processComponentInputs() {
-        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true);
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true, true);
 
         // Convert finished circuit CCs to real circuit items and add them as output.
         for (ArrayList<MTEHatchVacuumConveyor> hatchList : this.vacuumConveyors.allHatches()) {

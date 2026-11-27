@@ -1,7 +1,5 @@
 package gregtech.api.enums;
 
-import org.intellij.lang.annotations.MagicConstant;
-
 public class OrePrefixBuilder {
 
     private final String name;
@@ -12,13 +10,10 @@ public class OrePrefixBuilder {
     private boolean isMaterialBased = false;
     private boolean isSelfReferencing = false;
     private boolean isContainer = false;
-    private boolean skipActiveUnification = false;
     private boolean isRecyclable = false;
     private boolean isEnchantable = false;
-    private int materialGenerationBits = 0;
     private long materialAmount = -1;
     private int defaultStackSize = 64;
-    private int textureIndex = -1;
 
     public OrePrefixBuilder(String name) {
         this.name = name;
@@ -35,13 +30,10 @@ public class OrePrefixBuilder {
             isMaterialBased,
             isSelfReferencing,
             isContainer,
-            skipActiveUnification,
             isRecyclable,
             isEnchantable,
-            materialGenerationBits,
             materialAmount,
-            defaultStackSize,
-            textureIndex
+            defaultStackSize
             // spotless:on
         );
     }
@@ -84,11 +76,6 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    public OrePrefixBuilder skipActiveUnification() {
-        this.skipActiveUnification = true;
-        return this;
-    }
-
     /** Marks this prefix as recyclable (e.g. maceration, fluid-extraction). */
     public OrePrefixBuilder recyclable() {
         this.isRecyclable = true;
@@ -98,12 +85,6 @@ public class OrePrefixBuilder {
     /** Marks this prefix as enchantable. */
     public OrePrefixBuilder enchantable() {
         this.isEnchantable = true;
-        return this;
-    }
-
-    public OrePrefixBuilder materialGenerationBits(
-        @MagicConstant(flagsFromClass = OrePrefixes.class) int materialGenerationBits) {
-        this.materialGenerationBits = materialGenerationBits;
         return this;
     }
 
@@ -119,9 +100,4 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    /** Sets the texture index used for this prefix. See {@link OrePrefixTextureID}. */
-    public OrePrefixBuilder textureIndex(@MagicConstant(flagsFromClass = OrePrefixTextureID.class) int textureIndex) {
-        this.textureIndex = textureIndex;
-        return this;
-    }
 }

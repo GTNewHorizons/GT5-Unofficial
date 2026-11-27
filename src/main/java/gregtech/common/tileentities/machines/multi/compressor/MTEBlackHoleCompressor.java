@@ -51,16 +51,18 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -68,6 +70,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -169,8 +172,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @SideOnly(Side.CLIENT)
     private SoundLoopAnyBlock blackholeSoundLoop;
 
-    private final FluidStack blackholeCatalyzingCost = (Materials.SpaceTime).getMolten(1);
-    private int catalyzingCostModifier = 1;
+    private final FluidStack blackholeCatalyzingCost = MaterialLibAPI
+        .getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1);
+    private long catalyzingCostModifier = 1;
 
     public MTEBlackHoleCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -373,7 +377,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.middle_of_structure_6th_layer"))
             .addCasing("3667-3671", Casings.ExtremeDensitySpaceBendingCasing.getLocalizedName(), false)
             .addCasing("950-985", Casings.BackgroundRadiationAbsorbentCasing.getLocalizedName(), false)
-            .addCasing("144", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing("144", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.NaquadahAlloy)), false)
             .addCasing("64", Casings.HawkingRadiationRealignmentFocus.getLocalizedName(), false)
             .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.UtilityHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_absorbent_casing"), 1)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_absorbent_casing"), 1)
@@ -426,7 +430,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("catalyzingCounter")) catalyzingCounter = aNBT.getInteger("catalyzingCounter");
-        if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getInteger("catalyzingCostModifier");
+        if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getLong("catalyzingCostModifier");
         if (aNBT.hasKey("blackHoleStatus")) blackHoleStatus = aNBT.getByte("blackHoleStatus");
         if (aNBT.hasKey("blackHoleStability")) blackHoleStability = aNBT.getFloat("blackHoleStability");
         if (aNBT.hasKey("shouldRender")) shouldRender = aNBT.getBoolean("shouldRender");
@@ -436,7 +440,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("catalyzingCounter", catalyzingCounter);
-        aNBT.setInteger("catalyzingCostModifier", catalyzingCostModifier);
+        aNBT.setLong("catalyzingCostModifier", catalyzingCostModifier);
         aNBT.setByte("blackHoleStatus", blackHoleStatus);
         aNBT.setFloat("blackHoleStability", blackHoleStability);
         aNBT.setBoolean("shouldRender", shouldRender);
@@ -672,7 +676,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0
             // Every 30 drains, double the cost
-            FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+            FluidStack totalCost = GTUtility.copyAmount(catalyzingCostModifier, blackholeCatalyzingCost);
 
             for (MTEHatchInput hatch : spacetimeHatches) {
                 if (drain(hatch, totalCost, false)) {
@@ -680,8 +684,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     catalyzingCounter += 1;
                     stabilityDecrease = 0;
                     if (catalyzingCounter >= 30) {
-                        // Hidden cap at 1B per tick so we don't integer overflow
-                        if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
+                        // Hidden cap at LONGMAX/2 per tick so we don't long overflow
+                        if (catalyzingCostModifier <= Long.MAX_VALUE / 2) catalyzingCostModifier *= 2;
                         catalyzingCounter = 0;
                     }
                     didDrain = true;

@@ -50,16 +50,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -223,7 +224,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             .addCasing("145-151", Casings.NaquadahReinforcedDistillationCasing.getLocalizedName(), false)
             .addCasing("84", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("80", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
-            .addCasing("14", OrePrefixes.sheetmetal.getLocalizedNameForItem(Materials.Naquadah), false)
+            .addCasing("14", OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Naquadah)), false)
             .addCasing("9", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_reinforced_distillation_casing"), 1)

@@ -35,13 +35,6 @@ public interface ITextureBuilder {
     ITextureBuilder setRGBA(final short[] rgba);
 
     /**
-     * Texture will render with same orientation as with vanilla blocks
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder stdOrient();
-
-    /**
      * Texture will orientate from block's {@link ExtendedFacing}
      *
      * @return {@link ITextureBuilder} for chaining
@@ -56,6 +49,19 @@ public interface ITextureBuilder {
      * @implSpec Must be overridden to actually do something
      */
     default ITextureBuilder glow(boolean glow) {
+        return this;
+    }
+
+    /**
+     * Texture drops its RGBA tint on any draw where the icon comes from a resource pack override location, which
+     * carries its own colors. Evaluated per draw, so the built {@link ITexture} may be cached across resource
+     * reloads. See {@link IIconContainer#hasOverrideIcon}.
+     *
+     * @return {@link ITextureBuilder} for chaining
+     *
+     * @implSpec Must be overridden to actually do something
+     */
+    default ITextureBuilder untintOverrideIcon() {
         return this;
     }
 

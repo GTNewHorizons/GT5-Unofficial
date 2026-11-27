@@ -31,7 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

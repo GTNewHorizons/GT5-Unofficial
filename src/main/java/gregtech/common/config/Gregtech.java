@@ -121,20 +121,10 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public int maxLogStackSize;
 
-        @Config.Comment("Controls the stacksize of every oredicted prefix based items used for blocks (if that even makes sense)")
-        @Config.DefaultInt(64)
-        @Config.RequiresMcRestart
-        public int maxOtherBlocksStackSize;
-
         @Config.Comment("Controls the stacksize of oredicted planks.")
         @Config.DefaultInt(64)
         @Config.RequiresMcRestart
         public int maxPlankStackSize;
-
-        @Config.Comment("Controls the stacksize of oredicted items used in ore treatment.")
-        @Config.DefaultInt(64)
-        @Config.RequiresMcRestart
-        public int maxOreStackSize;
 
         @Config.Comment("Controls the stacksize of IC2 overclocker upgrades.")
         @Config.DefaultInt(4)
@@ -158,6 +148,13 @@ public class Gregtech {
             + "If false, only the explosion effect plays, with no damage.")
         @Config.DefaultBoolean(true)
         public boolean explosiveFoodDamage;
+
+        @Config.Comment("If true, entities can climb the uncovered horizontal sides of frame boxes like ladders.")
+        @Config.DefaultBoolean(true)
+        @Config.Name("ClimbableFrameBox")
+        @Config.Sync
+        @Config.RequiresWorldRestart
+        public boolean climbableFrameBox;
 
         @Config.Comment("Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn.")
         @Config.DefaultInt(100)
@@ -193,11 +190,6 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean drinksAlwaysDrinkable;
-
-        @Config.Comment("if true, shows all the metaitems in creative and in NEI.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean doShowAllItemsInCreative;
 
         @Config.Comment("if true, makes the GT5U sounds multi-threaded.")
         @Config.DefaultBoolean(false)
@@ -239,20 +231,10 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean survivalIntoAdventure;
 
-        @Config.Comment("If true, enables the item oredification of the items in the inventory.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean inventoryUnification;
-
         @Config.Comment("if true, enables GT5U and GT++ bees.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean GTBees;
-
-        @Config.Comment("if true, enables crafting unification.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean craftingUnification;
 
         @Config.Comment("If true, nerfs planks recipes.")
         @Config.DefaultBoolean(true)
@@ -268,11 +250,6 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean achievements;
-
-        @Config.Comment("if true, enables all the materials in GT5U.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean enableAllMaterials;
 
         @Config.Comment("Controls the amount of tick over the lag averaging is done with the scanner.")
         @Config.DefaultInt(25)
@@ -308,11 +285,6 @@ public class Gregtech {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean mixedOreOnlyYieldsTwoThirdsOfPureOre;
-
-        @Config.Comment("if true, rich ores yield twice as much as normal ores.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean richOreYieldMultiplier;
 
         @Config.Comment("if true, nether ores yield twice as much as normal ores.")
         @Config.DefaultBoolean(true)
@@ -413,20 +385,10 @@ public class Gregtech {
     @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")
     public static class HarvestLevel {
 
-        @Config.Comment("Activate Harvest Level Change")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean activateHarvestLevelChange;
-
         @Config.Comment("Maximum harvest level")
         @Config.DefaultInt(7)
         @Config.RequiresMcRestart
         public int maxHarvestLevel;
-
-        @Config.Comment("GraniteHarvestLevel harvest level")
-        @Config.DefaultInt(3)
-        @Config.RequiresMcRestart
-        public int graniteHarvestLevel;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.machines")
@@ -600,16 +562,8 @@ public class Gregtech {
     @Config.LangKey("GT5U.gui.config.gregtech.void_miners")
     public static class VoidMiners {
 
-        @Config.Comment("List of GregTech material names to adjust weight. Example line: \"Aluminium : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.Materials")
-        @Config.Name("Deep Dark GT Ore Weights")
-        public String[] gregtechWeightsDD;
-
-        @Config.Comment("List of BartWorks material names to adjust weight. Example line: \"Bismutite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: bartworks.system.material.Werkstoff")
-        @Config.Name("Deep Dark BW Ore Weights")
-        public String[] bartworksWeightsDD;
-
-        @Config.Comment("List of GT++ material names to adjust weight. Example line: \"Cerite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gtPlusPlus.core.material.ORES")
-        @Config.Name("Deep Dark GT++ Ore Weights")
-        public String[] gtppWeightsDD;
+        @Config.Comment("List of material names to adjust ore weight. Example line: \"Aluminium : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.materials.Materials")
+        @Config.Name("Deep Dark Ore Weights")
+        public String[] oreWeightsDD;
     }
 }

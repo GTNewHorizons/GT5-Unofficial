@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -12,14 +11,20 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import binnie.extrabees.apiary.machine.mutator.AlvearyMutator;
 import forestry.api.recipes.ICentrifugeRecipe;
 import forestry.api.recipes.ISqueezerRecipe;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.ProcessingSubstitutes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -31,7 +36,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Bee_Drone.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Bee_Drone.getWithName(1L, "Scanned Drone"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -42,7 +47,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Bee_Princess.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Bee_Princess.getWithName(1L, "Scanned Princess"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -53,7 +58,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Bee_Queen.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Bee_Queen.getWithName(1L, "Scanned Queen"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -64,7 +69,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Tree_Sapling.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Tree_Sapling.getWithName(1L, "Scanned Sapling"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -75,7 +80,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Butterfly.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Butterfly.getWithName(1L, "Scanned Butterfly"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -86,7 +91,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Larvae.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Larvae.getWithName(1L, "Scanned Larvae"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -97,7 +102,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Serum.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Serum.getWithName(1L, "Scanned Serum"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -108,7 +113,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_Caterpillar.getWildcard(1L))
                 .itemOutputs(ItemList.FR_Caterpillar.getWithName(1L, "Scanned Caterpillar"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -119,7 +124,7 @@ public class GTForestryCompat {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.FR_PollenFertile.getWildcard(1L))
                 .itemOutputs(ItemList.FR_PollenFertile.getWithName(1L, "Scanned Pollen"))
-                .fluidInputs(Materials.Honey.getFluid(100L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 100))
                 .duration(25 * SECONDS)
                 .eut(2)
                 .ignoreCollision()
@@ -150,10 +155,9 @@ public class GTForestryCompat {
                     .copy();
                 i++;
             }
-            GTOreDictUnificator.setStackArray(true, true, tOutputs);
             GTValues.RA.stdBuilder()
                 .itemInputs(tRecipe.getInput())
-                .itemOutputs(convert(tOutputs))
+                .itemOutputs(ProcessingSubstitutes.platinumGroup(null, tOutputs))
                 .outputChances(tChances)
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(5)
@@ -179,5 +183,13 @@ public class GTForestryCompat {
                     .addTo(RecipeMaps.fluidExtractionRecipes);
             }
         }
+    }
+
+    public static void registerExtraBeesMutatorItems() {
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Uranium, Shapes.ingot, 1), 2.0f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.ingot, 1), 10.0f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.nugget, 1), 5.5f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.ingot, 1), 15.0f);
+        AlvearyMutator.addMutationItem(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.nugget, 1), 9.0f);
     }
 }

@@ -35,15 +35,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -117,7 +118,10 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addCasing("12", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addCasing("8", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addCasing("4", Casings.SteelFireboxCasing.getLocalizedName(), false)
-            .addCasing("2", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing(
+                "2",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Steel)),
+                false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)

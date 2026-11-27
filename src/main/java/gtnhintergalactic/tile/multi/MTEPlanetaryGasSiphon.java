@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasingAdvanced;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
@@ -42,13 +43,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -162,7 +162,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
                     "             ", "             ", "             ", "             ", "             ",
                     "             ", "             " } })
         .addElement('B', ofFrame(Materials.TungstenSteel))
-        .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 88))
+        .addElement('D', ofBlockCasingAdvanced(Materials.RhodiumPlatedPalladium))
         .addElement(
             'C',
             ofChain(

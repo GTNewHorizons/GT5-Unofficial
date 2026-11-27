@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.ModContainer;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -359,7 +358,7 @@ public final class RecipeLookupValidator {
     private void validateRecipe(RecipeLookupValidationTarget target, List<GTRecipe> recipes, GTRecipe recipe) {
         RecipeMapBackend backend = target.backend;
         ItemStack[] rawItems = recipe.mInputs == null ? new ItemStack[0] : recipe.mInputs;
-        ItemStack[] items = GTOreDictUnificator.getStackArray(true, (Object[]) rawItems);
+        ItemStack[] items = GTUtility.copyItemArray(rawItems);
         FluidStack[] fluids = recipe.mFluidInputs == null ? new FluidStack[0] : recipe.mFluidInputs;
         ItemStack specialSlot = recipe.mSpecialItems instanceof ItemStack ? (ItemStack) recipe.mSpecialItems : null;
         String preLookupRejectReason = preLookupRejectReason(backend, items, fluids);

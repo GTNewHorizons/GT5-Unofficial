@@ -3,16 +3,14 @@ package bwcrossmod.galacticgreg;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import bartworks.system.material.Werkstoff;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.StoneType;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
-import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
-import gregtech.common.ores.GTPPOreAdapter;
-import gregtech.common.ores.OreInfo;
-import gtPlusPlus.core.material.Material;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 
@@ -20,73 +18,19 @@ public class VoidMinerLoader {
 
     private static final Logger LOGGER = LogManager.getLogger(VoidMinerLoader.class);
 
+    /// Adds every material with an ore on [StoneType#Stone] to the Deep Dark void miner list, weighted by
+    /// [Gregtech.VoidMiners#oreWeightsDD].
     public static void init() {
-        initGT();
-        initBW();
-        initGTPP();
-    }
+        var weights = parseWeights(Gregtech.voidMiners.oreWeightsDD);
 
-    private static void initGT() {
-        OreInfo<Materials> info = OreInfo.getNewInfo();
-        info.stoneType = StoneType.Stone;
-        info.isSmall = false;
-
-        var weights = parseWeights(Gregtech.voidMiners.gregtechWeightsDD);
-
-        for (Materials mat : Materials.getAll()) {
-            info.material = mat;
-
-            if (!GTOreAdapter.INSTANCE.supports(info)) continue;
+        for (Material mat : MaterialLibAPI.getMaterials()) {
+            if (GTOreAdapter.INSTANCE.getVariantStack(mat, StoneType.Stone, false) == null) continue;
 
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,
                 mat,
-                weights.getFloat(mat.getInternalName()));
+                weights.getFloat(MaterialUtils.internalName(mat)));
         }
-
-        info.release();
-    }
-
-    private static void initBW() {
-        OreInfo<Werkstoff> info = OreInfo.getNewInfo();
-        info.stoneType = StoneType.Stone;
-        info.isSmall = false;
-
-        var weights = parseWeights(Gregtech.voidMiners.bartworksWeightsDD);
-
-        for (Werkstoff mat : Werkstoff.werkstoffHashSet) {
-            info.material = mat;
-
-            if (!BWOreAdapter.INSTANCE.supports(info)) continue;
-
-            VoidMinerUtility.addMaterialToDimensionList(
-                DimensionDef.DimNames.DEEPDARK,
-                mat,
-                weights.getFloat(mat.getInternalName()));
-        }
-
-        info.release();
-    }
-
-    private static void initGTPP() {
-        OreInfo<Material> info = OreInfo.getNewInfo();
-        info.stoneType = StoneType.Stone;
-        info.isSmall = false;
-
-        var weights = parseWeights(Gregtech.voidMiners.gtppWeightsDD);
-
-        for (Material mat : Material.mMaterialMap) {
-            info.material = mat;
-
-            if (!GTPPOreAdapter.INSTANCE.supports(info)) continue;
-
-            VoidMinerUtility.addMaterialToDimensionList(
-                DimensionDef.DimNames.DEEPDARK,
-                mat,
-                weights.getFloat(mat.getInternalName()));
-        }
-
-        info.release();
     }
 
     private static Object2FloatMap<String> parseWeights(String[] lines) {

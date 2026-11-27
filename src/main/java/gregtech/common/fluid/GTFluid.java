@@ -2,24 +2,23 @@ package gregtech.common.fluid;
 
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.ShapeFluidInContainer;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
 import gregtech.api.util.GTLanguageManager;
@@ -125,6 +124,9 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     @Override
     public IGTRegisteredFluid registerContainers(final ItemStack fullContainer, final ItemStack emptyContainer,
         final int containerSize) {
+        // A MaterialLib fluid-in-container shape registers its own mapping at MaterialLib's init, and
+        // FluidContainerRegistry keeps only one entry per filled item.
+        if (fullContainer != null && fullContainer.getItem() instanceof ShapeFluidInContainer) return this;
         if (fullContainer != null && emptyContainer != null) {
             final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
             if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
@@ -157,83 +159,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     }
 
     /**
-     * @inheritDoc
-     */
-    @Override
-    public IGTRegisteredFluid configureMaterials(final Materials material) {
-        if (material != null) {
-            switch (fluidState) {
-                case SLURRY -> material.mSolid = registeredFluid;
-                case GAS -> material.mGas = registeredFluid;
-                case PLASMA -> material.mPlasma = registeredFluid;
-                case MOLTEN -> material.mStandardMoltenFluid = registeredFluid;
-                default -> material.mFluid = registeredFluid;
-            }
-            Materials.FLUID_MAP.put(registeredFluid, material);
-        }
-        return this;
-    }
-
-    /**
      * Adds a server-side localized-name
      */
     @Override
     public IGTRegisteredFluid addLocalizedName() {
         GTLanguageManager.addStringLocalization(getUnlocalizedName(), defaultLocalName);
-        return this;
-    }
-
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String[] oreprefixNames) {
-        return Arrays.stream(oreprefixNames)
-            .anyMatch(oreprefixName -> addLocalizedNameHasOreprefix(material, oreprefixName));
-    }
-
-    private boolean addLocalizedNameHasOreprefix(IOreMaterial material, String oreprefixName) {
-        final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
-        if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
-            if (String.format(oreprefixName, material.getDefaultLocalName())
-                .equals(defaultLocalName)) {
-                localizedName = () -> OrePrefixes.getLocalizedNameForItem(oreprefixName, "%s", material);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if the localized name matches the material name, or if it matches any of the oreprefix formatted material
-     * names. If neither matches, add a key for localized.
-     *
-     * @param material material from GT/BW/GT++
-     *
-     * @implNote The method checks for the following oreprefix patterns:
-     *           <ul>
-     *           <li>Molten %s</li>
-     *           <li>%s Plasma</li>
-     *           <li>Lightly Hydro-Cracked %s</li>
-     *           <li>Lightly Steam-Cracked %s</li>
-     *           <li>Moderately Hydro-Cracked %s</li>
-     *           <li>Moderately Steam-Cracked %s</li>
-     *           <li>Severely Hydro-Cracked %s</li>
-     *           <li>Severely Steam-Cracked %s</li>
-     *           </ul>
-     *           If a pattern matches, it uses formatted localization with the appropriate oreprefix key.
-     */
-    @Override
-    public IGTRegisteredFluid addLocalizedName(IOreMaterial material) {
-        if (material == null) return addLocalizedName();
-        if (!material.getDefaultLocalName()
-            .equals(defaultLocalName)) {
-            if (addLocalizedNameHasOreprefix(
-                material,
-                new String[] { "Molten %s", "%s Plasma", "Lightly Hydro-Cracked %s", "Lightly Steam-Cracked %s",
-                    "Moderately Hydro-Cracked %s", "Moderately Steam-Cracked %s", "Severely Hydro-Cracked %s",
-                    "Severely Steam-Cracked %s" })) {
-                return this;
-            }
-            return addLocalizedName();
-        }
-        localizedName = material::getLocalizedName;
         return this;
     }
 
@@ -269,6 +199,22 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
                 flowingIcon = GregTechAPI.sBlockIcons.registerIcon(flowingIconResourceLocation.toString());
             }
         }
+    }
+
+    /// A source fluid that is not a [GTFluid] registers its icons on its own schedule, so they are read on each
+    /// call.
+    @Override
+    public IIcon getStillIcon() {
+        return copiesForeignIcons() ? iconsFrom.getStillIcon() : super.getStillIcon();
+    }
+
+    @Override
+    public IIcon getFlowingIcon() {
+        return copiesForeignIcons() ? iconsFrom.getFlowingIcon() : super.getFlowingIcon();
+    }
+
+    private boolean copiesForeignIcons() {
+        return iconsFrom != null && !(iconsFrom instanceof GTFluid);
     }
 
     @Override

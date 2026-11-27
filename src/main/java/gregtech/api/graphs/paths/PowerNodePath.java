@@ -20,9 +20,7 @@ public class PowerNodePath extends NodePath {
     int mTick = 0;
     boolean mCountUp = true;
 
-    // voltage of the packet currently being pushed through this path, after loss.
-    // applyVoltage() is always called on a path right before addAmps() (see PowerNodes#processNextNode and
-    // #processNodeInject), so this is what the amps recorded next are travelling at.
+    // Retained for legacy addAmps callers; recursive transfers pass their own voltage explicitly.
     private long mCurrentVoltageAfterLoss = 0;
 
     private final AveragePerTickCounter avgAmperageCounter = new AveragePerTickCounter(TickTime.SECOND);
@@ -57,7 +55,7 @@ public class PowerNodePath extends NodePath {
         if (aVoltage > mMaxVoltage) {
             lock.addTileEntity(null);
             for (MetaPipeEntity tCable : mPipes) {
-                if (((MTECable) tCable).mVoltage < this.mVoltage) {
+                if (((MTECable) tCable).getVoltage() < this.mVoltage) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -76,15 +74,19 @@ public class PowerNodePath extends NodePath {
     }
 
     public void addAmps(long aAmps) {
+        addAmps(aAmps, mCurrentVoltageAfterLoss);
+    }
+
+    public void addAmps(long aAmps, long aVoltageAfterLoss) {
 
         avgAmperageCounter.addValue(aAmps);
-        avgEnergyCounter.addValue(aAmps * mCurrentVoltageAfterLoss);
+        avgEnergyCounter.addValue(aAmps * Math.max(aVoltageAfterLoss, 0));
 
         this.mAmps += aAmps;
         if (this.mAmps > mMaxAmps * 40) {
             lock.addTileEntity(null);
             for (MetaPipeEntity tCable : mPipes) {
-                if (((MTECable) tCable).mAmperage * 40 < this.mAmps) {
+                if (((MTECable) tCable).getAmperage() * 40 < this.mAmps) {
                     BaseMetaPipeEntity tBaseCable = (BaseMetaPipeEntity) tCable.getBaseMetaTileEntity();
                     if (tBaseCable != null) {
                         tBaseCable.setToFire();
@@ -160,9 +162,9 @@ public class PowerNodePath extends NodePath {
         mLoss = 0;
         for (MetaPipeEntity tCable : mPipes) {
             if (tCable instanceof MTECable) {
-                mMaxAmps = Math.min(((MTECable) tCable).mAmperage, mMaxAmps);
-                mLoss += ((MTECable) tCable).mCableLossPerMeter;
-                mMaxVoltage = Math.min(((MTECable) tCable).mVoltage, mMaxVoltage);
+                mMaxAmps = Math.min(((MTECable) tCable).getAmperage(), mMaxAmps);
+                mLoss += ((MTECable) tCable).getCableLoss();
+                mMaxVoltage = Math.min(((MTECable) tCable).getVoltage(), mMaxVoltage);
             }
         }
     }

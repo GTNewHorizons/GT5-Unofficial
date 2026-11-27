@@ -14,7 +14,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
+
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.factory.BlockTank;
@@ -22,15 +23,16 @@ import cpw.mods.fml.common.ModAPIManager;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.tools.ToolScoop;
 import mods.railcraft.api.core.items.IToolCrowbar;
 
@@ -39,44 +41,44 @@ public class GTItemIterator implements Runnable {
     @Override
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Scanning for certain kinds of compatible Machineblocks.");
-        ItemStack tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L);
+        ItemStack tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, 1);
         ItemStack tStack = GTModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
         if (null != tStack) {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.dust, 8))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
 
-            GTModHandler.addSmeltingRecipe(tStack, GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+            GTModHandler.addSmeltingRecipe(tStack, MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, 8));
         }
-        tStack2 = GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L);
+        tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, 1);
         tStack = GTModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
         if (null != tStack) {
-            GTOreDictUnificator.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
+            OreDictUtils.registerOre(OreDictNames.craftingRawMachineTier00, tStack);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.dust, 8))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
-            GTModHandler.addSmeltingRecipe(tStack, GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+            GTModHandler.addSmeltingRecipe(tStack, MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, 8));
         }
 
         ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);
-        tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L);
+        tStack2 = MaterialLibAPI.getStack(Materials.Iron, Shapes.ingot, 1);
         tStack = GTModHandler.getRecipeOutput(
             tStack2,
             tStack3,
             tStack2,
             tStack3,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            MaterialLibAPI.getStack(Materials.Gold, Shapes.ingot, 1),
             tStack3,
             tStack2,
             tStack3,
@@ -86,22 +88,22 @@ public class GTItemIterator implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 4),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, 1))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
         }
 
-        tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L);
+        tStack2 = MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 1);
         tStack3 = new ItemStack(Blocks.glass, 1, 0);
         tStack = GTModHandler.getRecipeOutput(
             tStack2,
             tStack3,
             tStack2,
             tStack3,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L),
+            MaterialLibAPI.getStack(Materials.Gold, Shapes.ingot, 1),
             tStack3,
             tStack2,
             tStack3,
@@ -110,8 +112,8 @@ public class GTItemIterator implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.dust, 4),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, 1))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
@@ -174,15 +176,8 @@ public class GTItemIterator implements Runnable {
                         tBlock.setHarvestLevel("scoop", 0);
                         ToolScoop.sBeeHiveMaterial = tBlock.getMaterial();
                     }
-                    if (OrePrefixes.stone.getDefaultStackSize() < tItem.getItemStackLimit(new ItemStack(tItem, 1, 0))) {
-                        if ((tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.stone))
-                            || (tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.netherrack))
-                            || (tBlock.isReplaceableOreGen(GTValues.DW, 0, 0, 0, Blocks.end_stone))) {
-                            tItem.setMaxStackSize(OrePrefixes.stone.getDefaultStackSize());
-                        }
-                    }
                     if (tName.equals("tile.tankBlock") && tBlock instanceof BlockTank) {
-                        GTOreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
+                        OreDictUtils.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
                     }
                 }
                 if (((tItem instanceof ItemFood)) && (tItem != ItemList.IC2_Food_Can_Filled.getItem())
@@ -203,9 +198,6 @@ public class GTItemIterator implements Runnable {
                             .eut(1)
                             .addTo(cannerRecipes);
                     }
-                }
-                if ((tItem instanceof IFluidContainerItem)) {
-                    GTOreDictUnificator.addToBlacklist(new ItemStack(tItem, 1, WILDCARD));
                 }
 
                 switch (tName) {
@@ -234,47 +226,41 @@ public class GTItemIterator implements Runnable {
                     }
 
                     // tinker construct
-                    case "item.tconstruct.manual" -> GTOreDictUnificator
+                    case "item.tconstruct.manual" -> OreDictUtils
                         .registerOre("bookTinkersManual", new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
-                    case "item.blueprintItem" -> GTOreDictUnificator
+                    case "item.blueprintItem" -> OreDictUtils
                         .registerOre("paperBlueprint", new ItemStack(tItem, 1, WILDCARD));
 
                     // Thaumcraft
-                    case "item.ItemThaumonomicon" -> GTOreDictUnificator
+                    case "item.ItemThaumonomicon" -> OreDictUtils
                         .registerOre("bookThaumonomicon", new ItemStack(tItem, 1, WILDCARD));
 
                     // BoP
                     case "tile.bop.redRocks" -> {
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 0));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 1));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Redrock, new ItemStack(tItem, 1, 2));
                     }
 
                     // Thaumcraft
                     case "tile.blockCosmeticSolid" -> {
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
-                        GTOreDictUnificator
-                            .registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 0));
+                        OreDictUtils.registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(tItem, 1, 1));
+                        OreDictUtils.registerOre(OrePrefixes.block, Materials.Thaumium, new ItemStack(tItem, 1, 4));
                     }
 
                     // minecraft
-                    case "tile.enderchest" -> GTOreDictUnificator
+                    case "tile.enderchest" -> OreDictUtils
                         .registerOre(OreDictNames.enderChest, new ItemStack(tItem, 1, WILDCARD));
 
                     // buildcraft
-                    case "tile.autoWorkbenchBlock" -> GTOreDictUnificator
+                    case "tile.autoWorkbenchBlock" -> OreDictUtils
                         .registerOre(OreDictNames.craftingWorkBench, new ItemStack(tItem, 1, 0));
 
                     // buildcraft
-                    case "tile.pumpBlock" -> GTOreDictUnificator
+                    case "tile.pumpBlock" -> OreDictUtils
                         .registerOre(OreDictNames.craftingPump, new ItemStack(tItem, 1, 0));
 
                 }

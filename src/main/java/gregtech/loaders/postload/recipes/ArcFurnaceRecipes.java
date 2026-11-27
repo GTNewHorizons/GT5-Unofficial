@@ -11,14 +11,19 @@ import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.Wildcard;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class ArcFurnaceRecipes implements Runnable {
 
@@ -28,8 +33,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Block_TungstenSteelReinforced.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Concrete, 1))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, 2),
+                MaterialLibAPI.getStack(Materials.Concrete, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(96)
             .metadata(RECYCLE, true)
@@ -37,7 +42,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Fluid.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 19L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 19))
             .duration(9 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -46,8 +51,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Item.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 12L),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 7L))
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 7))
             .duration(9 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -55,7 +60,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.nugget, 2))
             .duration(10 * TICKS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -64,8 +69,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Item_Pipe.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Tin, 1L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L))
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.nugget, 1),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.nugget, 1))
             .duration(10 * TICKS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -74,9 +79,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Cupronickel.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Cupronickel, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 2))
+                MaterialLibAPI.getStack(Materials.Cupronickel, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 2))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -85,9 +90,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Kanthal.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Kanthal, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Cupronickel, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 3))
+                MaterialLibAPI.getStack(Materials.Kanthal, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.Cupronickel, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 3))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -96,9 +101,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Nichrome.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Nichrome, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Kanthal, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4))
+                MaterialLibAPI.getStack(Materials.Nichrome, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.Kanthal, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 4))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -107,9 +112,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_TungstenSteel.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Nichrome, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 5))
+                MaterialLibAPI.getStack(Materials.TPV, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.Nichrome, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 5))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -118,9 +123,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_HSSG.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TPV, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 6))
+                MaterialLibAPI.getStack(Materials.HSSG, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.TPV, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 6))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -129,9 +134,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_HSSS.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HSSS, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HSSG, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 7))
+                MaterialLibAPI.getStack(Materials.HSSS, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.HSSG, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 7))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -140,9 +145,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Naquadah.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.HSSS, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 8))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.HSSS, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 8))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -151,9 +156,9 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_NaquadahAlloy.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.NaquadahAlloy, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 9))
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 9))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -162,8 +167,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Trinium.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Trinium, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.NaquadahAlloy, 1),
+                MaterialLibAPI.getStack(Materials.Trinium, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.ingot, 1),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(8))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -173,8 +178,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_ElectrumFlux.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.ElectrumFlux, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Trinium, 1),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.Trinium, Shapes.ingot, 1),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(12))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -184,8 +189,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_AwakenedDraconium.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.DraconiumAwakened, 8),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.ElectrumFlux, 1),
+                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.ingot, 8),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.ingot, 1),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(16))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -194,7 +199,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 0))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.ingot, 2))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(90)
             .metadata(RECYCLE, true)
@@ -203,8 +208,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(90)
             .metadata(RECYCLE, true)
@@ -213,8 +218,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 2))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 6))
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, 6))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(90)
             .metadata(RECYCLE, true)
@@ -222,7 +227,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 13))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 2))
             .duration(9 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -231,8 +236,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 14))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(9 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -241,8 +246,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 15))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 6L))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.nugget, 6))
             .duration(9 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -250,7 +255,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 0))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.ingot, 2))
             .duration(10 * SECONDS + 10 * TICKS)
             .eut(150)
             .metadata(RECYCLE, true)
@@ -258,7 +263,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.nugget, 3))
             .duration(10 * SECONDS + 10 * TICKS)
             .eut(150)
             .metadata(RECYCLE, true)
@@ -267,8 +272,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 6L))
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 12),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.nugget, 6))
             .duration(10 * SECONDS + 10 * TICKS)
             .eut(150)
             .metadata(RECYCLE, true)
@@ -276,7 +281,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 3))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ingot, 2))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -285,8 +290,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 4))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -295,8 +300,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 5))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.StainlessSteel, 6L))
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.nugget, 6))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -304,7 +309,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 6))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.ingot, 2))
             .duration(13 * SECONDS + 10 * TICKS)
             .eut(210)
             .metadata(RECYCLE, true)
@@ -313,8 +318,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 7))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(13 * SECONDS + 10 * TICKS)
             .eut(210)
             .metadata(RECYCLE, true)
@@ -323,8 +328,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 8))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Titanium, 6L))
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.nugget, 6))
             .duration(13 * SECONDS + 10 * TICKS)
             .eut(210)
             .metadata(RECYCLE, true)
@@ -332,7 +337,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, 2))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -341,8 +346,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 10))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -351,8 +356,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 11))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.TungstenSteel, 6L))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.nugget, 6))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -360,7 +365,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 12))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Palladium, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Palladium, Shapes.ingot, 2))
             .duration(16 * SECONDS + 10 * TICKS)
             .eut(270)
             .metadata(RECYCLE, true)
@@ -369,8 +374,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 13))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Palladium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(16 * SECONDS + 10 * TICKS)
             .eut(270)
             .metadata(RECYCLE, true)
@@ -379,8 +384,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 14))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.NiobiumTitanium, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Chrome, 6L))
+                MaterialLibAPI.getStack(Materials.NiobiumTitanium, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.nugget, 6))
             .duration(16 * SECONDS + 10 * TICKS)
             .eut(270)
             .metadata(RECYCLE, true)
@@ -388,7 +393,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 0))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.ingot, 2))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -397,8 +402,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -407,8 +412,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 2))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Enderium, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Iridium, 6L))
+                MaterialLibAPI.getStack(Materials.Enderium, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.nugget, 6))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -416,7 +421,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 3))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.ingot, 2))
             .duration(18 * SECONDS)
             .eut(330)
             .metadata(RECYCLE, true)
@@ -425,8 +430,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 4))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.Osmium, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(18 * SECONDS)
             .eut(330)
             .metadata(RECYCLE, true)
@@ -435,8 +440,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 5))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Osmium, 6L))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Osmium, Shapes.nugget, 6))
             .duration(18 * SECONDS)
             .eut(330)
             .metadata(RECYCLE, true)
@@ -444,7 +449,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 6))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.ingot, 2))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -453,8 +458,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 7))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.dustTiny, 3))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
@@ -463,17 +468,17 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 8))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 12L),
-                GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Neutronium, 6L))
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.ingot, 12),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nugget, 6))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(RECYCLE, true)
             .addTo(UniversalArcFurnace);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
-            .fluidInputs(Materials.Oxygen.getGas(2_000))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(arcFurnaceRecipes);
@@ -481,8 +486,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Infinity.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 9L),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.DraconiumAwakened, 4L),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.ingot, 9),
+                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.ingot, 4),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(24))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -492,8 +497,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Hypogen.get(1))
             .itemOutputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(9),
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 4L),
+                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.ingot, 9),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.ingot, 4),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(32))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -503,8 +508,8 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SpaceTime, 9L),
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(4),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.ingot, 9),
+                MaterialLibAPI.getStack(Materials.Hypogen, Shapes.ingot, 4),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -513,18 +518,18 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.chainmail_boots, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1))
-            .duration(Materials.Steel.getMass() * TICKS)
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, 1))
+            .duration(MaterialUtils.mass(Materials.Steel) * TICKS)
             .eut(TierEU.RECIPE_LV)
             .metadata(RECYCLE, true)
             .addTo(UniversalArcFurnace);
 
-        for (final OrePrefixes ironPrefix : new OrePrefixes[] { OrePrefixes.dust, OrePrefixes.ingot }) {
+        for (final Shape ironPrefix : new Shape[] { Shapes.dust, Shapes.ingot }) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    Materials.Iron.getPart(ironPrefix, 3),
-                    new OreDictItemStack(OrePrefixes.dust.getName() + Materials.AnyCarbon.getName(), 1))
-                .itemOutputs(Materials.CastIron.getIngots(3))
+                    MaterialLibAPI.getStack(Materials.Iron, ironPrefix, 3),
+                    new OreDictItemStack(Wildcard.AnyCarbon.oreDictName(OrePrefixes.dust), 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.ingot, 3))
                 .duration(9 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(arcFurnaceRecipes);

@@ -1,20 +1,23 @@
 package gregtech.api.objects;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
 public class MaterialStack implements Cloneable {
 
-    public long mAmount;
-    public Materials mMaterial;
+    public long amount;
+    public Material material;
 
-    public MaterialStack(Materials aMaterial, long aAmount) {
-        mMaterial = aMaterial == null ? Materials._NULL : aMaterial;
-        mAmount = aAmount;
+    public MaterialStack(Material material, long amount) {
+        this.material = material == null ? Materials._NULL : material;
+        this.amount = amount;
     }
 
-    public MaterialStack copy(long aAmount) {
-        return new MaterialStack(mMaterial, aAmount);
+    public MaterialStack copy(long amount) {
+        return new MaterialStack(material, amount);
     }
 
     @Override
@@ -22,18 +25,18 @@ public class MaterialStack implements Cloneable {
         try {
             return (MaterialStack) super.clone();
         } catch (Exception e) {
-            return new MaterialStack(mMaterial, mAmount);
+            return new MaterialStack(material, amount);
         }
     }
 
     @Override
-    public boolean equals(Object aObject) {
-        if (aObject == this) return true;
-        return switch (aObject) {
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        return switch (object) {
             case null -> false;
-            case Materials materials -> aObject == mMaterial;
-            case MaterialStack materialStack -> materialStack.mMaterial == mMaterial
-                && (mAmount < 0 || materialStack.mAmount < 0 || materialStack.mAmount == mAmount);
+            case Material other -> other == material;
+            case MaterialStack stack -> stack.material == material
+                && (amount < 0 || stack.amount < 0 || stack.amount == amount);
             default -> false;
         };
     }
@@ -44,11 +47,11 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = mMaterial.getChemicalTooltip(true), temp3 = "", temp4 = "";
-        if (mAmount > 1) {
-            temp4 = GTUtility.toSubscript(mAmount);
+        String temp1 = "", temp2 = MaterialUtils.chemicalTooltip(material, true), temp3 = "", temp4 = "";
+        if (amount > 1) {
+            temp4 = GTUtility.toSubscript(amount);
         }
-        if ((!single || mAmount > 1) && isMaterialListComplex(this)) {
+        if ((!single || amount > 1) && isMaterialListComplex(this)) {
             temp1 = "(";
             temp3 = ")";
         }
@@ -56,17 +59,18 @@ public class MaterialStack implements Cloneable {
     }
 
     private boolean isMaterialListComplex(MaterialStack materialStack) {
-        if (materialStack.mMaterial.mMaterialList.size() > 1) {
+        var list = MaterialUtils.materialList(materialStack.material);
+        if (list.size() > 1) {
             return true;
         }
-        if (materialStack.mMaterial.mMaterialList.isEmpty()) {
+        if (list.isEmpty()) {
             return false;
         }
-        return isMaterialListComplex(materialStack.mMaterial.mMaterialList.get(0));
+        return isMaterialListComplex(list.get(0));
     }
 
     @Override
     public int hashCode() {
-        return mMaterial.hashCode();
+        return material.hashCode();
     }
 }

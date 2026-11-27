@@ -1,5 +1,7 @@
 package detrav.client;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,13 +25,14 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.MaterialUtils;
 import gregtech.client.renderer.BillboardRenderHelper;
 import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
@@ -72,13 +75,9 @@ public class DetravOreMarkerRenderer {
     @Nullable
     private static IIconContainer resolveIcon(String materialName) {
         if (materialName == null || materialName.isEmpty()) return null;
-        IOreMaterial mat = IOreMaterial.findMaterial(materialName);
+        Material mat = MaterialUtils.byLegacyName(materialName);
         if (mat == null) return null;
-        TextureSet ts = mat.getTextureSet();
-        if (ts == null) return null;
-        int idx = OrePrefixes.ore.getTextureIndex();
-        if (idx < 0 || idx >= ts.mTextures.length) return null;
-        return ts.mTextures[idx];
+        return GTMaterialIcons.oreBlock("ore", mat);
     }
 
     @SubscribeEvent
@@ -141,9 +140,8 @@ public class DetravOreMarkerRenderer {
     }
 
     private boolean renderIcon(Plane plane, float half, int color, IIconContainer ore, IIcon background) {
-        IIcon icon = ore.getIcon();
         ResourceLocation textureFile = ore.getTextureFile();
-        if (icon == null || textureFile == null) return false;
+        if (ore.getLayerIcon(0) == null || textureFile == null) return false;
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         Minecraft mc = Minecraft.getMinecraft();
@@ -154,10 +152,21 @@ public class DetravOreMarkerRenderer {
 
         mc.getTextureManager()
             .bindTexture(textureFile);
-        iconQuad(plane, icon, half, color);
-        IIcon overlay = ore.getOverlayIcon();
-        if (overlay != null) iconQuad(plane, overlay, half, 0xFFFFFF);
+        int passes = ore.getIconPasses();
+        for (int layer = 0; layer < passes; layer++) {
+            IIcon icon = ore.getLayerIcon(layer);
+            if (icon == null || icon == INVISIBLE_ICON) continue;
+            iconQuad(plane, icon, half, layerColor(ore, color, layer));
+        }
         return true;
+    }
+
+    /// Returns the RGB color `layer` of `ore` draws with: `color` for layer 0 (white for an override icon), the
+    /// container's own layer color after that.
+    private static int layerColor(IIconContainer ore, int color, int layer) {
+        if (layer == 0) return ore.hasOverrideIcon() ? 0xFFFFFF : color;
+        short[] rgba = ore.getIconColor(layer);
+        return (rgba[0] & 0xFF) << 16 | (rgba[1] & 0xFF) << 8 | (rgba[2] & 0xFF);
     }
 
     private static IIcon resolveBackground(World world) {

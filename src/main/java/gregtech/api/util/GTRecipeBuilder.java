@@ -24,6 +24,7 @@ import com.LazyFlesh.variablehorizons.variants.VariantNames;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -109,6 +110,7 @@ public class GTRecipeBuilder {
     protected boolean mCanBeBuffered = true;
     protected boolean mNeedsEmptyOutput = false;
     protected boolean nbtSensitive = false;
+    protected boolean exactItemInputs = false;
     protected String[] neiDesc;
     protected RecipeCategory recipeCategory;
     @Nullable
@@ -128,9 +130,9 @@ public class GTRecipeBuilder {
         FluidStack[][] altFluidInputs, int[] altOreIds, FluidStack[] fluidInputs, FluidStack[] fluidOutputs,
         int[] inputChances, int[] outputChances, int[] fluidInputChances, int[] fluidOutputChances, Object special,
         int duration, int eut, int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe,
-        boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
-        RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision,
-        boolean skip, boolean valid) {
+        boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, boolean exactItemInputs,
+        String[] neiDesc, RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage,
+        boolean checkForCollision, boolean skip, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -153,6 +155,7 @@ public class GTRecipeBuilder {
         this.mCanBeBuffered = mCanBeBuffered;
         this.mNeedsEmptyOutput = mNeedsEmptyOutput;
         this.nbtSensitive = nbtSensitive;
+        this.exactItemInputs = exactItemInputs;
         this.neiDesc = neiDesc;
         this.recipeCategory = recipeCategory;
         this.metadataStorage = metadataStorage;
@@ -166,8 +169,23 @@ public class GTRecipeBuilder {
 
     // region helper methods
 
-    private static ItemStack[] fixItemArray(ItemStack[] inputs, boolean aUnsafe) {
-        return GTOreDictUnificator.setStackArray(true, aUnsafe, ArrayExt.removeTrailingNulls(inputs));
+    /// Moves the alternative a recipe should store for an oredict input to the front, as a recipe stores and shows
+    /// the first alternative. That is the item the name unifies to, else a wildcard's representative part for a name
+    /// such as `plateAnyIron`, else the first alternative that is not another mod's unified copy.
+    private static void putCanonicalFirst(ArrayList<ItemStack> alternatives, String oreName) {
+        ItemStack canonical = OreDictUtils.unificationTarget(oreName);
+        if (canonical == null) canonical = Wildcard.representativeStack(oreName);
+        for (int j = 0; j < alternatives.size(); j++) {
+            ItemStack alternative = alternatives.get(j);
+            boolean chosen = canonical != null
+                ? alternative.getItem() == canonical.getItem()
+                    && alternative.getItemDamage() == canonical.getItemDamage()
+                : !OreDictUtils.isUnifiedCopy(alternative);
+            if (chosen) {
+                if (j > 0) alternatives.add(0, alternatives.remove(j));
+                return;
+            }
+        }
     }
 
     public static GTRecipeBuilder builder() {
@@ -295,7 +313,7 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Non-OreDicted item inputs. Assumes input is unified.
+     * Non-OreDicted item inputs, stored as given.
      */
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
@@ -320,13 +338,13 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Non-OreDicted item inputs. Assumes input is not unified.
+     * Non-OreDicted item inputs, stored as copies.
      */
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
 
-        ItemStack[] itemInputs = fixItemArray(inputs, false);
+        ItemStack[] itemInputs = GTUtility.copyItemArray(ArrayExt.removeTrailingNulls(inputs));
         inputsBasic = applyPendingCircuit(itemInputs);
 
         inputsOreDict = null;
@@ -345,13 +363,13 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Non-OreDicted item inputs, allowing stack sizes greater than 64. Assumes input is not unified
+     * Non-OreDicted item inputs, allowing stack sizes greater than 64.
      */
     public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
 
-        ItemStack[] itemInputs = fixItemArray(inputs, true);
+        ItemStack[] itemInputs = GTUtility.copyItemArray(ArrayExt.removeTrailingNulls(inputs));
         inputsBasic = applyPendingCircuit(itemInputs);
 
         inputsOreDict = null;
@@ -388,7 +406,7 @@ public class GTRecipeBuilder {
                 }
                 case OreDictItemStack ods -> {
                     altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
-                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
+                    List<ItemStack> ores = OreDictionary.getOres(ods.mOreName);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", ods.mOreName);
@@ -402,12 +420,13 @@ public class GTRecipeBuilder {
                         if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
                     }
                     if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    putCanonicalFirst(list, ods.mOreName);
                     alts[i] = list.toArray(new ItemStack[0]);
                 }
                 case Object[] arr -> {
                     if (arr.length != 2) continue;
                     altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
-                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
+                    List<ItemStack> ores = OreDictionary.getOres(arr[0].toString());
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", arr[0]);
@@ -422,6 +441,7 @@ public class GTRecipeBuilder {
                         if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
                     }
                     if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    putCanonicalFirst(list, arr[0].toString());
                     alts[i] = list.toArray(new ItemStack[0]);
                 }
                 case null -> {
@@ -493,11 +513,11 @@ public class GTRecipeBuilder {
      *             .itemOutputs(ItemList.DebugEnergyHatch.get(1))
      *             .fluidInputs(
      *                      // Works with normal FluidStack inputs as well
-     *                      Materials.SulfuricAcid.get(1_000),
+     *                      MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000),
      *                      new SubstituteFluidStack(
      *                          // Each fluid has its own amount
-     *                          Materials.Lava.get(1_000),
-     *                          Materials.Water.get(500))
+     *                          GTUtility.getLava(1_000),
+     *                          GTUtility.getWater(500))
      *              )
      *             .duration(5 * SECONDS)
      *             .eut(TierEU.RECIPE_LV)
@@ -673,6 +693,13 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    /// Makes each item input accept only its own item, instead of every item sharing its association (see
+    /// [OreDictUtils#inputAssociationName]). For recipes whose output depends on which interchangeable item goes in.
+    public GTRecipeBuilder exactItemInputs() {
+        this.exactItemInputs = true;
+        return this;
+    }
+
     public GTRecipeBuilder setNEIDesc(String... neiDesc) {
         this.neiDesc = neiDesc;
         return this;
@@ -704,6 +731,58 @@ public class GTRecipeBuilder {
         }
         metadataStorage.store(key, value);
         return this;
+    }
+
+    private static @Nullable String variantGroup;
+
+    /// Runs `body` with `group` stamped as [GTRecipeConstants#VARIANT_GROUP] on every recipe built inside it,
+    /// including recipes built by builders `body` creates for itself. See [GTRecipeConstants#VARIANT_GROUP]
+    /// for what the tag means.
+    ///
+    /// Scopes nest, and a recipe that sets the key itself keeps its own value. Registration is single
+    /// threaded, so the scope is a plain static.
+    public static void withVariantGroup(String group, Runnable body) {
+        String previous = variantGroup;
+        variantGroup = group;
+        try {
+            body.run();
+        } finally {
+            variantGroup = previous;
+        }
+    }
+
+    private static @Nullable ItemStack omittedInput;
+
+    /// Runs `body`, leaving out every machine recipe it adds that takes `stack` as an item input. Meant for an item
+    /// that inputs holding another item already accept ([OreDictUtils#isInterchangeableWithTarget]), whose own
+    /// recipes would repeat that item's. Recipe removals and crafting-table and furnace recipes are unaffected.
+    public static void withoutRecipesTaking(ItemStack stack, Runnable body) {
+        ItemStack previous = omittedInput;
+        omittedInput = stack;
+        try {
+            body.run();
+        } finally {
+            omittedInput = previous;
+        }
+    }
+
+    private boolean takesOmittedInput() {
+        if (omittedInput == null) return false;
+        for (ItemStack input : inputsBasic) {
+            if (GTUtility.areStacksEqual(input, omittedInput, true)) return true;
+        }
+        return false;
+    }
+
+    /// The metadata the recipe under construction is built with: the builder's own storage, plus the enclosing
+    /// [#withVariantGroup] tag when there is one. Never mutates the builder's storage.
+    private @Nullable IRecipeMetadataStorage buildMetadata() {
+        if (variantGroup == null) return metadataStorage;
+        if (getMetadata(GTRecipeConstants.VARIANT_GROUP) != null) return metadataStorage;
+
+        IRecipeMetadataStorage storage = metadataStorage == null ? new RecipeMetadataStorage() : metadataStorage.copy();
+        storage.store(GTRecipeConstants.VARIANT_GROUP, variantGroup);
+        return storage;
     }
 
     /**
@@ -814,6 +893,7 @@ public class GTRecipeBuilder {
             mCanBeBuffered,
             mNeedsEmptyOutput,
             nbtSensitive,
+            exactItemInputs,
             copy(neiDesc),
             recipeCategory,
             metadataStorage,
@@ -849,6 +929,7 @@ public class GTRecipeBuilder {
             mCanBeBuffered,
             mNeedsEmptyOutput,
             nbtSensitive,
+            exactItemInputs,
             copy(neiDesc),
             recipeCategory,
             null,
@@ -1102,7 +1183,7 @@ public class GTRecipeBuilder {
                     mNeedsEmptyOutput,
                     nbtSensitive,
                     neiDesc,
-                    metadataStorage,
+                    buildMetadata(),
                     recipeCategory,
                     special,
                     duration)));
@@ -1147,7 +1228,7 @@ public class GTRecipeBuilder {
                     mNeedsEmptyOutput,
                     nbtSensitive,
                     neiDesc,
-                    metadataStorage,
+                    buildMetadata(),
                     recipeCategory,
                     alts,
                     altOreIds,
@@ -1164,6 +1245,7 @@ public class GTRecipeBuilder {
         r.mCanBeBuffered = mCanBeBuffered;
         r.mNeedsEmptyOutput = mNeedsEmptyOutput;
         r.isNBTSensitive = nbtSensitive;
+        r.exactItemInputs = exactItemInputs;
         r.mFakeRecipe = fakeRecipe;
         r.mEnabled = enabled;
         if (neiDesc != null) r.setNeiDesc(neiDesc);
@@ -1199,14 +1281,14 @@ public class GTRecipeBuilder {
     }
 
     public Collection<GTRecipe> addTo(IRecipeMap recipeMap) {
-        if (skip) {
+        if (skip || takesOmittedInput()) {
             return Collections.emptyList();
         }
         return recipeMap.doAdd(this);
     }
 
     public Collection<GTRecipe> addTo(IRecipeMap... recipeMaps) {
-        if (skip) {
+        if (skip || takesOmittedInput()) {
             return Collections.emptyList();
         }
 

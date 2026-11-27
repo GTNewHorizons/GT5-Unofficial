@@ -32,15 +32,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -104,7 +105,10 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
             .beginStructureBlock(5, 8, 6, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("85-92", Casings.ThermalProcessingCasing.getLocalizedName(), false)
-            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.RedSteel), false)
+            .addCasing(
+                "20",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.RedSteel)),
+                false)
             .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addCasing("6", StatCollector.translateToLocal("gt.blockcasings.cyclotron_coils.name"), true)
             .addCasing("6", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)

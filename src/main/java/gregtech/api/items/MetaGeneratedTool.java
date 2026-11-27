@@ -40,6 +40,8 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
@@ -52,15 +54,18 @@ import crazypants.enderio.api.tool.ITool;
 import forestry.api.arboriculture.IToolGrafter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Wildcard;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.OreDictUtils;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
@@ -113,22 +118,65 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
-    public static Materials getPrimaryMaterial(ItemStack aStack) {
+    /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to through
+    /// [MaterialUtils#byLegacyName], which also accepts the legacy internal names in saved tools, or through
+    /// [Wildcard#representativeNamed] for a wildcard name. [Materials#_NULL] for a missing or unresolvable name.
+    public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
+        return resolveMaterialML(aStack, "PrimaryMaterial");
+    }
+
+    /// [#getPrimaryMaterialML], for the `SecondaryMaterial` NBT string.
+    public static com.ruling_0.materiallib.api.Material getSecondaryMaterialML(ItemStack aStack) {
+        return resolveMaterialML(aStack, "SecondaryMaterial");
+    }
+
+    private static com.ruling_0.materiallib.api.Material resolveMaterialML(ItemStack aStack, String aKey) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null) return Materials.getRealMaterial(aNBT.getString("PrimaryMaterial"));
+            if (aNBT != null) {
+                String name = aNBT.getString(aKey);
+                com.ruling_0.materiallib.api.Material material = MaterialUtils.byLegacyName(name);
+                if (material == null) material = Wildcard.representativeNamed(name);
+                if (material != null) return material;
+            }
         }
         return Materials._NULL;
     }
 
-    public static Materials getSecondaryMaterial(ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null) return Materials.getRealMaterial(aNBT.getString("SecondaryMaterial"));
+    /// Translates the `Material.<internal name>` lang key of `aMaterial`, with the internal name from
+    /// [MaterialUtils#internalName] lowercased.
+    private static String getMaterialLocalizedName(com.ruling_0.materiallib.api.Material aMaterial) {
+        return translateToLocal(
+            "Material." + MaterialUtils.internalName(aMaterial)
+                .toLowerCase());
+    }
+
+    private static int getToolDurability(com.ruling_0.materiallib.api.Material aMaterial) {
+        return aMaterial == null ? 0 : aMaterial.getProperty(GTMaterialProperties.DURABILITY);
+    }
+
+    private static float getToolSpeed(com.ruling_0.materiallib.api.Material aMaterial) {
+        return aMaterial == null ? 1.0F : aMaterial.getProperty(GTMaterialProperties.TOOL_SPEED);
+    }
+
+    private static int getToolQuality(com.ruling_0.materiallib.api.Material aMaterial) {
+        return aMaterial == null ? 0 : aMaterial.getProperty(GTMaterialProperties.TOOL_QUALITY);
+    }
+
+    private static @Nullable Enchantment getToolEnchantment(com.ruling_0.materiallib.api.Material aMaterial) {
+        String enchantmentName = aMaterial == null ? null
+            : aMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT);
+        if (enchantmentName == null) return null;
+        for (Enchantment enchantment : Enchantment.enchantmentsList) {
+            if (enchantment != null && enchantmentName.equals(enchantment.getName())) return enchantment;
         }
-        return Materials._NULL;
+        return null;
+    }
+
+    private static int getToolEnchantmentLevel(com.ruling_0.materiallib.api.Material aMaterial) {
+        Integer level = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL);
+        return level == null ? 0 : level;
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */
@@ -238,7 +286,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             for (Object tOreDictNameOrAspect : aOreDictNamesAndAspects) {
                 if (tOreDictNameOrAspect instanceof TC_AspectStack)
                     ((TC_AspectStack) tOreDictNameOrAspect).addToAspectList(tAspects);
-                else GTOreDictUnificator.registerOre(tOreDictNameOrAspect, rStack);
+                else OreDictUtils.registerOre(tOreDictNameOrAspect, rStack);
             }
             if (GregTechAPI.sThaumcraftCompat != null)
                 GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(rStack, tAspects, false);
@@ -257,20 +305,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      * @param aSecondaryMaterial Secondary (Rod/Handle) Material of this Tool
      * @param aElectricArray     The Electric Stats of this Tool (or null if not electric)
      */
-    public final ItemStack getToolWithStats(int aToolID, int aAmount, Materials aPrimaryMaterial,
-        Materials aSecondaryMaterial, long[] aElectricArray) {
+    public final ItemStack getToolWithStats(int aToolID, int aAmount,
+        com.ruling_0.materiallib.api.Material aPrimaryMaterial,
+        com.ruling_0.materiallib.api.Material aSecondaryMaterial, long[] aElectricArray) {
         ItemStack rStack = new ItemStack(this, aAmount, aToolID);
         IToolStats tToolStats = getToolStats(rStack);
         if (tToolStats != null) {
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
             tToolNBT.setByte("Mode", (byte) 0);
             if (aPrimaryMaterial != null) {
-                tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
+                tToolNBT.setString("PrimaryMaterial", MaterialUtils.internalName(aPrimaryMaterial));
                 tToolNBT.setLong(
                     "MaxDamage",
-                    100L * (long) (aPrimaryMaterial.mDurability * tToolStats.getMaxDurabilityMultiplier()));
+                    100L * (long) (getToolDurability(aPrimaryMaterial) * tToolStats.getMaxDurabilityMultiplier()));
             }
-            if (aSecondaryMaterial != null) tToolNBT.setString("SecondaryMaterial", aSecondaryMaterial.mName);
+            if (aSecondaryMaterial != null)
+                tToolNBT.setString("SecondaryMaterial", MaterialUtils.internalName(aSecondaryMaterial));
 
             if (aElectricArray != null) {
                 tToolNBT.setBoolean("Electric", true);
@@ -460,7 +510,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
-        Materials tMaterial = getPrimaryMaterial(aStack);
+        com.ruling_0.materiallib.api.Material tMaterial = getPrimaryMaterialML(aStack);
         IToolStats tStats = getToolStats(aStack);
         int tOffset = getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
@@ -489,7 +539,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.GRAY
                         + translateToLocalFormatted(
                             "gt.item.desc.tier",
-                            tMaterial.getLocalizedName(),
+                            getMaterialLocalizedName(tMaterial),
                             getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
@@ -627,7 +677,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.level",
-                            tMaterial.getLocalizedName(),
+                            getMaterialLocalizedName(tMaterial),
                             getHarvestLevel(aStack, ""))
                         + EnumChatFormatting.GRAY);
                 aList.add(
@@ -643,7 +693,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                             formatNumber(
                                 Math.max(
                                     Float.MIN_NORMAL,
-                                    tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)))
+                                    tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterialML(aStack)))))
                         + EnumChatFormatting.GRAY);
                 final NBTTagCompound nbt = aStack.getTagCompound();
                 if (nbt != null) {
@@ -692,7 +742,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public float getToolCombatDamage(ItemStack aStack) {
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return 0;
-        return tStats.getBaseDamage() + getPrimaryMaterial(aStack).mToolQuality;
+        return tStats.getBaseDamage() + getToolQuality(getPrimaryMaterialML(aStack));
     }
 
     @Override
@@ -744,7 +794,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
         return tStats.isMinableBlock(aBlock, aMetaData)
-            ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
+            ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterialML(aStack)))
             : 0.0F;
     }
 
@@ -756,7 +806,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public final int getHarvestLevel(ItemStack aStack, String aToolClass) {
         IToolStats tStats = getToolStats(aStack);
-        return tStats == null ? -1 : tStats.getBaseQuality() + getPrimaryMaterial(aStack).mToolQuality;
+        return tStats == null ? -1 : tStats.getBaseQuality() + getToolQuality(getPrimaryMaterialML(aStack));
     }
 
     @Override
@@ -946,16 +996,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             ItemStackNBT.removeTag(aStack, "ench");
             return false;
         }
-        Materials aMaterial = getPrimaryMaterial(aStack);
+        com.ruling_0.materiallib.api.Material aMaterial = getPrimaryMaterialML(aStack);
         HashMap<Integer, Integer> tMap = new HashMap<>(), tResult = new HashMap<>();
-        if (aMaterial.mToolEnchantment != null) {
-            tMap.put(aMaterial.mToolEnchantment.effectId, (int) aMaterial.mToolEnchantmentLevel);
-            if (aMaterial.mToolEnchantment == Enchantment.fortune)
-                tMap.put(Enchantment.looting.effectId, (int) aMaterial.mToolEnchantmentLevel);
-            if (aMaterial.mToolEnchantment == Enchantment.knockback)
-                tMap.put(Enchantment.power.effectId, (int) aMaterial.mToolEnchantmentLevel);
-            if (aMaterial.mToolEnchantment == Enchantment.fireAspect)
-                tMap.put(Enchantment.flame.effectId, (int) aMaterial.mToolEnchantmentLevel);
+        Enchantment tToolEnchantment = getToolEnchantment(aMaterial);
+        if (tToolEnchantment != null) {
+            int tToolEnchantmentLevel = getToolEnchantmentLevel(aMaterial);
+            tMap.put(tToolEnchantment.effectId, tToolEnchantmentLevel);
+            if (tToolEnchantment == Enchantment.fortune) tMap.put(Enchantment.looting.effectId, tToolEnchantmentLevel);
+            if (tToolEnchantment == Enchantment.knockback) tMap.put(Enchantment.power.effectId, tToolEnchantmentLevel);
+            if (tToolEnchantment == Enchantment.fireAspect) tMap.put(Enchantment.flame.effectId, tToolEnchantmentLevel);
         }
         Enchantment[] tEnchants = tStats.getEnchantments(aStack);
         int[] tLevels = tStats.getEnchantmentLevels(aStack);

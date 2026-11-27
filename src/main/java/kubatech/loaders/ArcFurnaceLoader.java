@@ -10,32 +10,28 @@ import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GTMod;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import kubatech.api.utils.ModUtils;
-import kubatech.loaders.item.arcfurnace.ElectrodeItem;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 
 public class ArcFurnaceLoader {
 
-    public static final ElectrodeItem ARC_FURNACE_ELECTRODE = new ElectrodeItem();
-
     public static void load() {
-        GameRegistry.registerItem(ARC_FURNACE_ELECTRODE, "arc_furnace_electrode");
         ArcFurnaceElectrode.registerElectrodes();
-        if (ModUtils.isClientSided) GTMod.clientProxy().metaItemRenderer.registerItem(ARC_FURNACE_ELECTRODE);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_Bus_IV.get(1),
-                Materials.Graphite.getDust(4),
-                Materials.Naquadah.getPlates(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 1L })
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1152L))
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 4),
+                new Object[] { Circuits.IV.getIngredient(), 1L })
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1152))
             .itemOutputs(kubatech.api.enums.ItemList.ElectrodeHatch.get(1))
             .circuit(1)
             .eut(TierEU.RECIPE_IV)
@@ -47,7 +43,7 @@ public class ArcFurnaceLoader {
                 ItemList.Hull_IV.get(1),
                 ItemList.Casing_SolidSteel.get(1),
                 ItemList.Sensor_IV.get(2),
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4L })
+                new Object[] { Circuits.IV.getIngredient(), 4L })
             .itemOutputs(kubatech.api.enums.ItemList.ElectrodeDetectorHatch.get(1))
             .circuit(4)
             .eut(TierEU.RECIPE_IV)
@@ -65,9 +61,9 @@ public class ArcFurnaceLoader {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    electrode.associatedMaterial.getPart(OrePrefixes.dust, 64),
+                    MaterialLibAPI.getStack(electrode.associatedMaterial, Shapes.dust, 64),
                     ItemList.Shape_Mold_Rod_Long.get(0))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(1152L))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1152))
                 .itemOutputs(electrode.getElectrodeItem(1))
                 .eut(TierEU.RECIPE_IV)
                 .duration(2 * MINUTES)
@@ -75,16 +71,16 @@ public class ArcFurnaceLoader {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Neutronium.getNanite(64))
-            .fluidInputs(Materials.Neutronium.getMolten(64 * 144L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.nanite, 64))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 64 * 144))
             .itemOutputs(ArcFurnaceElectrode.NeutroniumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UV)
             .duration(2 * MINUTES)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.TranscendentMetal.getNanite(16))
-            .fluidInputs(Materials.TranscendentMetal.getMolten(16 * 144L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.nanite, 16))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 16 * 144))
             .itemOutputs(ArcFurnaceElectrode.TranscendentNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(4 * MINUTES)
@@ -92,8 +88,8 @@ public class ArcFurnaceLoader {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Universium.getNanite(4))
-            .fluidInputs(Materials.Universium.getMolten(4 * 144L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Universium, Shapes.nanite, 4))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 4 * 144))
             .itemOutputs(ArcFurnaceElectrode.UniversiumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UXV)
             .duration(8 * MINUTES)

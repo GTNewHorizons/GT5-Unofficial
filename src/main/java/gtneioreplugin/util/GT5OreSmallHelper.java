@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SmallOres;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -26,9 +26,9 @@ public class GT5OreSmallHelper {
 
     public static final List<ItemStack> SMALL_ORE_LIST = new ArrayList<>();
     public static final HashMap<String, OreSmallWrapper> SMALL_ORES_BY_NAME = new HashMap<>();
-    public static final HashMap<IOreMaterial, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
-    public static final HashMap<String, IOreMaterial> ORE_DROP_TO_MAT = new HashMap<>();
-    public static final HashMap<IOreMaterial, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
+    public static final HashMap<Material, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
+    public static final HashMap<String, Material> ORE_DROP_TO_MAT = new HashMap<>();
+    public static final HashMap<Material, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
     /** {abbr dim name: wrapper} */
     private static Map<String, SmallOreDimensionWrapper> SMALL_ORES_BY_DIM;
 
@@ -43,18 +43,18 @@ public class GT5OreSmallHelper {
             .arrayListValues()
             .build();
 
-        OreInfo<IOreMaterial> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
 
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
             if (!(worldGen instanceof WorldgenGTOreSmallPieces smallOreWorldGen)) continue;
 
-            IOreMaterial material = smallOreWorldGen.getMaterial();
+            Material material = smallOreWorldGen.getMaterial();
 
             OreSmallWrapper wrapper = new OreSmallWrapper(smallOreDefMap.get(smallOreWorldGen.mWorldGenName));
             SMALL_ORES_BY_NAME.put(worldGen.mWorldGenName, wrapper);
-            SMALL_ORES_BY_MAT.put(smallOreWorldGen.getMaterial(), wrapper);
+            SMALL_ORES_BY_MAT.put(material, wrapper);
 
-            if (ORE_MAT_TO_DROPS.containsKey(smallOreWorldGen.getMaterial())) {
+            if (ORE_MAT_TO_DROPS.containsKey(material)) {
                 throw new IllegalStateException(
                     "Duplicate small ore world gen for material " + smallOreWorldGen.getMaterial());
             }
@@ -108,7 +108,7 @@ public class GT5OreSmallHelper {
     public static class OreSmallWrapper {
 
         public final String oreGenName;
-        public final IOreMaterial material;
+        public final Material material;
         public final String worldGenHeightRange;
         public final short amountPerChunk;
 

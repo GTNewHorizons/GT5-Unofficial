@@ -19,12 +19,15 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.util.BioCulture;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.util.GTModHandler;
 
@@ -44,7 +47,7 @@ public final class BioObjectAdder {
      */
     public static void regenerateBioFluids() {
         FluidStack dnaFluid = Gendustry.isModLoaded() ? GTModHandler.getLiquidDNA(100)
-            : Materials.Biomass.getFluid(100L);
+            : MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 100);
         for (BioCulture B : BioCultureEnum.BIO_CULTURES) {
             if (B.getFluidNotSet()) {
                 B.setFluid(

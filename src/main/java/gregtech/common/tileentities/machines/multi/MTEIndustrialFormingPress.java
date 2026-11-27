@@ -24,14 +24,15 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -93,7 +94,10 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
             .beginStructureBlock(5, 5, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("5-20", Casings.MaterialPressCasing.getLocalizedName(), false)
-            .addCasing("6", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Titanium), false)
+            .addCasing(
+                "6",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Titanium)),
+                false)
             .addCasing("6", Casings.SteelPipeCasing.getLocalizedName(), false)
             .addCasing("5", Casings.FormingCore.getLocalizedName(), false)
             .addCasing("1", Casings.TitaniumGearBoxCasing.getLocalizedName(), false)

@@ -8,12 +8,15 @@ import java.util.List;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.SubTag;
+import com.ruling_0.materiallib.api.Material;
+
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialUtils;
 
 public class SubstituteFluidStack {
 
-    public static final Materials[] solderingMats = new Materials[] { Materials.SolderingAlloy, Materials.Tin,
+    public static final Material[] solderingMats = new Material[] { Materials.SolderingAlloy, Materials.Tin,
         Materials.Lead };
     public final List<FluidStack> fluidStacks;
 
@@ -25,8 +28,8 @@ public class SubstituteFluidStack {
      * <pre>
      * {@code new SubstituteFluidStack(
      *          // Each fluid has its own amount
-     *          Materials.Lava.get(1_000),
-     *          Materials.Water.get(500)
+     *          GTUtility.getLava(1_000),
+     *          GTUtility.getWater(500)
      *   )
      *   }
      * </pre>
@@ -59,11 +62,11 @@ public class SubstituteFluidStack {
 
         List<FluidStack> fluids = new ArrayList<>();
 
-        for (Materials material : solderingMats) {
-            int multiplier = material.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1
-                : material.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
+        for (Material material : solderingMats) {
+            int multiplier = MaterialUtils.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_GOOD) ? 1
+                : MaterialUtils.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
 
-            fluids.add(material.getMolten(baseAmount * multiplier));
+            fluids.add(MaterialUtils.molten(material, baseAmount * multiplier));
         }
 
         return new SubstituteFluidStack(fluids.toArray(new FluidStack[0]));

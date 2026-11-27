@@ -36,7 +36,6 @@ public final class NEIRecipePropertiesBuilder {
 
     private INEISpecialInfoFormatter neiSpecialInfoFormatter = DefaultSpecialValueFormatter.INSTANCE;
 
-    private boolean unificateOutput = true;
     private boolean useCustomFilter;
     private boolean renderRealStackSizes = true;
 
@@ -56,7 +55,6 @@ public final class NEIRecipePropertiesBuilder {
             recipeBackgroundSize,
             recipeBackgroundOffset,
             neiSpecialInfoFormatter,
-            unificateOutput,
             useCustomFilter,
             renderRealStackSizes,
             itemInputsGetter,
@@ -88,11 +86,6 @@ public final class NEIRecipePropertiesBuilder {
 
     public NEIRecipePropertiesBuilder neiSpecialInfoFormatter(INEISpecialInfoFormatter neiSpecialInfoFormatter) {
         this.neiSpecialInfoFormatter = neiSpecialInfoFormatter;
-        return this;
-    }
-
-    public NEIRecipePropertiesBuilder unificateOutput(boolean unificateOutput) {
-        this.unificateOutput = unificateOutput;
         return this;
     }
 

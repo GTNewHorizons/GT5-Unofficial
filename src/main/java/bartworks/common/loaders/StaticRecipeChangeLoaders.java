@@ -13,61 +13,9 @@
 
 package bartworks.common.loaders;
 
-import java.util.ArrayList;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-
-import bartworks.system.material.Werkstoff;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
-
 public class StaticRecipeChangeLoaders {
 
     private StaticRecipeChangeLoaders() {}
-
-    public static void unificationRecipeEnforcer() {
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            StaticRecipeChangeLoaders.runMaterialLinker(werkstoff);
-            if (!werkstoff.getGenerationFeatures().enforceUnification) continue;
-            StaticRecipeChangeLoaders.runUnficationDeleter(werkstoff);
-        }
-    }
-
-    private static void runUnficationDeleter(Werkstoff werkstoff) {
-        if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-            && Element.get(werkstoff.getFormulaTooltip()) != Element._NULL) {
-            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getFormulaTooltip());
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials = new ArrayList<>();
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
-        }
-
-        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (werkstoff.hasItemType(prefixes)) {
-            GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
-            for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack);
-                GTOreDictUnificator.getAssociation(stack).mUnificationTarget = werkstoff.get(prefixes);
-            }
-        }
-    }
-
-    private static void runMaterialLinker(Werkstoff werkstoff) {
-        if (werkstoff.getType() == Werkstoff.Types.ELEMENT && werkstoff.getBridgeMaterial() != null
-            && Element.get(werkstoff.getFormulaTooltip()) != Element._NULL) {
-            werkstoff.getBridgeMaterial().mElement = Element.get(werkstoff.getFormulaTooltip());
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials = new ArrayList<>();
-            Element.get(werkstoff.getFormulaTooltip()).mLinkedMaterials.add(werkstoff.getBridgeMaterial());
-        }
-
-        for (OrePrefixes prefixes : OrePrefixes.VALUES)
-            if (werkstoff.hasItemType(prefixes) && werkstoff.getBridgeMaterial() != null) {
-                GTOreDictUnificator.set(prefixes, werkstoff.getBridgeMaterial(), werkstoff.get(prefixes), true, true);
-                for (ItemStack stack : OreDictionary.getOres(prefixes + werkstoff.getVarName())) {
-                    GTOreDictUnificator.addAssociation(prefixes, werkstoff.getBridgeMaterial(), stack);
-                }
-            }
-    }
 
     public static void addElectricImplosionCompressorRecipes() {
         // Custom EIC recipes.

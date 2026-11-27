@@ -1734,6 +1734,12 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
     public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
+    public static final UITexture OVERLAY_BUTTON_CRIB_ORDER_NORMAL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/crib_order_normal");
+    public static final UITexture OVERLAY_BUTTON_CRIB_ORDER_REVERSED = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/crib_order_reversed");
+    public static final UITexture OVERLAY_BUTTON_CRIB_ORDER_RANDOM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/crib_order_random");
 
     public static final UITexture OVERLAY_BUTTON_EMIT_ENERGY = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_button/emit_energy")
@@ -2058,6 +2064,13 @@ public final class GTGuiTextures {
         .nonOpaque()
         .build();
 
+    public static final UITexture PLASMA_COLLIDER_SLIDER_BG = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/plasma_collider_slider_bg")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .build();
+
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION = UITexture
@@ -2292,9 +2305,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DEFAULT = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_default");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CHEMBATH = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_chembath");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_WASHPLANT = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_washplant");
@@ -2319,12 +2329,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_LPF_METAL = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lpf_metal");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_BENDING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_bending");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_forming");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_lhc_accelerator");
@@ -2355,12 +2359,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RECYCLING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_recycling");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_slicing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_cutting");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_compressing");
@@ -2409,6 +2407,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PARTICLE_LAMBDA = fullImage(
         GTNHLanthanides.ID,
         "items/particle/lambda");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_PION = fullImage(GTNHLanthanides.ID, "items/particle/pion");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_MUON = fullImage(GTNHLanthanides.ID, "items/particle/muon");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_MUONNEUTRINO = fullImage(
         GTNHLanthanides.ID,
@@ -2430,6 +2429,9 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PARTICLE_UPSILON = fullImage(
         GTNHLanthanides.ID,
         "items/particle/upsilon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_GLUEBALL = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/glueball");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_WBOSON = fullImage(
         GTNHLanthanides.ID,
         "items/particle/wboson");

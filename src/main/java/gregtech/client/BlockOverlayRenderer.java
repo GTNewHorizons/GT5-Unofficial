@@ -45,8 +45,9 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.blocks.PipeShapeItemBlock;
 import gregtech.common.config.Client;
 import gregtech.common.items.ItemGTToolbox;
 import ic2.api.tile.IWrenchable;
@@ -111,12 +112,12 @@ public class BlockOverlayRenderer {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
                 || aTileEntity instanceof IWrenchable
                 || (aTileEntity instanceof IOrientable orientable && orientable.canBeRotated())
-                || (aBlock instanceof BlockFrameBox)) drawGrid(event, false, true, event.player.isSneaking());
+                || (aBlock instanceof FrameShapeBlock)) drawGrid(event, false, true, event.player.isSneaking());
             return;
         }
 
         // If there is no tile entity and the block is a frame box block, still draw the grid if a cover is held
-        if (aTileEntity == null && aBlock instanceof BlockFrameBox) {
+        if (aTileEntity == null && aBlock instanceof FrameShapeBlock) {
             if (CoverRegistry.isCover(event.currentItem)) {
                 drawGrid(event, true, false, event.player.isSneaking());
             }
@@ -127,8 +128,9 @@ public class BlockOverlayRenderer {
 
         if (event.player.isSneaking() && aTileEntity instanceof IGregTechTileEntity gtEntity
             && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity) {
-            if (event.currentItem != null && event.currentItem.getItem() instanceof ItemMachines
-                && GregTechAPI.METATILEENTITIES[event.currentItem.getItemDamage()] instanceof MetaPipeEntity) {
+            if (event.currentItem != null && (event.currentItem.getItem() instanceof PipeShapeItemBlock
+                || (event.currentItem.getItem() instanceof ItemMachines
+                    && GregTechAPI.METATILEENTITIES[event.currentItem.getItemDamage()] instanceof MetaPipeEntity))) {
                 drawGrid(event, false, false, false);
             }
         }

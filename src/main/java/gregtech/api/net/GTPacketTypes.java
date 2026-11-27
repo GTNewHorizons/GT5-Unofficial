@@ -2,10 +2,7 @@ package gregtech.api.net;
 
 import java.util.Arrays;
 
-import bartworks.common.net.PacketBWMetaBlock;
 import bartworks.common.net.PacketBioVatRenderer;
-import bartworks.common.net.PacketEIC;
-import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
 import gregtech.api.net.cape.GTPacketListCapes;
@@ -34,10 +31,10 @@ public enum GTPacketTypes {
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
-    BW_META_BLOCK(24, new PacketBWMetaBlock()),
-    ORE_DICT_CACHE(25, new PacketOreDictCache()),
+    // ID 24 unused, was PacketBWMetaBlock.
+    // ID 25 unused
     SERVER_JOINED(26, new PacketServerJoined()),
-    EIC(27, new PacketEIC()),
+    // ID 27 unused, was ElectricImplosionCompressor(27, new PacketEIC()),
     // ID 28 unused
     NODE_INFO(29, new GTPacketNodeInfo()),
     COIL_STATUS(30, new GTCoilStatus()),
@@ -59,6 +56,7 @@ public enum GTPacketTypes {
     SYNC_TILE_RENDER_DATA_TO_CLIENT(46, new GTPacketClientMTERendererData()),
     OBSERVE_MACHINE(47, new PacketObserveMachine()),
     OPEN_REMOTE_MTE_GUI(48, new PacketOpenRemoteMteGui()),
+    FRAME_ENTITY(49, new GTPacketFrameEntity()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;

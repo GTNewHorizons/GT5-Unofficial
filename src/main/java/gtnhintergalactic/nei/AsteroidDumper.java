@@ -3,14 +3,17 @@ package gtnhintergalactic.nei;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import codechicken.nei.config.DataDumper;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.StoneType;
 import gtnhintergalactic.recipe.AsteroidData;
 import gtnhintergalactic.recipe.SpaceMiningRecipes;
 
@@ -37,8 +40,8 @@ public class AsteroidDumper extends DataDumper {
             .toArray(AsteroidData[]::new)) {
             String[] line = new String[14];
             line[0] = asteroid.getAsteroidNameLocalized();
-            if (asteroid.output != null && asteroid.orePrefixes != null) {
-                line[1] = dumpMaterials(asteroid.output, asteroid.orePrefixes);
+            if (asteroid.output != null) {
+                line[1] = dumpMaterials(asteroid.output, asteroid.stoneType);
             } else if (asteroid.outputItems != null) {
                 line[1] = dumpItems(asteroid.outputItems);
             }
@@ -62,10 +65,11 @@ public class AsteroidDumper extends DataDumper {
         return list;
     }
 
-    private static String dumpMaterials(Materials[] mats, OrePrefixes prefix) {
+    private static String dumpMaterials(Material[] materials, @Nullable StoneType stoneType) {
         return dumpItems(
-            Arrays.stream(mats)
-                .map(x -> GTOreDictUnificator.get(prefix, x, 1))
+            Arrays.stream(materials)
+                .map(material -> AsteroidData.oreStack(material, stoneType, 1))
+                .filter(Objects::nonNull)
                 .toArray(ItemStack[]::new));
     }
 

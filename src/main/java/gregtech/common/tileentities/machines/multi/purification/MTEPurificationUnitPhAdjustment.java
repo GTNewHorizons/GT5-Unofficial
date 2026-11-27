@@ -35,20 +35,24 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -119,12 +123,12 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     /**
      * Alkaline catalyst material
      */
-    public static final Materials ALKALINE_MATERIAL = Materials.SodiumHydroxide;
+    public static final Material ALKALINE_MATERIAL = Materials.SodiumHydroxide;
 
     /**
      * Acidic catalyst material
      */
-    public static final Materials ACIDIC_MATERIAL = Materials.HydrochloricAcid;
+    public static final Material ACIDIC_MATERIAL = Materials.HydrochloricAcid;
 
     /**
      * The input hatch for the acidic material
@@ -185,7 +189,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputBus.WithFormat",
-                            ALKALINE_MATERIAL.getLocalizedName()))
+                            MaterialUtils.localizedName(ALKALINE_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -199,7 +203,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputHatch.WithFormat",
-                            ACIDIC_MATERIAL.getLocalizedName()))
+                            MaterialUtils.localizedName(ACIDIC_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -325,11 +329,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .put("ph_neutral", PH_NEUTRAL_VALUE)
                     .put("sensor", StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"))
                     .put("interval", CONSUME_INTERVAL)
-                    .put("alkaline", ALKALINE_MATERIAL.getLocalizedName())
-                    .put("acid", ACIDIC_MATERIAL.getLocalizedName())
+                    .put("alkaline", MaterialUtils.localizedName(ALKALINE_MATERIAL))
+                    .put("acid", MaterialUtils.localizedName(ACIDIC_MATERIAL))
                     .put(
                         "dust",
-                        ALKALINE_MATERIAL.getDust(1)
+                        MaterialLibAPI.getStack(ALKALINE_MATERIAL, Shapes.dust, 1)
                             .getDisplayName())
                     .put("ph_per_dust", PH_PER_ALKALINE_DUST)
                     .put("ph_per_acid", -PH_PER_10_ACID_LITER)
@@ -337,7 +341,10 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             .beginStructureBlock(15, 6, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("134", Casings.InertNeutralizationWaterPlantCasing.getLocalizedName(), false)
-            .addCasing("48", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.NaquadahAlloy), false)
+            .addCasing(
+                "48",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.NaquadahAlloy)),
+                false)
             .addCasing("18", Casings.ChemicalGradeGlass.getLocalizedName(), false)
             .addCasing("12-17", Casings.StabilizedNaquadahWaterPlantCasing.getLocalizedName(), false)
             .addMiscHatch(
@@ -349,13 +356,13 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 "1",
                 StatCollector.translateToLocalFormatted(
                     "gt.mbtt.structure.ph_adjustment_input_bus",
-                    ALKALINE_MATERIAL.getLocalizedName()),
+                    MaterialUtils.localizedName(ALKALINE_MATERIAL)),
                 3)
             .addInputHatch(
                 "2+",
                 StatCollector.translateToLocalFormatted(
                     "gt.mbtt.structure.ph_adjustment_input_hatch",
-                    ACIDIC_MATERIAL.getLocalizedName()),
+                    MaterialUtils.localizedName(ACIDIC_MATERIAL)),
                 1,
                 4)
             .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.behind_controller"), 1)
@@ -389,7 +396,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             for (int i = alkalineInputBus.getSizeInventory() - 1; i >= 0; --i) {
                 ItemStack stack = alkalineInputBus.getStackInSlot(i);
                 // If this ItemStack is the alkaline material, drain it entirely and record the amount drained
-                if (stack != null && stack.isItemEqual(ALKALINE_MATERIAL.getDust(1))) {
+                if (stack != null && stack.isItemEqual(MaterialLibAPI.getStack(ALKALINE_MATERIAL, Shapes.dust, 1))) {
                     totalAlkalineDrained += stack.stackSize;
                     alkalineInputBus.decrStackSize(i, stack.stackSize);
                 }
@@ -398,7 +405,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
             int numMultiples = 0;
-            if (stack != null && stack.isFluidEqual(ACIDIC_MATERIAL.getFluid(1))) {
+            if (stack != null && stack.isFluidEqual(MaterialUtils.fluid(ACIDIC_MATERIAL, 1))) {
                 int acidAvailable = stack.amount;
                 // We only care about multiples of 10, but we still drain all.
                 numMultiples = Math.floorDiv(acidAvailable, 10);

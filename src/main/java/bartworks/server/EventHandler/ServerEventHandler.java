@@ -18,17 +18,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.API.SideReference;
-import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
-import bartworks.system.material.Werkstoff;
-import bartworks.system.oredict.OreDictHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialParts;
+import gregtech.api.material.MaterialUtils;
 
 public class ServerEventHandler {
 
@@ -36,7 +38,6 @@ public class ServerEventHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
         if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server) return;
-        GTValues.NW.sendToPlayer(new PacketOreDictCache(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
         GTValues.NW.sendToPlayer(new PacketServerJoined(), (EntityPlayerMP) event.entity);
     }
 
@@ -56,28 +57,18 @@ public class ServerEventHandler {
             if (oreIDs.length > 0) {
                 loop: for (int oreID : oreIDs) {
                     String oreDictName = OreDictionary.getOreName(oreID);
-                    for (Werkstoff e : Werkstoff.werkstoffHashSet) {
-                        replace = e.getGenerationFeatures().enforceUnification;
+                    for (Material e : MaterialLibAPI.getMaterials()) {
+                        replace = Boolean.TRUE.equals(e.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
                         if (replace) {
-                            if (oreDictName.contains(e.getVarName())) {
-                                String prefix = oreDictName.replace(e.getVarName(), "");
+                            String internalName = MaterialUtils.internalName(e);
+                            if (oreDictName.contains(internalName)) {
+                                String prefix = oreDictName.replace(internalName, "");
                                 OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
                                 if (prefixes == null) {
                                     continue;
                                 }
-                                toReplace = GTOreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
+                                toReplace = MaterialParts.stack(prefixes, e, stack.stackSize);
                                 break loop;
-                            }
-                            for (String s : e.getAdditionalOredict()) {
-                                if (oreDictName.contains(s)) {
-                                    String prefix = oreDictName.replace(s, "");
-                                    OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);
-                                    if (prefixes == null) {
-                                        continue;
-                                    }
-                                    toReplace = GTOreDictUnificator.get(prefixes, e.getVarName(), stack.stackSize);
-                                    break loop;
-                                }
                             }
                         }
                         replace = false;

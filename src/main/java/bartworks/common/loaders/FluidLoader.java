@@ -26,6 +26,8 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.client.renderer.RendererSwitchingColorFluid;
 import bartworks.common.blocks.BlockBioFluid;
@@ -37,8 +39,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -78,7 +81,7 @@ public class FluidLoader {
         }
 
         FluidStack dnaFluid = Gendustry.isModLoaded() ? GTModHandler.getLiquidDNA(100)
-            : Materials.Biomass.getFluid(100L);
+            : MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 100);
         for (BioCulture B : BioCultureEnum.BIO_CULTURES) {
             if (B.isBreedable()) {
                 B.setFluid(
@@ -91,9 +94,9 @@ public class FluidLoader {
                             new short[] { (short) B.getColor()
                                 .getRed(),
                                 (short) B.getColor()
-                                    .getBlue(),
+                                    .getGreen(),
                                 (short) B.getColor()
-                                    .getGreen() })
+                                    .getBlue() })
                         .withDefaultLocalName(B.getLocalisedName() + " Fluid")
                         .withStateAndTemperature(FluidState.LIQUID, 300)
                         .buildAndRegister()

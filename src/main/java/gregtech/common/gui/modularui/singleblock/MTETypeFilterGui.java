@@ -19,8 +19,8 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialData;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.gui.modularui.singleblock.base.MTESpecialFilterBaseGui;
 import gregtech.common.tileentities.automation.MTETypeFilter;
 
@@ -50,7 +50,7 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
         replacementTooltip.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.tooltip.typefilter.size",
-                "§e" + orePrefix.mPrefixedItems.size() + "§r"));
+                "§e" + orePrefix.prefixedItems.size() + "§r"));
         replacementTooltip.addAll(machine.mTooltipCache.getData("GT5U.type_filter.representation_slot.tooltip").text);
         return replacementTooltip;
     }
@@ -77,9 +77,9 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
                     }
 
                     private void copyHeldItemPrefix(ItemStack handStack) {
-                        ItemData data = GTOreDictUnificator.getAssociation(handStack);
+                        ItemData data = MaterialData.getAssociation(handStack);
                         if (data != null && data.hasValidPrefixData()) {
-                            orePrefixSyncer.setValue(data.mPrefix.toString());
+                            orePrefixSyncer.setValue(data.prefix.toString());
                             rotationIndexSyncer.setValue(-1);
                         }
                     }
@@ -103,7 +103,7 @@ public class MTETypeFilterGui extends MTESpecialFilterBaseGui<MTETypeFilter> {
                                 // map to prefix
                                 .mapToObj(index -> OrePrefixes.VALUES[index])
                                 // only prefixes with items
-                                .filter(prefix -> !prefix.mPrefixedItems.isEmpty())
+                                .filter(prefix -> !prefix.prefixedItems.isEmpty())
                                 // map to string
                                 .map(OrePrefixes::toString)
                                 .findFirst()

@@ -32,9 +32,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -42,11 +39,13 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -58,8 +57,9 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEFrothFlotationCellGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -100,8 +100,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
         .addElement('D', Casings.FlotationCellCasings.asElement())
         .addElement('E', Casings.InconelReinforcedCasing.asElement())
-        .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
-        .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
+        .addElement('A', ofFrame(Materials.Inconel690))
+        .addElement('B', ofFrame(Materials.Staballoy))
         .addElement('W', ofChain(ofAnyWater(false), isAir()))
         .build();
 
@@ -111,6 +111,14 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     public MTEFrothFlotationCell(final String aName) {
         super(aName);
+    }
+
+    public String getLockedMaterialName() {
+        return lockedMaterialName == null ? "" : lockedMaterialName;
+    }
+
+    public void setLockedMaterialName(String lockedMaterialName) {
+        this.lockedMaterialName = lockedMaterialName;
     }
 
     @Override
@@ -131,8 +139,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("110-120", Casings.InconelReinforcedCasing.getLocalizedName(), false)
             .addCasing("31", Casings.FlotationCellCasings.getLocalizedName(), false)
-            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.STABALLOY), false)
-            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialsAlloy.INCONEL_690), false)
+            .addCasing("20", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Staballoy)), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Inconel690)), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
             .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
@@ -192,7 +200,10 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -331,12 +342,6 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(new FakeSyncWidget.StringSyncer(() -> lockedMaterialName, val -> lockedMaterialName = val));
-    }
-
-    @Override
     public boolean supportsInputSeparation() {
         return true;
     }
@@ -349,6 +354,16 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEFrothFlotationCellGui(this);
     }
 
     @Override

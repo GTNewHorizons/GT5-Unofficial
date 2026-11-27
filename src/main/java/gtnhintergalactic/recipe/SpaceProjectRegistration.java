@@ -7,17 +7,19 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.base.SPRequirements;
 import gregtech.common.misc.spaceprojects.base.SPUpgrade;
 import gregtech.common.misc.spaceprojects.base.SpaceProject;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsAlloy;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import tectech.thing.CustomItemList;
@@ -55,7 +57,8 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(1),
                 ItemList.Sensor_UHV.get(1),
                 ItemList.Emitter_UHV.get(1))
-            .setUpgradeFluidsCost(MaterialsAlloy.INDALLOY_140.getFluidStack(30 * INGOTS));
+            .setUpgradeFluidsCost(
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 30 * INGOTS));
         ISpaceProject.ISP_Upgrade improvedComputation = new SPUpgrade().setUpgradeName("ImprovedComputation")
             .setUpgradeUnlocalizedName("ig.sp.upgrade.improvedcomputation")
             .setUpgradeTotalStages(20)
@@ -70,7 +73,8 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(16),
                 ItemList.Sensor_UEV.get(1),
                 ItemList.Emitter_UEV.get(1))
-            .setUpgradeFluidsCost(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS));
+            .setUpgradeFluidsCost(
+                MaterialLibAPI.getFluidStack(Materials.MutatedLivingSolder, FluidShapes.fluidLiquid, 10 * INGOTS));
         ISpaceProject asteroidOutpost = new ProjectAsteroidOutpost().setProjectName("AsteroidOutpost")
             .setProjectUnlocalizedName("ig.spaceproject.asteroidoutpost")
             .setProjectUpgrades(reinforcedStructure, improvedComputation)
@@ -87,7 +91,8 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(16),
                 ItemList.Sensor_UV.get(1),
                 ItemList.Emitter_UV.get(1))
-            .setProjectFluidsCost(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS));
+            .setProjectFluidsCost(
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 20 * INGOTS));
 
         SpaceProjectManager.addProject(asteroidOutpost);
     }
@@ -108,7 +113,8 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(4),
                 ItemList.Sensor_UV.get(2),
                 ItemList.Emitter_UV.get(2))
-            .setProjectFluidsCost(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS));
+            .setProjectFluidsCost(
+                MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 20 * INGOTS));
 
         SpaceProjectManager.addProject(planetScan);
     }

@@ -23,6 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,19 +33,22 @@ import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
 import com.gtnewhorizon.gtnhlib.util.data.LazyItem;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTOreDictUnificator;
 
 public enum StoneType implements IStoneType {
 
@@ -240,18 +244,28 @@ public enum StoneType implements IStoneType {
         return builder.oreBlockPrefix;
     }
 
-    /**
-     * Gets the display name using shared ore templates. Material and stone are separate localization keys so languages
-     * can reorder and inflect them without translations for every material/stone combination.
-     */
-    public String getLocalizedOreName(IOreMaterial material, boolean small) {
-        OrePrefixes basePrefix = small ? OrePrefixes.oreSmall : OrePrefixes.ore;
-        if (this == Stone) return basePrefix.getLocalizedNameForItem(material);
+    /// The display name of `material`'s ore in this stone, built on the format key an ore shape names the material
+    /// with (such as `gt.oreprefix.material_ore`). Material and stone are separate localization keys so languages can
+    /// reorder and inflect them without translations for every material/stone combination. Plain stone keeps the
+    /// stoneless name.
+    public @Nullable String getLocalizedOreName(String formatKey, Material material) {
+        if (this == Stone) return OrePrefixes.shapeDisplayName(formatKey, material);
+
+        final String prefixKey = formatKey + ".with_stone";
+        // The shared lookup in OrePrefixes has no stone in its key, so per-stone overrides are checked here.
+        final String overrideKey = prefixKey + "."
+            + name().toLowerCase(Locale.ROOT)
+            + "."
+            + MaterialUtils.internalName(material)
+                .toLowerCase(Locale.ROOT);
+        if (StatCollector.canTranslate(overrideKey)) {
+            return StatCollector.translateToLocal(overrideKey);
+        }
 
         return OrePrefixes.getLocalizedNameForItemWithInflection(
-            basePrefix.getOreprefixKey(material) + ".with_stone",
+            prefixKey,
             material,
-            material.getLocalizedNameKey(),
+            MaterialUtils.localizedNameKey(material),
             "gt.ore.stone." + name().toLowerCase(Locale.ROOT));
     }
 
@@ -304,7 +318,6 @@ public enum StoneType implements IStoneType {
 
             texturesTemp[side.ordinal()] = TextureFactory.builder()
                 .addIcon(container)
-                .stdOrient()
                 .build();
         }
 
@@ -449,10 +462,10 @@ public enum StoneType implements IStoneType {
 
         public LazyItem pureDust = new LazyItem(
             Mods.GregTech,
-            () -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1));
+            () -> MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1));
         public LazyItem impureDust = new LazyItem(
             Mods.GregTech,
-            () -> GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1));
+            () -> MaterialLibAPI.getStack(Materials.Stone, Shapes.dustImpure, 1));
 
         public StoneCategory category = StoneCategory.Stone;
         public HashSet<String> allowedDimensions = null;
@@ -557,9 +570,9 @@ public enum StoneType implements IStoneType {
             return this;
         }
 
-        public StoneBuilder setDust(Materials mat) {
-            pureDust = new LazyItem(Mods.GregTech, () -> mat.getDust(1));
-            impureDust = new LazyItem(Mods.GregTech, () -> GTOreDictUnificator.get(OrePrefixes.dustImpure, mat, 1));
+        public StoneBuilder setDust(Material mat) {
+            pureDust = new LazyItem(Mods.GregTech, () -> MaterialLibAPI.getStack(mat, Shapes.dust, 1));
+            impureDust = new LazyItem(Mods.GregTech, () -> MaterialLibAPI.findStack(mat, Shapes.dustImpure, 1));
 
             return this;
         }

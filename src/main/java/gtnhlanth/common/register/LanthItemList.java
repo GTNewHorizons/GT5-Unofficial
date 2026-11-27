@@ -14,7 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.OreDictUtils;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 import gtnhlanth.common.block.BlockAntennaCasing;
@@ -174,7 +174,7 @@ public final class LanthItemList {
 
             if (!mask.getName()
                 .contains("blank")) {
-                GTOreDictUnificator.registerOre(
+                OreDictUtils.registerOre(
                     OrePrefixes.mask + mask.getName()
                         .toUpperCase(),
                     new ItemStack(maskItem));

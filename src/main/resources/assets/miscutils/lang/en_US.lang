@@ -67,10 +67,7 @@ GTPP.core.GT_Tooltip_HazmatWarning=§6Avoid direct handling without hazmat prote
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
 item.MiscUtils.bucket.bucketEnder.name=Resonant Ender Bucket
-item.MiscUtils.material.dustPyrotheum.name=Pyrotheum Dust
-item.MiscUtils.material.dustCryotheum.name=Cryotheum Dust
 item.MiscUtils.material.rodBlizz.name=Blizz Rod
-item.MiscUtils.material.dustBlizz.name=Blizz Powder
 
 # ------------- 'miscutils' is Case Sensitive Here, unsure why
 tile.miscutils.fluid.pyrotheum.name=Blazing Pyrotheum
@@ -3417,7 +3414,6 @@ item.LiquidHydrogen.name=Liquid Hydrogen Cell [LOH]
 # Added 24/8/19
 # Debug Labels
 tile.blockDoorAlloy.name=Reinforced Door
-tile.blockInhibitorObelisk.name=Inhibitor Obelisk
 tile.Battlesign.name=Battlesign
 tile.blockMagicBox.name=Magic Box
 tile.blockManaPod.name=Mana Pod Stem
@@ -3525,7 +3521,6 @@ item.CarbonMonoxide.name=Carbon Monoxide Cell
 item.itemCellCarbonMonoxide.name=Carbon Monoxide Cell
 item.acetone.name=Acetone Cell
 item.saltwater.name=Salt Water Cell
-item.BasicAgrichemItem.22.name=Extruder Shape (Pellet)
 item.BasicAgrichemItem.23.name=Clean Aluminium Mix
 
 # Added 12/12/19
@@ -3566,11 +3561,6 @@ item.BasicAlgaeItem.5.name=Breedable Algae
 item.BasicAlgaeItem.6.name=Breedable Algae
 
 # Added 30/03/20
-item.milledChalcopyrite.name=Milled Chalcopyrite
-item.milledSphalerite.name=Milled Sphalerite
-item.milledNickel.name=Milled Nickel
-item.milledPlatinum.name=Milled Platinum
-item.milledPentlandite.name=Milled Pentlandite
 item.FrothZincflotation.name=Sphalerite Flotation Froth Cell
 item.FrothCopperflotation.name=Chalcopyrite Flotation Froth Cell
 item.FrothNickelflotation.name=Nickel Flotation Froth Cell
@@ -3591,11 +3581,6 @@ item.BasicAgrichemItem.25.name=Crushed Pine Materials
 item.pineoil.name=Pine Oil Cell
 
 # Added 11/4/20
-item.milledRedstone.name=Milled Redstone
-item.milledSpessartine.name=Milled Spessartine
-item.milledGrossular.name=Milled Grossular
-item.milledAlmandine.name=Milled Almandine
-item.milledPyrope.name=Milled Pyrope
 item.FrothRedstoneflotation.name=Redstone Flotation Froth Cell
 item.FrothSpessartineflotation.name=Spessartine Flotation Froth Cell
 item.FrothGrossularflotation.name=Grossular Flotation Froth Cell
@@ -3787,9 +3772,7 @@ item.itemScrewPraseodymium.name=Praseodymium Screw
 item.itemRotorPraseodymium.name=Praseodymium Rotor
 item.itemGearPraseodymium.name=Praseodymium Gear
 item.itemCellPraseodymium.name=Praseodymium Cell
-item.milledMonazite.name=Milled Monazite
 item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
-item.milledNetherrack.name=Milled Netherrack
 
 # Added 18/12/21
 item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
@@ -4167,7 +4150,6 @@ gtplusplus.blocktieredcasings.1.9.name=Integral Framework V
 
 # Multiblocks
 gt.blockmachines.chemicalplant.controller.tier.single.name=ExxonMobil Chemical Plant
-gt.blockmachines.cyclotron.tier.single.name=COMET - Compact Cyclotron
 gt.blockmachines.fusioncomputer.tier.09.name=FusionTech Mk-IV
 gt.blockmachines.fusioncomputer.tier.10.name=FusionTech Mk-V
 gt.blockmachines.gtplusplus.autocrafter.multi.name=Large Scale Auto-Assembler v1.01
@@ -4178,11 +4160,9 @@ gt.blockmachines.gtpp.multimachine.semifluidgenerator.name=Large Semifluid Burne
 gt.blockmachines.industrialalloysmelter.controller.tier.single.name=Zyngen
 gt.blockmachines.industrialfluidheater.controller.tier.single.name=Thermic Heating Device
 gt.blockmachines.industrialmassfab.controller.tier.single.name=Matter Fabrication CPU
-gt.blockmachines.industrialplatepress.controller.tier.single.name=Industrial Material Press
 gt.blockmachines.industrialrefinery.controller.tier.single.name=Reactor Fuel Processing Plant
 gt.blockmachines.industrialsalloyamelter.controller.tier.mega.name=Mega Alloy Blast Smelter
 gt.blockmachines.industrialsalloyamelter.controller.tier.single.name=Alloy Blast Smelter
-gt.blockmachines.industrialwashplant.controller.tier.single.name=Ore Washing Plant
 gt.blockmachines.lftr.controller.single.name=Liquid Fluoride Thorium Reactor
 gt.blockmachines.multimachine.adv.blastfurnace.name=Volcanus
 gt.blockmachines.multimachine.adv.distillationtower.name=Dangote Distillus
@@ -4194,7 +4174,6 @@ gt.blockmachines.solartower.controller.tier.single.name=Solar Tower
 gt.blockmachines.sparge.controller.single.name=Sparge Tower Controller
 gt.blockmachines.substation.01.input.single.name=Power Station Control Node
 # Machine names
-gt.blockmachines.hatch.dynamo.buffer.name=%s Dynamo Hatch [Buffered]
 gt.blockmachines.hatch.muffler.adv.name=Advanced Muffler Hatch (%s)
 gt.blockmachines.muffler_advanced.filter.desc=Requires an Air Filter
 gt.blockmachines.muffler_advanced.filter_tier2.desc=Requires an Air Filter §f%s§7
@@ -4249,8 +4228,6 @@ gt.blockmachines.hatch.custom_fluid.steam.desc=Fluid Input for Steam Multiblocks
 gt.blockmachines.hatch.custom_fluid.empty=Empty
 
 # GT++ items
-MU-metaitem.01.32040.name=Extruder Shape (Shaft)
-MU-metaitem.01.32040.tooltip=Extruder Shape for making Windmill Shafts
 MU-metaitem.01.rtg_pellet_pu238.name=%sPu Pellet
 MU-metaitem.01.rtg_pellet_sr90.name=%sSr Pellet
 MU-metaitem.01.rtg_pellet_po210.name=%sPo Pellet

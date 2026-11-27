@@ -1,7 +1,5 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Minecraft;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -17,21 +15,22 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
-import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
 
@@ -76,9 +75,9 @@ public class ItemUtils {
                 .contains("dust")) {
                 final String MaterialName = oredictName.toLowerCase()
                     .replace("dust", "");
-                final Materials m = Materials.get(MaterialName);
-                if (m != Materials._NULL) {
-                    ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
+                final Material m = gregtech.api.material.MaterialUtils.byLegacyName(MaterialName);
+                if (m != null) {
+                    ItemStack returnValue = MaterialLibAPI.findStack(m, Shapes.dust, 1);
                     if (returnValue != null) {
                         return returnValue;
                     }
@@ -96,7 +95,6 @@ public class ItemUtils {
 
     public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName,
         String mChemForm, final int Colour) {
-        MaterialUtils.generateMaterialLocalizedName(materialName);
         final Item[] output = {
             new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, mChemForm, Colour, "Dust"),
             new BaseItemDustUnique("itemDustSmall" + unlocalizedName, materialName, mChemForm, Colour, "Small"),
@@ -152,62 +150,6 @@ public class ItemUtils {
         return output;
     }
 
-    public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust) {
-        return generateSpecialUseDusts(material, onlyLargeDust, false);
-    }
-
-    public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust,
-        final boolean disableExtraRecipes) {
-        final String materialName = material.getUnlocalizedName();
-        final String unlocalizedName = StringUtils.sanitizeString(materialName);
-        final int Colour = material.getRgbAsHex();
-        final String aChemForm = material.chemicalFormula;
-        final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
-        Item[] output = null;
-        if (!onlyLargeDust) {
-            output = new Item[] {
-                new BaseItemDustUnique(
-                    "itemDust" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Dust"),
-                new BaseItemDustUnique(
-                    "itemDustSmall" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Small"),
-                new BaseItemDustUnique(
-                    "itemDustTiny" + unlocalizedName,
-                    materialName,
-                    isChemFormvalid ? aChemForm : "",
-                    Colour,
-                    "Tiny") };
-        } else {
-            output = new Item[] { new BaseItemDustUnique("itemDust" + unlocalizedName, materialName, Colour, "Dust") };
-        }
-
-        new RecipeGenDustGeneration(material, disableExtraRecipes);
-
-        return output;
-    }
-
-    public static int getRadioactivityLevel(final String materialName) {
-        int sRadiation = 0;
-        if (materialName.toLowerCase()
-            .contains("uranium")) {
-            sRadiation = 2;
-        } else if (materialName.toLowerCase()
-            .contains("plutonium")) {
-                sRadiation = 4;
-            } else if (materialName.toLowerCase()
-                .contains("thorium")) {
-                    sRadiation = 1;
-                }
-        return sRadiation;
-    }
-
     private static final Map<Item, String> mModidCache = new HashMap<>();
 
     private static String getModId(final Item item) {
@@ -244,21 +186,6 @@ public class ItemUtils {
     }
 
     // Take 2 - GT/GT++ Dusts
-    public static ItemStack getGregtechDust(final String oredictName, final int amount) {
-        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
-        if (!oreDictList.isEmpty()) {
-            ItemStack returnvalue;
-            for (ItemStack itemStack : oreDictList) {
-                final String modid = getModId(itemStack.getItem());
-                if (modid != null && (modid.equals(GregTech.ID) || modid.equals(GTPlusPlus.ID))) {
-                    returnvalue = itemStack.copy();
-                    returnvalue.stackSize = amount;
-                    return returnvalue;
-                }
-            }
-        }
-        return getNonTinkersDust(oredictName, amount);
-    }
 
     // Anything But Tinkers Dust
     public static ItemStack getNonTinkersDust(final String oredictName, final int amount) {
@@ -278,11 +205,11 @@ public class ItemUtils {
         return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
     }
 
-    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
+    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
         }
-        return GTOreDictUnificator.get(mPrefix, mMat, mAmount);
+        return MaterialParts.stack(mPrefix, mMat, mAmount);
     }
 
     /**

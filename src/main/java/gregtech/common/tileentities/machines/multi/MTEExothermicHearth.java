@@ -50,16 +50,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
@@ -216,7 +217,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addEnergyHatchGlassTier()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-            .addCasing("1800-1904", Casings.HearthCasing.getLocalizedName(), false)
+            .addCasing("1800-1900", Casings.HearthCasing.getLocalizedName(), false)
             .addCasing("937", Casings.HeatProofMachineCasing.getLocalizedName(), false)
             .addCasing("864", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
             .addCasing("780", Casings.ThermalContainmentCasing.getLocalizedName(), false)
@@ -225,7 +226,10 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             .addCasing("308", Casings.BlackPlutoniumItemPipeCasing.getLocalizedName(), false)
             .addCasing("280", Casings.BlastSmelterHeatContainmentCoil.getLocalizedName(), false)
             .addCasing("131", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
-            .addCasing("56", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.PrismaticNaquadah), false)
+            .addCasing(
+                "56",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.PrismaticNaquadah)),
+                false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_hearth_casing"), 1)
             .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.top_center_casing"), 2)
@@ -522,6 +526,6 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_MEGA_BLAST_FURNACE_LOOP;
+        return SoundResource.GT_MACHINES_EXOTHERMIC_HEARTH_LOOP;
     }
 }

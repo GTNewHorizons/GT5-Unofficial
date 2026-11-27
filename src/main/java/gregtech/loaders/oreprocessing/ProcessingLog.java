@@ -9,42 +9,44 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingLog implements ForeignPartRule {
 
-    public ProcessingLog() {
-        OrePrefixes.log.add(this);
-    }
+    public static final ProcessingLog INSTANCE = new ProcessingLog();
+
+    private ProcessingLog() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
+    public void generate(OrePrefixes prefix, Material material, String oreDictName, ItemStack stack) {
+        short meta = (short) stack.getItemDamage();
 
-        short aMeta = (short) aStack.getItemDamage();
-
-        if (aMeta == Short.MAX_VALUE) {
-            List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(aStack);
+        if (meta == Short.MAX_VALUE) {
+            List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(stack);
             if ((GTUtility.areStacksEqual(
-                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
+                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, stack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
-                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
+                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, stack));
             }
             for (int i = 0; i < 32767; i++) {
                 if ((GTUtility.areStacksEqual(
-                    GTModHandler.getSmeltingOutput(new ItemStack(aStack.getItem(), 1, i), false, null),
+                    GTModHandler.getSmeltingOutput(new ItemStack(stack.getItem(), 1, i), false, null),
                     new ItemStack(Items.coal, 1, 1)))) {
-                    GTModHandler.removeFurnaceSmelting(new ItemStack(aStack.getItem(), 1, i));
+                    GTModHandler.removeFurnaceSmelting(new ItemStack(stack.getItem(), 1, i));
                 }
                 ItemStack tStack = GTModHandler
-                    .getRecipeOutputFrom(recipeCandidates, new ItemStack(aStack.getItem(), 1, i));
+                    .getRecipeOutputFrom(recipeCandidates, new ItemStack(stack.getItem(), 1, i));
                 if (tStack == null) {
                     if (i >= 16) {
                         break;
@@ -54,128 +56,134 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     if (tPlanks != null) {
                         tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
+                                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1))
+                            .fluidInputs(
+                                MaterialLibAPI.getFluidStack(
+                                    Materials.DimensionallyShiftedSuperfluid,
+                                    FluidShapes.fluidLiquid,
+                                    1))
                             .duration(4 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                            .fluidInputs(Materials.Lubricant.getFluid(1L))
+                                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1))
+                            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1))
                             .duration(10 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyAmount(
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                            .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
+                                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 2))
+                            .fluidInputs(GTUtility.getWater(Math.min(1_000, 200 * 8 / 320)))
                             .duration(20 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemInputs(new ItemStack(stack.getItem(), 1, i))
                             .itemOutputs(
                                 GTUtility.copyAmount(
                                     GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 2))
                             .fluidInputs(GTModHandler.getDistilledWater(3))
                             .duration(20 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
-                        GTModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
+                        GTModHandler.removeRecipeDelayed(new ItemStack(stack.getItem(), 1, i));
                         GTModHandler.addCraftingRecipe(
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
                             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                            new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
+                            new Object[] { "s", "L", 'L', new ItemStack(stack.getItem(), 1, i) });
                         GTModHandler.addShapelessCraftingRecipe(
                             GTUtility.copyAmount(tStack.stackSize / (GTMod.proxy.mNerfedWoodPlank ? 2 : 1), tStack),
                             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                            new Object[] { new ItemStack(aStack.getItem(), 1, i) });
+                            new Object[] { new ItemStack(stack.getItem(), 1, i) });
                     }
                 }
             }
         } else {
             if ((GTUtility.areStacksEqual(
-                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
+                GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, stack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
-                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
+                GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, stack));
             }
-            ItemStack tStack = GTModHandler.getRecipeOutput(GTUtility.copyAmount(1, aStack));
+            ItemStack tStack = GTModHandler.getRecipeOutput(GTUtility.copyAmount(1, stack));
             if (tStack != null) {
                 ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                 if (tPlanks != null) {
                     tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                        .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1L))
+                            MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1))
+                        .fluidInputs(
+                            MaterialLibAPI
+                                .getFluidStack(Materials.DimensionallyShiftedSuperfluid, FluidShapes.fluidLiquid, 1))
                         .duration(4 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                        .fluidInputs(Materials.Lubricant.getFluid(1L))
+                            MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 1))
+                        .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                        .fluidInputs(Materials.Water.getFluid(Math.min(1_000, 200 * 8 / 320)))
+                            MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 2))
+                        .fluidInputs(GTUtility.getWater(Math.min(1_000, 200 * 8 / 320)))
                         .duration(20 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
+                            MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 2))
                         .fluidInputs(GTModHandler.getDistilledWater(3))
                         .duration(20 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
-                    GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
+                    GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, stack));
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(
                             GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                             tStack),
                         GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                        new Object[] { "s", "L", 'L', GTUtility.copyAmount(1, aStack) });
+                        new Object[] { "s", "L", 'L', GTUtility.copyAmount(1, stack) });
                     GTModHandler.addShapelessCraftingRecipe(
                         GTUtility.copyAmount(tStack.stackSize / (GTMod.proxy.mNerfedWoodPlank ? 2 : 1), tStack),
-                        new Object[] { GTUtility.copyAmount(1, aStack) });
+                        new Object[] { GTUtility.copyAmount(1, stack) });
                 }
             }
         }
 
         if ((GTUtility.areStacksEqual(
-            GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
+            GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, stack), false, null),
             new ItemStack(Items.coal, 1, 1)))) {
-            GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
+            GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, stack));
         }
     }
 }

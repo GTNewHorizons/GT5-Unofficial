@@ -21,20 +21,19 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+import com.ruling_0.materiallib.api.Material;
 
-import bartworks.system.material.BWMetaGeneratedOres;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GTLoggers;
-import gregtech.api.enums.Materials;
+import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.GTMockWorld;
-import gregtech.common.blocks.GTBlockOre;
-import gtPlusPlus.core.block.base.BlockBaseOre;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-public class UnificationOreAdapter implements IOreAdapter<Materials> {
+public class UnificationOreAdapter implements IOreAdapter {
 
     private static final ImmutableList<OrePrefixes> ORE_ORE_PREFIXES = Arrays.stream(OrePrefixes.VALUES)
         .filter(
@@ -45,9 +44,9 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
     public static final UnificationOreAdapter INSTANCE = new UnificationOreAdapter();
 
-    private static final Table<OrePrefixes, Materials, ImmutableBlockMeta> BLOCK_TABLE = HashBasedTable.create();
+    private static final Table<OrePrefixes, Material, ImmutableBlockMeta> BLOCK_TABLE = HashBasedTable.create();
 
-    private record OreEntry(OrePrefixes prefix, Materials material, ImmutableBlockMeta block) {}
+    private record OreEntry(OrePrefixes prefix, Material material, ImmutableBlockMeta block) {}
 
     private static final Object2ObjectOpenHashMap<ImmutableBlockMeta, OreEntry> MAT_BLOCK_TABLE = new Object2ObjectOpenHashMap<>();
 
@@ -55,6 +54,15 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
     public static void load() {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
+    }
+
+    /// Runs the [#init] full-oredict scan, covering the ores [#onOreRegistered] ignored while
+    /// [GTMod#sMaterialsReady] was unset. A no-op once that scan has run.
+    public static void catchUp() {
+        if (!initialized) {
+            initialized = true;
+            init();
+        }
     }
 
     private UnificationOreAdapter() {
@@ -70,6 +78,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     public static void onOreRegistered(OreRegisterEvent event) {
+        if (!GTMod.sMaterialsReady) return;
         if (!initialized) {
             initialized = true;
             init();
@@ -90,21 +99,19 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
                 ore.getName()
                     .length());
 
-            Materials mat = Materials.get(matName);
+            Material ml = MaterialUtils.byLegacyName(matName);
 
-            if (mat == Materials._NULL) continue;
+            if (ml == null) continue;
 
-            BLOCK_TABLE.put(ore, mat, bm);
-            MAT_BLOCK_TABLE.put(bm, new OreEntry(ore, mat, bm));
+            BLOCK_TABLE.put(ore, ml, bm);
+            MAT_BLOCK_TABLE.put(bm, new OreEntry(ore, ml, bm));
         }
     }
 
     /// Checks if the ore block is a GT block, which means that it should be supported by another adapter. These blocks
     /// will not be indexed when their ore dictionary names are added.
     private static boolean isGTOre(Block block) {
-        if (block instanceof GTBlockOre) return true;
-        if (block instanceof BWMetaGeneratedOres) return true;
-        return block instanceof BlockBaseOre;
+        return GTOreAdapter.INSTANCE.supports(block, 0);
     }
 
     private static void init() {
@@ -116,9 +123,9 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
                     prefix.getName()
                         .length());
 
-                Materials mat = Materials.get(matName);
+                Material ml = MaterialUtils.byLegacyName(matName);
 
-                if (mat == Materials._NULL) continue;
+                if (ml == null) continue;
 
                 for (ItemStack ore : OreDictionary.getOres(name)) {
                     if (!(ore.getItem() instanceof ItemBlock itemBlock)) continue;
@@ -129,8 +136,8 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
                     ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(ore.getItemDamage()));
 
-                    BLOCK_TABLE.put(prefix, mat, bm);
-                    MAT_BLOCK_TABLE.put(bm, new OreEntry(prefix, mat, bm));
+                    BLOCK_TABLE.put(prefix, ml, bm);
+                    MAT_BLOCK_TABLE.put(bm, new OreEntry(prefix, ml, bm));
                 }
             }
         }
@@ -147,7 +154,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public boolean supports(OreInfo<?> info) {
+    public boolean supports(OreInfo info) {
         IStoneType stoneType = info.stoneType == null ? StoneType.Stone : info.stoneType;
 
         // noinspection SuspiciousMethodCalls
@@ -155,7 +162,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public OreInfo<Materials> getOreInfo(Block block, int meta) {
+    public OreInfo getOreInfo(Block block, int meta) {
         pooled.setBlock(block);
         pooled.setBlockMeta(meta);
 
@@ -163,7 +170,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
         if (entry == null) return null;
 
-        OreInfo<Materials> info = OreInfo.getNewInfo();
+        OreInfo info = OreInfo.getNewInfo();
 
         info.stoneType = StoneType.findStoneTypeByPrefix(entry.prefix());
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
@@ -179,11 +186,10 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public ImmutableBlockMeta getBlock(OreInfo<?> info) {
+    public ImmutableBlockMeta getBlock(OreInfo info) {
         if (info.sourceBlock != null) {
             return info.sourceBlock;
         }
-
         IStoneType stoneType = info.stoneType == null ? StoneType.Stone : info.stoneType;
 
         // noinspection SuspiciousMethodCalls
@@ -193,7 +199,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     private final GTMockWorld mockWorld = new GTMockWorld();
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random rng, OreInfo<?> info, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random rng, OreInfo info, boolean silktouch, int fortune) {
         ImmutableBlockMeta bm = getBlock(info);
 
         if (bm == null) return new ArrayList<>();
@@ -212,7 +218,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo<?> info) {
+    public List<ItemStack> getPotentialDrops(OreInfo info) {
         return Collections.emptyList();
     }
 }

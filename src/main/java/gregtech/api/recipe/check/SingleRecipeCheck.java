@@ -23,9 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -695,9 +693,8 @@ public class SingleRecipeCheck {
                     // Item is not consumed, but may be a non-consumable
                     ItemStack stack = entry.getKey()
                         .getItemStack();
-                    ItemData data = GTOreDictUnificator.getItemData(stack);
                     boolean matchesAnyInput = Arrays.stream(this.recipe.getCachedCombinedItemInputs())
-                        .anyMatch(recipeInput -> recipeInput.matchesRecipe(data, stack));
+                        .anyMatch(recipeInput -> recipeInput.matchesRecipe(stack));
                     if (matchesAnyInput) {
                         itemCostBuilder.put(entry.getKey(), cost);
                     }

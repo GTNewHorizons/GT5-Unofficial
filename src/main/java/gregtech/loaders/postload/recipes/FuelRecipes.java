@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 
 public class FuelRecipes implements Runnable {
@@ -21,12 +20,6 @@ public class FuelRecipes implements Runnable {
     // todo: add an enum for the fuel type, int values are mysterious
     @Override
     public void run() {
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("biogasCell", 1L))
-            .metadata(FUEL_VALUE, 40)
-            .metadata(FUEL_TYPE, 1)
-            .addTo(GTRecipeConstants.Fuel);
-
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.golden_apple, 1, 1))
             .itemOutputs(new ItemStack(Items.apple, 1))

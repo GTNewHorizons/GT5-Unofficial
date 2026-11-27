@@ -63,12 +63,11 @@ import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import akka.japi.Pair;
-import gregtech.api.enums.Materials;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.ColorUtils;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
@@ -465,8 +464,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private ButtonWidget<?> createAsteroidButton(AsteroidData data, int index) {
-        ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
-            : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
+        ItemStack oreItem = data.getOutputStack(0);
         return new ButtonWidget<>().background(createAsteroidButtonBackground(data))
             .overlay(
                 new ItemDrawable(oreItem).asIcon()
@@ -522,8 +520,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         List<Integer> visited = new ArrayList<>();
 
         for (int i = 0; i < size; i++) {
-            ItemStack ore = data.outputItems != null ? data.outputItems[i]
-                : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
+            ItemStack ore = data.getOutputStack(i);
             if (!filterContainsOre(ore)) {
                 int j = findFirstEmptySlot(visited);
                 if (j == -1) return;
@@ -597,8 +594,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue droneFilterSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
         IntSyncValue moduleTierFilterSyncer = syncManager.findSyncHandler("moduleTierFilter", IntSyncValue.class);
 
-        ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
-            : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
+        ItemStack oreItem = data.getOutputStack(0);
 
         return new DynamicDrawable(() -> {
             if (matchesFilters(
@@ -722,8 +718,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private boolean asteroidContainsOre(AsteroidData data, String stringValue) {
         if (stringValue.isEmpty()) return false;
         if (data.output != null) {
-            for (Materials output : data.output) {
-                ItemStack itemOutput = GTOreDictUnificator.get(data.orePrefixes, output, 1);
+            for (Material output : data.output) {
+                ItemStack itemOutput = AsteroidData.oreStack(output, data.stoneType, 1);
                 if (itemOutput.getDisplayName()
                     .toLowerCase()
                     .contains(stringValue.toLowerCase())) return true;
@@ -768,8 +764,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createInformationPanelHeader(AsteroidData data) {
-        ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
-            : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
+        ItemStack oreItem = data.getOutputStack(0);
         return Flow.row()
             .coverChildrenWidth()
             .childPadding(5)
@@ -871,8 +866,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createDropDisplayWidget(AsteroidData data, int i, int totalWeight) {
-        ItemStack ore = data.outputItems != null ? data.outputItems[i]
-            : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
+        ItemStack ore = data.getOutputStack(i);
 
         return new SlotLikeButtonWidget(ore).tooltipBuilder(t -> createDropDisplayTooltip(t, i, ore, data, totalWeight))
             .onMousePressed(createDropDisplayOnMousePressed(ore))
@@ -891,6 +885,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             if (!isAsteroidPanelForFilter) return true;
             if (filterContainsOre(ore)) return true;
             int firstEmptySlot = findFirstEmptySlot();
+            if (firstEmptySlot == -1) return true;
+
             filterModularSlots[firstEmptySlot].putStack(ore);
             filterSlots[firstEmptySlot].getSyncHandler()
                 .updateFromClient(ore, 0);
@@ -933,8 +929,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private boolean filterContainsAsteroidOre(AsteroidData data) {
         int size = data.outputItems != null ? data.outputItems.length : data.output.length;
         for (int i = 0; i < size; i++) {
-            ItemStack ore = data.outputItems != null ? data.outputItems[i]
-                : GTOreDictUnificator.get(data.orePrefixes, data.output[i], 1);
+            ItemStack ore = data.getOutputStack(i);
             if (filterContainsOre(ore)) return true;
         }
         return false;

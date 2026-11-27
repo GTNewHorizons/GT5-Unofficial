@@ -1,9 +1,10 @@
 package kubatech.loaders;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
 
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
@@ -12,10 +13,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IOreMaterial;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.StackMaterialInfo;
+
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.material.MaterialsElements;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 
@@ -69,12 +73,13 @@ public enum ArcFurnaceElectrode {
                 .setInteger("infinityTargetParallel", 1);
         }
     }),
-    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.3d, 0.5d),
+    HypogenElectrode(10, Materials.Hypogen, 6.5d, 256, 1d, 4d, 2500, 1.3d, 0.5d),
 
     // nanite electrodes
     NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 256, 2d, 4d, 1750, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
-            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
+            if (completed.arcFurnace
+                .depleteInputAndUpdate(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, 1))
                 && completed.arcFurnace.getRandomNumber(100) < 70) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(0);
             }
@@ -82,23 +87,26 @@ public enum ArcFurnaceElectrode {
     }),
     TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 3500, 1.5d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
-            if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))) {
+            if (completed.arcFurnace
+                .depleteInputAndUpdate(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.dust, 1))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1);
             }
         }
     }),
     UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 5000, 1d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
-            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
+            if (completed.arcFurnace
+                .depleteInputAndUpdate(MaterialLibAPI.getStack(Materials.Universium, Shapes.dust, 1))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
             }
         }
     });
 
     private static final Int2ObjectOpenHashMap<ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
+    private static final Map<Material, ArcFurnaceElectrode> MATERIAL_MAP = new IdentityHashMap<>();
 
     public final int id;
-    public final IOreMaterial associatedMaterial;
+    public final Material associatedMaterial;
     public final double speedModifier;
     public final int parallelLimit;
     public final double OCSpeedFactor;
@@ -110,7 +118,7 @@ public enum ArcFurnaceElectrode {
 
     private ItemStack electrodeItem;
 
-    ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
+    ArcFurnaceElectrode(int id, Material associatedMaterial, double speedModifier, int parallelLimit,
         double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
         this(
             id,
@@ -125,7 +133,7 @@ public enum ArcFurnaceElectrode {
             null);
     }
 
-    ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
+    ArcFurnaceElectrode(int id, Material associatedMaterial, double speedModifier, int parallelLimit,
         double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
         Consumer<ArcFurnaceProcessingEvent> specialEffect) {
         this.id = id;
@@ -144,7 +152,9 @@ public enum ArcFurnaceElectrode {
         for (ArcFurnaceElectrode electrode : values()) {
             if (ID_MAP.put(electrode.id, electrode) != null)
                 throw new IllegalStateException("Duplicate electrode id: " + electrode.id);
-            electrode.electrodeItem = ARC_FURNACE_ELECTRODE.getElectrodeStack(electrode);
+            if (MATERIAL_MAP.put(electrode.associatedMaterial, electrode) != null)
+                throw new IllegalStateException("Duplicate electrode material: " + electrode.associatedMaterial);
+            electrode.electrodeItem = MaterialLibAPI.getStack(electrode.associatedMaterial, Shapes.electrode, 1);
         }
     }
 
@@ -156,12 +166,12 @@ public enum ArcFurnaceElectrode {
         return ID_MAP.get(id);
     }
 
+    /// The electrode `stack` is, or null when it is not a [Shapes#electrode] stack.
     public static ArcFurnaceElectrode getByStack(ItemStack stack) {
-        return ARC_FURNACE_ELECTRODE.getElectrodeFromStack(stack);
-    }
-
-    public String getUnlocalizedName() {
-        return "item.arc_furnace_electrode." + this.name();
+        if (stack == null) return null;
+        StackMaterialInfo info = MaterialLibAPI.lookupStack(stack);
+        if (info == null || info.shape() != Shapes.electrode) return null;
+        return MATERIAL_MAP.get(info.material());
     }
 
     public void addInformation(List<String> tooltip, int durability) {

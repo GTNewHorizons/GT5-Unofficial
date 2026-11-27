@@ -50,15 +50,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -214,7 +215,11 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .beginStructureBlock(7, 7, 9, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("128-148", Casings.PressureContainmentCasing.getLocalizedName(), false)
-            .addCasing("42", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Polytetrafluoroethylene), false)
+            .addCasing(
+                "42",
+                OrePrefixes.frameGt
+                    .getLocalizedNameForItem(MaterialUtils.internalName(Materials.Polytetrafluoroethylene)),
+                false)
             .addCasing("42", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
             .addCasing("14", StatCollector.translateToLocal("GT5U.MBTT.Tiers.FluidPipe"), true)
             .addCasing("7", StatCollector.translateToLocal("GT5U.MBTT.Tiers.ItemPipe"), true)

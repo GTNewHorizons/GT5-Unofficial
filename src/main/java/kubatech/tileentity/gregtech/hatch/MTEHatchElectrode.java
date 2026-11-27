@@ -1,7 +1,5 @@
 package kubatech.tileentity.gregtech.hatch;
 
-import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
-
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -15,6 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.common.gui.modularui.hatch.MTEHatchElectrodeGui;
+import kubatech.loaders.ArcFurnaceElectrode;
 
 public class MTEHatchElectrode extends MTEHatchInputBus {
 
@@ -50,7 +49,7 @@ public class MTEHatchElectrode extends MTEHatchInputBus {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
-        return itemStack != null && itemStack.getItem() == ARC_FURNACE_ELECTRODE;
+        return ArcFurnaceElectrode.getByStack(itemStack) != null;
     }
 
     @Override

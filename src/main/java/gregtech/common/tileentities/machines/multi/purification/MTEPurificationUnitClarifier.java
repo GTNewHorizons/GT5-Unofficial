@@ -37,16 +37,17 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -188,8 +189,14 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("123-128", Casings.ReinforcedSterileWaterPlantCasing.getLocalizedName(), false)
             .addCasing("21", Casings.FilterMachineCasing.getLocalizedName(), false)
-            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Iridium), false)
-            .addCasing("12", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DamascusSteel), false)
+            .addCasing(
+                "12",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.Iridium)),
+                false)
+            .addCasing(
+                "12",
+                OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(Materials.DamascusSteel)),
+                false)
             .addCasing("3", Casings.PTFEPipeCasing.getLocalizedName(), false)
             .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 1)
             .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_center_side_casing"), 1)
@@ -215,7 +222,10 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,

@@ -32,11 +32,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -244,7 +246,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     public static void setAir() {
         if (sAirFluidStack == null) {
-            sAirFluidStack = Materials.Air.getGas(1);
+            sAirFluidStack = MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, 1);
         }
         if (sAirFluid == null && sAirFluidStack != null) {
             sAirFluid = sAirFluidStack.getFluid();
@@ -392,7 +394,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     public boolean consumeCO2() {
-        return this.depleteInput(Materials.CarbonDioxide.getGas(this.boostEu ? 3 : 1));
+        return this.depleteInput(
+            MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (this.boostEu ? 3 : 1)));
     }
 
     public boolean consumeLOH() {
@@ -414,7 +417,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
-        int injected = 0;
+        long injected = 0;
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
@@ -439,16 +442,23 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
         long leftToInject;
         long aVoltage;
-        int aAmpsToInject;
-        int aRemainder;
+        long aAmpsToInject;
+        long aRemainder;
 
         for (MTEHatch aDynamo : validMTEList(this.mAllDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
-            aAmpsToInject = (int) (leftToInject / aVoltage);
-            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            aAmpsToInject = leftToInject / aVoltage;
+            aRemainder = leftToInject - (aAmpsToInject * aVoltage);
+            // Keep the legacy loop for callbacks and the remainder packet.
+            if (aVoltage > 0 && aAmpsToInject > 1 && isFullNativeDynamo(aDynamo)) {
+                long amps = Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+                injected += aVoltage * amps;
+                if (amps < aDynamo.maxAmperesOut()) injected += aRemainder;
+                continue;
+            }
             long powerGain;
-            for (int i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
+            for (long i = 0; i < Math.min(aDynamo.maxAmperesOut(), aAmpsToInject + 1); i++) {
                 if (i == Math.min(aDynamo.maxAmperesOut(), aAmpsToInject)) {
                     powerGain = aRemainder;
                 } else {

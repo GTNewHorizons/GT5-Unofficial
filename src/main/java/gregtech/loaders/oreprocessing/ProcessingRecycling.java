@@ -5,39 +5,45 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
-public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingRecycling implements PartRecipeGenerator {
 
-    public ProcessingRecycling() {
-        for (OrePrefixes tPrefix : OrePrefixes.VALUES)
-            if ((tPrefix.isMaterialBased()) && (tPrefix.getMaterialAmount() > 0L) && (tPrefix.isContainer()))
-                tPrefix.add(this);
-    }
+    public static final ProcessingRecycling INSTANCE = new ProcessingRecycling();
+
+    private ProcessingRecycling() {}
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        if ((aMaterial != Materials.Empty) && (GTUtility.getFluidForFilledItem(aStack, true) == null)
-            && !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
-            && (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L) != null)) {
+    public void generate(OrePrefixes prefix, Material material, Shape shape, ItemStack stack) {
+        if ((material != Materials.Empty) && (GTUtility.getFluidForFilledItem(stack, true) == null)
+            && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+            && material.hasShape(Shapes.dust)) {
             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-            recipeBuilder.itemInputs(aStack);
-            if (GTUtility.getContainerItem(aStack, true) == null) {
+            recipeBuilder.itemInputs(stack);
+            if (GTUtility.getContainerItem(stack, true) == null) {
                 recipeBuilder.itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.getMaterialAmount() / 3628800L));
+                    GTUtility.copyAmount(
+                        prefix.getMaterialAmount() / 3628800L,
+                        MaterialLibAPI.getStack(material, Shapes.dust, 1)));
             } else {
                 recipeBuilder.itemOutputs(
-                    GTUtility.getContainerItem(aStack, true),
-                    GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, aPrefix.getMaterialAmount() / 3628800L));
+                    GTUtility.getContainerItem(stack, true),
+                    GTUtility.copyAmount(
+                        prefix.getMaterialAmount() / 3628800L,
+                        MaterialLibAPI.getStack(material, Shapes.dust, 1)));
             }
-            recipeBuilder.duration(((int) Math.max(aMaterial.getMass() / 2L, 1L)) * TICKS)
+            recipeBuilder.duration(((int) Math.max(MaterialUtils.mass(material) / 2L, 1L)) * TICKS)
                 .eut(2)
                 .addTo(cannerRecipes);
         }

@@ -8,6 +8,9 @@ import java.util.Map;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -41,11 +44,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
-import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
-import gregtech.nei.dumper.MaterialDumper;
 import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
@@ -53,6 +54,7 @@ import gregtech.nei.dumper.TurbineFuelDumper;
 import gregtech.nei.dumper.TurbineRotorDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
+import ic2.core.item.ItemFluidCell;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -76,7 +78,6 @@ public class NEIGTConfig implements IConfigureNEI {
     private static ListMultimap<RecipeCategory, RecipeMapWorkable> DEPRECATED_CATALYST_INDEX;
 
     private static final GTNEIImprintHandler CAL_IMPRINT_HANDLER = new GTNEIImprintHandler();
-    private static final GTNEIMacerationStackConversion MACERATOR_UPGRADE_HANDLER = new GTNEIMacerationStackConversion();
 
     public static boolean sIsAdded = true;
 
@@ -115,9 +116,6 @@ public class NEIGTConfig implements IConfigureNEI {
 
         GuiCraftingRecipe.craftinghandlers.add(CAL_IMPRINT_HANDLER);
         GuiUsageRecipe.usagehandlers.add(CAL_IMPRINT_HANDLER);
-
-        GuiCraftingRecipe.craftinghandlers.add(MACERATOR_UPGRADE_HANDLER);
-        GuiUsageRecipe.usagehandlers.add(MACERATOR_UPGRADE_HANDLER);
     }
 
     private void registerCatalysts() {
@@ -167,7 +165,6 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private void registerDumpers() {
         API.addOption(new MetaTileEntityDumper());
-        API.addOption(new MaterialDumper());
         API.addOption(new MetaItemDumper(MetaGeneratedItem01.INSTANCE, "metaitem01"));
         API.addOption(new MetaItemDumper(MetaGeneratedItem02.INSTANCE, "metaitem02"));
         API.addOption(new MetaItemDumper(MetaGeneratedItem03.INSTANCE, "metaitem03"));
@@ -215,7 +212,18 @@ public class NEIGTConfig implements IConfigureNEI {
     }
 
     private void hideItems() {
-        GTOreAdapter.INSTANCE.hideOres();
+        hideFilledUniversalCells();
+    }
+
+    /// Hides the filled forms of IC2's universal fluid cell, whose `getSubItems` lists one filled cell per
+    /// registered fluid. Only the empty cell stays visible. The hidden stacks are filled with
+    /// [Integer#MAX_VALUE] to mirror how IC2 builds its subitem stacks.
+    private static void hideFilledUniversalCells() {
+        for (Fluid fluid : FluidRegistry.getRegisteredFluids()
+            .values()) {
+            if (fluid == null) continue;
+            API.hideItem(ItemFluidCell.getUniversalFluidCell(new FluidStack(fluid, Integer.MAX_VALUE)));
+        }
     }
 
     @SubscribeEvent
@@ -241,12 +249,6 @@ public class NEIGTConfig implements IConfigureNEI {
                 .setDisplayStack(
                     CircuitPartsItem.getCircuitParts()
                         .getStack(0))
-                .build());
-
-        event.registerHandlerInfo(
-            new HandlerInfo.Builder(MACERATOR_UPGRADE_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
-                .setMultipleWidgetsAllowed(true)
-                .setDisplayStack(ItemList.MacerationStack.get(1))
                 .build());
     }
 

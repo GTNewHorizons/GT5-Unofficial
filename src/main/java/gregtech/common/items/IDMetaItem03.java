@@ -216,6 +216,7 @@ public enum IDMetaItem03 {
     UXV_Coil(262),
     MAX_Coil(263),
     PseudoStar(264),
+    Dim_Prismarine(265),
     Circuit_Wafer_FPIC(266),
     Circuit_Chip_FPIC(267),
     Circuit_Wafer_APIC(268),
@@ -240,6 +241,13 @@ public enum IDMetaItem03 {
 
     Lost_Quantum_Circuit_Rack(285),
     Realized_Quantum_Circuit_Rack(286),
+
+    IridiumAlloyPlate(287),
+    AdvancedAlloyPlate(288),
+    CarbonAlloyPlate(289),
+    MixedMetalIngot(290),
+    RawCarbonFibre(291),
+    CarbonMesh(292),
 
     StableBaryonContainmentUnit(300),
     StableLeptonContainmentUnit(301),

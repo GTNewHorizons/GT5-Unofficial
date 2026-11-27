@@ -3,26 +3,18 @@ package gtPlusPlus.core.fluids;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gtPlusPlus.GTplusplus;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import ic2.core.init.InternalName;
-import ic2.core.item.resources.ItemCell;
 
 public class GTPPFluids {
 
@@ -99,13 +91,7 @@ public class GTPPFluids {
     public static Fluid GeneticMutagen;
     public static Fluid Cryotheum;
     public static Fluid Pyrotheum;
-    public static Fluid IndustrialStrengthHydrofluoricAcid;
     public static Fluid HighQualitySulfurDioxide;
-    public static Fluid SulfurousAcid;
-    public static Fluid SulfuricApatiteMix;
-    public static Fluid IndustrialStrengthHydrogenChloride;
-    public static Fluid SulfuricLithiumMix;
-    public static Fluid LithiumHydroxide;
     public static Fluid RaisinJuice;
     public static Fluid MobEssence;
 
@@ -137,7 +123,7 @@ public class GTPPFluids {
 
         Butanol = FluidUtils.generateFluidNoPrefix("butanol", "Butanol", 200, new short[] { 159, 58, 56, 100 }, true);
 
-        short[] aZincFrothRGB = Materials.Sphalerite.mRGBa;
+        short[] aZincFrothRGB = MaterialUtils.rgba(Materials.Sphalerite);
         SphaleriteFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.zincflotation",
             "Sphalerite Froth",
@@ -145,7 +131,7 @@ public class GTPPFluids {
             new short[] { aZincFrothRGB[0], aZincFrothRGB[1], aZincFrothRGB[2], 100 },
             true);
 
-        short[] aCopperFrothRGB = Materials.Chalcopyrite.mRGBa;
+        short[] aCopperFrothRGB = MaterialUtils.rgba(Materials.Chalcopyrite);
         ChalcopyriteFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.copperflotation",
             "Chalcopyrite Froth",
@@ -153,7 +139,7 @@ public class GTPPFluids {
             new short[] { aCopperFrothRGB[0], aCopperFrothRGB[1], aCopperFrothRGB[2], 100 },
             true);
 
-        short[] aNickelFrothRGB = Materials.Nickel.mRGBa;
+        short[] aNickelFrothRGB = MaterialUtils.rgba(Materials.Nickel);
         NickelFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.nickelflotation",
             "Nickel Froth",
@@ -161,7 +147,7 @@ public class GTPPFluids {
             new short[] { aNickelFrothRGB[0], aNickelFrothRGB[1], aNickelFrothRGB[2], 100 },
             true);
 
-        short[] aPlatinumFrothRGB = Materials.Platinum.mRGBa;
+        short[] aPlatinumFrothRGB = MaterialUtils.rgba(Materials.Platinum);
         PlatinumFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.platinumflotation",
             "Platinum Froth",
@@ -169,7 +155,7 @@ public class GTPPFluids {
             new short[] { aPlatinumFrothRGB[0], aPlatinumFrothRGB[1], aPlatinumFrothRGB[2], 100 },
             true);
 
-        short[] aPentlanditeFrothRGB = Materials.Pentlandite.mRGBa;
+        short[] aPentlanditeFrothRGB = MaterialUtils.rgba(Materials.Pentlandite);
         PentlanditeFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.pentlanditeflotation",
             "Pentlandite Froth",
@@ -177,7 +163,7 @@ public class GTPPFluids {
             new short[] { aPentlanditeFrothRGB[0], aPentlanditeFrothRGB[1], aPentlanditeFrothRGB[2], 100 },
             true);
 
-        short[] aRedstoneFrothRGB = Materials.Redstone.mRGBa;
+        short[] aRedstoneFrothRGB = MaterialUtils.rgba(Materials.Redstone);
         RedstoneFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.redstoneflotation",
             "Redstone Froth",
@@ -185,7 +171,7 @@ public class GTPPFluids {
             new short[] { aRedstoneFrothRGB[0], aRedstoneFrothRGB[1], aRedstoneFrothRGB[2], 100 },
             true);
 
-        short[] aSpessartineFrothRGB = Materials.Spessartine.mRGBa;
+        short[] aSpessartineFrothRGB = MaterialUtils.rgba(Materials.Spessartine);
         SpessartineFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.spessartineflotation",
             "Spessartine Froth",
@@ -193,7 +179,7 @@ public class GTPPFluids {
             new short[] { aSpessartineFrothRGB[0], aSpessartineFrothRGB[1], aSpessartineFrothRGB[2], 100 },
             true);
 
-        short[] aGrossularFrothRGB = Materials.Grossular.mRGBa;
+        short[] aGrossularFrothRGB = MaterialUtils.rgba(Materials.Grossular);
         GrossularFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.grossularflotation",
             "Grossular Froth",
@@ -201,7 +187,7 @@ public class GTPPFluids {
             new short[] { aGrossularFrothRGB[0], aGrossularFrothRGB[1], aGrossularFrothRGB[2], 100 },
             true);
 
-        short[] aAlmandineFrothRGB = Materials.Almandine.mRGBa;
+        short[] aAlmandineFrothRGB = MaterialUtils.rgba(Materials.Almandine);
         AlmandineFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.almandineflotation",
             "Almandine Froth",
@@ -209,7 +195,7 @@ public class GTPPFluids {
             new short[] { aAlmandineFrothRGB[0], aAlmandineFrothRGB[1], aAlmandineFrothRGB[2], 100 },
             true);
 
-        short[] aPyropeFrothRGB = Materials.Pyrope.mRGBa;
+        short[] aPyropeFrothRGB = MaterialUtils.rgba(Materials.Pyrope);
         PyropeFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.pyropeflotation",
             "Pyrope Froth",
@@ -217,7 +203,7 @@ public class GTPPFluids {
             new short[] { aPyropeFrothRGB[0], aPyropeFrothRGB[1], aPyropeFrothRGB[2], 100 },
             true);
 
-        short[] aMonaziteFrothRGB = Materials.Monazite.mRGBa;
+        short[] aMonaziteFrothRGB = MaterialUtils.rgba(Materials.Monazite);
         MonaziteFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.Monaziteflotation",
             "Monazite Froth",
@@ -225,7 +211,7 @@ public class GTPPFluids {
             new short[] { aMonaziteFrothRGB[0], aMonaziteFrothRGB[1], aMonaziteFrothRGB[2], 100 },
             true);
 
-        short[] aNetherrackFrothRGB = Materials.Netherrack.mRGBa;
+        short[] aNetherrackFrothRGB = MaterialUtils.rgba(Materials.Netherrack);
         NetherrackFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.Netherrackflotation",
             "Netherrack Froth",
@@ -475,83 +461,11 @@ public class GTPPFluids {
             true,
             true);
 
-        IndustrialStrengthHydrofluoricAcid = FluidUtils.addGtFluid(
-            "hydrofluoricAcid",
-            "Industrial Strength Hydrofluoric Acid",
-            new short[] { 200, 200, 200, 0 },
-            1,
-            120,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-        generateIC2FluidCell(15, "HydrofluoricAcid");
-
         HighQualitySulfurDioxide = FluidUtils.generateFluidNoPrefix(
             "SulfurDioxide",
             "High Quality Sulfur Dioxide",
             263,
             new short[] { 150, 200, 50, 0 });
-
-        SulfurousAcid = FluidUtils.addGtFluid(
-            "sulfurousAcid",
-            "Sulfurous Acid",
-            new short[] { 110, 220, 30, 0 },
-            4,
-            75,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-        generateIC2FluidCell(16, "SulfurousAcid");
-
-        SulfuricApatiteMix = FluidUtils.addGtFluid(
-            "sulfuricApatite",
-            "Sulfuric Apatite Mix",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            500,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-        generateIC2FluidCell(17, "SulfuricApatite");
-
-        IndustrialStrengthHydrogenChloride = FluidUtils.addGtFluid(
-            "hydrogenChloride",
-            "Industrial Strength Hydrogen Chloride",
-            new short[] { 150, 240, 90, 0 },
-            4,
-            75,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-        generateIC2FluidCell(18, "HydrogenChloride");
-
-        SulfuricLithiumMix = FluidUtils.addGtFluid(
-            "sulfuricLithium",
-            "Sulfuric Lithium Mix",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            280,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-        generateIC2FluidCell(19, "SulfuricLithium");
-
-        LithiumHydroxide = FluidUtils.addGtFluid(
-            "lithiumHydroxide",
-            "Lithium Hydroxide",
-            new short[] { 0, 105, 105, 0 },
-            4,
-            500,
-            null,
-            ItemList.Cell_Empty.get(1),
-            1000,
-            false);
-        generateIC2FluidCell(20, "LithiumHydroxide");
 
         RaisinJuice = FluidUtils.generateFluidNonMolten(
             "RaisinJuice",
@@ -567,27 +481,6 @@ public class GTPPFluids {
             .generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });
 
         handleBlood();
-    }
-
-    private static ItemStack generateIC2FluidCell(final int cellID, final String s) {
-        InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
-        ItemCell item = (ItemCell) ItemList.Cell_Empty.getItem();
-
-        try {
-            Method addCell = ItemCell.class.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
-            addCell.setAccessible(true);
-            ItemStack temp = (ItemStack) addCell.invoke(item, cellID, yourName, new Block[0]);
-
-            FluidContainerRegistry.registerFluidContainer(
-                FluidRegistry.getFluidStack(s.toLowerCase(), 1000),
-                temp.copy(),
-                ItemList.Cell_Empty.get(1));
-            OreDictionary.registerOre("cell" + s, temp.copy());
-            return temp;
-        } catch (final Exception e) {
-            GTplusplus.logger.error(e);
-        }
-        return null;
     }
 
     private static void handleBlood() {

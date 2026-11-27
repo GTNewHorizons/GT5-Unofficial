@@ -15,8 +15,6 @@ package bartworks.util;
 
 import java.util.Arrays;
 
-import gregtech.api.enums.Dyes;
-
 @SuppressWarnings("unused")
 public class BWColorUtil {
 
@@ -29,111 +27,6 @@ public class BWColorUtil {
         else if (g >= 160 && g < 223) return 2;
         else if (g >= 233 && g <= 255) return 3;
         return 4;
-    }
-
-    public static Dyes getDyeFromColor(short[] rgba) {
-        rgba = correctCorlorArray(rgba);
-        if (isGrayScale(rgba, 2)) {
-            switch (getDarknessFromColor(rgba, 0)) {
-                case 0:
-                    return Dyes.dyeBlack;
-                case 1:
-                    return Dyes.dyeGray;
-                case 2:
-                    return Dyes.dyeLightGray;
-                case 3:
-                    return Dyes.dyeWhite;
-            }
-        } else {
-            short[] tmp = roundColor(rgba, 2);
-            if (isRedScale(tmp)) {
-                if (isPurpleScale(tmp)) {
-                    switch (getDarknessFromColor(rgba, 0)) {
-                        case 0:
-                        case 1:
-                            if (rgba[3] - 50 > rgba[0]) return Dyes.dyePurple;
-                            else return Dyes.dyeRed;
-                        case 2:
-                        case 3:
-                            if (rgba[3] - 50 > rgba[0]) return Dyes.dyeMagenta;
-                            else if (rgba[0] > 200 && rgba[2] > 140) return Dyes.dyePink;
-                            else if (rgba[0] > rgba[1] + rgba[1] / 10 && rgba[0] > rgba[2] + rgba[2] / 10
-                                && rgba[1] >> 4 == rgba[2] >> 4
-                                && rgba[1] + 50 > rgba[0]) {
-                                    return Dyes.dyeBrown;
-                                } else return Dyes.dyeRed;
-                        case 4:
-                            return Dyes._NULL;
-                    }
-                }
-                if (isYellowScale(tmp)) switch (getDarknessFromColor(rgba, 0)) {
-                    case 0:
-                    case 1:
-                        return Dyes.dyeBrown;
-                    case 2:
-                    case 3: {
-                        if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
-                        else return Dyes.dyeYellow;
-                    }
-                    case 4:
-                        return Dyes._NULL;
-                }
-                return Dyes.dyePink;
-            }
-            if (isGrenScale(tmp)) {
-                if (isCyanScale(tmp)) {
-                    if (rgba[2] + 40 < rgba[1]) switch (getDarknessFromColor(rgba, 0)) {
-                        case 0:
-                        case 1:
-                            return Dyes.dyeGreen;
-                        case 2:
-                        case 3:
-                            return Dyes.dyeLime;
-                    }
-                    return Dyes.dyeCyan;
-                }
-                if (isYellowScale(tmp)) switch (getDarknessFromColor(rgba, 0)) {
-                    case 0:
-                    case 1:
-                        return Dyes.dyeBrown;
-                    case 2:
-                    case 3: {
-                        if (rgba[0] >> 5 > rgba[1] >> 5) return Dyes.dyeOrange;
-                        else return Dyes.dyeYellow;
-                    }
-                }
-                switch (getDarknessFromColor(rgba, 0)) {
-                    case 0:
-                    case 1:
-                        return Dyes.dyeGreen;
-                    case 2:
-                    case 3:
-                        return Dyes.dyeLime;
-                }
-            } else if (isBlueScale(tmp)) {
-                if (isPurpleScale(tmp)) {
-                    switch (getDarknessFromColor(rgba, 0)) {
-                        case 0:
-                        case 1:
-                            return Dyes.dyePurple;
-                        case 2:
-                        case 3:
-                            return Dyes.dyeMagenta;
-                    }
-                } else if (isCyanScale(tmp)) {
-                    return Dyes.dyeCyan;
-                }
-                switch (getDarknessFromColor(rgba, 0)) {
-                    case 0:
-                    case 1:
-                        return Dyes.dyeBlue;
-                    case 2:
-                    case 3:
-                        return Dyes.dyeLightBlue;
-                }
-            }
-        }
-        return Dyes._NULL;
     }
 
     public static boolean isCyanScale(short[] rgba) {

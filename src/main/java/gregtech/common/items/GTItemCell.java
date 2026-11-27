@@ -26,9 +26,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtility;
 
 /// A simple fluid cell that maps to a single fluid. The fluid's own texture is masked into the cell window the same way
@@ -36,13 +33,10 @@ import gregtech.api.util.GTUtility;
 /// icon is drawn over the fluid.
 public class GTItemCell extends Item implements ItemWithTextures {
 
-    private static final IIconContainer CELL_ICONS = TextureSet.SET_FLUID.mTextures[MaterialIconRegistry.IconType.CELL
-        .ordinal()];
-
     private final String name, overlayIconName;
     private final Fluid fluid;
 
-    private IIcon overlayIcon;
+    private IIcon overlayIcon, cellWindowIcon, cellBaseIcon;
 
     public GTItemCell(String name, String overlayIconName, Fluid fluid) {
         this.name = name;
@@ -68,12 +62,14 @@ public class GTItemCell extends Item implements ItemWithTextures {
     @Override
     public void registerIcons(IIconRegister register) {
         overlayIcon = register.registerIcon("gregtech:cell/" + overlayIconName);
+        cellWindowIcon = register.registerIcon("gregtech:materials/FLUID/cell");
+        cellBaseIcon = register.registerIcon("gregtech:materials/cell_base");
     }
 
     @Override
     public IItemTexture[] getTextures(ItemStack stack) {
         return new IItemTexture[] { this::renderFluid, new ItemTexture(overlayIcon, RGBColor.WHITE),
-            new ItemTexture(CELL_ICONS.getOverlayIcon(), RGBColor.WHITE) };
+            new ItemTexture(cellBaseIcon, RGBColor.WHITE) };
     }
 
     @SideOnly(Side.CLIENT)
@@ -82,7 +78,7 @@ public class GTItemCell extends Item implements ItemWithTextures {
         if (fluidIcon == null) return;
 
         GL11.glColorMask(false, false, false, false);
-        ItemRenderUtils.renderItem(type, CELL_ICONS.getIcon());
+        ItemRenderUtils.renderItem(type, cellWindowIcon);
         GL11.glColorMask(true, true, true, true);
 
         int color = CondensateType.getRenderColor(fluid);

@@ -13,12 +13,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTLoggers;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -75,17 +76,17 @@ public class GT5OreLayerHelper {
 
         public final String veinName, worldGenHeightRange;
         public final Map<String, String> dimWorldGenHeightRange;
-        public final IOreMaterial[] ores = new IOreMaterial[4];
+        public final Material[] ores = new Material[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
         public final Set<String> allowedDimWithOrigNames;
         /** {abbr dim name} */
         public final Set<String> abbrDimNames;
 
-        public final IOreMaterial mPrimaryVeinMaterial;
-        public final IOreMaterial mSecondaryMaterial;
-        public final IOreMaterial mBetweenMaterial;
-        public final IOreMaterial mSporadicMaterial;
+        public final Material mPrimaryVeinMaterial;
+        public final Material mSecondaryMaterial;
+        public final Material mBetweenMaterial;
+        public final Material mSporadicMaterial;
         public final Supplier<String> localizedName;
 
         public OreLayerWrapper(OreMixBuilder mix) {
@@ -96,10 +97,10 @@ public class GT5OreLayerHelper {
             this.ores[2] = mix.between;
             this.ores[3] = mix.sporadic;
 
-            this.mPrimaryVeinMaterial = mix.primary;
-            this.mSecondaryMaterial = mix.secondary;
-            this.mBetweenMaterial = mix.between;
-            this.mSporadicMaterial = mix.sporadic;
+            this.mPrimaryVeinMaterial = this.ores[0];
+            this.mSecondaryMaterial = this.ores[1];
+            this.mBetweenMaterial = this.ores[2];
+            this.mSporadicMaterial = this.ores[3];
 
             this.size = (short) mix.size;
             this.density = (short) mix.density;
@@ -121,7 +122,7 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int veinLayer, Set<StoneType> stoneTypes) {
             List<ItemStack> stackList = new ArrayList<>();
-            List<IStoneType> validStones = ores[veinLayer].getValidStones();
+            List<IStoneType> validStones = MaterialUtils.validStones(ores[veinLayer]);
             for (IStoneType stoneType : validStones) {
                 if (stoneType instanceof StoneType && stoneTypes.contains(stoneType)) {
                     stackList.add(getLayerOre(veinLayer, stoneType));
@@ -135,7 +136,7 @@ public class GT5OreLayerHelper {
         }
 
         public ItemStack getLayerOre(int veinLayer, IStoneType stoneType) {
-            try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
+            try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = ores[veinLayer];
                 info.stoneType = stoneType;
 
@@ -154,7 +155,7 @@ public class GT5OreLayerHelper {
             }
         }
 
-        public boolean containsOre(IOreMaterial material) {
+        public boolean containsOre(Material material) {
             return ores[OreVeinLayer.VEIN_PRIMARY] == material || ores[OreVeinLayer.VEIN_SECONDARY] == material
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material
                 || ores[OreVeinLayer.VEIN_SPORADIC] == material;
