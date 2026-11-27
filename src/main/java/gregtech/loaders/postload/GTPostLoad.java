@@ -189,15 +189,6 @@ public class GTPostLoad {
             .fake()
             .addTo(scannerFakeRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Tool_DataStick.getWithName(1L, "Raw Prospection Data"))
-            .itemOutputs(ItemList.Tool_DataStick.getWithName(1L, "Analyzed Prospection Data"))
-            .duration(50 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .ignoreCollision()
-            .fake()
-            .addTo(scannerFakeRecipes);
-
         if (GalacticraftCore.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(

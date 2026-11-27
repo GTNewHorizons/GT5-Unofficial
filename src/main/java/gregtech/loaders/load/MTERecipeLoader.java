@@ -3377,31 +3377,6 @@ public class MTERecipeLoader implements Runnable {
                 OrePrefixes.rotor.get(Materials.Steel), });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_LV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "WWW", "EME", "CXC", 'M', ItemList.Hull_LV, 'W',
-                OrePrefixes.plateDouble.get(Materials.Steel), 'E', OrePrefixes.circuit.get(Materials.LV), 'C',
-                ItemList.Sensor_LV, 'X', OrePrefixes.cableGt02.get(Materials.Tin) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_MV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "WWW", "EME", "CXC", 'M', ItemList.Hull_MV, 'W',
-                OrePrefixes.plateDouble.get(Materials.BlackSteel), 'E', OrePrefixes.circuit.get(Materials.MV), 'C',
-                ItemList.Sensor_MV, 'X', OrePrefixes.cableGt02.get(Materials.Copper) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_HV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "WWW", "EME", "CXC", 'M', ItemList.Hull_HV, 'W',
-                OrePrefixes.plateDouble.get(Materials.StainlessSteel), 'E', OrePrefixes.circuit.get(Materials.HV), 'C',
-                ItemList.Sensor_HV, 'X', OrePrefixes.cableGt04.get(Materials.Gold) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Seismic_Prospector_Adv_EV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "WWW", "EME", "CXC", 'M', ItemList.Hull_EV, 'W',
-                OrePrefixes.plateDouble.get(Materials.VanadiumSteel), 'E', OrePrefixes.circuit.get(Materials.EV), 'C',
-                ItemList.Sensor_EV, 'X', OrePrefixes.cableGt04.get(Materials.Aluminium) });
-
-        GTModHandler.addCraftingRecipe(
             ItemList.ConcreteBackfiller1.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "WPW", "EME", "CQC", 'M', ItemList.Hull_MV, 'W', OrePrefixes.frameGt.get(Materials.Steel),

@@ -110,7 +110,6 @@ import gregtech.common.tileentities.machines.MTEHatchHeatSensor;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
-import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
@@ -1925,41 +1924,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Ultimate Time Anomaly",
                 8).getStackForm(1L));
 
-    }
-
-    private static void registerAdvancedSeismicProspector() {
-        ItemList.Seismic_Prospector_Adv_LV.set(
-            new MTEAdvSeismicProspector(
-                ADVANCED_SEISMIC_PROSPECTOR_LV.ID,
-                "basicmachine.seismicprospector.07",
-                "Advanced Seismic Prospector LV",
-                1,
-                5 * 16 / 2,
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_Adv_MV.set(
-            new MTEAdvSeismicProspector(
-                ADVANCED_SEISMIC_PROSPECTOR_MV.ID,
-                "basicmachine.seismicprospector.06",
-                "Advanced Seismic Prospector MV",
-                2,
-                7 * 16 / 2,
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_Adv_HV.set(
-            new MTEAdvSeismicProspector(
-                ADVANCED_SEISMIC_PROSPECTOR_HV.ID,
-                "basicmachine.seismicprospector.05",
-                "Advanced Seismic Prospector HV",
-                3,
-                9 * 16 / 2,
-                2).getStackForm(1));
-        ItemList.Seismic_Prospector_Adv_EV.set(
-            new MTEAdvSeismicProspector(
-                ADVANCED_SEISMIC_PROSPECTOR_EV.ID,
-                "basicmachine.seismicprospector.04",
-                "Advanced Seismic Prospector EV",
-                4,
-                11 * 16 / 2,
-                2).getStackForm(1));
     }
 
     private static void registerMicrowaveEnergyTransmitter() {
@@ -9295,7 +9259,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerTeleporter();
         registerMonsterRepellator();
         registerMagLevPylon();
-        registerAdvancedSeismicProspector();
         registerMicrowaveEnergyTransmitter();
         registerChestBuffer();
         registerItemFilter();
