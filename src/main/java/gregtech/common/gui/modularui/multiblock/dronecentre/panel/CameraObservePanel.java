@@ -46,7 +46,7 @@ public class CameraObservePanel extends ModularPanel {
     private static final float SIDEBAR_TEXT_SCALE = 0.75F;
     private static final float HELP_TEXT_SCALE = 0.7F;
 
-    private final CameraViewportClientManager cameraManager = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
+    private final CameraViewportClientManager cameraManager;
 
     /** Recipe sidebar lines. The detail lines are shown below a divider, which is hidden when they are empty. */
     private final List<String> recipeLines = new ArrayList<>();
@@ -57,6 +57,11 @@ public class CameraObservePanel extends ModularPanel {
 
     public CameraObservePanel(PanelSyncManager syncManager, Runnable closeCallback) {
         super("cameraObservePanel");
+        if (!syncManager.isClient()) {
+            this.cameraManager = null;
+            return;
+        }
+        this.cameraManager = (CameraViewportClientManager) GTMod.proxy.cameraViewportManager;
 
         this.sizeRel(CameraViewportClientManager.PANEL_SCREEN_FRACTION)
             .center()
