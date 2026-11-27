@@ -138,7 +138,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
@@ -152,7 +155,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_plant"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-plant"),
+                new ResourceLocation("gregtech", "purification/purification-plant"),
                 ImmutableMap.of(
                     "distance",
                     MAX_UNIT_DISTANCE,

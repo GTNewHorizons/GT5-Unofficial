@@ -59,6 +59,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public static final int MAX_NANITES = 2048 * 15;
 
     private final List<MTEHatchLoS> losHatches = new ArrayList<>();
+    private List<MTEBECIONode> ioNodes;
 
     private final List<MTEHatchNanite> naniteHatches = new ArrayList<>();
 
@@ -151,6 +152,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         this.losHatches.clear();
         clearCraftingIcons(this.naniteHatches);
         this.naniteHatches.clear();
+        this.ioNodes = null;
     }
 
     @Override
@@ -167,7 +169,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.bec_assembler"))
             .addMarkdown(
-                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
+                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec/assembler"),
                 ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
             .addSupportAny();
 
@@ -241,12 +243,24 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     }
 
     public List<MTEBECIONode> getIONodes() {
-        return losHatches.stream()
+        return getIONodes(false);
+    }
+
+    public List<MTEBECIONode> getIONodes(boolean skipCache) {
+        boolean isValid = !skipCache && ioNodes != null
+            && ioNodes.stream()
+                .allMatch(ioNode -> ioNode.isValid() && ioNode.mMachine);
+
+        if (isValid) return ioNodes;
+
+        ioNodes = losHatches.stream()
             .map(MTEHatchLoS::getConnectedHatch)
             .filter(Objects::nonNull)
             .map(los -> los.getOwner() instanceof MTEBECIONode node ? node : null)
             .filter(Objects::nonNull)
             .toList();
+
+        return ioNodes;
     }
 
     @Override

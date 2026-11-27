@@ -38,30 +38,80 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class CropRenderer extends EntityFX {
 
-    int[] meta = new int[7 * 3];
-    boolean isOldStructure;
-    ExtendedFacing facing;
+    private static final int CROP_WIDTH = 3;
+    private static final int CROP_LENGTH = 7;
+    private static final int CROP_COUNT = CROP_WIDTH * CROP_LENGTH;
+    private static final int MAX_MISSED_UPDATES = 3;
 
-    public CropRenderer(World world, int x, int y, int z, ExtendedFacing extendedFacing, int age,
-        boolean isOldStructure) {
-        super(world, x, ((double) y - 0.0625d), z);
+    private final int[] meta = new int[CROP_COUNT];
+    private final double[] offsets = new double[CROP_COUNT * 2];
+    private ExtendedFacing facing;
+    private int missedUpdates;
+
+    public CropRenderer(World world, int x, int y, int z, ExtendedFacing extendedFacing, int age) {
+        super(world, x, y - 0.0625d, z);
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
         this.particleMaxAge = age;
-        this.isOldStructure = isOldStructure;
+
+        refreshGrowthStages();
+        updateFacing(extendedFacing);
+    }
+
+    public boolean isFacing(ExtendedFacing extendedFacing) {
+        return this.facing == extendedFacing;
+    }
+
+    public void updateOrigin(int x, int y, int z) {
+        setPosition(x, y - 0.0625d, z);
+        this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+    }
+
+    public void refreshGrowthStages() {
+        for (int i = 0; i < CROP_COUNT; i++) {
+            this.meta[i] = this.rand.nextInt(8);
+        }
+    }
+
+    public boolean keepAlive() {
+        if (this.isDead || ++this.missedUpdates >= MAX_MISSED_UPDATES) return false;
+        this.particleAge = 0;
+        return true;
+    }
+
+    public void updateFacing(ExtendedFacing extendedFacing) {
+        if (this.facing == extendedFacing) return;
         this.facing = extendedFacing;
-        for (int i = 0; i < 7 * 3; i++) this.meta[i] = this.rand.nextInt(8);
+
+        // recompute cached offsets whenever the greenhouse rotates
+        double[] abc = new double[3];
+        double[] xyz = new double[3];
+        int k = 0;
+        for (int ox = -CROP_WIDTH / 2; ox <= CROP_WIDTH / 2; ox++) {
+            for (int oz = 0; oz < CROP_LENGTH; oz++) {
+                abc[0] = ox;
+                abc[2] = oz;
+                extendedFacing.getWorldOffset(abc, xyz);
+                offsets[k++] = xyz[0];
+                offsets[k++] = xyz[2];
+            }
+        }
     }
 
     @Override
     public void onUpdate() {
+        this.missedUpdates = 0;
         if (this.particleAge++ >= this.particleMaxAge) this.setDead();
     }
 
     @Override
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
         float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+        if (this.isDead) return;
+
         Tessellator tessellator = Tessellator.instance;
         Minecraft.getMinecraft()
             .getTextureManager()
@@ -75,22 +125,12 @@ public class CropRenderer extends EntityFX {
             Blocks.wheat.getMixedBrightnessForBlock(this.worldObj, (int) this.posX, (int) this.posY, (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
-        int zmin = -1, zmax = 1;
-        if (!isOldStructure) {
-            zmin = 0;
-            zmax = 6;
-        }
-        int i = 0;
-        for (int x = -1; x <= 1; x++) for (int z = zmin; z <= zmax; z++) {
-            if (isOldStructure && x == 0 && z == 0) continue;
-            double[] abc = new double[] { x, 0, z };
-            double[] xyz = new double[] { 0, 0, 0 };
-            facing.getWorldOffset(abc, xyz);
-            double f11 = (this.posX + xyz[0]) - interpPosX;
-            double f13 = (this.posZ + xyz[2]) - interpPosZ;
+        RenderBlocks renderer = RenderBlocks.getInstance();
 
-            RenderBlocks.getInstance()
-                .renderBlockCropsImpl(Blocks.wheat, meta[i++], f11, f12, f13);
+        for (int idx = 0; idx < CROP_COUNT; idx++) {
+            double f11 = this.posX + offsets[idx * 2] - interpPosX;
+            double f13 = this.posZ + offsets[idx * 2 + 1] - interpPosZ;
+            renderer.renderBlockCropsImpl(Blocks.wheat, meta[idx], f11, f12, f13);
         }
         tessellator.draw();
     }

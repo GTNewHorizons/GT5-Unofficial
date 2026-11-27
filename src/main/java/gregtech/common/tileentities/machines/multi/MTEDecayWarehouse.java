@@ -222,10 +222,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addCasing("48-52", Casings.RadiationProofMachineCasing.getLocalizedName(), false)
             .addCasing("17", StatCollector.translateToLocal("tile.water.name"), false)
             .addCasing("1", StatCollector.translateToLocal("GT5U.MBTT.SuperChest"), true)
-            .addEnergyHatch("1", anyCasingText(), 1)
+            .addEnergyHatch("1+", anyCasingText(), 1)
             .addMaintenanceHatch("1", anyCasingText(), 1)
-            .addInputBus("1", anyCasingText(), 1)
-            .addOutputBus("1", anyCasingText(), 1)
+            .addInputBus("1+", anyCasingText(), 1)
+            .addOutputBus("1+", anyCasingText(), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.decay_water_place_manually"))
             .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.decay_no_isotopes_in_chest"))
@@ -428,7 +428,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         int productAmount = MathHelper.floor_double(storedProduct + EPSILON);
 
-        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(getOutputBusses(), protectsExcessItem(), true);
 
         // eject any stored product dusts
         if (productAmount > 0 && remainingIOQuota > 0) {

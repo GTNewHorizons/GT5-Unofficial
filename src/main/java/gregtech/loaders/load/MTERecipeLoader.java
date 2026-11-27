@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Variants.AlteredPricing;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
 import static gregtech.api.util.GTModHandler.RecipeBits.NOT_REMOVABLE;
@@ -33,6 +34,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.Variants;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1661,334 +1663,6 @@ public class MTERecipeLoader implements Runnable {
             .addTo(assemblerRecipes);
     }
 
-    // This method is for all the structure rework shapeless crafing migration recipes
-    // for the 2.9 -> next major version cycle
-    // Maybe after some point in time, it can be moved to coremod as well.
-    // TODO delete after the next major version after 2.9
-    private static void registerReworkMigrationRecipes() {
-
-        // Industrial Wire Factory Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialWireFactory.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_WireFactory });
-
-        // Industrial 3D Copying Machine Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialPrinter.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Controller_IndustrialAutoChisel });
-
-        // Industrial Extruder Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialExtruder.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_Extruder });
-
-        // Advanced Implosion Compressor (Density^2) Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.AdvancedImplosionCompressor.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Machine_Adv_ImplosionCompressor });
-
-        // Drone Centre Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.DroneCentre.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Machine_Multi_DroneCentre });
-
-        // Industrial Sledgehammer/Forge Hammer Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialForgeHammer.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Controller_IndustrialForgeHammer });
-
-        // Large Thermal Refinery Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.LargeThermalRefinery.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_ThermalCentrifuge });
-
-        // Large Sifter Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.LargeSifter.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_Sifter });
-
-        // Tree Grow Simulator Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.TreeGrowSimulator.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_TreeFarm });
-
-        // Algae Farm Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.AlgaeFarm.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.AlgaeFarm_Controller });
-
-        // Naquadah Fuel Refinery Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.NaquadahFuelRefinery.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemRefer.Naquadah_Fuel_Refinery.get(1) });
-
-        // Boldarnator Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Boldarnator.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Controller_IndustrialRockBreaker });
-
-        // Industrial Cutting Machine Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialCuttingMachine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_CuttingFactoryController });
-
-        // Amazon Packager Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialPackager.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Amazon_Warehouse_Controller });
-
-        // Molecular Transformer Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.MolecularTransformer.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Controller_MolecularTransformer });
-
-        // Ore Washing Plant Conversion Recipe
-        GTModHandler.addCraftingRecipe(
-            ItemList.OreWashingPlant.get(1),
-            new Object[] { "B  ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
-
-        // Industrial Chemical Bath Conversion Recipe
-        GTModHandler.addCraftingRecipe(
-            ItemList.IndustrialChemicalBath.get(1),
-            new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_WashPlant });
-
-        // Industrial Centrifuge Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialCentrifuge.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_Centrifuge });
-
-        // Cryogenic Freezer Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.CryogenicFreezer.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_Cryogenic_Freezer });
-
-        // Industrial Coke Oven Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialCokeOven.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_CokeOven });
-
-        // Extreme Combustion Engine Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.ExtremeCombustionEngine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Machine_Multi_ExtremeDieselEngine });
-
-        // Industrial Electrolyzer Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialElectrolyzer.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_Electrolyzer });
-
-        // Flotation Cell Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.FlotationCell.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Controller_Flotation_Cell });
-
-        // Thermal Boiler Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.ThermalBoiler.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.GT4_Thermal_Boiler });
-
-        // Large Naquadah Reactor Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.LargeNaquadahReactor.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemRefer.Large_Naquadah_Reactor.get(1) });
-
-        // Bending Machine Conversion Recipe
-        GTModHandler.addCraftingRecipe(
-            ItemList.IndustrialBendingMachine.get(1),
-            new Object[] { "B  ", "   ", "   ", 'B', GregtechItemList.Industrial_PlatePress });
-
-        // Forming Press Conversion Recipe
-        GTModHandler.addCraftingRecipe(
-            ItemList.IndustrialFormingPress.get(1),
-            new Object[] { " B ", "   ", "   ", 'B', GregtechItemList.Industrial_PlatePress });
-
-        // Planetary Gas Siphon Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.PlanetarySiphon.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.PlanetaryGasSiphonController });
-
-        // Large Boilers Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.BronzeBoilerLarge.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Machine_Multi_LargeBoiler_Bronze });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.SteelBoilerLarge.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Machine_Multi_LargeBoiler_Steel });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.TitaniumBoilerLarge.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Machine_Multi_LargeBoiler_Titanium });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.TungstensteelBoilerLarge.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Machine_Multi_LargeBoiler_TungstenSteel });
-
-        // XL Turbines Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.SteamTurbineXL.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Large_Steam_Turbine });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.HPSteamTurbineXL.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Large_HPSteam_Turbine });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.GasTurbineXL.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Large_Gas_Turbine });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.PlasmaTurbineXL.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Large_Plasma_Turbine });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.SCSteamTurbineXL.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Large_SCSteam_Turbine });
-
-        // Large Turbines Conversion Recipes
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.SteamTurbine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.LargeSteamTurbine });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.HPSteamTurbine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.LargeHPSteamTurbine });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.SCSteamTurbine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemRefer.SC_Fluid_Turbine.get(1) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.GasTurbine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.LargeGasTurbine });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.PlasmaTurbine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.LargePlasmaTurbine });
-
-        // Mega Chemical Reactor Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.MegaChemicalReactor.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemRegistry.megaMachines[3] });
-
-        // Pyrolyse Oven Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.PyrolyzeOven.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.PyrolyseOven.get(1) });
-
-        // Universal Chemical Fuel Engine Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.UniversalChemicalFuelEngine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemRefer.Universal_Chemical_Fuel_Engine.get(1) });
-
-        // Industrial Mixer Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialMixer.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_Mixer });
-
-        // Fishing Port Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.FishingPort.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_FishingPond });
-
-        // Integrated Ore Factory Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IntegratedOreFactory.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Ore_Processor });
-
-        // Electric Implosion Compressor Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.ElectricImplosionCompressor.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemRegistry.eic });
-        // Large Combustion Engine Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.LargeCombustionEngine.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.Machine_Multi_DieselEngine });
-
-        // Mega Distillation Tower Conversion Recipe
-        // Assembler to avoid accidental softlocks
-        GTValues.RA.stdBuilder()
-            .itemInputs((ItemRegistry.megaMachines[2]))
-            .itemOutputs(ItemList.MegaDistillationTower.get(1))
-            .duration(TICKS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
-
-        // Mega Vacuum Freezer -> Endothermic Fridge Conversion Recipe
-        // Assembler to avoid accidental softlocks (due to tiering change)
-        GTValues.RA.stdBuilder()
-            .itemInputs((ItemRegistry.megaMachines[1]))
-            .itemOutputs(ItemList.EndothermicFridge.get(1))
-            .duration(TICKS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(assemblerRecipes);
-
-        // Mega Electric Blast Furnace -> Exothermic Hearth Conversion Recipe
-        // Assembler to avoid accidental softlocks (due to tiering change)
-        GTValues.RA.stdBuilder()
-            .itemInputs((ItemRegistry.megaMachines[0]))
-            .itemOutputs(ItemList.ExothermicHearth.get(1))
-            .duration(TICKS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(assemblerRecipes);
-
-        // Mega Oil Cracker Conversion Recipe
-        // Assembler to avoid accidental softlocks (due to tiering change)
-        GTValues.RA.stdBuilder()
-            .itemInputs((ItemRegistry.megaMachines[4]))
-            .itemOutputs(ItemList.MegaOilCracker.get(1))
-            .duration(TICKS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
-
-        // Industrial Arc Furnace Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialArcFurnace.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { GregtechItemList.Industrial_Arc_Furnace });
-
-        // Infinite Fluid Drilling Rig Conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.InfiniteFluidDrillingRig.get(1),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { ItemList.OilDrillInfinite });
-    }
-
     private static void registerSifter() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Sifter.get(1),
@@ -2196,63 +1870,70 @@ public class MTERecipeLoader implements Runnable {
     }
 
     private static void registerShapedCraftingRecipes() {
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.Polytetrafluoroethylene), 'F',
-                OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene), 'I',
-                OrePrefixes.pipeMedium.get(Materials.Polytetrafluoroethylene) });
+        if (!Variants.checkIfActive(AlteredPricing)) {
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.Polytetrafluoroethylene), 'F',
+                    OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene), 'I',
+                    OrePrefixes.pipeMedium.get(Materials.Polytetrafluoroethylene) });
 
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_Pipe_Polybenzimidazole.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.Polybenzimidazole), 'F',
-                OrePrefixes.frameGt.get(Materials.Polybenzimidazole), 'I',
-                OrePrefixes.pipeMedium.get(Materials.Polybenzimidazole) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_ULV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.CastIron) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_LV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Steel) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Aluminium) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_HV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(Materials.StainlessSteel) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_EV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Titanium) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_IV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(Materials.TungstenSteel) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_LuV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_ZPM.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Iridium) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_UV.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Osmium) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_MAX.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
-                OrePrefixes.plate.get(Materials.Neutronium) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_Pipe_Polybenzimidazole.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.Polybenzimidazole), 'F',
+                    OrePrefixes.frameGt.get(Materials.Polybenzimidazole), 'I',
+                    OrePrefixes.pipeMedium.get(Materials.Polybenzimidazole) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_ULV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.CastIron) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_LV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P', OrePrefixes.plate.get(Materials.Steel) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_MV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.Aluminium) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_HV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.StainlessSteel) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_EV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.Titanium) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_IV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.TungstenSteel) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_LuV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_ZPM.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.Iridium) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_UV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.Osmium) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Casing_UHV.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, aTextPlateWrench, aTextPlate, 'P',
+                    OrePrefixes.plate.get(Materials.Neutronium) });
+        }
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_BronzePlatedBricks.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -2327,23 +2008,27 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_Pipe_Bronze.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F',
-                OrePrefixes.frameGt.get(Materials.Bronze), 'I', OrePrefixes.pipeMedium.get(Materials.Bronze) });
+                OrePrefixes.frameGt.get(Materials.Bronze), 'I', OrePrefixes.pipeMedium.get(Materials.Bronze) },
+            AlteredPricing);
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Steel.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.Steel), 'F',
-                OrePrefixes.frameGt.get(Materials.Steel), 'I', OrePrefixes.pipeMedium.get(Materials.Steel) });
+                OrePrefixes.frameGt.get(Materials.Steel), 'I', OrePrefixes.pipeMedium.get(Materials.Steel) },
+            AlteredPricing);
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Titanium.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'F',
-                OrePrefixes.frameGt.get(Materials.Titanium), 'I', OrePrefixes.pipeMedium.get(Materials.Titanium) });
+                OrePrefixes.frameGt.get(Materials.Titanium), 'I', OrePrefixes.pipeMedium.get(Materials.Titanium) },
+            AlteredPricing);
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_TungstenSteel.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PIP", "IFI", "PIP", 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'F',
                 OrePrefixes.frameGt.get(Materials.TungstenSteel), 'I',
-                OrePrefixes.pipeMedium.get(Materials.TungstenSteel) });
+                OrePrefixes.pipeMedium.get(Materials.TungstenSteel) },
+            AlteredPricing);
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Gearbox_Bronze.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -2475,91 +2160,91 @@ public class MTERecipeLoader implements Runnable {
             NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "BFB", "FwF", "BFB", 'B', ItemList.Casing_Firebricks, 'F',
                 OreDictNames.craftingBlastFurnace });
+        if (!Variants.checkIfActive(AlteredPricing)) {
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_Bronze.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, "PhP", aTextPlate, 'P', OrePrefixes.plate.get(Materials.Bronze) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_Bronze_Bricks.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B',
+                    new ItemStack(Blocks.brick_block, 1) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_HP.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, "PhP", aTextPlate, 'P', OrePrefixes.plate.get(Materials.Steel) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_HP_Bricks.get(1L),
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.CastIron), 'B',
+                    new ItemStack(Blocks.brick_block, 1) });
 
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_Bronze.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, "PhP", aTextPlate, 'P', OrePrefixes.plate.get(Materials.Bronze) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_Bronze_Bricks.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B',
-                new ItemStack(Blocks.brick_block, 1) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_HP.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, "PhP", aTextPlate, 'P', OrePrefixes.plate.get(Materials.Steel) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_HP_Bricks.get(1L),
-            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextPlate, "PhP", "BBB", 'P', OrePrefixes.plate.get(Materials.CastIron), 'B',
-                new ItemStack(Blocks.brick_block, 1) });
-
-        // hull crafting recipes. (They can't be used for recycling as that would create an exploit loop with the
-        // assembler recipes.)
-
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_ULV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ULV, 'C',
-                OrePrefixes.cableGt01.get(Materials.Lead), 'H', OrePrefixes.plate.get(Materials.CastIron), 'P',
-                OrePrefixes.plate.get(Materials.Wood) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_LV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LV, 'C',
-                OrePrefixes.cableGt01.get(Materials.Tin), 'H', OrePrefixes.plate.get(Materials.Steel), 'P',
-                OrePrefixes.plate.get(Materials.CastIron) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_MV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MV, 'C',
-                OrePrefixes.cableGt01.get(Materials.Copper), 'H', OrePrefixes.plate.get(Materials.Aluminium), 'P',
-                OrePrefixes.plate.get(Materials.CastIron) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_HV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_HV, 'C',
-                OrePrefixes.cableGt01.get(Materials.Gold), 'H', OrePrefixes.plate.get(Materials.StainlessSteel), 'P',
-                OrePrefixes.plate.get(Materials.Polyethylene) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_EV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_EV, 'C',
-                OrePrefixes.cableGt01.get(Materials.Aluminium), 'H', OrePrefixes.plate.get(Materials.Titanium), 'P',
-                OrePrefixes.plate.get(Materials.Polyethylene) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_IV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_IV, 'C',
-                OrePrefixes.cableGt01.get(Materials.Tungsten), 'H', OrePrefixes.plate.get(Materials.TungstenSteel), 'P',
-                OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_LuV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
-                OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
-                OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()), 'P',
-                OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_ZPM.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ZPM, 'C',
-                OrePrefixes.cableGt01.get(Materials.Naquadah), 'H', OrePrefixes.plate.get(Materials.Iridium), 'P',
-                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_UV.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_UV, 'C',
-                OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium), 'P',
-                OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Hull_MAX.get(1L),
-            NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MAX, 'C',
-                OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H', OrePrefixes.plate.get(Materials.Neutronium),
-                'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
-
+            // hull crafting recipes. (They can't be used for recycling as that would create an exploit loop with the
+            // assembler recipes.)
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_ULV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ULV, 'C',
+                    OrePrefixes.cableGt01.get(Materials.Lead), 'H', OrePrefixes.plate.get(Materials.CastIron), 'P',
+                    OrePrefixes.plate.get(Materials.Wood) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_LV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LV, 'C',
+                    OrePrefixes.cableGt01.get(Materials.Tin), 'H', OrePrefixes.plate.get(Materials.Steel), 'P',
+                    OrePrefixes.plate.get(Materials.CastIron) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_MV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_MV, 'C',
+                    OrePrefixes.cableGt01.get(Materials.Copper), 'H', OrePrefixes.plate.get(Materials.Aluminium), 'P',
+                    OrePrefixes.plate.get(Materials.CastIron) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_HV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_HV, 'C',
+                    OrePrefixes.cableGt01.get(Materials.Gold), 'H', OrePrefixes.plate.get(Materials.StainlessSteel),
+                    'P', OrePrefixes.plate.get(Materials.Polyethylene) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_EV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_EV, 'C',
+                    OrePrefixes.cableGt01.get(Materials.Aluminium), 'H', OrePrefixes.plate.get(Materials.Titanium), 'P',
+                    OrePrefixes.plate.get(Materials.Polyethylene) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_IV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_IV, 'C',
+                    OrePrefixes.cableGt01.get(Materials.Tungsten), 'H', OrePrefixes.plate.get(Materials.TungstenSteel),
+                    'P', OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_LuV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_LuV, 'C',
+                    OrePrefixes.cableGt01.get(Materials.VanadiumGallium), 'H',
+                    OrePrefixes.plate.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial()), 'P',
+                    OrePrefixes.plate.get(Materials.Polytetrafluoroethylene) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_ZPM.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_ZPM, 'C',
+                    OrePrefixes.cableGt01.get(Materials.Naquadah), 'H', OrePrefixes.plate.get(Materials.Iridium), 'P',
+                    OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_UV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_UV, 'C',
+                    OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium),
+                    'P', OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+            GTModHandler.addCraftingRecipe(
+                ItemList.Hull_UHV.get(1L),
+                NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_UHV, 'C',
+                    OrePrefixes.wireGt04.get(Materials.SuperconductorUV), 'H',
+                    OrePrefixes.plate.get(Materials.Neutronium), 'P',
+                    OrePrefixes.plate.get(Materials.Polybenzimidazole) });
+        }
         // hull recycling data
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Hull_ULV.get(1L),
@@ -2607,8 +2292,8 @@ public class MTERecipeLoader implements Runnable {
             OrePrefixes.cableGt04.get(Materials.NaquadahAlloy),
             OrePrefixes.cableGt04.get(Materials.NaquadahAlloy));
         GTOreDictUnificator.addItemDataFromInputs(
-            ItemList.Hull_MAX.get(1L),
-            ItemList.Casing_MAX.get(1),
+            ItemList.Hull_UHV.get(1L),
+            ItemList.Casing_UHV.get(1),
             OrePrefixes.cableGt04.get(Materials.SuperconductorUV),
             OrePrefixes.cableGt04.get(Materials.SuperconductorUV));
 
@@ -2778,7 +2463,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Electric_Motor_UV.get(1));
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Hatch_Muffler_MAX.get(1L),
-            ItemList.Hull_MAX.get(1),
+            ItemList.Hull_UHV.get(1),
             OrePrefixes.pipeLarge.get(Materials.MysteriousCrystal),
             OrePrefixes.rotor.get(Materials.CosmicNeutronium),
             ItemList.Electric_Motor_UHV.get(1));
@@ -2931,7 +2616,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_1by1_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
+            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UHV, 'W',
                 OrePrefixes.wireGt01.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -2982,7 +2667,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_2by2_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
+            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UHV, 'W',
                 OrePrefixes.wireGt04.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -3033,7 +2718,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_3by3_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
+            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UHV, 'W',
                 OrePrefixes.wireGt08.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -3084,7 +2769,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_4by4_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_MAX, 'W',
+            new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_UHV, 'W',
                 OrePrefixes.wireGt16.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest });
 
         GTModHandler.addCraftingRecipe(
@@ -3144,7 +2829,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_MAX, 'W',
+            new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_UHV, 'W',
                 OrePrefixes.wireGt16.get(Materials.SuperconductorUHV), 'T', OreDictNames.craftingChest, 'B',
                 ItemList.ZPM2, 'C', OrePrefixes.circuit.get(Materials.UHV) });
 
@@ -3876,6 +3561,23 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PCP", "FAF", "PCP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C',
                 OrePrefixes.circuit.get(Materials.IV), 'F', ItemList.FluidRegulator_EV.get(1L), 'A',
                 ItemRegistry.acidGens[2] });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.Shape_Slicer_Flat.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new Object[] { "hXS", " P ", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.screw.get(Materials.StainlessSteel) });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Shape_Slicer_Stripes.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
+                OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
+                OrePrefixes.screw.get(Materials.StainlessSteel) });
     }
 
     private static void registerShapelessCraftingRecipes() {
@@ -4099,7 +3801,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ChestBuffer_UHV.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CMV", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
+            new Object[] { "CMV", " X ", 'M', ItemList.Hull_UHV, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.UHV) });
 
         GTModHandler.addCraftingRecipe(
@@ -4159,7 +3861,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Filter_MAX.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
+            new Object[] { " F ", "CMV", " X ", 'M', ItemList.Hull_UHV, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
 
@@ -4220,7 +3922,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_TypeFilter_MAX.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
+            new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_UHV, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
 
@@ -4281,7 +3983,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_Regulator_MAX.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_MAX, 'V', ItemList.Robot_Arm_UHV, 'C',
+            new Object[] { "XFX", "VMV", "XCX", 'M', ItemList.Hull_UHV, 'V', ItemList.Robot_Arm_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
 
@@ -4384,7 +4086,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_SuperBuffer_MAX.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "DMV", "DDD", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'D',
+            new Object[] { "DMV", "DDD", 'M', ItemList.Hull_UHV, 'V', ItemList.Conveyor_Module_UHV, 'D',
                 ItemList.Tool_DataStick });
 
         GTModHandler.addCraftingRecipe(
@@ -4435,7 +4137,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_ItemDistributor_MAX.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_MAX, 'V', ItemList.Conveyor_Module_UHV, 'C',
+            new Object[] { "XCX", "VMV", " V ", 'M', ItemList.Hull_UHV, 'V', ItemList.Conveyor_Module_UHV, 'C',
                 OreDictNames.craftingChest, 'X', OrePrefixes.circuit.get(Materials.LV) });
 
         GTModHandler.addCraftingRecipe(
@@ -4495,7 +4197,7 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Automation_RecipeFilter_MAX.get(1L),
             GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_MAX, 'V', ItemList.Robot_Arm_UHV, 'C',
+            new Object[] { " F ", "VMC", " X ", 'M', ItemList.Hull_UHV, 'V', ItemList.Robot_Arm_UHV, 'C',
                 OreDictNames.craftingChest, 'F', OreDictNames.craftingFilter, 'X',
                 OrePrefixes.circuit.get(Materials.LV) });
     }
@@ -4508,7 +4210,6 @@ public class MTERecipeLoader implements Runnable {
         registerMachineTypes();
         PCBFactoryMaterialLoader.load();
         run4();
-        registerReworkMigrationRecipes();
         registerReworkMTERecipes();
     }
 }

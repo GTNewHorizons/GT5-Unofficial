@@ -702,6 +702,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
+    protected void checkOneDynamoHatchMaybeExotic(List<StructureError> errors) {
+        int count = mDynamoHatches.size() + mExoticDynamoHatches.size();
+        if (count == 0) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
+        } else if (count > 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, HatchElement.Dynamo, count, 1));
+        }
+    }
+
     public static class StructureSize {
 
         public int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
@@ -716,11 +725,13 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         private StructureSize size;
 
         public StructureSize finish() {
+            StructureSize size = this.size;
+            this.size = null;
             // When `size` is null, for whatever reason the piece method was never called, which never called [#visit].
             // We'll just fall back to the default behaviour in this case - play the sound at the center with the
             // default radius.
             // This usually happens when a multi has its own structure check logic.
-            if (this.size == null) return null;
+            if (size == null) return null;
 
             size.centerX = (size.minX + size.maxX) * 0.5f;
             size.centerY = (size.minY + size.maxY) * 0.5f;

@@ -80,6 +80,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 
+import com.falsepattern.endlessids.config.GeneralConfig;
 import com.google.common.collect.HashBiMap;
 
 import bartworks.API.WerkstoffAdderRegistry;
@@ -820,12 +821,10 @@ public class WerkstoffLoader {
         // No Byproducts
         Pair.of(Materials.Platinum, 1),
         Pair.of(Materials.Stone, 2));
-    // TODO: If there is a moment where we are happy with breaking everyone's platline, change Aqua Regia recipes to
-    // satisfy Chem
-    // TODO: Balance with formula (HCl)3(HNO3) and then add the correct formula to the material
     public static final Werkstoff AquaRegia = new Werkstoff(
         new short[] { 0xff, 0xb1, 0x32 },
         "Aqua Regia",
+        "3" + subscriptNumbers("(HCl):(HNO3)"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1982,26 +1981,19 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedWerkstoffBlock.class, "bw.werkstoffblockTE");
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedBlocksCasing.class, "bw.werkstoffblockcasingTE");
-        GameRegistry.registerTileEntity(
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
-            "bw.werkstoffblockscasingadvancedTE");
+        if (!GeneralConfig.extendBlockItem) {
+            throw new IllegalStateException("BartWorks material block states require EndlessIDs block/item extensions");
+        }
 
         BWOreAdapter.INSTANCE.init();
 
-        WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(
-            Material.iron,
-            BWTileEntityMetaGeneratedWerkstoffBlock.class,
-            "bw.werkstoffblocks");
+        WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(Material.iron, "bw.werkstoffblocks");
         WerkstoffLoader.BWBlockCasings = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasing.class,
             "bw.werkstoffblockscasing",
             OrePrefixes.blockCasing);
         WerkstoffLoader.BWBlockCasingsAdvanced = new BWMetaGeneratedBlocksCasing(
             Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
             "bw.werkstoffblockscasingadvanced",
             OrePrefixes.blockCasingAdvanced);
 

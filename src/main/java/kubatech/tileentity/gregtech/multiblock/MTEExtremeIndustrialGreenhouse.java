@@ -41,6 +41,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
@@ -49,8 +50,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -91,7 +92,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -108,9 +108,8 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.api.eig.EIGBucket;
+import kubatech.api.eig.EIGBucketFactoryRegistry;
 import kubatech.api.eig.EIGDropTable;
-import kubatech.api.eig.EIGMode;
-import kubatech.api.enums.EIGModes;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.CropRenderer;
 import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
@@ -125,11 +124,20 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public static final int EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT = 1000;
     public static final int EIG_BALANCE_WATER_USAGE_PER_SEED = 1000;
 
+    private static final int EIG_SLOTS_STARTING = 1;
+    private static final int EIG_SLOTS_PER_TIER_MULTIPLIER = 2;
+    private static final int EIG_SEED_CAPACITY_PER_SLOT = 64;
+    private static final int EIG_MAX_FERTILIZER_PER_SEED = 2;
+    private static final double EIG_FERTILIZER_BONUS_MULTIPLIER = 2.0d;
+
+    private static final String[] SETUP_PHASE_KEYS = { "kubatech.gui.text.operating", "kubatech.gui.text.input",
+        "kubatech.gui.text.output" };
+
     private static final Fluid WEEDEX_FLUID = Materials.WeedEX9000.mFluid;
-    private static final LinkedList<ItemStack> FERTILIZER_ITEM_LIST = new LinkedList<>();
+    private static final List<ItemStack> FERTILIZER_ITEM_LIST = new ArrayList<>();
 
     public static void addFertilizerItem(ItemStack fertilizer) {
-        FERTILIZER_ITEM_LIST.addLast(fertilizer);
+        FERTILIZER_ITEM_LIST.add(fertilizer);
     }
 
     private static final Block DIRT_BLOCK = RandomThings.isModLoaded()
@@ -147,7 +155,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int NBT_REVISION = 2;
     private static final int CONFIGURATION_WINDOW_ID = 999;
 
-    public final List<EIGBucket> buckets = new LinkedList<>();
+    public final List<EIGBucket> buckets = new ArrayList<>();
     public final EIGDropTable dropTracker = new EIGDropTable();
     public Collection<EIGMigrationHolder> toMigrate;
     public EIGDropTable guiDropTracker = new EIGDropTable();
@@ -169,17 +177,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * The Amount of Weed-EX used per cycle.
      */
     private int weedEXUsage = 0;
-    /**
-     * The mode that the EIG is in.
-     */
-    private EIGMode mode = EIGModes.Normal;
     private boolean isCheckingDirtWater = false;
-    // TODO: Remove after 2.9
-    private boolean isOldStructure = false;
-
-    public boolean isOldStructure() {
-        return this.isOldStructure;
-    }
 
     public int getSetupPhase() {
         return this.setupPhase;
@@ -187,12 +185,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     public void setSetupPhase(int phase) {
         if (this.mMaxProgresstime > 0) return;
-        this.setupPhase = phase;
-        this.updateSeedLimits();
-    }
 
-    public EIGMode getEIGMode() {
-        return this.mode;
+        this.setupPhase = Math.floorMod(phase, SETUP_PHASE_KEYS.length);
+        this.updateSeedLimits();
     }
 
     public int getMaxSeedTypes() {
@@ -216,8 +211,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int OFFSET_H = 3;
     private static final int OFFSET_V = 6;
     private static final int OFFSET_D = 0;
-    private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
-    private static final Casings CASING_OLD = Casings.CleanStainlessSteelMachineCasing;
     private static final String[][] STRUCTURE_MAIN = transpose(
         new String[][] { // spotless:off
             {"  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  ","  ggg  ","  ggg  ","  ggg  ","  fff  "},
@@ -229,20 +222,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             {"aaa~aaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa","aaaaaaa"}
         } // spotless:on
     );
-    private static final String[][] STRUCTURE_MAIN_OLD = transpose(
-        new String[][] { // spotless:off
-            { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-            { "ccccc", "clllc", "clllc", "clllc", "ccccc" },
-            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-            { "ggggg", "g---g", "g---g", "g---g", "ggggg" },
-            { "ccccc", "cdddc", "cdwdc", "cdddc", "ccccc" },
-            { "cc~cc", "cCCCc", "cCCCc", "cCCCc", "ccccc" },
-        } // spotless:on
-    );
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEExtremeIndustrialGreenhouse>builder()
         .addShape(STRUCTURE_PIECE_MAIN, STRUCTURE_MAIN)
-        .addShape(STRUCTURE_PIECE_MAIN_OLD, STRUCTURE_MAIN_OLD)
         .addElement(
             'a',
             buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
@@ -261,14 +243,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t.byteValue(), te -> (int) te.glassTier))
         .addElement('d', ofChain(ofBlock(TILLED_DIRT_BLOCK, 0), ofBlock(DIRT_BLOCK, 0)))
         .addElement('w', ofChain(ofAnyWater(false), isAir()))
-        .addElement(
-            'c',
-            buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
-                .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
-                .casingIndex(CASING_OLD.textureId)
-                .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement())))
-        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement()))
         .build();
 
     @Override
@@ -283,9 +257,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         glassTier = -1;
         isCheckingDirtWater = false;
         if (debug) glassTier = 13;
-
-        if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0, errors)) return;
-        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) {
             isCheckingDirtWater = GTStructureUtility.hasWaterAtStructurePosition(
                 iGregTechTileEntity,
                 getExtendedFacing(),
@@ -318,15 +290,12 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        if (isOldStructure) buildPiece(STRUCTURE_PIECE_MAIN_OLD, itemStack, b, 2, 5, 0);
-        else buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, OFFSET_H, OFFSET_V, OFFSET_D);
+        buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, OFFSET_H, OFFSET_V, OFFSET_D);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (isOldStructure)
-            return survivalBuildPiece(STRUCTURE_PIECE_MAIN_OLD, stackSize, 2, 5, 0, elementBudget, env, true);
-        else return survivalBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             OFFSET_H,
@@ -354,7 +323,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addMarkdown(
                 new ResourceLocation("gregtech", "extreme-industrial-greenhouse"),
                 ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName(), "unit", getFluidUnit()));
-        EIGModes.addTooltipInfo(tt);
+
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("minVoltageTier", voltageTooltipFormatted(EIG_BALANCE_REGULAR_MODE_MIN_TIER));
+        ttVars.put("minVoltageTierMinus1", voltageTooltipFormatted(EIG_BALANCE_REGULAR_MODE_MIN_TIER - 1));
+        ttVars.put("startingSlotCount", EIG_SLOTS_STARTING);
+        ttVars.put("slotPerTierMultiplier", EIG_SLOTS_PER_TIER_MULTIPLIER);
+        ttVars.put("seedCapacityPerSlot", EIG_SEED_CAPACITY_PER_SLOT);
+        ttVars.put("maxFertilizerUsagePerSeed", EIG_MAX_FERTILIZER_PER_SEED);
+        ttVars.put("fertilizerBonus", String.format("%.0f%%", EIG_FERTILIZER_BONUS_MULTIPLIER * 100));
+        tt.addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-normal-mode"), ttVars);
+
         tt.beginStructureBlock(7, 7, 9, true)
             .addEnergyHatchGlassTier()
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
@@ -396,10 +375,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         if (this.toMigrate != null) {
-            this.mode = EIGModes.Normal;
             for (EIGMigrationHolder holder : toMigrate) {
                 holder.seed.stackSize = holder.count;
-                EIGBucket bucket = this.mode.tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
+                EIGBucket bucket = EIGBucketFactoryRegistry
+                    .tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
                 if (bucket == null) {
                     holder.seed.stackSize = holder.count;
                     this.addOutputPartial(holder.seed);
@@ -455,36 +434,19 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     // region mode change standardisation
 
-    /**
-     * Attempts to change the setup phase of the EIG to the next mode
-     *
-     * @param aPlayer The player to notify for success and errors
-     */
     private void tryChangeSetupPhase(EntityPlayer aPlayer) {
-        // TODO: Create l10n entries for the setup phase change messages.
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't enable/disable setup if the machine is working!");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
-        this.setupPhase++;
-        if (this.setupPhase == 3) this.setupPhase = 0;
-        String phaseChangeMessage = "EIG is now running in ";
-        switch (this.setupPhase) {
-            case 0:
-                phaseChangeMessage += "operational mode.";
-                break;
-            case 1:
-                phaseChangeMessage += "seed input mode.";
-                break;
-            case 2:
-                phaseChangeMessage += "seed output mode.";
-                break;
-            default:
-                phaseChangeMessage += "an invalid mode please send us a ticket!";
-                break;
-        }
+
+        this.setupPhase = (this.setupPhase + 1) % SETUP_PHASE_KEYS.length;
         this.updateSeedLimits();
-        GTUtility.sendChatToPlayer(aPlayer, phaseChangeMessage);
+
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "kubatech.chat.mode.generic",
+            StatCollector.translateToLocal(SETUP_PHASE_KEYS[this.setupPhase]));
     }
 
     // endregion mode change standardisation
@@ -497,7 +459,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         aNBT.setInteger("version", NBT_REVISION);
         aNBT.setByte("glassTier", this.glassTier);
         aNBT.setInteger("setupPhase", this.setupPhase);
-        aNBT.setString("mode", this.mode.getName());
         NBTTagList bucketListNBT = new NBTTagList();
         for (EIGBucket b : this.buckets) {
             bucketListNBT.appendTag(b.save());
@@ -507,8 +468,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             this.dropTracker.intersect(this.guiDropTracker)
                 .save());
         aNBT.setTag("buckets", bucketListNBT);
-        // TODO: Remove after 2.9
-        aNBT.setBoolean("isOldStructure", this.isOldStructure);
     }
 
     private static class EIGMigrationHolder {
@@ -542,27 +501,21 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             // migrate old EIG with greenhouse slots to new mode and fix variable names
             this.glassTier = aNBT.getByte("glasTier");
             this.setupPhase = aNBT.getInteger("setupphase");
-            this.mode = EIGModes.Normal;
             // aggregate all seed types
             HashMap<String, EIGMigrationHolder> toMigrate = new HashMap<>();
             for (int i = 0; i < aNBT.getInteger("mStorageSize"); i++) {
                 EIGMigrationHolder holder = new EIGMigrationHolder(aNBT.getCompoundTag("mStorage." + i));
-                if (toMigrate.containsKey(holder.getKey())) {
-                    toMigrate.get(holder.getKey()).count += holder.count;
-                } else {
-                    toMigrate.put(holder.getKey(), holder);
+                EIGMigrationHolder previous = toMigrate.putIfAbsent(holder.getKey(), holder);
+                if (previous != null) {
+                    previous.count += holder.count;
                 }
             }
 
             this.toMigrate = toMigrate.values();
         } else {
-            if (revision == 1) isOldStructure = true;
-            else isOldStructure = aNBT.getBoolean("isOldStructure");
             this.glassTier = aNBT.getByte("glassTier");
             this.setupPhase = aNBT.getInteger("setupPhase");
-            this.mode = EIGModes.getModeFromName(aNBT.getString("mode"));
-            if (this.mode == null) this.mode = EIGModes.Normal;
-            this.mode.restoreBuckets(aNBT.getTagList("buckets", 10), this.buckets);
+            EIGBucketFactoryRegistry.restoreBuckets(aNBT.getTagList("buckets", 10), this.buckets);
             new EIGDropTable(aNBT.getTagList("progress", 10)).addTo(this.dropTracker);
         }
     }
@@ -571,23 +524,57 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     // region crop visuals rendering
 
-    @Override
-    public byte getUpdateData() {
-        return isOldStructure ? (byte) 1 : (byte) 0;
-    }
-
-    @Override
-    public void receiveClientEvent(byte eventID, byte value) {
-        if (eventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) {
-            isOldStructure = value == 0b1;
-        }
-    }
+    private static final int CROP_VISUAL_REFRESH_INTERVAL = 40;
 
     @SideOnly(Side.CLIENT)
-    public void spawnVisualCrops(World world, int x, int y, int z, ExtendedFacing facing, int age,
-        boolean isOldStructure) {
-        CropRenderer crop = new CropRenderer(world, x, y, z, facing, age, isOldStructure);
-        Minecraft.getMinecraft().effectRenderer.addEffect(crop);
+    private CropRenderer cropRenderer;
+
+    @Override
+    public byte getUpdateData() {
+        return 0;
+    }
+
+    @Override
+    public void receiveClientEvent(byte eventID, byte value) {}
+
+    @SideOnly(Side.CLIENT)
+    private void updateVisualCrops(IGregTechTileEntity baseTile, long tick) {
+        if (!baseTile.isActive()) {
+            if (cropRenderer != null) {
+                cropRenderer.setDead();
+                cropRenderer = null;
+            }
+            return;
+        }
+
+        World world = baseTile.getWorld();
+        ExtendedFacing facing = getExtendedFacing();
+        if (cropRenderer != null && (cropRenderer.worldObj != world || !cropRenderer.keepAlive())) {
+            cropRenderer.setDead();
+            cropRenderer = null;
+        }
+
+        if (cropRenderer == null || !cropRenderer.isFacing(facing)) {
+            int[] abc = { 0, -2, 1 };
+            int[] xyz = new int[3];
+            facing.getWorldOffset(abc, xyz);
+            int x = baseTile.getXCoord() + xyz[0];
+            int y = baseTile.getYCoord() + xyz[1];
+            int z = baseTile.getZCoord() + xyz[2];
+
+            if (cropRenderer == null) {
+                cropRenderer = new CropRenderer(world, x, y, z, facing, CROP_VISUAL_REFRESH_INTERVAL);
+                Minecraft.getMinecraft().effectRenderer.addEffect(cropRenderer);
+                return;
+            }
+
+            cropRenderer.updateOrigin(x, y, z);
+            cropRenderer.updateFacing(facing);
+        }
+
+        if (tick % CROP_VISUAL_REFRESH_INTERVAL == 0) {
+            cropRenderer.refreshGrowthStages();
+        }
     }
 
     @Override
@@ -599,35 +586,21 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (aBaseMetaTileEntity.isActive() && aTick % 40 == 0) {
-                int[] abc = new int[] { 0, -2, isOldStructure ? 2 : 1 };
-                int[] xyz = new int[] { 0, 0, 0 };
-                this.getExtendedFacing()
-                    .getWorldOffset(abc, xyz);
-                xyz[0] += aBaseMetaTileEntity.getXCoord();
-                xyz[1] += aBaseMetaTileEntity.getYCoord();
-                xyz[2] += aBaseMetaTileEntity.getZCoord();
-                spawnVisualCrops(
-                    aBaseMetaTileEntity.getWorld(),
-                    xyz[0],
-                    xyz[1],
-                    xyz[2],
-                    this.getExtendedFacing(),
-                    40,
-                    isOldStructure);
-            }
+            updateVisualCrops(aBaseMetaTileEntity, aTick);
         } else {
-            if (!isOldStructure && isCheckingDirtWater && aTick % 20 == 0) {
+            if (isCheckingDirtWater && aTick % 20 == 0) {
                 World world = aBaseMetaTileEntity.getWorld();
+                final ExtendedFacing extendedFacing = this.getExtendedFacing();
+                final int[] abc = new int[] { 0, -1, 0 };
+                final int[] xyz = new int[3];
                 int didPlace = 0;
                 // try to till the dirt and place the water
                 for (int x = -1; x <= 1; x++) {
                     for (int z = 1; z <= 7; z++) {
                         if (didPlace >= 3) return;
-                        int[] abc = new int[] { x, -1, z };
-                        int[] xyz = new int[] { 0, 0, 0 };
-                        this.getExtendedFacing()
-                            .getWorldOffset(abc, xyz);
+                        abc[0] = x;
+                        abc[2] = z;
+                        extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += aBaseMetaTileEntity.getXCoord();
                         xyz[1] += aBaseMetaTileEntity.getYCoord();
                         xyz[2] += aBaseMetaTileEntity.getZCoord();
@@ -648,10 +621,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 for (int x = -2; x <= 2; x += 4) {
                     for (int z = 1; z <= 7; z++) {
                         if (didPlace >= 3) return;
-                        int[] abc = new int[] { x, -1, z };
-                        int[] xyz = new int[] { 0, 0, 0 };
-                        this.getExtendedFacing()
-                            .getWorldOffset(abc, xyz);
+                        abc[0] = x;
+                        abc[2] = z;
+                        extendedFacing.getWorldOffset(abc, xyz);
                         xyz[0] += aBaseMetaTileEntity.getXCoord();
                         xyz[1] += aBaseMetaTileEntity.getYCoord();
                         xyz[2] += aBaseMetaTileEntity.getZCoord();
@@ -682,17 +654,20 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * @return The number of seeds in the EIG.
      */
     public int getTotalSeedCount() {
-        // null check is to prevent a occasional weird NPE from MUI
-        return this.buckets.parallelStream()
-            .reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
+        int total = 0;
+        for (int i = 0; i < this.buckets.size(); i++) total += this.buckets.get(i)
+            .getSeedCount();
+        return total;
     }
 
     /**
      * Updates the max seed counts of the machine
      */
     private void updateSeedLimits() {
-        this.maxSeedTypes = this.mode.getSlotCount(getVoltageTier());
-        this.maxSeedCount = this.maxSeedTypes * this.mode.getSeedCapacityPerSlot();
+        int tierAboveMin = getVoltageTier() - EIG_BALANCE_REGULAR_MODE_MIN_TIER;
+        this.maxSeedTypes = tierAboveMin < 0 ? 0
+            : EIG_SLOTS_STARTING * (int) Math.pow(EIG_SLOTS_PER_TIER_MULTIPLIER, tierAboveMin);
+        this.maxSeedCount = this.maxSeedTypes * EIG_SEED_CAPACITY_PER_SLOT;
     }
 
     /**
@@ -735,8 +710,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      */
     public static boolean isFertilizer(ItemStack item) {
         if (item == null || item.stackSize <= 0) return false;
-        for (ItemStack fert : FERTILIZER_ITEM_LIST) {
-            if (GTUtility.areStacksEqual(item, fert)) return true;
+        for (int i = 0; i < FERTILIZER_ITEM_LIST.size(); i++) {
+            if (GTUtility.areStacksEqual(item, FERTILIZER_ITEM_LIST.get(i))) return true;
         }
         return false;
     }
@@ -830,9 +805,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
         // Compute the Weed-EX and water requirements,
         // TODO: We only really need to update water usage and WeedEX usage when adding seeds or when loading NBT.
-        this.waterUsage = seedCount * 1000;
-        this.weedEXUsage = (seedCount >= EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT ? seedCount : 0)
-            * this.mode.getWeedEXMultiplier();
+        this.waterUsage = seedCount * EIG_BALANCE_WATER_USAGE_PER_SEED;
+        this.weedEXUsage = seedCount >= EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT ? seedCount : 0;
 
         // Consume water, fail if we don't have enough
         if (!this.tryDrain(new FluidStack(FluidRegistry.WATER, this.waterUsage), false)) {
@@ -862,7 +836,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         int consumedFertilizer = 0;
         int maxFertilizerToConsume = 0;
         for (EIGBucket bucket : this.buckets)
-            maxFertilizerToConsume += bucket.getSeedCount() * this.mode.getMaxFertilizerUsagePerSeed();
+            maxFertilizerToConsume += bucket.getSeedCount() * EIG_MAX_FERTILIZER_PER_SEED;
 
         ArrayList<ItemStack> inputs = getStoredInputs();
         for (ItemStack i : inputs) {
@@ -873,12 +847,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             }
             if (consumedFertilizer == maxFertilizerToConsume) break;
         }
-        double multiplier = 1.d
-            + (((double) consumedFertilizer / (double) maxFertilizerToConsume) * EIG_BALANCE_MAX_FERTILIZER_BOOST);
+        double multiplier = 1.0d;
+        if (maxFertilizerToConsume > 0) {
+            double ratio = (double) consumedFertilizer / maxFertilizerToConsume;
+            multiplier += ratio * EIG_BALANCE_MAX_FERTILIZER_BOOST;
+        }
 
         // compute drops based on the drop tracker
         this.guiDropTracker = new EIGDropTable();
-        this.mMaxProgresstime = Math.max(20, 100 / (tier - 3)); // Min 1 s
+        this.mMaxProgresstime = Math.max(20, 100 / Math.max(1, tier - 3)); // Min 1 s
         for (EIGBucket bucket : this.buckets) {
             bucket.addProgress(multiplier, this.guiDropTracker);
         }
@@ -929,7 +906,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         }
 
         // try creating a new bucket, this only returns valid buckets.
-        EIGBucket bucket = this.mode.tryCreateNewBucket(this, input, addCap, simulate);
+        EIGBucket bucket = EIGBucketFactoryRegistry.tryCreateNewBucket(this, input, addCap, simulate);
         if (bucket == null) return false;
         this.buckets.add(bucket);
         return input.stackSize <= 0;
@@ -941,8 +918,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
             Arrays.asList(
-                this.setupPhase == 0
-                    ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
+                this.setupPhase == 0 ? "kubatech.infodata.eig.running_mode.operational"
                     : (this.setupPhase == 1 ? "kubatech.infodata.eig.running_mode.setup_mode.input"
                         : "kubatech.infodata.eig.running_mode.setup_mode.output"),
                 IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.water", waterUsage),
@@ -966,36 +942,39 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         return info.toArray(new String[0]);
     }
 
+    private static final ITexture OVERLAY_TOWER = TextureFactory.builder()
+        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+        .extFacing()
+        .build();
+    private static final ITexture OVERLAY_TOWER_GLOW = TextureFactory.builder()
+        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+        .extFacing()
+        .glow()
+        .build();
+    private static final ITexture OVERLAY_TOWER_ACTIVE = TextureFactory.builder()
+        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+        .extFacing()
+        .build();
+    private static final ITexture OVERLAY_TOWER_ACTIVE_GLOW = TextureFactory.builder()
+        .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+        .extFacing()
+        .glow()
+        .build();
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         final ITexture casingTexture = getCasingTexture();
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexture, TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexture, TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
+            return aActive ? new ITexture[] { casingTexture, OVERLAY_TOWER_ACTIVE, OVERLAY_TOWER_ACTIVE_GLOW }
+                : new ITexture[] { casingTexture, OVERLAY_TOWER, OVERLAY_TOWER_GLOW };
         }
         return new ITexture[] { casingTexture };
     }
 
     @Override
     public ITexture getCasingTexture() {
-        return isOldStructure ? CASING_OLD.getCasingTexture() : CASING.getCasingTexture();
+        return CASING.getCasingTexture();
     }
 
     @Override

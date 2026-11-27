@@ -69,6 +69,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.enums.Variants;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
@@ -201,9 +202,7 @@ public class GTModHandler {
      * Returns a Liquid Stack with given amount of distilled Water.
      */
     public static FluidStack getDistilledWater(long aAmount) {
-        FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
-        return tFluid;
+        return Materials.DistilledWater.getFluid(aAmount);
     }
 
     /**
@@ -607,6 +606,34 @@ public class GTModHandler {
     }
 
     /**
+     * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
+     */
+    public static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
+        int[] aEnchantmentLevelsAdded, Object[] aRecipe, Variants... variants) {
+        if (Variants.checkIfActive(variants)) {
+            return false;
+        }
+        return addCraftingRecipe(
+            aResult,
+            aEnchantmentsAdded,
+            aEnchantmentLevelsAdded,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            aRecipe);
+    }
+
+    /**
      * Regular Crafting Recipes. Deletes conflicting Recipes too.
      * <p/>
      * You can insert instances of IItemContainer into the Recipe Input Array directly without having to call "get(1)"
@@ -624,6 +651,30 @@ public class GTModHandler {
      * 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench, 'x' ToolDictNames.craftingToolWireCutter
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Object[] aRecipe) {
+        return addCraftingRecipe(aResult, 0, aRecipe);
+    }
+
+    /**
+     * Regular Crafting Recipes. Deletes conflicting Recipes too.
+     * <p/>
+     * You can insert instances of IItemContainer into the Recipe Input Array directly without having to call "get(1)"
+     * on them.
+     * <p/>
+     * Enums are automatically getting their "name()"-Method called in order to deliver an OreDict String.
+     * <p/>
+     * Lowercase Letters are reserved for Tools. They are as follows:
+     * <p/>
+     * 'b' ToolDictNames.craftingToolBlade, 'c' ToolDictNames.craftingToolCrowbar,
+     * 'd' ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile,
+     * 'h' ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron,
+     * 'k' ToolDictNames.craftingToolKnive, 'm' ToolDictNames.craftingToolMortar,
+     * 'p' ToolDictNames.craftingToolDrawplate, 'r' ToolDictNames.craftingToolSoftMallet,
+     * 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench, 'x' ToolDictNames.craftingToolWireCutter
+     */
+    public static boolean addCraftingRecipe(ItemStack aResult, Object[] aRecipe, Variants... variants) {
+        if (Variants.checkIfActive(variants)) {
+            return false;
+        }
         return addCraftingRecipe(aResult, 0, aRecipe);
     }
 
@@ -665,7 +716,60 @@ public class GTModHandler {
             aRecipe);
     }
 
+    /**
+     * Regular Crafting Recipes. Deletes conflicting Recipes too.
+     * <p/>
+     * You can insert instances of IItemContainer into the Recipe Input Array directly without having to call "get(1)"
+     * on them.
+     * <p/>
+     * Enums are automatically getting their "name()"-Method called in order to deliver an OreDict String.
+     * <p/>
+     * Lowercase Letters are reserved for Tools. They are as follows:
+     * <p/>
+     * 'b' ToolDictNames.craftingToolBlade, 'c' ToolDictNames.craftingToolCrowbar,
+     * 'd' ToolDictNames.craftingToolScrewdriver, 'f' ToolDictNames.craftingToolFile,
+     * 'h' ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron,
+     * 'k' ToolDictNames.craftingToolKnive, 'm' ToolDictNames.craftingToolMortar,
+     * 'p' ToolDictNames.craftingToolDrawplate, 'r' ToolDictNames.craftingToolSoftMallet,
+     * 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench, 'x' ToolDictNames.craftingToolWireCutter
+     */
+    public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe, Variants... variants) {
+        if (Variants.checkIfActive(variants)) {
+            return false;
+        }
+        return addCraftingRecipe(
+            aResult,
+            null,
+            null,
+            (aBitMask & RecipeBits.MIRRORED) != 0,
+            (aBitMask & RecipeBits.BUFFERED) != 0,
+            (aBitMask & RecipeBits.KEEPNBT) != 0,
+            (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
+            (aBitMask & RecipeBits.REVERSIBLE) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0,
+            (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
+            (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
+            (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
+            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
+            aRecipe);
+    }
+
     public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
+        addMachineCraftingRecipe(
+            aResult,
+            RecipeBits.BITS | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            aRecipe,
+            machineTier);
+    }
+
+    public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier,
+        Variants... variants) {
+        if (Variants.checkIfActive(variants)) {
+            return;
+        }
         addMachineCraftingRecipe(
             aResult,
             RecipeBits.BITS | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -717,7 +821,7 @@ public class GTModHandler {
                     case  6 -> ItemList.Hull_LuV;
                     case  7 -> ItemList.Hull_ZPM;
                     case  8 -> ItemList.Hull_UV;
-                    default -> ItemList.Hull_MAX;
+                    default -> ItemList.Hull_UHV;
                 };
 
                 case WIRE -> switch (machineTier) {

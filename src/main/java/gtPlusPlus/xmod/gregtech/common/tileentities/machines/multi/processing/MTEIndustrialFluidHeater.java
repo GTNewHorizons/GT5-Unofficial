@@ -16,12 +16,14 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -37,6 +39,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFluidHeater>
     implements ISurvivalConstructable {
 
@@ -58,7 +61,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
 
     @Override
     public String getMachineType() {
-        return "Fluid Heater, THD";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_heater");
     }
 
     @Override
@@ -68,15 +71,19 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
             .addBulkMachineInfo(8, 2.2f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 5, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("47", "Thermal Containment Casing", false)
-            .addCasing("34-37", "Multi-Use Casing", false)
-            .addEnergyHatch("1+", "Any top or bottom casing", 1, 2)
-            .addMaintenanceHatch("1", "Any top or bottom casing", 1, 2)
-            .addMufflerHatch("1", "Any top or bottom casing", 1, 2)
-            .addInputAny("1+", "Any bottom casing", 1)
-            .addOutputAny("1+", "Any top casing", 2)
-            .addAir("Interior of the structure")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("47", Casings.ThermalContainmentCasing.getLocalizedName(), false)
+            .addCasing("34-37", Casings.MultiUseCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_or_bottom_casing"), 1, 2)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("gt.mbtt.structure.any_top_or_bottom_casing"),
+                1,
+                2)
+            .addMufflerHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_top_or_bottom_casing"), 1, 2)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_casing"), 1)
+            .addOutputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_top_casing"), 2)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }

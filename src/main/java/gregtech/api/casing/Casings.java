@@ -530,6 +530,14 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings14,6, gt(16,7,6)),
     TensionResistantMachineCasing
         (() -> GregTechAPI.sBlockCasings14,7, gt(16,7,7)),
+    PlasmaColliderCasing(() -> GregTechAPI.sBlockCasings14, 8, gt(16, 7, 8)),
+    QuadcellDrivingCasing(() -> GregTechAPI.sBlockCasings14, 9, gt(16, 7, 9)),
+    NiobiumTitaniumPipeCasing(() -> GregTechAPI.sBlockCasings14, 10, gt(16, 7, 10)),
+    MysteriousCrystalPipeCasing(() -> GregTechAPI.sBlockCasings14, 11, gt(16, 7, 11)),
+    NeutroniumPipeCasing(() -> GregTechAPI.sBlockCasings14, 12, gt(16, 7, 12)),
+    InfinityPipeCasing(() -> GregTechAPI.sBlockCasings14, 13, gt(16, 7, 13)),
+    TranscendentMetalPipeCasing(() -> GregTechAPI.sBlockCasings14, 14, gt(16, 7, 14)),
+    SpaceTimePipeCasing(() -> GregTechAPI.sBlockCasings14, 15, gt(16, 7, 15)),
 
     // Block Reinforced
     TungstenSteelReinforcedBlock
@@ -654,6 +662,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 9, -1),
     ReinforcedGlass
         (() -> GregTechAPI.sBlockGlass1, 10, -1),
+    PlasmaColliderGlass
+        (() -> GregTechAPI.sBlockGlass1, 11, gt(16, 0, 11)),
 
     // Fences
 
@@ -744,7 +754,7 @@ public enum Casings implements ICasing {
     ThermalContainmentCasing
         (() -> ModBlocks.blockCasings2Misc, 11,  gtpp(0,1)),
     BulkProductionFrame
-        (() -> ModBlocks.blockCasings2Misc, 12, -1),
+        (() -> ModBlocks.blockCasings2Misc, 12, gtpp(0, 10)),
     CuttingFactoryFrame
         (() -> ModBlocks.blockCasings2Misc, 13, gtpp(1, 13)),
     SterileFarmCasing
@@ -900,21 +910,21 @@ public enum Casings implements ICasing {
 
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1
-        (() -> ModBlocks.blockSpecialMultiCasings, 0, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 0, -1),
     ResonanceChamber2
-        (() -> ModBlocks.blockSpecialMultiCasings, 1, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 1, -1),
     ResonanceChamber3
-        (() -> ModBlocks.blockSpecialMultiCasings, 2, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 2, -1),
     ResonanceChamber4
-        (() -> ModBlocks.blockSpecialMultiCasings, 3, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 3, -1),
     Modulator1
-        (() -> ModBlocks.blockSpecialMultiCasings, 4, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 4, -1),
     Modulator2
-        (() -> ModBlocks.blockSpecialMultiCasings, 5, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 5, -1),
     Modulator3
-        (() -> ModBlocks.blockSpecialMultiCasings, 6, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 6, -1),
     Modulator4
-        (() -> ModBlocks.blockSpecialMultiCasings, 7, -1),
+        (() -> ModBlocks.blockSpecialMultiCasings2, 7, -1),
 
     // GregtechMetaSpecialMachineCasings
     StrongBronzeMachineCasing

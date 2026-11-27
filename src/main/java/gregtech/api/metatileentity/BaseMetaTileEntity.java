@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -26,9 +25,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -69,6 +69,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -96,6 +97,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
+    // Inputs in bits 0-5, outputs in bits 6-11; -1 until first computed.
+    private int activeEUFaceMask = -1;
     public long mLastSoundTick = 0;
     public boolean mWasShutdown = false;
     public @Nonnull ShutDownReason lastShutDownReason = ShutDownReasonRegistry.NONE;
@@ -438,10 +441,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (!mMetaTileEntity.isEnetOutput() && !mMetaTileEntity.isEnetInput()) {
             return;
         }
+        int mask = 0;
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             int ordinalSide = side.ordinal();
-            mActiveEUInputs[ordinalSide] = isEnergyInputSide(side);
-            mActiveEUOutputs[ordinalSide] = isEnergyOutputSide(side);
+            final boolean input = isEnergyInputSide(side);
+            final boolean output = isEnergyOutputSide(side);
+            mActiveEUInputs[ordinalSide] = input;
+            mActiveEUOutputs[ordinalSide] = output;
+            if (input) mask |= side.flag;
+            if (output) mask |= side.flag << 6;
+        }
+        // Role changes (transformer mode, covers) don't touch cable connections, so the graph must be told.
+        if (mask != activeEUFaceMask) {
+            if (activeEUFaceMask != -1) requestCableUpdate();
+            activeEUFaceMask = mask;
         }
     }
 
@@ -601,8 +614,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
      * Handles cable power node updates
      */
     private void handleCableUpdates() {
+        if (mTickTimer == 1) invalidatePowerNodeMaps();
         if (mTickTimer > 20 && cableUpdateDelay == 0) {
-            generatePowerNodes();
+            generatePowerNodes(false);
         }
         cableUpdateDelay--;
     }
@@ -757,45 +771,44 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aLogLevel) {
-        final ArrayList<String> tList = new ArrayList<>();
-        if (aLogLevel > 2) {
-            tList.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.scanner.debug.meta_id",
-                    mID,
-                    canAccessData() ? StatCollector.translateToLocal("GT5U.multiblock.scanner.valid")
-                        : StatCollector.translateToLocal("GT5U.multiblock.scanner.invalid"))
-                    + (mMetaTileEntity == null
-                        ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
-                        : ""));
+    public void addDebugInfoComp(EntityPlayer player, int logLevel, ArrayList<IChatComponent> components) {
+        if (logLevel > 2) {
+            components.add(
+                new ChatComponentTranslation(
+                    "GT5U.scanner.debug.meta_id.v2",
+                    GTUtility.styledComp(new ChatComponentText(String.valueOf(mID)), EnumChatFormatting.AQUA),
+                    new ChatComponentTranslation(
+                        canAccessData() ? "GT5U.multiblock.scanner.valid" : "GT5U.multiblock.scanner.invalid"),
+                    mMetaTileEntity == null
+                        ? new ChatComponentTranslation("GT5U.multiblock.scanner.is_meta_tile_entity")
+                        : new ChatComponentText("")));
         }
-        if (aLogLevel > 1 && mMetaTileEntity != null) {
-            addProfilingInformation(tList);
-            tList.add(
-                StatCollector.translateToLocal(
-                    mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
+        if (logLevel > 1 && mMetaTileEntity != null) {
+            addProfilingInformation(components);
+            components.add(
+                new ChatComponentTranslation(
+                    mMetaTileEntity.isAccessAllowed(player) ? "GT5U.scanner.debug.accessible"
                         : "GT5U.scanner.debug.not_accessible"));
-            tList.add(
-                StatCollector.translateToLocalFormatted(
+            components.add(
+                new ChatComponentTranslation(
                     "GT5U.scanner.debug.sound_requests",
-                    formatNumber(mMetaTileEntity.mSoundRequests),
-                    formatNumber(mTickTimer - mLastCheckTick)));
+                    GTUtility.styledComp(mMetaTileEntity.mSoundRequests, EnumChatFormatting.GOLD),
+                    GTUtility.styledComp(mTickTimer - mLastCheckTick, EnumChatFormatting.GOLD)));
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
         }
-        if (aLogLevel > 0) {
-            tList.add(
-                StatCollector.translateToLocal(
+        if (logLevel > 0) {
+            components.add(
+                new ChatComponentTranslation(
                     mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
-            tList.add(
-                StatCollector.translateToLocal(
+            components.add(
+                new ChatComponentTranslation(
                     isAllowedToWork() ? "GT5U.scanner.debug.machine_allowed_to_work"
                         : "GT5U.scanner.debug.machine_not_allowed_to_work"));
-            if (!mHasEnoughEnergy) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.needs_power"));
+            if (!mHasEnoughEnergy) components.add(new ChatComponentTranslation("GT5U.scanner.debug.needs_power"));
         }
-        if (joinedIc2Enet) tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.ic2_enet"));
-        return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
+        if (joinedIc2Enet) components.add(new ChatComponentTranslation("GT5U.scanner.debug.ic2_enet"));
+        if (mMetaTileEntity != null) mMetaTileEntity.addSpecialDebugInfoComp(this, player, logLevel, components);
     }
 
     @Override
@@ -838,7 +851,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             mMetaTileEntity.onFacingChange();
 
             doEnetUpdate();
-            cableUpdateDelay = 10;
+            requestCableUpdate();
 
             if (mMetaTileEntity.shouldTriggerBlockUpdate()) {
                 // If we're triggering a block update this will call onMachineBlockUpdate()
@@ -911,6 +924,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void invalidate() {
         tileEntityInvalid = false;
         leaveEnet();
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             invalidateAE();
             mMetaTileEntity.onRemoval();
@@ -921,6 +935,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public void onUnload() {
+        invalidatePowerNodeMaps(true);
         if (canAccessData()) {
             onCoverUnload();
             mMetaTileEntity.onUnload();
@@ -1118,6 +1133,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     public void generatePowerNodes() {
+        generatePowerNodes(true);
+    }
+
+    private void generatePowerNodes(boolean forceRefresh) {
         if (isServerSide() && (isEnetInput() || isEnetOutput())) {
             final int time = MinecraftServer.getServer()
                 .getTickCounter();
@@ -1126,10 +1145,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     final IGregTechTileEntity TE = getIGregTechTileEntityAtSide(side);
                     if (TE instanceof BaseMetaPipeEntity pipe
                         && (pipe.getConnections() & side.getOpposite().flag) != 0) {
-                        final Node node = pipe.getNode();
+                        final Node node = pipe.getNodeMap();
                         if (node == null) {
                             new GenerateNodeMapPower(pipe);
-                        } else if (node.mCreationTime != time) {
+                        } else if ((!node.isNodeMapValid() || forceRefresh) && node.mCreationTime != time) {
                             GenerateNodeMap.clearNodeMap(node, -1);
                             new GenerateNodeMapPower(pipe);
                         }
@@ -1141,6 +1160,31 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     public void setCableUpdateDelay(int delay) {
         cableUpdateDelay = delay;
+    }
+
+    private void requestCableUpdate() {
+        invalidatePowerNodeMaps();
+        setCableUpdateDelay(10);
+    }
+
+    private void invalidatePowerNodeMaps() {
+        invalidatePowerNodeMaps(false);
+    }
+
+    private void invalidatePowerNodeMaps(boolean scheduleRebuild) {
+        if (worldObj == null || worldObj.isRemote) return;
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (!worldObj.blockExists(getOffsetX(side, 1), getOffsetY(side, 1), getOffsetZ(side, 1))) continue;
+            final IGregTechTileEntity tileEntity = getIGregTechTileEntityAtSide(side);
+            if (tileEntity instanceof BaseMetaPipeEntity pipe && pipe.getMetaTileEntity() instanceof MTECable
+                && (pipe.getConnections() & side.getOpposite().flag) != 0) {
+                final Node node = pipe.getNodeMap();
+                if (node != null) node.invalidateNodeMap();
+                if (scheduleRebuild) {
+                    GregTechAPI.causeCableUpdate(worldObj, pipe.xCoord, pipe.yCoord, pipe.zCoord);
+                }
+            }
+        }
     }
 
     @Override
@@ -1480,12 +1524,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                             && ((MTEBasicMachine) mMetaTileEntity).setMainFacing(wrenchingSide)) {
                             GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                            cableUpdateDelay = 10;
+                            requestCableUpdate();
                         } else if (mMetaTileEntity
                             .onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                                 GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                                 sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                cableUpdateDelay = 10;
+                                requestCableUpdate();
                             }
 
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1582,7 +1626,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         }
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         doEnetUpdate();
-                        cableUpdateDelay = 10;
+                        requestCableUpdate();
                         return true;
                     }
 
@@ -1595,7 +1639,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
                         doEnetUpdate();
-                        cableUpdateDelay = 10;
+                        requestCableUpdate();
                         return true;
                     }
 

@@ -197,7 +197,10 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (mMachine) {
+            needsWaterFill = true;
+            return -1;
+        }
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -270,7 +273,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.purification_unit_flocculation"))
             .addMarkdown(
-                new ResourceLocation("gregtech", "purification-unit-flocculation"),
+                new ResourceLocation("gregtech", "purification/unit-flocculation"),
                 ImmutableMap.<String, Object>builder()
                     .put("tier", getWaterTier())
                     .put("input", INPUT_CHEMICAL.getLocalizedName())
