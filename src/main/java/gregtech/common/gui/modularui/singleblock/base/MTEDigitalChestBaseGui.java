@@ -196,7 +196,7 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
             .child(
                 new ToggleButton().value(itemLock)
                     .setEnabledIf(button -> !voidFull.getBoolValue())
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
                     .tooltip(t -> {
                         t.addLine(translateToLocal(LANG_PREFIX + "lockitem.tooltip.0"));
                         t.addLine(translateToLocal(LANG_PREFIX + "lockitem.tooltip.1"));
@@ -222,19 +222,12 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
             .child(
                 new ToggleButton().value(
                     new BooleanSyncValue(machine::isBlockExternalAccess, machine::setBlockExternalAccess).allowC2S())
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED)
                     .tooltip(
                         t -> {
                             for (int i = 0; i < 9; i++)
                                 t.addLine(translateToLocal(LANG_PREFIX + "block_external_access." + i));
-                        }));
-    }
-
-    @Override
-    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow buttonRow = Flow.row()
-            .coverChildren()
-            .marginRight(SLOT_SIZE)
+                        }))
             .child(
                 new ToggleButton()
                     .value(
@@ -249,7 +242,13 @@ public class MTEDigitalChestBaseGui extends MTEMachineWithItemScreenBaseGui<MTED
                     .tooltip(t -> {
                         t.addLine(translateToLocal(LANG_PREFIX + "outputslot.tooltip"));
                         t.addLine(translateToLocal(LANG_PREFIX + "outputslot.tooltip.1"));
-                    }))
+                    }));
+    }
+
+    @Override
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow buttonRow = Flow.row()
+            .coverChildren()
             .child(
                 new ToggleButton()
                     .value(new BooleanSyncValue(machine::isVoidOverflow, machine::setVoidOverflow).allowC2S())
