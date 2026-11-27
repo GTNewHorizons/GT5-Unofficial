@@ -85,7 +85,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
         return gatherItems(new ItemList());
     }
 
-    private IItemList<IAEItemStack> gatherItems(IItemList<IAEItemStack> out) {
+    protected IItemList<IAEItemStack> gatherItems(IItemList<IAEItemStack> out) {
         ItemStack storedStack = machine.getItemStack();
         if (storedStack != null) {
             AEItemStack s = AEItemStack.create(storedStack);
@@ -221,7 +221,7 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
     }
 
     public void notifyListeners(int count, ItemStack stack) {
-        if (count == 0 || stack == null) return;
+        if (count == 0 || stack == null || listeners.isEmpty()) return;
         ItemList change = new ItemList();
         AEItemStack s = AEItemStack.create(stack);
         s.setStackSize(count);
@@ -233,15 +233,21 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
     }
 
     public boolean hasActiveMEConnection() {
-        if (listeners.isEmpty()) return false;
-        for (Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> e : listeners.entrySet()) {
-            if ((e.getKey() instanceof IPart)) {
-                IGridNode n = ((IPart) e.getKey()).getGridNode();
-                if (n != null && n.isActive()) return true;
+        boolean active = false;
+        var iterator = listeners.entrySet()
+            .iterator();
+        while (iterator.hasNext()) {
+            var entry = iterator.next();
+            if (!entry.getKey()
+                .isValid(entry.getValue())) {
+                iterator.remove();
+                continue;
+            }
+            if (entry.getKey() instanceof IPart part) {
+                IGridNode node = part.getGridNode();
+                if (node != null && node.isActive()) active = true;
             }
         }
-        // if there are no active storage buses - clear the listeners
-        listeners.clear();
-        return false;
+        return active;
     }
 }

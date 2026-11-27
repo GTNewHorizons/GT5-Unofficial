@@ -11,6 +11,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchNonConsumableBase;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -51,8 +52,8 @@ public class MTEHatchNonConsumableBaseGui extends MTEMachineWithItemScreenBaseGu
     }
 
     @Override
-    protected int getSlotIndex() {
-        return machine.getSlotIndex();
+    protected ItemSlot createSlot(ModularPanel panel, PanelSyncManager syncManager) {
+        return createInventoryDisplaySlot(machine.getSlotIndex());
     }
 
     @Override
