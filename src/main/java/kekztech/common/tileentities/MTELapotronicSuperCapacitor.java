@@ -35,9 +35,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -52,8 +54,10 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -75,6 +79,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.config.Gregtech;
 import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -89,7 +94,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELapotronicSuperCapacitor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, IDataCopyable {
 
     private enum TopState {
         MayBeTop,
@@ -172,6 +177,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private static final String STRUCTURE_PIECE_LAYER = "slice";
     private static final String STRUCTURE_PIECE_TOP = "top";
     private static final String STRUCTURE_PIECE_MID = "mid";
+    private static final String COPY_PASTE_IDENTIFIER = "lapotronicsupercapacitor";
     private static final int GLASS_TIER_UNSET = -1;
 
     private static final Block LSC_PART = Blocks.lscLapotronicEnergyUnit;
@@ -180,8 +186,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private static final int CASING_TEXTURE_ID = (42 << 7) | 127;
 
     private static final int DURATION_AVERAGE_TICKS = 100;
-    private static final int DEBUG_POWER_WINDOW_ID = 10;
-    private static final int WIRELESS_WARNING_WINDOW_ID = 11;
 
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
 
@@ -274,7 +278,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     Boolean canRebalance = false;
 
     public Boolean getShowWarning() {
-        return showWarning;
+        return !Gregtech.machines.skipLSCWirelessWarningDialog && showWarning;
     }
 
     public void setShowWarning(Boolean showWarning) {
@@ -1118,6 +1122,60 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + "+ capacitor.");
             wireless_mode = false;
         }
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        if (baseMetaTileEntity.isClientSide()) return;
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onLeftclick(baseMetaTileEntity, player);
+            return;
+        }
+        dataStick.stackTagCompound = getCopiedData(player);
+        dataStick.setStackDisplayName("LSC Data");
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
+        float x, float y, float z) {
+        if (baseMetaTileEntity.isClientSide()) return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        }
+        if (!pasteCopiedData(player, dataStick.stackTagCompound)) return false;
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.loaded"));
+        return true;
+    }
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPY_PASTE_IDENTIFIER);
+        if (showWarning != null) {
+            tag.setBoolean("showWarning", showWarning);
+        }
+        tag.setBoolean("wireless_mode", wireless_mode);
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null) return false;
+        if (!COPY_PASTE_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        this.wireless_mode = nbt.getBoolean("wireless_mode");
+        // booleans are saved as byte tag
+        if (nbt.hasKey("showWarning", Constants.NBT.TAG_BYTE)) {
+            this.showWarning = nbt.getBoolean("showWarning");
+        }
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPY_PASTE_IDENTIFIER;
     }
 
     @Override

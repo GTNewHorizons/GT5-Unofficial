@@ -170,7 +170,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
 
     private ModularPanel warningPanel() {
 
-        return ModularPanel.defaultPanel("warning")
+        return ModularPanel.defaultPanel("warning panel")
             .coverChildren()
             .padding(4)
             .paddingBottom(8)

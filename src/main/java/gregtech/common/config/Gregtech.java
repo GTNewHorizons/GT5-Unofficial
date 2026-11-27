@@ -587,6 +587,11 @@ public class Gregtech {
         @Config.Name("Item Slots Suffix Format")
         @Config.RequiresMcRestart
         public String itemSlotsSuffixFormat = " {%s}";
+
+        @Config.Comment("If true, skips the GUI warning when enabling LSC wireless mode.")
+        @Config.DefaultBoolean(false)
+        @Config.Name("Skip LSC Wireless Warning Dialog")
+        public boolean skipLSCWirelessWarningDialog;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")
