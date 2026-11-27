@@ -390,6 +390,13 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        clearCraftingIcons(catalystBuses);
+        catalystBuses.clear();
+    }
+
+    @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         for (int i = 0; i < 8; i++) {
