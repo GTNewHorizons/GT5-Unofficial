@@ -9,14 +9,17 @@ public class GTClientPreference {
     private final boolean mInputBusInitialFilter;
     private final boolean mInputHatchInitialFilter;
     private final boolean wailaAverageNS;
+    private final boolean skipLSCWirelessWarningDialog;
 
     public GTClientPreference(boolean mSingleBlockInitialFilter, boolean mSingleBlockInitialMultiStack,
-        boolean mInputBusInitialFilter, boolean wailaAverageNS, boolean mInputHatchInitialFilter) {
+        boolean mInputBusInitialFilter, boolean wailaAverageNS, boolean mInputHatchInitialFilter,
+        boolean skipLSCWirelessWarningDialog) {
         this.mSingleBlockInitialFilter = mSingleBlockInitialFilter;
         this.mSingleBlockInitialMultiStack = mSingleBlockInitialMultiStack;
         this.mInputBusInitialFilter = mInputBusInitialFilter;
         this.wailaAverageNS = wailaAverageNS;
         this.mInputHatchInitialFilter = mInputHatchInitialFilter;
+        this.skipLSCWirelessWarningDialog = skipLSCWirelessWarningDialog;
     }
 
     public GTClientPreference() {
@@ -25,6 +28,7 @@ public class GTClientPreference {
         this.mInputBusInitialFilter = Client.preference.inputBusInitialFilter;
         this.wailaAverageNS = Client.waila.wailaAverageNS;
         this.mInputHatchInitialFilter = Client.preference.inputHatchInitialFilter;
+        this.skipLSCWirelessWarningDialog = Client.preference.skipLSCWirelessWarningDialog;
     }
 
     public boolean isSingleBlockInitialFilterEnabled() {
@@ -45,5 +49,9 @@ public class GTClientPreference {
 
     public boolean isWailaAverageNSEnabled() {
         return wailaAverageNS;
+    }
+
+    public boolean isSkipLSCWirelessWarningDialogEnabled() {
+        return skipLSCWirelessWarningDialog;
     }
 }

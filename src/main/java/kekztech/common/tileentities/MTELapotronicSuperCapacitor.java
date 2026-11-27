@@ -52,6 +52,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -79,7 +80,6 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.config.Gregtech;
 import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -278,7 +278,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     Boolean canRebalance = false;
 
     public Boolean getShowWarning() {
-        return !Gregtech.machines.skipLSCWirelessWarningDialog && showWarning;
+        var clientPref = GTMod.proxy.getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+        return clientPref == null ? showWarning : !clientPref.isSkipLSCWirelessWarningDialogEnabled() && showWarning;
     }
 
     public void setShowWarning(Boolean showWarning) {
