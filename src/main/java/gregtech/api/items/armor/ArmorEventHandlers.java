@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -97,6 +98,41 @@ public class ArmorEventHandlers {
         if (event.phase == TickEvent.Phase.START && !(event.player instanceof FakePlayer)) {
             onPlayerTick(event);
         }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onRenderArmor(RenderPlayerEvent.SetArmorModel event) {
+        if (isCloaked(event.entityPlayer)) {
+            event.result = 0;
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onRenderSpecials(RenderPlayerEvent.Specials.Pre event) {
+        if (isCloaked(event.entityPlayer)) {
+            event.renderHelmet = false;
+            event.renderCape = false;
+            event.renderItem = false;
+        }
+    }
+
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onRenderPlayer(RenderPlayerEvent.Pre event) {
+        boolean cloaked = isCloaked(event.entityPlayer);
+        if (CloakFadeRenderer.renderFade(event.entityPlayer, cloaked, event.partialRenderTick)) {
+            event.setCanceled(true);
+        }
+    }
+
+    private static boolean isCloaked(EntityPlayer player) {
+        if (!player.isInvisible()) return false;
+        ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
+        if (chest == null || !(chest.getItem() instanceof MechArmorBase)) return false;
+        return MechArmorBase.load(player, chest)
+            .hasBehavior(BehaviorName.Cloak);
     }
 
     private static final float MAGIC_STEP_HEIGHT = 1.0023f;

@@ -56,6 +56,7 @@ import gregtech.api.items.ItemAugmentFrame;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
 import gregtech.api.items.armor.behaviors.ApiaristBehavior;
 import gregtech.api.items.armor.behaviors.BehaviorName;
+import gregtech.api.items.armor.behaviors.CloakBehavior;
 import gregtech.api.items.armor.behaviors.CreativeFlightBehavior;
 import gregtech.api.items.armor.behaviors.FallProtectionBehavior;
 import gregtech.api.items.armor.behaviors.FireImmunityBehavior;
@@ -548,6 +549,14 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Helmet)
             .setTexture(ArmorType.Helmet, () -> nightVisionAugment)
             .providesBehaviors(NightVisionBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        Cloak(ItemList.Augment_Cloak, new AugmentBuilder()
+            .setId("Cloak")
+            .setItemId("augmentcloak")
+            .fitsInto(ArmorType.Chestplate)
+            .providesBehaviors(CloakBehavior.INSTANCE)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
         ),

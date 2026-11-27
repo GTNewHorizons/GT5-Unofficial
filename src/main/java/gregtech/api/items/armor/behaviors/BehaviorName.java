@@ -34,8 +34,8 @@ public enum BehaviorName {
     Terrasteel(EnumRarity.uncommon),
     Soulbound(EnumRarity.common),
     Levitation(EnumRarity.epic),
+    Cloak(EnumRarity.uncommon),
     Magnet(EnumRarity.uncommon)
-
     //
     ;
 
