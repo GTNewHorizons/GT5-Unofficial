@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -1175,10 +1176,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * {@link #createProcessingLogic}, this method is called every time checking for recipes.
      */
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = !debugEnergyPresent && mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
         logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
+        logic.setAvailableAmperage(getProcessingAmperage());
         logic.setAmperageOC(true);
+    }
+
+    private long getProcessingAmperage() {
+        return !debugEnergyPresent && mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() ? 1
+            : getMaxInputAmps();
+    }
+
+    protected long getPatternMaxRecipeEUt() {
+        final long voltage = getAverageInputVoltage();
+        final long amps = getProcessingAmperage();
+        if (voltage <= 0 || amps <= 0 || voltage > Long.MAX_VALUE / amps) return Long.MAX_VALUE;
+        return voltage * amps;
+    }
+
+    /** Returns a stable recipe filter for pattern matching, or null if the recipe map is enough. */
+    @Nullable
+    protected Predicate<GTRecipe> getPatternRecipeFilter() {
+        return null;
     }
 
     /**
@@ -1193,17 +1211,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             : getAvailableRecipeMaps();
         if (maps.isEmpty()) return null;
 
-        // Same power as setProcessingLogicPower; steam and wireless multis have no energy hatches, so the voltage is 0
-        // and the key turns the voltage check off.
-        final boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
-        final long voltage = getAverageInputVoltage() * (useSingleAmp ? 1 : getMaxInputAmps());
+        final SingleRecipeCheck lock = isRecipeLockingEnabled() ? getSingleRecipeCheck() : null;
+        return PatternTargetKey.ofSets(
+            maps,
+            getPatternMaxRecipeEUt(),
+            getPatternItemSets(hatch, maps),
+            lock == null ? null : lock.getRecipe(),
+            getPatternRecipeFilter());
+    }
 
+    private Collection<? extends Collection<ItemStack>> getPatternItemSets(MTEHatch hatch,
+        Collection<RecipeMap<?>> maps) {
         // checkRecipeForCustomHatches runs a solidifier hatch's fluid with only the hatch's own mold and circuit.
         if (hatch instanceof MTEHatchSolidifier solidifier) {
-            return PatternTargetKey.of(maps, voltage, solidifier.getNonConsumableItems());
+            return Collections.singletonList(solidifier.getNonConsumableItems());
         }
         if (isInputSeparationEnabled() && !(hatch instanceof MTEHatchInputBus) && !(hatch instanceof IDualInputHatch)) {
-            return PatternTargetKey.ofSets(maps, voltage, separatedBusItems(hatch, maps));
+            return separatedBusItems(hatch, maps);
         }
 
         // Mirrors doCheckRecipe: a crafting input buffer only adds its shared items and a bus with input separation
@@ -1213,14 +1237,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             Collections.addAll(items, dualInputHatch.getSharedItems());
         } else {
             if (!isInputSeparationEnabled()) {
-                return PatternTargetKey.ofSets(maps, voltage, combinedBusItems(hatch, maps));
+                return combinedBusItems(hatch, maps);
             }
             if (hatch instanceof MTEHatchInputBus bus) {
                 addPatternConfigItems(items, bus, maps);
             }
             if (canUseControllerSlotForRecipe() && getControllerSlot() != null) items.add(getControllerSlot());
         }
-        return PatternTargetKey.of(maps, voltage, items);
+        return Collections.singletonList(items);
     }
 
     private List<List<ItemStack>> combinedBusItems(MTEHatch hatch, Collection<RecipeMap<?>> maps) {
@@ -1275,7 +1299,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (int i = 0; i < bus.getSizeInventory(); i++) {
             final ItemStack stack = bus.getStackInSlot(i);
             if (stack == null) continue;
-            if (i == circuitSlot) {
+            if (i == circuitSlot || GTUtility.isAnyIntegratedCircuit(stack)) {
                 items.add(stack);
                 continue;
             }

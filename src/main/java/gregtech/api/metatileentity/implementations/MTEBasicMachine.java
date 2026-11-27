@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
@@ -1046,16 +1047,24 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return null;
     }
 
+    private static final Predicate<GTRecipe> PATTERN_RECIPE_FILTER = recipe -> recipe
+        .getMetadataOrDefault(COMPRESSION_TIER, 0) <= 0;
+
     @Override
     public IPatternTargetKey getTargetKey() {
         final RecipeMap<?> map = getRecipeMap();
         if (map == null) return null;
-        final ItemStack[] nonConsumed = getNonConsumedInputDisplayItems().toArray(new ItemStack[0]);
+        final List<ItemStack> items = new ArrayList<>(getNonConsumedInputDisplayItems());
+        for (int i = getInputSlot(); i < getInputSlot() + mInputSlotCount; i++) {
+            final ItemStack stack = getStackInSlot(i);
+            if (i != getCircuitSlot() && GTUtility.isAnyIntegratedCircuit(stack)) items.add(stack);
+        }
         return PatternTargetKey.of(
-            Collections.singletonList(map),
+            map,
             V[mTier],
-            Arrays.asList(appendSelectedCircuit(nonConsumed)),
-            getSpecialSlot());
+            Arrays.asList(appendSelectedCircuit(items.toArray(new ItemStack[0]))),
+            getSpecialSlot(),
+            PATTERN_RECIPE_FILTER);
     }
 
     /**
@@ -1128,7 +1137,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             getBaseMetaTileEntity().setOnFire();
             return DID_NOT_FIND_RECIPE;
         }
-        if (tRecipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (!PATTERN_RECIPE_FILTER.test(tRecipe)) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (GTMod.proxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;

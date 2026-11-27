@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,29 +32,32 @@ import gregtech.api.util.GTUtility.ItemId;
  * add to a recipe check, such as the circuit; one fitting set is enough.
  */
 @Desugar
-public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List<List<ItemId>> itemSets,
-    @Nullable ItemId specialItem) implements IPatternTargetKey {
+public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long maxRecipeEUt, List<List<ItemId>> itemSets,
+    @Nullable ItemId specialItem, @Nullable GTRecipe lockedRecipe, @Nullable Predicate<GTRecipe> recipeFilter)
+    implements IPatternTargetKey {
 
-    /**
-     * Builds a key with one item set; a non-positive voltage turns the voltage check off.
-     */
-    public static PatternTargetKey of(Collection<RecipeMap<?>> recipeMaps, long voltage, Collection<ItemStack> items) {
-        return ofSets(recipeMaps, voltage, Collections.singletonList(items));
+    /** Builds a key with one set of additional inputs and a special slot. */
+    public static PatternTargetKey of(RecipeMap<?> map, long voltage, Collection<ItemStack> items,
+        @Nullable ItemStack specialItem, Predicate<GTRecipe> recipeFilter) {
+        return create(
+            Collections.singletonList(map),
+            voltage * map.getAmperage(),
+            Collections.singletonList(items),
+            specialItem,
+            null,
+            recipeFilter);
     }
 
-    /** Builds a key with the machine's special-slot item. */
-    public static PatternTargetKey of(Collection<RecipeMap<?>> recipeMaps, long voltage, Collection<ItemStack> items,
-        @Nullable ItemStack specialItem) {
-        final PatternTargetKey key = of(recipeMaps, voltage, items);
-        return specialItem == null ? key
-            : new PatternTargetKey(key.recipeMaps, key.voltage, key.itemSets, ItemId.createWithStackSize(specialItem));
+    /** Builds a key for a multiblock with one or more sets of additional inputs. */
+    public static PatternTargetKey ofSets(Collection<RecipeMap<?>> recipeMaps, long maxRecipeEUt,
+        Collection<? extends Collection<ItemStack>> itemSets, @Nullable GTRecipe lockedRecipe,
+        @Nullable Predicate<GTRecipe> recipeFilter) {
+        return create(recipeMaps, maxRecipeEUt, itemSets, null, lockedRecipe, recipeFilter);
     }
 
-    /**
-     * Builds a key that matches when any of the item sets fits; a non-positive voltage turns the voltage check off.
-     */
-    public static PatternTargetKey ofSets(Collection<RecipeMap<?>> recipeMaps, long voltage,
-        Collection<? extends Collection<ItemStack>> itemSets) {
+    private static PatternTargetKey create(Collection<RecipeMap<?>> recipeMaps, long maxRecipeEUt,
+        Collection<? extends Collection<ItemStack>> itemSets, @Nullable ItemStack specialItem,
+        @Nullable GTRecipe lockedRecipe, @Nullable Predicate<GTRecipe> recipeFilter) {
         final List<List<ItemId>> sets = new ArrayList<>(itemSets.size());
         for (Collection<ItemStack> items : itemSets) {
             final List<ItemId> ids = new ArrayList<>(items.size());
@@ -64,7 +68,13 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
             }
             sets.add(ids);
         }
-        return new PatternTargetKey(new ArrayList<>(recipeMaps), Math.max(voltage, 0), sets, null);
+        return new PatternTargetKey(
+            new ArrayList<>(recipeMaps),
+            maxRecipeEUt,
+            sets,
+            specialItem == null ? null : ItemId.createWithStackSize(specialItem),
+            lockedRecipe,
+            recipeFilter);
     }
 
     /**
@@ -119,11 +129,10 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
             final FindRecipeQuery query = recipeMap.findRecipeQuery()
                 .items(inputArray)
                 .fluids(fluidArray)
-                .specialSlot(specialItem == null ? null : specialItem.getItemStack(specialItem.stackSize()));
-            // The query multiplies the voltage by the map's amperage, so "no check" must skip the call, not pass a max.
-            if (voltage > 0) {
-                query.voltage(voltage);
-            }
+                .specialSlot(specialItem == null ? null : specialItem.getItemStack(specialItem.stackSize()))
+                .filter(
+                    recipe -> recipe.mEUt <= maxRecipeEUt && (lockedRecipe == null || lockedRecipe == recipe)
+                        && (recipeFilter == null || recipeFilter.test(recipe)));
             final GTRecipe recipe = query.find();
             if (recipe != null && isRecipeMultiple(recipe, pattern, patternItems, fluidArray)) {
                 return true;
@@ -238,7 +247,8 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
             }
             return provided % input.inputAmount == 0 ? provided / input.inputAmount : -1;
         }
-        for (FluidStack input : recipe.mFluidInputs) {
+        for (int slot = 0; slot < recipe.mFluidInputs.length; slot++) {
+            final FluidStack input = firstProvided(recipe, slot, patternFluids);
             if (input == null || input.amount <= 0) {
                 continue;
             }
@@ -308,13 +318,8 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
         }
 
         for (int slot = 0; slot < recipe.mFluidInputs.length; slot++) {
-            final FluidStack input = recipe.mFluidInputs[slot];
-            if (input == null) {
-                continue;
-            }
-            final FluidStack[] alternatives = recipe.mAltFluidInputs != null && slot < recipe.mAltFluidInputs.length
-                && recipe.mAltFluidInputs[slot] != null ? recipe.mAltFluidInputs[slot] : new FluidStack[] { input };
-            final FluidStack provided = firstProvided(alternatives, patternFluids);
+            if (recipe.mFluidInputs[slot] == null) continue;
+            final FluidStack provided = firstProvided(recipe, slot, patternFluids);
             if (provided == null) {
                 return false;
             }
@@ -350,7 +355,18 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long voltage, List
      * Returns the first recipe alternative that the pattern supplies, or null.
      */
     @Nullable
-    private static FluidStack firstProvided(FluidStack[] alternatives, FluidStack[] patternFluids) {
+    private static FluidStack firstProvided(GTRecipe recipe, int slot, FluidStack[] patternFluids) {
+        final FluidStack input = recipe.mFluidInputs[slot];
+        if (input == null) return null;
+        final FluidStack[] alternatives = recipe.mAltFluidInputs != null && slot < recipe.mAltFluidInputs.length
+            ? recipe.mAltFluidInputs[slot]
+            : null;
+        if (alternatives == null) {
+            for (FluidStack fluid : patternFluids) {
+                if (input.isFluidEqual(fluid)) return input;
+            }
+            return null;
+        }
         for (FluidStack alternative : alternatives) {
             if (alternative == null) {
                 continue;

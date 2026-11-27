@@ -264,7 +264,7 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
         final IGregTechTileEntity base = getBaseMetaTileEntity();
         if (owner == null || base == null) return null;
         final World world = base.getWorld();
-        if (!world.blockExists(owner.posX, owner.posY, owner.posZ)) return null;
+        if (world == null || !world.blockExists(owner.posX, owner.posY, owner.posZ)) return null;
         return world.getTileEntity(owner.posX, owner.posY, owner.posZ) instanceof IGregTechTileEntity ownerBase
             && ownerBase.getMetaTileEntity() instanceof MTEMultiBlockBase multi ? multi : null;
     }

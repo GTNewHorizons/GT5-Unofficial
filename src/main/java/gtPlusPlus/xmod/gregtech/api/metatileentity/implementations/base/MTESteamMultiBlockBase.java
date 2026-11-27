@@ -174,8 +174,13 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     @Override
+    protected long getPatternMaxRecipeEUt() {
+        return V[getTierRecipes()];
+    }
+
+    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(V[getTierRecipes()]);
+        logic.setAvailableVoltage(getPatternMaxRecipeEUt());
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
         logic.setAvailableAmperage(getMaxParallelRecipes());
         logic.setAmperageOC(false);
