@@ -638,6 +638,16 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
         }
     }
 
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
     private enum CatalystHatchElement implements IHatchElement<MTEChemicalPlant> {
 
         CATALYST_BUS("gt.blockmachines.hatch.catalysts.name");
