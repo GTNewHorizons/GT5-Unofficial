@@ -5,6 +5,7 @@ Optionally supply a {aqua:Base} to boost {color_mechanic:Efficiency}:
 {aqua:{var:potassium_hydroxide_rate}/min} of {aqua:Potassium Hydroxide} : {color_mechanic:{var:potassium_hydroxide_eff}%}
 {aqua:{var:caesium_hydroxide_rate}/min} of {aqua:Caesium Hydroxide} : {color_mechanic:{var:caesium_hydroxide_eff}%}
 {aqua:{var:francium_hydroxide_rate}/min} of {aqua:Francium Hydroxide} : {color_mechanic:{var:francium_hydroxide_eff}%}
+{aqua:{var:nbutyllithium_rate} {L}/min} of {aqua:n-Butyllithium} : {color_mechanic:{var:nbutyllithium_eff}%}
 {hr}
 Produces {dark_green:Toxic Residue} from burning acids
 If the {dark_green:Toxic Residue} exceeds {dark_aqua:Capacity}, then the machine {color_danger:Explodes}
