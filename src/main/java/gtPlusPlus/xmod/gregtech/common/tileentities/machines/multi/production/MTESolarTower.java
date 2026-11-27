@@ -227,8 +227,8 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
 
     private int heatLevel = 0;
     private int casingAmount;
-    private Fluid mColdSalt = null;
-    private Fluid mHotSalt = null;
+    private Fluid coldSalt = null;
+    private Fluid hotSalt = null;
 
     public ArrayList<MTESolarHeater> solarHeaters = new ArrayList<>();
 
@@ -531,16 +531,14 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
         }
     }
 
-    private boolean addSolarHeater(IGregTechTileEntity aTileEntity, int a) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTESolarHeater mTile) {
-                if (!mTile.hasSolarTower() && mTile.canSeeSky()) {
-                    mTile.setSolarTower(this);
-                    return this.solarHeaters.add(mTile);
-                }
+    private boolean addSolarHeater(IGregTechTileEntity igte, int a) {
+        if (igte == null) return false;
+
+        IMetaTileEntity imte = igte.getMetaTileEntity();
+        if (imte instanceof MTESolarHeater heater) {
+            if (!heater.hasSolarTower() && heater.canSeeSky()) {
+                heater.setSolarTower(this);
+                return this.solarHeaters.add(heater);
             }
         }
         return false;
@@ -600,21 +598,20 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
         }
 
         if (this.mEfficiency == this.getMaxEfficiency(null) && this.heatLevel >= HEAT_CONVERSION_THRESHOLD) {
-            if (mColdSalt == null) {
-                mColdSalt = MaterialMisc.SOLAR_SALT_COLD.getFluid();
+            if (coldSalt == null) {
+                coldSalt = MaterialMisc.SOLAR_SALT_COLD.getFluid();
             }
-            if (mHotSalt == null) {
-                mHotSalt = MaterialMisc.SOLAR_SALT_HOT.getFluid();
+            if (hotSalt == null) {
+                hotSalt = MaterialMisc.SOLAR_SALT_HOT.getFluid();
             }
-            ArrayList<FluidStack> aFluids = this.getStoredFluids();
-            for (FluidStack aFluid : aFluids) {
-                if (aFluid.getFluid()
-                    .equals(mColdSalt)) {
-                    int aFluidAmount = Math.min(aFluid.amount, this.heatLevel);
+            ArrayList<FluidStack> storedFluids = this.getStoredFluids();
+            for (FluidStack fluidStack : storedFluids) {
+                if (fluidStack.getFluid().equals(coldSalt)) {
+                    int amount = Math.min(fluidStack.amount, this.heatLevel);
 
-                    this.heatLevel -= aFluidAmount;
-                    this.depleteInput(new FluidStack(mColdSalt, aFluidAmount));
-                    this.addOutputPartial(new FluidStack(mHotSalt, aFluidAmount));
+                    this.heatLevel -= amount;
+                    this.depleteInput(new FluidStack(coldSalt, amount));
+                    this.addOutputPartial(new FluidStack(hotSalt, amount));
                     this.heatLevel = Math.max(this.heatLevel, 0);
 
                     break;
@@ -633,13 +630,13 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("heatLevel", heatLevel);
+        aNBT.setInteger("mHeatLevel", heatLevel);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        heatLevel = aNBT.getInteger("heatLevel");
+        heatLevel = aNBT.getInteger("mHeatLevel");
     }
 
     @Override
@@ -649,8 +646,8 @@ public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
     }
 
     private void resetSolarHeaters() {
-        for (MTESolarHeater aTile : this.solarHeaters) {
-            aTile.clearSolarTower();
+        for (MTESolarHeater heater : this.solarHeaters) {
+            heater.clearSolarTower();
         }
         this.solarHeaters.clear();
     }
