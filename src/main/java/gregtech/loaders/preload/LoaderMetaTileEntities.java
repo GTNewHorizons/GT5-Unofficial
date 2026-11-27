@@ -136,6 +136,7 @@ import gregtech.common.tileentities.machines.basic.MTEWorldAccelerator;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineFluid;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineItem;
 import gregtech.common.tileentities.machines.multi.MTEAdvImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.MTEAdvancedMetallurgy;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
@@ -482,6 +483,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
         ItemList.Machine_Multi_Cleanroom.set(
             new MTECleanroom(CLEANROOM_CONTROLLER.ID, "multimachine.cleanroom", "Cleanroom Controller")
+                .getStackForm(1));
+
+        ItemList.Machine_Multi_AdvancedMetallurgy.set(
+            new MTEAdvancedMetallurgy(ADVANCED_METALLURGY_CONTROLLER.ID, "multimachine.advancedmetallurgy", "Advanced Metallurgy Factory")
                 .getStackForm(1));
 
         ItemList.Machine_Multi_LargeChemicalReactor.set(

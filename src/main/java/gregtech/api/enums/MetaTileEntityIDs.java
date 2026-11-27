@@ -1878,6 +1878,7 @@ public enum MetaTileEntityIDs {
     UXV256ADynamoHatch(16035),
     // UNUSED(16999),
     ICE_CREAM_MACHINE(20000),
+    ADVANCED_METALLURGY_CONTROLLER(21000),
     CropsNHCropManagerLV(28001),
     CropsNHCropManagerMV(28002),
     CropsNHCropManagerHV(28003),
