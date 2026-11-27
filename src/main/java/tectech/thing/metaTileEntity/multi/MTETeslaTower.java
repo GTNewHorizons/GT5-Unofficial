@@ -350,21 +350,23 @@ public class MTETeslaTower extends TTMultiblockBase
         }
 
         outputVoltageMax = V[tier + 1];
+        List<MTEHatchCapacitor> lowerTierHatches = new ArrayList<>();
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(true);
             capacitorData = cap.getCapacitors();
             if (capacitorData[0] < tier) {
-                if (getEUVar() > 0 && capacitorData[0] != 0) {
+                if (getEUVar() > 0 && capacitorData[0] > 0) {
                     cap.getBaseMetaTileEntity()
                         .setToFire();
                 }
-                eCapacitorHatches.remove(cap);
+                lowerTierHatches.add(cap);
             } else {
                 outputCurrentMax += capacitorData[1];
                 energyCapacity += capacitorData[2];
             }
         }
+        eCapacitorHatches.removeAll(lowerTierHatches);
         return SimpleCheckRecipeResult.ofSuccess("routing");
     }
 
