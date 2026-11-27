@@ -16,11 +16,9 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -167,31 +165,34 @@ public class MTEBoilerLava extends MTEBoiler {
         return COOLDOWN_INTERVAL;
     }
 
-    /**
-     * Attempts to fill an {@link IFluidTank} from the {@link FluidStack} content of an {@link ItemStack}
-     *
-     * @param destinationIFluidTank The destination {@link IFluidTank} to fill
-     * @param SourceItemStack       The source {@link ItemStack} containing the Fluid
-     * @return The {@link ItemStack} of the Empty version of the source {@link ItemStack} or {@code null} if none
-     */
-    public static ItemStack fillIFluidTankFromItemStack(IFluidTank destinationIFluidTank, ItemStack SourceItemStack) {
-        if (destinationIFluidTank == null || SourceItemStack == null) return null;
+    protected void fillFluid(ItemStack equippedItemStack, FluidStack equippedFluidStack, IFluidTank tank,
+        EntityPlayer aPlayer) {
+        int freeSpace = tank.fill(equippedFluidStack, false);
+        ItemStack returnedContainer;
+        FluidStack drained;
 
-        final FluidStack containedFluidStack = GTUtility.getFluidForFilledItem(SourceItemStack, true);
-        if (containedFluidStack == null || containedFluidStack.amount == 0) return null;
-
-        final int fillableAmount = destinationIFluidTank.fill(containedFluidStack, false);
-        if (fillableAmount <= 0) return null;
-
-        final Item containerItem = SourceItemStack.getItem();
-        if (containerItem instanceof IFluidContainerItem equippedIFluidContainerItem) {
-            destinationIFluidTank.fill(equippedIFluidContainerItem.drain(SourceItemStack, fillableAmount, true), true);
-            return null;
-        } else {
-            final ItemStack emptyContainerItemStack = GTUtility.getContainerForFilledItem(SourceItemStack, false);
-            destinationIFluidTank.fill(containedFluidStack, true);
-            return emptyContainerItemStack;
+        if (freeSpace <= 0) {
+            return;
         }
+
+        // Check if IFluidContainerItem
+        if (equippedItemStack.getItem() instanceof IFluidContainerItem container) {
+            returnedContainer = equippedItemStack.copy();
+            returnedContainer.stackSize = 1;
+            drained = container.drain(returnedContainer, freeSpace, true);
+        } else {
+            // Else, treat as a bucket
+            drained = GTUtility.getFluidForFilledItem(equippedItemStack, false);
+            if (drained == null || drained.amount > freeSpace) return;
+            returnedContainer = GTUtility.getContainerForFilledItem(equippedItemStack, false);
+        }
+
+        // If container drain was successful, fill the boiler tank
+        if (drained != null && drained.amount > 0) {
+            tank.fill(drained, true);
+        }
+
+        replaceEquippedItemStack(equippedItemStack, returnedContainer, aPlayer);
     }
 
     @Override
@@ -200,38 +201,42 @@ public class MTEBoilerLava extends MTEBoiler {
 
         final ItemStack equippedItemStack = aPlayer.getCurrentEquippedItem();
         final FluidStack equippedContainerFluidStack = GTUtility.getFluidForFilledItem(equippedItemStack, true);
-        final ItemStack returnedItemStack;
-        final IFluidTank tank;
 
         if (GTModHandler.isWater(equippedContainerFluidStack)) {
-            tank = this;
+            fillFluid(equippedItemStack, equippedContainerFluidStack, this, aPlayer);
         } else if (GTModHandler.isLava(equippedContainerFluidStack)) {
-            tank = lavaTank;
+            fillFluid(equippedItemStack, equippedContainerFluidStack, lavaTank, aPlayer);
         } else {
             openGui(aPlayer);
-            return true;
-        }
-        returnedItemStack = fillIFluidTankFromItemStack(tank, equippedItemStack);
-        if (returnedItemStack != null && !aPlayer.capabilities.isCreativeMode) {
-            if (equippedItemStack.stackSize > 1) {
-                if (!aPlayer.inventory.addItemStackToInventory(returnedItemStack)) {
-                    aBaseMetaTileEntity.getWorld()
-                        .spawnEntityInWorld(
-                            new EntityItem(
-                                aBaseMetaTileEntity.getWorld(),
-                                (double) aBaseMetaTileEntity.getXCoord() + 0.5D,
-                                (double) aBaseMetaTileEntity.getYCoord() + 1.5D,
-                                (double) aBaseMetaTileEntity.getZCoord() + 0.5D,
-                                returnedItemStack));
-                } else if (aPlayer instanceof EntityPlayerMP) {
-                    ((EntityPlayerMP) aPlayer).sendContainerToPlayer(aPlayer.inventoryContainer);
-                }
-                aPlayer.inventory.decrStackSize(aPlayer.inventory.currentItem, 1);
-            } else {
-                aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, returnedItemStack);
-            }
         }
         return true;
+    }
+
+    protected static void replaceEquippedItemStack(ItemStack heldItemStack, ItemStack returnedContainer,
+        EntityPlayer aPlayer) {
+
+        if (!aPlayer.capabilities.isCreativeMode) {
+            heldItemStack.stackSize -= 1;
+            if (heldItemStack.stackSize <= 0) {
+                aPlayer.setCurrentItemOrArmor(0, returnedContainer);
+                aPlayer.inventoryContainer.detectAndSendChanges();
+            } else {
+                addItemToPlayerInventory(aPlayer, returnedContainer);
+            }
+        }
+    }
+
+    protected static void addItemToPlayerInventory(EntityPlayer player, ItemStack stack) {
+
+        if (stack == null) {
+            return;
+        }
+
+        if (!player.inventory.addItemStackToInventory(stack)) {
+            player.dropPlayerItemWithRandomChoice(stack, false);
+        }
+
+        player.inventoryContainer.detectAndSendChanges();
     }
 
     @Override
