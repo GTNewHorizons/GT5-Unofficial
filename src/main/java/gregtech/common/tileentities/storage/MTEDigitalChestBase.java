@@ -1377,6 +1377,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     if (output == null) insertionState.setOutput(GTUtility.copyAmount(inserted, item));
                     else output.stackSize += inserted;
                     if (!simulated) {
+                        if (!forced && lockNextItem) setLockedItem(item);
                         MTEDigitalChestBase.this.markDirty();
                         notifyInventoryChanges();
                     }
