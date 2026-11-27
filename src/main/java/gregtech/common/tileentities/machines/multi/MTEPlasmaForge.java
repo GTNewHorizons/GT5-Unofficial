@@ -836,14 +836,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public boolean addOutput(FluidStack aLiquid) {
-        if (aLiquid == null) return false;
-        FluidStack tLiquid = aLiquid.copy();
-        addOutputPartial(tLiquid);
-        return GTUtility.getFluidAmount(tLiquid) == 0;
-    }
-
-    @Override
     public void getExtraInfoData(List<String> info) {
         info.add(IGregTechDeviceInformation.encode("GT5U.EBF.heat.s", formatNumber(this.mHeatingCapacity)));
 

@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -135,14 +137,22 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     // #endregion
 
     @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+    public boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
         if (network != null) {
             boolean succeed = true;
             for (FluidStack output : outputFluids) {
+                if (output == null) {
+                    continue;
+                }
                 IAEFluidStack stack = AEFluidStack.create(output)
                     .setStackSize(GTUtility.getFluidAmount(output));
                 network.injectCondensate(this, stack);
-                if (stack.getStackSize() > 0) succeed = false;
+                if (remaining != null && stack.getStackSize() > 0) {
+                    remaining.add(stack.getFluidStack());
+                }
+                if (stack.getStackSize() > 0) {
+                    succeed = false;
+                }
             }
             return succeed;
         }
