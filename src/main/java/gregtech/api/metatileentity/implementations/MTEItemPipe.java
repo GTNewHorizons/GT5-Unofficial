@@ -594,7 +594,6 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
                 stackUnit,
                 formatNumber(mTickTime));
         }
-
         return new String[] { capacity, StatCollector
             .translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", formatNumber(mStepSize)) };
     }
