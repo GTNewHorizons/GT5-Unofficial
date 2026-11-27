@@ -1,4 +1,7 @@
-package gregtech.loaders.postload;
+package gregtech.loaders.postload.postea;
+
+import static gregtech.loaders.postload.postea.Transformers.transformBlock;
+import static gregtech.loaders.postload.postea.Transformers.transformItem;
 
 import java.util.function.IntFunction;
 
@@ -33,7 +36,7 @@ import gregtech.common.ores.OreInfo;
 ///
 /// [#resolveTileEntityOre] and [#resolveWerkstoffTileEntityOre] answer the same question for callers that read
 /// saved chunks before Postea migrates them.
-public final class LegacyOreTransformers {
+public final class OreTransformers {
 
     private static final int SMALL_ORE_META_OFFSET = 16000;
     private static final int NATURAL_ORE_META_OFFSET = 8000;
@@ -60,13 +63,13 @@ public final class LegacyOreTransformers {
     };
     // spotless:on
 
-    private LegacyOreTransformers() {}
+    private OreTransformers() {}
 
     static void register() {
         TileEntityReplacementManager.tileEntityTransformer(
             "GT_TileEntity_Ores",
             (tag, world, chunk) -> toBlockInfo(resolveTileEntityOre(tag.getInteger("m"))));
-        PosteaTransformers.addItemTransformer(
+        transformItem(
             "gregtech:gt.blockores",
             (originalId, tag) -> setStack(tag, resolveTileEntityOre(tag.getInteger("Damage"))));
 
@@ -103,16 +106,14 @@ public final class LegacyOreTransformers {
     }
 
     private static void registerBlock(String registryName, IntFunction<ImmutableBlockMeta> resolver) {
-        PosteaTransformers.addBlockTransformer(registryName, info -> {
+        transformBlock(registryName, info -> {
             ImmutableBlockMeta replacement = resolver.apply(info.metadata);
             if (replacement == null) return false;
             info.blockID = Block.getIdFromBlock(replacement.getBlock());
             info.metadata = replacement.getBlockMeta();
             return true;
         });
-        PosteaTransformers.addItemTransformer(
-            registryName,
-            (originalId, tag) -> setStack(tag, resolver.apply(tag.getInteger("Damage"))));
+        transformItem(registryName, (originalId, tag) -> setStack(tag, resolver.apply(tag.getInteger("Damage"))));
     }
 
     /// The block a saved `GT_TileEntity_Ores` tile entity with metadata `meta` migrates to, or null when the metadata

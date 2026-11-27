@@ -70,12 +70,13 @@ POSTEA = os.path.join(REPO, "src/main/java/gregtech/loaders/postload") + "/"
 
 def _migrated_ids():
     ids = {}
-    src = open(POSTEA + "PosteaTransformers.java", encoding="utf8").read()
-    casings = re.search(r"registerIC2ItemCasingCutoverTransformers\(\) \{\s*Material\[\] materials = \{([^}]*)\}", src)
-    if casings:
-        for meta, name in enumerate(re.findall(r"Materials\.(\w+)", casings.group(1))):
-            ids["IC2:itemCasing@%d" % meta] = "itemCasing:" + name
-    for meta, name in re.findall(r"remapGtppThermalDust\((\d+), Materials\.(\w+)\)", src):
+    src = "".join(
+        open(POSTEA + "postea/" + name, encoding="utf8").read()
+        for name in ("IC2Transformers.java", "GTPlusPlusTransformers.java")
+    )
+    for meta, name in re.findall(r'replaceItem\("IC2:itemCasing", (\d+), MaterialLibAPI\.getStack\(Materials\.(\w+)', src):
+        ids["IC2:itemCasing@" + meta] = "itemCasing:" + name
+    for meta, name in re.findall(r'replaceItem\("miscutils:material", (\d+), MaterialLibAPI\.getStack\(Materials\.(\w+)', src):
         ids["miscutils:material@" + meta] = "dust:" + name
     table = open(POSTEA + "GtppItemCutoverTable.java", encoding="utf8").read()
     for prefix, name, registry in re.findall(r'new Entry\(OrePrefixes\.(\w+), "(\w+)", "([^"]+)"\)', table):

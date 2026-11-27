@@ -8,10 +8,10 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.enums.OrePrefixes;
 
-/// The oredict prefix each saved damage value of a legacy GregTech meta-item material range stood for. The material
-/// is the legacy id `damage % 1000` (see [gregtech.api.enums.materials.LegacyMaterialIDIndex]). [PosteaTransformers]
-/// reads this to turn saved stacks into MaterialLib items.
-final class LegacyMetaItemTable {
+/// The oredict prefix each saved damage value of a legacy GregTech meta-item material range stood for. The material is
+/// the legacy id `damage % 1000` (see [gregtech.api.enums.materials.LegacyMaterialIDIndex]).
+/// [gregtech.loaders.postload.postea.GregTechTransformers] reads this to turn saved stacks into MaterialLib items.
+public final class LegacyMetaItemTable {
 
     private LegacyMetaItemTable() {}
 
@@ -112,7 +112,7 @@ final class LegacyMetaItemTable {
 
     /// Returns the prefix a `gt.metaitem.0N` damage below 32000 stood for, or null for an unused block or another
     /// item.
-    static @Nullable OrePrefixes metaItemPrefix(String itemName, int damage) {
+    public static @Nullable OrePrefixes metaItemPrefix(String itemName, int damage) {
         OrePrefixes[] prefixes = META_ITEM_PREFIXES.get(itemName);
         if (prefixes == null || damage < 0 || damage >= 32000) return null;
         OrePrefixes prefix = prefixes[damage / 1000];
@@ -121,7 +121,7 @@ final class LegacyMetaItemTable {
 
     /// Returns the prefix a `gt.metaitem.99` damage stood for: molten cells below 1000, then the cracked cells
     /// from 10000. Null for any other damage.
-    static @Nullable OrePrefixes cellPrefix(int damage) {
+    public static @Nullable OrePrefixes cellPrefix(int damage) {
         if (damage < 0) return null;
         if (damage < 1000) return OrePrefixes.cellMolten;
         int block = damage / 1000 - 10;

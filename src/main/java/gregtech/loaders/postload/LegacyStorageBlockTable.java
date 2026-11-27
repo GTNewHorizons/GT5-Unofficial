@@ -6,12 +6,12 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials.Materials;
 
-/// The materials of the legacy storage-block batches, keyed by registry name. A saved block's metadata indexes
-/// its batch; a null entry is a slot whose material is gone. [PosteaTransformers] migrates these blocks to
-/// MaterialLib storage blocks.
-final class LegacyStorageBlockTable {
+/// The materials of the legacy storage-block batches, keyed by registry name. A saved block's metadata indexes its
+/// batch; a null entry is a slot whose material is gone. [gregtech.loaders.postload.postea.GregTechTransformers]
+/// migrates these blocks to MaterialLib storage blocks.
+public final class LegacyStorageBlockTable {
 
-    static final Map<String, Material[]> BATCHES = Map.ofEntries(
+    public static final Map<String, Material[]> BATCHES = Map.ofEntries(
         Map.entry(
             "gregtech:gt.blockmetal1",
             new Material[] { Materials.Adamantium, Materials.Aluminium, Materials.Americium, Materials.AnnealedCopper,

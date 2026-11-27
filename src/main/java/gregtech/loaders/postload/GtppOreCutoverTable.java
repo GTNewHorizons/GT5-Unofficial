@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
-/// Save migration table for gtPlusPlus ore blocks, one row per legacy `BlockBaseOre`. See [PosteaTransformers] for
-/// the migration.
+/// Save migration table for gtPlusPlus ore blocks, one row per legacy `BlockBaseOre`. See
+/// [gregtech.loaders.postload.postea.GTPlusPlusTransformers] for the migration.
 ///
 /// Rows are never removed. A missing row orphans that block in existing worlds.
 public final class GtppOreCutoverTable {
