@@ -349,8 +349,8 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
 
             @Nullable
             @Override
-            public BlocksToPlace getBlocksToPlace(MTEChemicalPlant t, World world, int x, int y,
-                int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            public BlocksToPlace getBlocksToPlace(MTEChemicalPlant t, World world, int x, int y, int z,
+                ItemStack trigger, AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(
                     tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getLeft(),
