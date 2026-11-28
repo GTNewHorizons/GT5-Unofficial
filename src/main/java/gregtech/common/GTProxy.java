@@ -551,9 +551,6 @@ public class GTProxy implements IFuelHandler {
 
         ItemList.Credit_Iron.set(GTModHandler.getIC2Item("coin", 1L));
 
-        ItemList.Circuit_Basic.set(GTModHandler.getIC2Item("electronicCircuit", 1L));
-        ItemList.Circuit_Advanced.set(GTModHandler.getIC2Item("advancedCircuit", 1L));
-
         ItemList.Upgrade_Overclocker.set(GTModHandler.getIC2Item("overclockerUpgrade", 1L));
         ItemList.Upgrade_Battery.set(GTModHandler.getIC2Item("energyStorageUpgrade", 1L));
 

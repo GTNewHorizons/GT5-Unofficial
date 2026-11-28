@@ -60,8 +60,8 @@ public class CircuitImprintLoader {
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("electronicCircuit", 1), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_ElectronicCircuit.get(1))
+            .itemInputs(ItemList.Circuit_BasicElectronic.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_BasicElectronicCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .requiresCleanRoom()
@@ -92,8 +92,8 @@ public class CircuitImprintLoader {
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("advancedCircuit", 1), ItemList.Shape_Slicer_Flat.get(0))
-            .itemOutputs(ItemList.SlicedCircuit_AdvancedCircuit.get(1))
+            .itemInputs(ItemList.Circuit_Integrated_Advanced.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemOutputs(ItemList.SlicedCircuit_AdvancedIntegratedCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .requiresCleanRoom()
@@ -368,11 +368,11 @@ public class CircuitImprintLoader {
         List<ItemStack> circuitImprintsDefault = Arrays.asList(
             ItemList.CircuitImprint_NANDChipArray.get(1),
             ItemList.CircuitImprint_Microprocessor.get(1),
-            ItemList.CircuitImprint_ElectronicCircuit.get(1),
+            ItemList.CircuitImprint_BasicElectronicCircuit.get(1),
             ItemList.CircuitImprint_GoodElectronicCircuit.get(1),
             ItemList.CircuitImprint_IntegratedLogicCircuit.get(1),
             ItemList.CircuitImprint_GoodIntegratedCircuit.get(1),
-            ItemList.CircuitImprint_AdvancedCircuit.get(1),
+            ItemList.CircuitImprint_AdvancedIntegratedCircuit.get(1),
             ItemList.CircuitImprint_IntegratedProcessor.get(1),
             ItemList.CircuitImprint_ProcessorAssembly.get(1),
             ItemList.CircuitImprint_Workstation.get(1),
@@ -400,11 +400,11 @@ public class CircuitImprintLoader {
         List<ItemStack> slicedCircuitsDefault = Arrays.asList(
             ItemList.SlicedCircuit_NANDChipArray.get(1),
             ItemList.SlicedCircuit_Microprocessor.get(1),
-            ItemList.SlicedCircuit_ElectronicCircuit.get(1),
+            ItemList.SlicedCircuit_BasicElectronicCircuit.get(1),
             ItemList.SlicedCircuit_GoodElectronicCircuit.get(1),
             ItemList.SlicedCircuit_IntegratedLogicCircuit.get(1),
             ItemList.SlicedCircuit_GoodIntegratedCircuit.get(1),
-            ItemList.SlicedCircuit_AdvancedCircuit.get(1),
+            ItemList.SlicedCircuit_AdvancedIntegratedCircuit.get(1),
             ItemList.SlicedCircuit_IntegratedProcessor.get(1),
             ItemList.SlicedCircuit_ProcessorAssembly.get(1),
             ItemList.SlicedCircuit_Workstation.get(1),

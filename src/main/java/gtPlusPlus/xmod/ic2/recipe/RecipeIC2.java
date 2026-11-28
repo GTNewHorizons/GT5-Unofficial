@@ -19,7 +19,6 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
@@ -170,7 +169,7 @@ public class RecipeIC2 {
             .itemInputs(
                 Ic2Items.hazmatHelmet.copy(),
                 new ItemStack(Blocks.wool, 16, 4), // Yellow Wool
-                GTUtility.copyAmount(8, Ic2Items.coil),
+                ItemList.LV_Coil.get(8),
                 MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.gearGtSmall, 4))
             .circuit(2)
@@ -185,7 +184,7 @@ public class RecipeIC2 {
             .itemInputs(
                 Ic2Items.hazmatChestplate.copy(),
                 new ItemStack(Blocks.wool, 64, 4), // Yellow Wool
-                GTUtility.copyAmount(32, Ic2Items.coil),
+                ItemList.LV_Coil.get(32),
                 MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, 16),
                 MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 8))
             .circuit(2)
@@ -200,7 +199,7 @@ public class RecipeIC2 {
             .itemInputs(
                 Ic2Items.hazmatLeggings.copy(),
                 new ItemStack(Blocks.wool, 32, 4), // Yellow Wool
-                GTUtility.copyAmount(16, Ic2Items.coil),
+                ItemList.LV_Coil.get(16),
                 MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 4))
             .circuit(2)
@@ -215,7 +214,7 @@ public class RecipeIC2 {
             .itemInputs(
                 Ic2Items.hazmatBoots.copy(),
                 new ItemStack(Blocks.wool, 16, 15), // Black Wool
-                GTUtility.copyAmount(6, Ic2Items.coil),
+                ItemList.LV_Coil.get(6),
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, 8),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 4))
             .circuit(2)

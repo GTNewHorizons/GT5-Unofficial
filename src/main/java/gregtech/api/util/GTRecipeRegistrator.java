@@ -192,16 +192,14 @@ public class GTRecipeRegistrator {
             || data.material.amount <= 0
             || GTUtility.getFluidForFilledItem(stack, false) != null) return;
         registerReverseMacerating(GTUtility.copyAmount(1, stack), data, data.prefix == null, true);
-        if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), stack)) {
-            registerReverseSmelting(GTUtility.copyAmount(1, stack), data.material.material, data.material.amount, true);
-            registerReverseFluidSmelting(
-                GTUtility.copyAmount(1, stack),
-                data.material.material,
-                data.material.amount,
-                data.getByProduct(0),
-                true);
-            registerReverseArcSmelting(GTUtility.copyAmount(1, stack), data);
-        }
+        registerReverseSmelting(GTUtility.copyAmount(1, stack), data.material.material, data.material.amount, true);
+        registerReverseFluidSmelting(
+            GTUtility.copyAmount(1, stack),
+            data.material.material,
+            data.material.amount,
+            data.getByProduct(0),
+            true);
+        registerReverseArcSmelting(GTUtility.copyAmount(1, stack), data);
     }
 
     /**

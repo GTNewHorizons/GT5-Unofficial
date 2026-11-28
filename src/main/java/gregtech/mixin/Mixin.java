@@ -89,6 +89,10 @@ public enum Mixin implements IMixins {
         .addCommonMixins("ic2.MixinIc2FissionFuelRemoval")
         .addRequiredMod(TargetedMod.IC2)
         .setPhase(Phase.LATE)),
+    IC2_REMOVE_CIRCUIT_OREDICT(new MixinBuilder()
+        .addCommonMixins("ic2.MixinIc2CircuitOreDictRemoval")
+        .addRequiredMod(TargetedMod.IC2)
+        .setPhase(Phase.LATE)),
     // Hazmat armors
     IC2_HAZMAT(new MixinBuilder()
         .setPhase(Phase.LATE)

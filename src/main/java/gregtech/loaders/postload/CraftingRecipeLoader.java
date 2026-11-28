@@ -1412,8 +1412,7 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("lvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "POP", "PCP", 'C', "cableGt01Tin", 'O', GTModHandler.getIC2Item("coil", 1L), 'P',
-                "plankWood" });
+            new Object[] { "PCP", "POP", "PCP", 'C', "cableGt01Tin", 'O', ItemList.LV_Coil.get(1L), 'P', "plankWood" });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("hvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -1434,10 +1433,6 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CCC", "XWX", aTextIron2, 'C', "cableGt01Copper", 'X', "plateIron", 'W',
                 GTModHandler.getIC2Item("waterMill", 1L) });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("coil", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CCC", "CXC", "CCC", 'C', "wireGt01Copper", 'X', "ingotAnyIron" });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("powerunit", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -1768,14 +1763,14 @@ public class CraftingRecipeLoader implements Runnable {
             }
         }
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("electronicCircuit", 1L),
+            ItemList.Circuit_BasicElectronic.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
                 MaterialLibAPI.getStack(Materials.RedAlloy, TEBlockShapes.cableGt01, 1), 'V',
                 ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B', ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.itemCasing, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            GTModHandler.getIC2Item("electronicCircuit", 1L),
+            ItemList.Circuit_BasicElectronic.get(1L),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
 
