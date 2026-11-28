@@ -99,6 +99,16 @@ public class MTELongDistancePipelineFluid extends MTELongDistancePipelineBase {
     }
 
     @Override
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return false;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTELongDistancePipelineFluid(mName, mTier, mDescriptionArray, mTextures);
     }
