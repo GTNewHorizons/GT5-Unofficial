@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -390,7 +391,13 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
                         .getLangKey())));
 
         if (tag.hasKey("masterName")) {
-            currenttip.add(EnumChatFormatting.GOLD + tag.getString("masterName") + EnumChatFormatting.RESET);
+            NBTTagCompound nameData = tag.getCompoundTag("masterName");
+            String name = MTEHatchCraftingInputME.getWailaDisplayName(nameData);
+            if (nameData.hasKey("suffix")) {
+                IChatComponent suffix = IChatComponent.Serializer.func_150699_a(nameData.getString("suffix"));
+                if (suffix != null) name += suffix.getUnformattedText();
+            }
+            currenttip.add(EnumChatFormatting.GOLD + name + EnumChatFormatting.RESET);
         }
 
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -400,14 +407,20 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
 
-        tag.setBoolean("linked", getMaster() != null);
+        MTEHatchCraftingInputME currentMaster = getMaster();
+        tag.setBoolean("linked", currentMaster != null);
         tag.setByte("recipeOrder", (byte) recipeOrder.ordinal());
         if (masterSet) {
             tag.setInteger("masterX", masterX);
             tag.setInteger("masterY", masterY);
             tag.setInteger("masterZ", masterZ);
         }
-        if (getMaster() != null) tag.setString("masterName", getMaster().getName());
+        if (currentMaster != null) {
+            NBTTagCompound nameData = currentMaster.getWailaNameData();
+            IChatComponent suffix = currentMaster.getNameSuffix();
+            if (suffix != null) nameData.setString("suffix", IChatComponent.Serializer.func_150696_a(suffix));
+            tag.setTag("masterName", nameData);
+        }
 
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }

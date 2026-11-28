@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -23,6 +24,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
@@ -76,12 +79,12 @@ public final class ItemParametrizerMemoryCard extends Item {
                 // Prevent pasting configuration from a different multiblock
                 if (!hasIdenticalParameterList("paramList", parameterList, tNBT)) {
                     IChatComponent reason;
-                    if (!tNBT.hasKey("controller")) {
+                    if (!tNBT.hasKey("controllerKey") && !tNBT.hasKey("controller")) {
                         reason = new ChatComponentTranslation("item.em.parametrizerMemoryCard.noConfig");
                     } else {
                         reason = new ChatComponentTranslation(
                             "item.em.parametrizerMemoryCard.controllerMismatch",
-                            tNBT.getString("controller"),
+                            getCopiedControllerName(tNBT),
                             new ChatComponentTranslation(controller.getLocalNameKey()));
                     }
                     GTUtility.sendChatComp(aPlayer, reason);
@@ -110,7 +113,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     parameter.saveToParameterCard(parameterTag);
                     tagList.appendTag(parameterTag);
                 }
-                newTag.setString("controller", controller.getLocalName());
+                newTag.setString("controllerKey", controller.getLocalNameKey());
                 newTag.setString("coords", aX + ", " + aY + ", " + aZ);
                 newTag.setTag("paramList", tagList);
                 if (metaTE instanceof TileEntityModuleMiner miner) {
@@ -125,6 +128,11 @@ public final class ItemParametrizerMemoryCard extends Item {
             return true;
         }
         return false;
+    }
+
+    private static IChatComponent getCopiedControllerName(NBTTagCompound tag) {
+        return tag.hasKey("controllerKey") ? new ChatComponentTranslation(tag.getString("controllerKey"))
+            : new ChatComponentText(tag.getString("controller"));
     }
 
     private boolean hasIdenticalParameterList(String key, List<Parameter<?, ?>> controllerParameters,
@@ -186,11 +194,12 @@ public final class ItemParametrizerMemoryCard extends Item {
         // Sneak right click to lock/unlock
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3"));
         if (tNBT == null) return;
-        if (tNBT.hasKey("controller")) {
+        if (tNBT.hasKey("controllerKey") || tNBT.hasKey("controller")) {
             aList.add(
                 translateToLocalFormatted(
                     "item.em.parametrizerMemoryCard.desc.copied_controller",
-                    EnumChatFormatting.RED + tNBT.getString("controller") + EnumChatFormatting.RESET,
+                    EnumChatFormatting.RED + getCopiedControllerName(tNBT).getUnformattedText()
+                        + EnumChatFormatting.RESET,
                     EnumChatFormatting.GREEN + tNBT.getString("coords")));
         }
         if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
@@ -236,7 +245,14 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int i = 0; i < parameters.tagCount(); i++)
                     infoLines.addAll(getInfoLines(parameters.getCompoundTagAt(i), offset + 2));
             }
-            case "enum", "fluid" -> infoLines.add(getInfoLine(tag, offset, tag.getString("displayName")));
+            case "enum" -> infoLines.add(getInfoLine(tag, offset, tag.getString("displayName")));
+            case "fluid" -> {
+                String fluidName = tag.getString("value");
+                Fluid fluid = FluidRegistry.getFluid(fluidName);
+                String name = fluid != null ? fluid.getLocalizedName()
+                    : tag.hasKey("displayName") ? tag.getString("displayName") : fluidName;
+                infoLines.add(getInfoLine(tag, offset, name));
+            }
             case "long" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getLong("value"))));
             default -> {}
         }

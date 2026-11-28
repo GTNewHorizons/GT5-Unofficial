@@ -35,7 +35,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -725,7 +724,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         if (getCrafterIcon() != null) {
             return getCrafterIcon().getUnlocalizedName();
         } else {
-            return getLocalName();
+            return getLocalNameKey();
         }
     }
 
@@ -1134,105 +1133,139 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        if (tag.hasKey("nameLines")) {
-            NBTTagList nameLines = tag.getTagList("nameLines", Constants.NBT.TAG_STRING);
-            if (nameLines.tagCount() > 0) {
-                currenttip.add(EnumChatFormatting.AQUA + nameLines.getStringTagAt(0) + EnumChatFormatting.RESET);
-                // Indent everything below the machine name, so the listed items read as one block
-                for (int i = 1; i < nameLines.tagCount(); i++) {
-                    currenttip
-                        .add(EnumChatFormatting.AQUA + "  " + nameLines.getStringTagAt(i) + EnumChatFormatting.RESET);
-                }
+        if (tag.hasKey("craftingName")) {
+            NBTTagCompound nameData = tag.getCompoundTag("craftingName");
+            NBTTagList nameItems = tag.getTagList("craftingNameItems", Constants.NBT.TAG_COMPOUND);
+            int[] circuitNumbers = tag.getIntArray("craftingCircuits");
+            String head = getWailaDisplayName(nameData);
+            if (circuitNumbers.length > 0) {
+                try {
+                    head += String.format(
+                        Gregtech.machines.ghostCircuitSuffixFormat,
+                        Arrays.stream(circuitNumbers)
+                            .mapToObj(String::valueOf)
+                            .collect(Collectors.joining(", ")));
+                } catch (IllegalFormatException ignored) {}
+            }
+            if (nameData.hasKey("customName") || !head.equals(getLocalName()) || nameItems.tagCount() > 0) {
+                currenttip.add(EnumChatFormatting.AQUA + head + EnumChatFormatting.RESET);
+            }
+            for (int i = 0; i < nameItems.tagCount(); i++) {
+                ItemStack stack = ItemStack.loadItemStackFromNBT(nameItems.getCompoundTagAt(i));
+                if (stack == null) continue;
+                currenttip.add(
+                    EnumChatFormatting.AQUA + "  "
+                        + CommonBaseMetaTileEntity.getShortItemDisplayName(stack)
+                        + EnumChatFormatting.RESET);
             }
         }
         currenttip.add(
             StatCollector.translateToLocal(
-                "GT5U.infodata.hatch.crafting_input_me.show_pattern." + (showPattern ? "enable" : "disabled")));
-        if (tag.hasKey("inventory")) {
-            NBTTagList inventory = tag.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < inventory.tagCount(); ++i) {
-                NBTTagCompound item = inventory.getCompoundTagAt(i);
-                String name = item.getString("name");
-                long amount = item.getLong("amount");
-                currenttip.add(GTWaila.getStackListLine(name, amount));
+                "GT5U.infodata.hatch.crafting_input_me.show_pattern."
+                    + (tag.getBoolean("showPattern") ? "enable" : "disabled")));
+        Map<String, Long> amountsByName = new HashMap<>();
+        NBTTagList inventory = tag.getTagList("craftingInventory", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < inventory.tagCount(); i++) {
+            NBTTagCompound stackTag = inventory.getCompoundTagAt(i);
+            if (stackTag.hasKey("FluidName", Constants.NBT.TAG_STRING)) {
+                FluidStack fluid = FluidStack.loadFluidStackFromNBT(stackTag);
+                if (fluid != null) {
+                    amountsByName.merge(fluid.getLocalizedName(), stackTag.getLong("amount"), GTUtility::addSafe);
+                }
+            } else {
+                ItemStack stack = ItemStack.loadItemStackFromNBT(stackTag);
+                if (stack != null) {
+                    amountsByName.merge(stack.getDisplayName(), stackTag.getLong("amount"), GTUtility::addSafe);
+                }
             }
         }
+        amountsByName.forEach((name, amount) -> currenttip.add(GTWaila.getStackListLine(name, amount)));
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
-    /**
-     * Same content as {@link #getName()}, but with the circuit numbers and every displayed item on separate lines.
-     */
-    private NBTTagList getWailaNameLines() {
-        NBTTagList lines = new NBTTagList();
+    NBTTagCompound getWailaNameData() {
+        NBTTagCompound nameData = new NBTTagCompound();
         if (hasCustomName()) {
-            lines.appendTag(new NBTTagString(getCustomName()));
-            return lines;
+            nameData.setString("customName", getCustomName());
+        } else {
+            nameData.setString("nameKey", getLocalNameKey());
+            ItemStack icon = getCrafterIcon();
+            if (icon != null) nameData.setTag("icon", icon.writeToNBT(new NBTTagCompound()));
         }
+        return nameData;
+    }
 
-        String head = getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : getLocalName();
+    static String getWailaDisplayName(NBTTagCompound nameData) {
+        if (nameData.hasKey("customName")) return nameData.getString("customName");
+        ItemStack icon = nameData.hasKey("icon") ? ItemStack.loadItemStackFromNBT(nameData.getCompoundTag("icon"))
+            : null;
+        return icon != null ? icon.getDisplayName() : StatCollector.translateToLocal(nameData.getString("nameKey"));
+    }
 
+    private void writeWailaNameDetails(NBTTagCompound tag) {
         List<Integer> circuitNumbers = new ArrayList<>();
         ItemStack ghostCircuit = getStackInSlot(getCircuitSlot());
         if (allowSelectCircuit() && ghostCircuit != null && ghostCircuit.getItemDamage() > 0) {
             circuitNumbers.add(ghostCircuit.getItemDamage());
         }
         circuitNumbers.addAll(getPhysicalCircuitNumbers());
-        if (!circuitNumbers.isEmpty()) {
-            try {
-                head += String.format(
-                    Gregtech.machines.ghostCircuitSuffixFormat,
-                    circuitNumbers.stream()
-                        .map(String::valueOf)
-                        .collect(Collectors.joining(", ")));
-            } catch (IllegalFormatException ignored) {}
-        }
-        lines.appendTag(new NBTTagString(head));
+        tag.setIntArray(
+            "craftingCircuits",
+            circuitNumbers.stream()
+                .mapToInt(Integer::intValue)
+                .toArray());
 
+        NBTTagList items = new NBTTagList();
         for (ItemStack item : getNonConsumedInputDisplayItems()) {
-            lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(item)));
+            items.appendTag(item.writeToNBT(new NBTTagCompound()));
         }
         for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
             if (mInventory[i] != null) {
-                lines.appendTag(new NBTTagString(CommonBaseMetaTileEntity.getShortItemDisplayName(mInventory[i])));
+                items.appendTag(mInventory[i].writeToNBT(new NBTTagCompound()));
             }
         }
-        return lines;
+        tag.setTag("craftingNameItems", items);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("showPattern", showPattern);
-        NBTTagList inventory = new NBTTagList();
-        HashMap<String, Long> nameToAmount = new HashMap<>();
+        Map<GTUtility.ItemId, Long> itemAmounts = new HashMap<>();
+        Map<GTUtility.FluidId, Long> fluidAmounts = new HashMap<>();
         for (Iterator<PatternSlot<MTEHatchCraftingInputME>> it = inventories(); it.hasNext();) {
             PatternSlot<MTEHatchCraftingInputME> i = it.next();
             for (ItemStack item : i.itemInventory) {
                 if (item != null && item.stackSize > 0) {
-                    String name = item.getDisplayName();
-                    nameToAmount.merge(name, (long) item.stackSize, Long::sum);
+                    itemAmounts.merge(GTUtility.ItemId.createNoCopy(item), (long) item.stackSize, Long::sum);
                 }
             }
             for (FluidStack fluid : i.fluidInventory) {
-                if (fluid != null && GTUtility.getFluidAmount(fluid) > 0) {
-                    String name = fluid.getLocalizedName();
-                    nameToAmount.merge(name, GTUtility.getFluidAmount(fluid), GTUtility::addSafe);
+                long amount = GTUtility.getFluidAmount(fluid);
+                if (amount > 0) {
+                    fluidAmounts.merge(
+                        GTUtility.FluidId.createNoCopy(fluid.getFluid(), null, fluid.tag),
+                        amount,
+                        GTUtility::addSafe);
                 }
             }
         }
-        for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
-            NBTTagCompound item = new NBTTagCompound();
-            item.setString("name", entry.getKey());
-            item.setLong("amount", entry.getValue());
-            inventory.appendTag(item);
-        }
-
-        tag.setTag("inventory", inventory);
-        if (!Objects.equals(getName(), getLocalName())) {
-            // Send the name split into parts, so WAILA can put each one on its own line
-            tag.setTag("nameLines", getWailaNameLines());
-        }
+        NBTTagList inventory = new NBTTagList();
+        itemAmounts.forEach((item, amount) -> {
+            NBTTagCompound stackTag = item.getItemStack()
+                .writeToNBT(new NBTTagCompound());
+            stackTag.setLong("amount", amount);
+            inventory.appendTag(stackTag);
+        });
+        fluidAmounts.forEach((fluid, amount) -> {
+            NBTTagCompound stackTag = fluid.getFluidStack()
+                .writeToNBT(new NBTTagCompound());
+            stackTag.setLong("amount", amount);
+            inventory.appendTag(stackTag);
+        });
+        tag.setTag("craftingInventory", inventory);
+        tag.setTag("craftingName", getWailaNameData());
+        if (!hasCustomName()) writeWailaNameDetails(tag);
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 

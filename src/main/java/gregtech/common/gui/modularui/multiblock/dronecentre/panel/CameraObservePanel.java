@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.GTMod;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.util.GTWaila;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
@@ -291,18 +292,16 @@ public class CameraObservePanel extends ModularPanel {
 
         if (status.getBoolean("isLockedToRecipe")) {
             recipeDetailLines.add(StatCollector.translateToLocal("GT5U.gui.text.drone_locked_recipe"));
-            String lockedRecipeName = status.getString("lockedRecipeName");
-            if (lockedRecipeName.isEmpty()) {
+            List<String> lockedOutputs = GTWaila.getLockedRecipeOutputLines(status);
+            if (lockedOutputs.isEmpty()) {
                 recipeDetailLines.add(
                     EnumChatFormatting.GREEN
                         + StatCollector.translateToLocal("GT5U.gui.text.drone_locked_recipe_unnamed"));
             } else {
-                for (String line : lockedRecipeName.split("\r?\n")) {
-                    String trimmed = line.trim();
-                    if (trimmed.isEmpty()) continue;
-                    EnumChatFormatting color = trimmed.startsWith("-") ? EnumChatFormatting.YELLOW
+                for (String line : lockedOutputs) {
+                    EnumChatFormatting color = line.startsWith("-") ? EnumChatFormatting.YELLOW
                         : EnumChatFormatting.GOLD;
-                    recipeDetailLines.add(color + trimmed);
+                    recipeDetailLines.add(color + line);
                 }
             }
         }
