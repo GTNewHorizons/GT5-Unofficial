@@ -18,6 +18,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -55,13 +57,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -78,6 +83,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -85,12 +91,12 @@ import gregtech.crossmod.ae2.PatternTargetKey.MaxSpecialValue;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchCatalysts;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> implements ISurvivalConstructable {
+public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemicalPlant>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int PARALLELS_PER_PIPE_TIER = 2;
     private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.15D;
@@ -99,23 +105,34 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     private static final int UNBREAKABLE_PIPE_TIER = 7;
     private static final int MAX_CATALYST_DURABILITY = 50;
 
-    private int mSolidCasingTier = 0;
-    private int mMachineCasingTier = 0;
-    private int mPipeCasingTier = 0;
-    private int mCoilTier = 0;
+    private int solidCasingTier = 0;
+    private int machineCasingTier = 0;
+    private int pipeCasingTier = 0;
+    private int coilTier = 0;
     private HeatingCoilLevel checkCoil;
     private final int[] checkCasing = new int[8];
     private int checkMachine;
     private int checkPipe;
     private int maxTierOfHatch;
-    private int mCasing;
+    private int casingAmount;
+    // spotless:off
+    private static final String[][] structure = {
+        { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" },
+        { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
+        { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
+        { "C     C", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "C     C" },
+        { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
+        { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
+        { "CCC~CCC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CCCCCCC" }, };
+    // spotless:on
     private static IStructureDefinition<MTEChemicalPlant> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     public static final Set<GTUtility.ItemId> CHEMPLANT_CATALYSTS = new HashSet<>();
 
-    private final ArrayList<MTEHatchCatalysts> mCatalystBuses = new ArrayList<>();
+    private final ArrayList<MTEHatchCatalysts> catalystBuses = new ArrayList<>();
 
-    private static final HashMap<Integer, Triple<Block, Integer, Integer>> mTieredBlockRegistry = new HashMap<>();
+    private static final HashMap<Integer, Triple<Block, Integer, Integer>> tieredBlockRegistry = new HashMap<>();
 
     public MTEChemicalPlant(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -132,24 +149,15 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         return metaID;
     }
 
-    public static boolean registerMachineCasingForTier(int aTier, Block aBlock, int aMeta, int aCasingTextureID) {
-        Triple<Block, Integer, Integer> aCasingData = Triple.of(aBlock, aMeta, aCasingTextureID);
-        if (mTieredBlockRegistry.containsKey(aTier)) {
+    public static void registerMachineCasingForTier(int tier, Block block, int meta, int casingTextureID) {
+        Triple<Block, Integer, Integer> aCasingData = Triple.of(block, meta, casingTextureID);
+        if (tieredBlockRegistry.containsKey(tier)) {
             throw new IllegalStateException(
-                "Tried to register a Machine casing for tier " + aTier
+                "Tried to register a Machine casing for tier " + tier
                     + " to the Chemical Plant, however this tier already contains one.");
         }
-        mTieredBlockRegistry.put(aTier, aCasingData);
-        GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(aBlock, 1, aMeta), aTier + 1);
-        return true;
-    }
-
-    private static int getCasingTextureIdForTier(int aTier) {
-        if (!mTieredBlockRegistry.containsKey(aTier)) {
-            return 10;
-        }
-        return mTieredBlockRegistry.get(aTier)
-            .getRight();
+        tieredBlockRegistry.put(tier, aCasingData);
+        GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(block, 1, meta), tier + 1);
     }
 
     @Override
@@ -158,15 +166,10 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     @Override
-    public String getMachineType() {
-        return StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_plant");
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(getMachineType())
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.chemical_plant"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "chemical-plant"),
                 ImmutableMap.<String, Object>builder()
@@ -230,17 +233,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                         .mapToObj(MTEChemicalPlant::ofSolidCasing)
                         .collect(Collectors.toList())));
             STRUCTURE_DEFINITION = StructureDefinition.<MTEChemicalPlant>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] {
-                            { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" },
-                            { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
-                            { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
-                            { "C     C", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "C     C" },
-                            { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
-                            { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
-                            { "CCC~CCC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CCCCCCC" }, }))
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(structure))
                 .addElement(
                     'C',
                     ofChain(
@@ -258,9 +251,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .casingIndex(getCasingTextureID())
                             .hint(1)
                             .build(),
-                        buildHatchAdder(MTEChemicalPlant.class).hatchId(MetaTileEntityIDs.Bus_Catalysts.ID)
-                            .shouldReject(t -> !t.mCatalystBuses.isEmpty())
-                            .adder(MTEChemicalPlant::addChemicalPlantList)
+                        buildHatchAdder(MTEChemicalPlant.class).atLeast(CatalystHatchElement.CATALYST_BUS)
+                            .shouldReject(t -> !t.catalystBuses.isEmpty())
                             .casingIndex(getCasingTextureID())
                             .hint(1)
                             .build(),
@@ -303,7 +295,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             public boolean check(MTEChemicalPlant t, World world, int x, int y, int z) {
                 if (check(aIndex, world, x, y, z)) {
                     t.checkCasing[aIndex]++;
-                    t.mCasing++;
+                    t.casingAmount++;
                     return true;
                 } else return false;
             }
@@ -314,12 +306,12 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 return check(aIndex, world, x, y, z);
             }
 
-            private boolean check(int aIndex, World world, int x, int y, int z) {
+            private boolean check(int index, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
-                Block target = mTieredBlockRegistry.get(aIndex)
+                Block target = tieredBlockRegistry.get(index)
                     .getLeft();
-                int targetMeta = mTieredBlockRegistry.get(aIndex)
+                int targetMeta = tieredBlockRegistry.get(index)
                     .getMiddle();
                 return target.equals(block) && meta == targetMeta;
             }
@@ -336,9 +328,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     x,
                     y,
                     z,
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getLeft(),
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getMiddle());
                 return true;
             }
@@ -349,21 +341,21 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     x,
                     y,
                     z,
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getLeft(),
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getMiddle(),
                     3);
             }
 
             @Nullable
             @Override
-            public BlocksToPlace getBlocksToPlace(MTEChemicalPlant gregtechMTE_chemicalPlant, World world, int x, int y,
-                int z, ItemStack trigger, AutoPlaceEnvironment env) {
+            public BlocksToPlace getBlocksToPlace(MTEChemicalPlant t, World world, int x, int y, int z,
+                ItemStack trigger, AutoPlaceEnvironment env) {
                 return BlocksToPlace.create(
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getLeft(),
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getMiddle());
             }
 
@@ -372,9 +364,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 ItemStack trigger, AutoPlaceEnvironment env) {
                 if (check(getIndex(trigger.stackSize), world, x, y, z)) return PlaceResult.SKIP;
                 return StructureUtility.survivalPlaceBlock(
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getLeft(),
-                    mTieredBlockRegistry.get(getIndex(trigger.stackSize))
+                    tieredBlockRegistry.get(getIndex(trigger.stackSize))
                         .getMiddle(),
                     world,
                     x,
@@ -389,48 +381,54 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 3, 6, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 6, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 3, 6, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        clearCraftingIcons(catalystBuses);
+        catalystBuses.clear();
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mCasing = 0;
+        casingAmount = 0;
         for (int i = 0; i < 8; i++) {
             checkCasing[i] = 0;
         }
         checkPipe = -1;
         checkMachine = -1;
-        mSolidCasingTier = 0;
-        mMachineCasingTier = 0;
-        mPipeCasingTier = 0;
-        mCoilTier = 0;
+        solidCasingTier = 0;
+        machineCasingTier = 0;
+        pipeCasingTier = 0;
+        coilTier = 0;
         maxTierOfHatch = 0;
-        mCatalystBuses.clear();
         setCoilMeta(HeatingCoilLevel.None);
 
-        if (!checkPiece(mName, 3, 6, 0, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
         for (int i = 0; i < 8; i++) {
-            if (checkCasing[i] == mCasing) {
-                mSolidCasingTier = i;
+            if (checkCasing[i] == casingAmount) {
+                solidCasingTier = i;
             } else if (checkCasing[i] > 0) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_casing_problem"));
                 return;
             }
         }
-        checkCasingMin(errors, mCasing, 70);
-        mMachineCasingTier = checkMachine;
-        mPipeCasingTier = checkPipe;
-        mCoilTier = checkCoil.getTier();
-        if (mMachineCasingTier < 9 && mMachineCasingTier < maxTierOfHatch) {
+        checkCasingMin(errors, casingAmount, 70);
+        machineCasingTier = checkMachine;
+        pipeCasingTier = checkPipe;
+        coilTier = checkCoil.getTier();
+        if (machineCasingTier < 9 && machineCasingTier < maxTierOfHatch) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_hatch_problem"));
         }
-        if (mCatalystBuses.size() > 1) {
+        if (catalystBuses.size() > 1) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.chemplant_too_many_catalyst_hatch"));
         }
         checkHasEnergyHatch(errors);
@@ -442,7 +440,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     public void updateHatchTexture() {
-        for (MTEHatch h : mCatalystBuses) h.updateTexture(getCasingTextureID());
+        for (MTEHatch h : catalystBuses) h.updateTexture(getCasingTextureID());
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mInputBusses) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureID());
@@ -452,33 +450,27 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         for (MTEHatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
     }
 
-    public final boolean addChemicalPlantList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchCatalysts) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchInputBus) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((MTEHatchInputBus) aMetaTileEntity).mTier);
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((MTEHatchEnergy) aMetaTileEntity).mTier);
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchOutputBus) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((MTEHatchOutputBus) aMetaTileEntity).mTier);
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchInput) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((MTEHatchInput) aMetaTileEntity).mTier);
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchOutput) {
-                maxTierOfHatch = Math.max(maxTierOfHatch, ((MTEHatchOutput) aMetaTileEntity).mTier);
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
+    public final boolean addChemicalPlantList(IGregTechTileEntity igte, int baseCasingIndex) {
+        if (igte == null) return false;
+        IMetaTileEntity imte = igte.getMetaTileEntity();
+        if (imte instanceof MTEHatchMaintenance) {
+            return addToMachineList(igte, baseCasingIndex);
+        }
+        if (imte instanceof MTEHatchCatalysts hatch) {
+            addIfSmartInput(hatch);
+            return catalystBuses.add(hatch);
+        }
+        switch (imte) {
+            case MTEHatchInputBus bus -> maxTierOfHatch = Math.max(maxTierOfHatch, bus.mTier);
+            case MTEHatchEnergy hatch -> maxTierOfHatch = Math.max(maxTierOfHatch, hatch.mTier);
+            case MTEHatchOutputBus bus -> maxTierOfHatch = Math.max(maxTierOfHatch, bus.mTier);
+            case MTEHatchInput hatch -> maxTierOfHatch = Math.max(maxTierOfHatch, hatch.mTier);
+            case MTEHatchOutput hatch -> maxTierOfHatch = Math.max(maxTierOfHatch, hatch.mTier);
+            case null, default -> {
+                return false;
             }
         }
-        return false;
+        return addToMachineList(igte, baseCasingIndex);
     }
 
     @SideOnly(Side.CLIENT)
@@ -488,28 +480,24 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     @Override
-    protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.oMCAChemicalPlantActive;
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            TexturesGtBlock.oMCAChemicalPlant,
+            TexturesGtBlock.oMCAChemicalPlantGlow,
+            TexturesGtBlock.oMCAChemicalPlantActive,
+            TexturesGtBlock.oMCAChemicalPlantActiveGlow);
     }
 
     @Override
-    protected IIconContainer getActiveGlowOverlay() {
-        return TexturesGtBlock.oMCAChemicalPlantActiveGlow;
-    }
-
-    @Override
-    protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.oMCAChemicalPlant;
-    }
-
-    @Override
-    protected IIconContainer getInactiveGlowOverlay() {
-        return TexturesGtBlock.oMCAChemicalPlantGlow;
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return getCasingTextureID();
+    public ITexture getCasingTexture() {
+        Triple<Block, Integer, Integer> casing = tieredBlockRegistry.get(solidCasingTier);
+        if (casing == null) return null;
+        return Textures.BlockIcons.getCasingTextureForId(casing.getRight());
     }
 
     @Override
@@ -519,43 +507,30 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public int getMaxParallelRecipes() {
-        return PARALLELS_PER_PIPE_TIER * mPipeCasingTier;
+        return PARALLELS_PER_PIPE_TIER * pipeCasingTier;
     }
 
     private int getCasingTextureID() {
-        // Check the Tier Client Side
-        int aTier = mSolidCasingTier;
-        return getCasingTextureIdForTier(aTier);
+        return tieredBlockRegistry.getOrDefault(solidCasingTier, tieredBlockRegistry.get(0))
+            .getRight();
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mSolidCasingTier", this.mSolidCasingTier);
-        aNBT.setInteger("mMachineCasingTier", this.mMachineCasingTier);
-        aNBT.setInteger("mPipeCasingTier", this.mPipeCasingTier);
-        aNBT.setInteger("mCoilTier", this.mCoilTier);
+        aNBT.setInteger("mSolidCasingTier", this.solidCasingTier);
+        aNBT.setInteger("mMachineCasingTier", this.machineCasingTier);
+        aNBT.setInteger("mPipeCasingTier", this.pipeCasingTier);
+        aNBT.setInteger("mCoilTier", this.coilTier);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mSolidCasingTier = aNBT.getInteger("mSolidCasingTier");
-        mMachineCasingTier = aNBT.getInteger("mMachineCasingTier");
-        mPipeCasingTier = aNBT.getInteger("mPipeCasingTier");
-        mCoilTier = aNBT.getInteger("mCoilTier");
-    }
-
-    @Override
-    public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-        if (aMetaTileEntity instanceof MTEHatchCatalysts hatch) {
-            return addToMachineListInternal(mCatalystBuses, hatch, aBaseCasingIndex);
-        }
-        return super.addToMachineList(aTileEntity, aBaseCasingIndex);
+        solidCasingTier = aNBT.getInteger("mSolidCasingTier");
+        machineCasingTier = aNBT.getInteger("mMachineCasingTier");
+        pipeCasingTier = aNBT.getInteger("mPipeCasingTier");
+        coilTier = aNBT.getInteger("mCoilTier");
     }
 
     public int getMaxCatalystDurability() {
@@ -564,7 +539,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public byte getUpdateData() {
-        return (byte) mSolidCasingTier;
+        return (byte) solidCasingTier;
     }
 
     @Override
@@ -573,26 +548,26 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA && (aValue & 0x80) == 0) {
             // received an update data from above method
             // if no &0x80 clause it might catch the noop texture page event
-            mSolidCasingTier = aValue;
+            solidCasingTier = aValue;
         }
     }
 
     /**
      * @return if the catalyst item is fully destroyed as a result of the damage applied.
      */
-    private boolean damageCatalyst(@Nonnull ItemStack aStack, int minParallel) {
+    private boolean damageCatalyst(@Nonnull ItemStack stack, int minParallel) {
         // Awakened Draconium Coils with Neutronium Pipe Casings (or above) no longer consume catalysts.
         if (!isCatalystDamageable()) return false;
         for (int i = 0; i < minParallel; i++) {
             if (MathUtils.randFloat(0, 10000000) / 10000000f
-                < (1.2f - (CATALYST_SAVE_PER_PIPE_TIER * this.mPipeCasingTier))) {
-                int damage = getDamage(aStack) + 1;
+                < (1.2f - (CATALYST_SAVE_PER_PIPE_TIER * this.pipeCasingTier))) {
+                int damage = getDamage(stack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
                     addOutputPartial(GregtechItemList.EmptyCatalystCarrier.get(1));
-                    aStack.stackSize -= 1;
-                    return aStack.stackSize == 0;
+                    stack.stackSize -= 1;
+                    return stack.stackSize == 0;
                 } else {
-                    setDamage(aStack, damage);
+                    setDamage(stack, damage);
                 }
             }
         }
@@ -600,12 +575,12 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     private boolean isCatalystDamageable() {
-        return this.mCoilTier < UNBREAKABLE_COIL_TIER || this.mPipeCasingTier < UNBREAKABLE_PIPE_TIER;
+        return this.coilTier < UNBREAKABLE_COIL_TIER || this.pipeCasingTier < UNBREAKABLE_PIPE_TIER;
     }
 
     @Override
     protected MaxSpecialValue getPatternRecipeFilter() {
-        return new MaxSpecialValue(mSolidCasingTier);
+        return new MaxSpecialValue(solidCasingTier);
     }
 
     @Override
@@ -667,21 +642,67 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
         // Same speed bonus as pyro oven
-        logic.setSpeedBonus(2.0D / (1.0D + (double) this.mCoilTier));
+        logic.setSpeedBonus(2.0D / (1.0D + (double) this.coilTier));
     }
 
     @Override
     public void updateSlots() {
         super.updateSlots();
-        for (MTEHatchCatalysts h : mCatalystBuses) {
+        for (MTEHatchCatalysts h : catalystBuses) {
             h.tryFillUsageSlots();
             h.updateSlots();
         }
     }
 
-    private ItemStack findCatalyst(ItemStack[] aItemInputs, ItemStack catalyst) {
-        if (aItemInputs != null) {
-            for (ItemStack item : aItemInputs) {
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
+    }
+
+    private enum CatalystHatchElement implements IHatchElement<MTEChemicalPlant> {
+
+        CATALYST_BUS("gt.blockmachines.hatch.catalysts.name");
+
+        private final String name;
+
+        CatalystHatchElement(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchCatalysts.class);
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEChemicalPlant> adder() {
+            return MTEChemicalPlant::addChemicalPlantList;
+        }
+
+        @Override
+        public long count(MTEChemicalPlant mte) {
+            return mte.catalystBuses.size();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return StatCollector.translateToLocal(name);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return name;
+        }
+    }
+
+    private ItemStack findCatalyst(ItemStack[] itemInputs, ItemStack catalyst) {
+        if (itemInputs != null) {
+            for (ItemStack item : itemInputs) {
                 if (GTUtility.areStacksEqual(item, catalyst, true)) {
                     return item;
                 }
@@ -690,23 +711,23 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         return null;
     }
 
-    private int getDamage(@Nonnull ItemStack aStack) {
-        return ItemGenericChemBase.getCatalystDamage(aStack);
+    private int getDamage(@Nonnull ItemStack stack) {
+        return ItemGenericChemBase.getCatalystDamage(stack);
     }
 
-    private void setDamage(@Nonnull ItemStack aStack, int aAmount) {
-        ItemGenericChemBase.setCatalystDamage(aStack, aAmount);
+    private void setDamage(@Nonnull ItemStack stack, int amount) {
+        ItemGenericChemBase.setCatalystDamage(stack, amount);
     }
 
     public ArrayList<ItemStack> getCatalystInputs() {
-        ArrayList<ItemStack> tItems = new ArrayList<>();
-        for (MTEHatchCatalysts tHatch : validMTEList(mCatalystBuses)) {
-            ArrayList<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
+        ArrayList<ItemStack> items = new ArrayList<>();
+        for (MTEHatchCatalysts hatch : validMTEList(catalystBuses)) {
+            ArrayList<ItemStack> aHatchContent = hatch.getContentUsageSlots();
             if (!aHatchContent.isEmpty()) {
-                tItems.addAll(aHatchContent);
+                items.addAll(aHatchContent);
             }
         }
-        return tItems;
+        return items;
     }
 
     public static void registerChemplantCatalyst(ItemStack stack) {
@@ -714,8 +735,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         CHEMPLANT_CATALYSTS.add(GTUtility.ItemId.createWithoutNBT(stack));
     }
 
-    public static boolean isCatalyst(ItemStack aStack) {
-        return aStack != null && CHEMPLANT_CATALYSTS.contains(GTUtility.ItemId.createWithoutNBT(aStack));
+    public static boolean isCatalyst(ItemStack stack) {
+        return stack != null && CHEMPLANT_CATALYSTS.contains(GTUtility.ItemId.createWithoutNBT(stack));
     }
 
     static {
