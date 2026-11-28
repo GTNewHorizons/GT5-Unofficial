@@ -11,7 +11,6 @@ import toxiceverglades.world.WorldProviderMod;
 
 public class DimensionEverglades {
 
-    public Object instance;
     public static int DIMID = Configuration.worldgen.EVERGLADES_ID;
     public static BlockEvergladesPortal portalBlock;
     public static ItemEvergladesPortalTrigger portalItem;

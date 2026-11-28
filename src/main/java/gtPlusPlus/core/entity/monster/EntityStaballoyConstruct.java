@@ -1,6 +1,7 @@
 package gtPlusPlus.core.entity.monster;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.init.Blocks;
@@ -23,6 +24,15 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
             .setCanSwim(false);
         this.getNavigator()
             .setAvoidSun(false);
+        this.isImmuneToFire = true;
+    }
+
+    @Override
+    public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
+        if (type == EnumCreatureType.monster) {
+            return true;
+        }
+        return super.isCreatureType(type, forSpawnCount);
     }
 
     @Override
@@ -36,8 +46,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
     @Override
     public boolean canAttackClass(Class<? extends Entity> clazz) {
-        return !this.getClass()
-            .equals(clazz);
+        return !EntityStaballoyConstruct.class.isAssignableFrom(clazz) && super.canAttackClass(clazz);
     }
 
     @Override
@@ -65,7 +74,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         int lootingLevel = Math.min(p_70628_2_, 4); // hard capping it to 4
 
         for (int i = 0; i < lootingLevel; i++) {
-            ingots += this.rand.nextInt(0, 2);
+            ingots += this.rand.nextInt(2);
         }
 
         if (flowers > 0) {
@@ -88,14 +97,6 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     @Override
     protected boolean canDespawn() {
         return true;
-    }
-
-    @Override
-    public void onEntityUpdate() {
-        if (!this.isImmuneToFire) {
-            this.isImmuneToFire = true;
-        }
-        super.onEntityUpdate();
     }
 
     @Override

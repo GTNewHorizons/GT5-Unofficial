@@ -6,7 +6,6 @@ import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.Ev
 import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.DEAD_BUSH;
 import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.FLOWERS;
 import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.GRASS;
-import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.LAKE;
 import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.LILYPAD;
 import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.PUMPKIN;
 import static net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.REED;
@@ -36,7 +35,6 @@ import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenCactus;
 import net.minecraft.world.gen.feature.WorldGenDeadBush;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
-import net.minecraft.world.gen.feature.WorldGenLiquids;
 import net.minecraft.world.gen.feature.WorldGenPumpkin;
 import net.minecraft.world.gen.feature.WorldGenReed;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -75,25 +73,29 @@ public class CustomBiomeGenerator extends BiomeDecorator {
         this.waterlilyGen = new WorldGenDeadLilly();
 
         this.flowersPerChunk = 1;
-        this.grassPerChunk = 5;
-        this.sandPerChunk = 3;
-        this.sandPerChunk2 = 5;
-        this.clayPerChunk = 7;
+        this.grassPerChunk = 2;
+        this.sandPerChunk = 1;
+        this.sandPerChunk2 = 1;
+        this.clayPerChunk = 2;
 
-        this.generateLakes = true;
+        this.reedsPerChunk = 2;
+        this.waterlilyPerChunk = 1;
     }
 
     @Override
-    public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_,
-        int p_150512_5_) {
+    public void decorateChunk(World world, Random rand, BiomeGenBase biome, int x, int z) {
         if (this.currentWorld != null) {
-            throw new RuntimeException("Already decorating!!");
-        } else {
-            this.currentWorld = p_150512_1_;
-            this.randomGenerator = p_150512_2_;
-            this.chunk_X = p_150512_4_;
-            this.chunk_Z = p_150512_5_;
-            this.genDecorations(p_150512_3_);
+            throw new IllegalStateException("Already decorating");
+        }
+
+        this.currentWorld = world;
+        this.randomGenerator = rand;
+        this.chunk_X = x;
+        this.chunk_Z = z;
+
+        try {
+            this.genDecorations(biome);
+        } finally {
             this.currentWorld = null;
             this.randomGenerator = null;
         }
@@ -254,13 +256,6 @@ public class CustomBiomeGenerator extends BiomeDecorator {
             this.reedGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
         }
 
-        for (j = 0; doGen && j < 10; ++j) {
-            k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-            l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-            i1 = nextInt(this.currentWorld.getHeightValue(k, l) * 2);
-            this.reedGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
-        }
-
         doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, PUMPKIN);
         if (doGen && this.randomGenerator.nextInt(32) == 0) {
             j = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
@@ -275,24 +270,6 @@ public class CustomBiomeGenerator extends BiomeDecorator {
             l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
             i1 = nextInt(this.currentWorld.getHeightValue(k, l) * 2);
             this.cactusGen.generate(this.currentWorld, this.randomGenerator, k, i1, l);
-        }
-
-        doGen = TerrainGen.decorate(currentWorld, randomGenerator, chunk_X, chunk_Z, LAKE);
-        if (doGen && this.generateLakes) {
-            for (j = 0; j < 50; ++j) {
-                k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-                l = this.randomGenerator.nextInt(this.randomGenerator.nextInt(248) + 8);
-                i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-                (new WorldGenLiquids(Blocks.flowing_water)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
-            }
-
-            for (j = 0; j < 20; ++j) {
-                k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
-                l = this.randomGenerator
-                    .nextInt(this.randomGenerator.nextInt(this.randomGenerator.nextInt(240) + 8) + 8);
-                i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-                (new WorldGenLiquids(Blocks.flowing_lava)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
-            }
         }
 
         MinecraftForge.EVENT_BUS.post(new DecorateBiomeEvent.Post(currentWorld, randomGenerator, chunk_X, chunk_Z));

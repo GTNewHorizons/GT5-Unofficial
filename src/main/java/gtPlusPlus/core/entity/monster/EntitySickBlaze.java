@@ -21,7 +21,6 @@ public class EntitySickBlaze extends EntityMob {
     private int heightOffsetUpdateTime;
 
     private int field_70846_g;
-    private final int mDataWatcherID = 30;
 
     public EntitySickBlaze(World p_i1731_1_) {
         super(p_i1731_1_);
@@ -35,15 +34,14 @@ public class EntitySickBlaze extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
             .setBaseValue(20.0D);
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
-            .setBaseValue(1.5D);
+            .setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage)
             .setBaseValue(6.0D);
     }
 
     @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataWatcher.addObject(mDataWatcherID, 0);
+    public boolean getCanSpawnHere() {
+        return super.getCanSpawnHere();
     }
 
     /**
@@ -112,7 +110,7 @@ public class EntitySickBlaze extends EntityMob {
             this.motionY *= 0.6D;
         }
 
-        for (int i = 0; i < 2; ++i) {
+        if (this.rand.nextInt(4) == 0) {
             this.worldObj.spawnParticle(
                 "crit",
                 this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
@@ -130,18 +128,18 @@ public class EntitySickBlaze extends EntityMob {
      * Basic mob attack. Default to touch of death in EntityCreature. Overridden by each mob to define their attack.
      */
     @Override
-    protected void attackEntity(Entity entity, float p_70785_2_) {
-        if (this.attackTime <= 0 && p_70785_2_ < 2.0F
+    protected void attackEntity(Entity entity, float distance) {
+        if (this.attackTime <= 0 && distance < 2.0F
             && entity.boundingBox.maxY > this.boundingBox.minY
             && entity.boundingBox.minY < this.boundingBox.maxY) {
             this.attackTime = 20;
             this.attackEntityAsMob(entity);
-        } else if (p_70785_2_ < 30.0F) {
+        } else if (distance < 30.0F) {
             double d0 = entity.posX - this.posX;
             double d1 = entity.boundingBox.minY + entity.height / 2.0F - (this.posY + this.height / 2.0F);
             double d2 = entity.posZ - this.posZ;
 
-            if (this.attackTime == 0) {
+            if (this.attackTime <= 0) {
                 ++this.field_70846_g;
 
                 if (this.field_70846_g == 1) {
@@ -154,19 +152,19 @@ public class EntitySickBlaze extends EntityMob {
                 }
 
                 if (this.field_70846_g > 1) {
-                    float f1 = MathHelper.sqrt_float(p_70785_2_) * 0.5F;
+                    float spread = MathHelper.sqrt_float(distance) * 0.5F;
+
                     this.worldObj.playAuxSFXAtEntity(null, 1009, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
 
-                    for (int i = 0; i < 1; ++i) {
-                        EntityToxinballSmall entitysmalltoxinball = new EntityToxinballSmall(
-                            this.worldObj,
-                            this,
-                            d0 + this.rand.nextGaussian() * f1,
-                            d1,
-                            d2 + this.rand.nextGaussian() * f1);
-                        entitysmalltoxinball.posY = this.posY + this.height / 2.0F + 0.5D;
-                        this.worldObj.spawnEntityInWorld(entitysmalltoxinball);
-                    }
+                    EntityToxinballSmall toxinball = new EntityToxinballSmall(
+                        this.worldObj,
+                        this,
+                        d0 + this.rand.nextGaussian() * spread,
+                        d1,
+                        d2 + this.rand.nextGaussian() * spread);
+
+                    toxinball.setPosition(toxinball.posX, this.posY + this.height / 2.0F + 0.5D, toxinball.posZ);
+                    this.worldObj.spawnEntityInWorld(toxinball);
                 }
             }
 

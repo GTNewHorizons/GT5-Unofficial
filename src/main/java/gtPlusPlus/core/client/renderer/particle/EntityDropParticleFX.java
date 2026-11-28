@@ -28,8 +28,7 @@ public class EntityDropParticleFX extends EntityFX {
         this.setSize(0.01F, 0.01F);
         this.particleGravity = -0.06F * gravityMod;
         this.bobTimer = 40;
-        this.particleMaxAge = (int) (48.0D / (Math.random() * 0.8D + 0.2D));
-        this.motionX = this.motionY = this.motionZ = 0.0D;
+        this.particleMaxAge = 40 + this.rand.nextInt(40);
     }
 
     @Override

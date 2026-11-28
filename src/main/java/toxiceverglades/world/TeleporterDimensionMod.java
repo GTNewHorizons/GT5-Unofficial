@@ -40,6 +40,18 @@ public class TeleporterDimensionMod extends Teleporter {
         this.random = new Random(par1WorldServer.getSeed());
     }
 
+    public static TeleporterDimensionMod getForWorld(WorldServer world) {
+        for (Teleporter teleporter : world.customTeleporters) {
+            if (teleporter instanceof TeleporterDimensionMod) {
+                return (TeleporterDimensionMod) teleporter;
+            }
+        }
+
+        TeleporterDimensionMod teleporter = new TeleporterDimensionMod(world);
+        world.customTeleporters.add(teleporter);
+        return teleporter;
+    }
+
     /**
      * Place an entity in a nearby portal, creating one if necessary.
      */
@@ -91,13 +103,19 @@ public class TeleporterDimensionMod extends Teleporter {
         double d7;
         int l3;
 
-        if (this.destinationCoordinateCache.containsKey(j1)) {
-            Teleporter.PortalPosition portalposition = this.destinationCoordinateCache.get(j1);
+        Teleporter.PortalPosition cached = this.destinationCoordinateCache.get(j1);
+        if (cached != null && this.worldServerInstance.getBlock(cached.posX, cached.posY, cached.posZ)
+            != DimensionEverglades.portalBlock) {
+            this.destinationCoordinateCache.remove(j1);
+            cached = null;
+        }
+
+        if (cached != null) {
             d3 = 0.0D;
-            i = portalposition.posX;
-            j = portalposition.posY;
-            k = portalposition.posZ;
-            portalposition.lastUpdateTime = this.worldServerInstance.getTotalWorldTime();
+            i = cached.posX;
+            j = cached.posY;
+            k = cached.posZ;
+            cached.lastUpdateTime = this.worldServerInstance.getTotalWorldTime();
             flag = false;
         } else {
             for (l3 = l - short1; l3 <= l + short1; ++l3) {
@@ -132,7 +150,9 @@ public class TeleporterDimensionMod extends Teleporter {
             if (flag) {
                 this.destinationCoordinateCache
                     .put(j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
-                this.destinationCoordinateKeys.add(j1);
+                if (!this.destinationCoordinateKeys.contains(j1)) {
+                    this.destinationCoordinateKeys.add(j1);
+                }
             }
 
             double d11 = i + 0.5D;
@@ -399,33 +419,38 @@ public class TeleporterDimensionMod extends Teleporter {
             }
         }
 
-        for (i3 = 0; i3 < 4; ++i3) {
-            for (j3 = 0; j3 < 4; ++j3) {
-                for (k3 = -1; k3 < 4; ++k3) {
-                    l3 = k5 + (j3 - 1) * l5;
-                    i4 = j2 + k3;
-                    j4 = k2 + (j3 - 1) * l2;
-                    flag = j3 == 0 || j3 == 3 || k3 == -1 || k3 == 3;
-                    this.worldServerInstance.setBlock(
-                        l3,
-                        i4,
-                        j4,
-                        flag ? DimensionEverglades.blockPortalFrame : DimensionEverglades.portalBlock,
-                        0,
-                        2);
-                }
-            }
-
-            for (j3 = 0; j3 < 4; ++j3) {
-                for (k3 = -1; k3 < 4; ++k3) {
-                    l3 = k5 + (j3 - 1) * l5;
-                    i4 = j2 + k3;
-                    j4 = k2 + (j3 - 1) * l2;
-                    this.worldServerInstance
-                        .notifyBlocksOfNeighborChange(l3, i4, j4, this.worldServerInstance.getBlock(l3, i4, j4));
-                }
+        for (j3 = 0; j3 < 4; ++j3) {
+            for (k3 = -1; k3 < 4; ++k3) {
+                l3 = k5 + (j3 - 1) * l5;
+                i4 = j2 + k3;
+                j4 = k2 + (j3 - 1) * l2;
+                flag = j3 == 0 || j3 == 3 || k3 == -1 || k3 == 3;
+                this.worldServerInstance.setBlock(
+                    l3,
+                    i4,
+                    j4,
+                    flag ? DimensionEverglades.blockPortalFrame : DimensionEverglades.portalBlock,
+                    0,
+                    2);
             }
         }
+
+        for (j3 = 0; j3 < 4; ++j3) {
+            for (k3 = -1; k3 < 4; ++k3) {
+                l3 = k5 + (j3 - 1) * l5;
+                i4 = j2 + k3;
+                j4 = k2 + (j3 - 1) * l2;
+                this.worldServerInstance
+                    .notifyBlocksOfNeighborChange(l3, i4, j4, this.worldServerInstance.getBlock(l3, i4, j4));
+            }
+        }
+
+        long cacheKey = ChunkCoordIntPair.chunkXZ2Int(i, k);
+        if (!this.destinationCoordinateKeys.contains(cacheKey)) {
+            this.destinationCoordinateKeys.add(cacheKey);
+        }
+        this.destinationCoordinateCache
+            .put(cacheKey, new Teleporter.PortalPosition(k5, j2, k2, this.worldServerInstance.getTotalWorldTime()));
 
         return true;
     }

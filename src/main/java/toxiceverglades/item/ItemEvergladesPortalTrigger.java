@@ -4,10 +4,8 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,45 +61,36 @@ public class ItemEvergladesPortalTrigger extends Item {
     }
 
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4,
-        int par5, int par6, int par7, float par8, float par9, float par10) {
-        if (par7 == 0) {
-            par5--;
-        }
-        if (par7 == 1) {
-            par5++;
-        }
-        if (par7 == 2) {
-            par6--;
-        }
-        if (par7 == 3) {
-            par6++;
-        }
-        if (par7 == 4) {
-            par4--;
-        }
-        if (par7 == 5) {
-            par4++;
-        }
-        if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack)) {
-            return false;
-        }
-        Block i1 = par3World.getBlock(par4, par5, par6);
-        if (i1 == Blocks.air) {
-            par3World.playSoundEffect(
-                par4 + 0.5D,
-                par5 + 0.5D,
-                par6 + 0.5D,
-                "fire.ignite",
-                1.0F,
-                itemRand.nextFloat() * 0.4F + 0.8F);
-            if (!DimensionEverglades.portalBlock.tryToCreatePortal(par3World, par4, par5, par6)) {
-                if (!par3World.isRemote) {
-                    par3World.setBlock(par4, par5, par6, ModBlocks.blockHellfire, 0, 3);
-                }
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float hitX, float hitY, float hitZ) {
+
+        switch (side) {
+            case 0 -> y--;
+            case 1 -> y++;
+            case 2 -> z--;
+            case 3 -> z++;
+            case 4 -> x--;
+            case 5 -> x++;
+            default -> {
+                return false;
             }
         }
-        par1ItemStack.damageItem(1, par2EntityPlayer);
+
+        if (!player.canPlayerEdit(x, y, z, side, stack) || !world.isAirBlock(x, y, z)) {
+            return false;
+        }
+
+        if (world.isRemote) {
+            return true;
+        }
+
+        world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+
+        if (!DimensionEverglades.portalBlock.tryToCreatePortal(world, x, y, z)) {
+            world.setBlock(x, y, z, ModBlocks.blockHellfire, 0, 3);
+        }
+
+        stack.damageItem(1, player);
         return true;
     }
 }

@@ -30,7 +30,6 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
 
     public BlockEvergladesPortal() {
         super("portal", Material.portal, false);
-        this.setTickRandomly(true);
         this.setHardness(-1.0F);
         this.setLightLevel(0.75F);
         this.setCreativeTab(CreativeTabs.tabBlock);
@@ -158,16 +157,17 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             for (l = -1; l <= 2; ++l) {
                 for (i1 = -1; i1 <= 3; ++i1) {
                     boolean flag = l == -1 || l == 2 || i1 == -1 || i1 == 3;
+
                     if (l != -1 && l != 2 || i1 != -1 && i1 != 3) {
                         Block j1 = par1World.getBlock(par2 + b0 * l, par3 + i1, par4 + b1 * l);
+
                         if (flag) {
                             if (j1 != DimensionEverglades.blockPortalFrame) {
                                 return false;
                             }
+                        } else if (j1 != Blocks.air && j1 != Blocks.fire && j1 != this) {
+                            return false;
                         }
-                        /*
-                         * else if (j1 != 0 && j1 != Main.TutorialFire.blockID) { return false; }
-                         */
                     }
                 }
             }
@@ -331,12 +331,10 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             par1World.spawnParticle("reddust", d0 + 0.1D, d1, d2, d3, d4, d5);
             par1World.spawnParticle("smoke", d0, d1 + 0.1D, d2, 0, 0, 0);
 
-            Random R = new Random();
-
-            if (R.nextInt(10) == 0) {
-                par1World.spawnParticle("largesmoke", d0, d1, d2, 0, 0 + 0.2D, 0);
-            } else if (R.nextInt(5) == 1) {
-                par1World.spawnParticle("flame", d0, d1, d2, 0, 0 + 0.1D, 0);
+            if (par5Random.nextInt(10) == 0) {
+                par1World.spawnParticle("largesmoke", d0, d1, d2, 0, 0.2D, 0);
+            } else if (par5Random.nextInt(5) == 1) {
+                par1World.spawnParticle("flame", d0, d1, d2, 0, 0.1D, 0);
             }
         }
     }
