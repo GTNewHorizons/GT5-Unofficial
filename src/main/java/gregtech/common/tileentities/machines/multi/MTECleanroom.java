@@ -32,7 +32,10 @@ import org.jetbrains.annotations.NotNull;
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.gtnhlib.capability.Capabilities;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -64,10 +67,11 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.multiblock.MTECleanRoomGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import ic2.core.block.BlockIC2Door;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTECleanroom extends MTETooltipMultiBlockBase
-    implements IConstructable, ICleanroom, ICasingTextureProvider {
+    implements ISurvivalConstructable, ICleanroom, ICasingTextureProvider {
 
     public static final int STARTUP_EU = 40;
     public static final int IDLE_EU = 4;
@@ -290,7 +294,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         if ((allowedMask & MASK_DOOR) != 0
             // This allows doors on the edges, although their open/closed status will not be calculated correctly.
             // The intent is that the wall check calling this method will not allow doors on edges.
-            && block instanceof ic2.core.block.BlockIC2Door) {
+            && block instanceof BlockIC2Door) {
 
             if (!isDoorOpen) { // No need to check again if there is already an open door somewhere else.
                 int doorOrientation = getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz);
@@ -307,11 +311,11 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                         isDoorOpen = true;
                     // Otherwise check adjacent blocks for other doors.
                     else if (dz > dzMin
-                        && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz - 1) instanceof ic2.core.block.BlockIC2Door
+                        && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz - 1) instanceof BlockIC2Door
                         && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz - 1))
                         isDoorOpen = true;
                     else if (dz < dzMax
-                        && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz + 1) instanceof ic2.core.block.BlockIC2Door
+                        && aBaseMetaTileEntity.getBlockOffset(dx, dy, dz + 1) instanceof BlockIC2Door
                         && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx, dy, dz + 1))
                         isDoorOpen = true;
                 } else {
@@ -321,11 +325,11 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                         isDoorOpen = true;
                     // Check adjacent blocks for other doors.
                     else if (dx > dxMin
-                        && aBaseMetaTileEntity.getBlockOffset(dx - 1, dy, dz) instanceof ic2.core.block.BlockIC2Door
+                        && aBaseMetaTileEntity.getBlockOffset(dx - 1, dy, dz) instanceof BlockIC2Door
                         && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx - 1, dy, dz))
                         isDoorOpen = true;
                     else if (dx < dxMax
-                        && aBaseMetaTileEntity.getBlockOffset(dx + 1, dy, dz) instanceof ic2.core.block.BlockIC2Door
+                        && aBaseMetaTileEntity.getBlockOffset(dx + 1, dy, dz) instanceof BlockIC2Door
                         && doorOrientation != getDoorOrientation(aBaseMetaTileEntity, dx + 1, dy, dz))
                         isDoorOpen = true;
                 }
@@ -710,23 +714,88 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int i = Math.min(stackSize.stackSize, 7);
+        int radius = getConstructionRadius(stackSize);
         IGregTechTileEntity baseEntity = this.getBaseMetaTileEntity();
         World world = baseEntity.getWorld();
         int x = baseEntity.getXCoord();
         int y = baseEntity.getYCoord();
         int z = baseEntity.getZCoord();
-        int yoff = Math.max(i * 2, 3);
-        for (int X = x - i; X <= x + i; X++) for (int Y = y; Y >= y - yoff; Y--) for (int Z = z - i; Z <= z + i; Z++) {
-            if (X == x && Y == y && Z == z) continue;
-            if (X == x - i || X == x + i || Z == z - i || Z == z + i || Y == y - yoff) {
-                if (hintsOnly) StructureLibAPI.hintParticle(world, X, Y, Z, CASING_BLOCK, CASING_META);
-                else world.setBlock(X, Y, Z, CASING_BLOCK, CASING_META, 2);
-            } else if (Y == y) {
-                if (hintsOnly) StructureLibAPI.hintParticle(world, X, Y, Z, FILTER_BLOCK, FILTER_META);
-                else world.setBlock(X, Y, Z, FILTER_BLOCK, FILTER_META, 2);
+        int floorDepth = Math.max(radius * 2, 3);
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dy = 0; dy >= -floorDepth; dy--) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    int mask = getConstructionMask(dx, dy, dz, radius, floorDepth);
+                    if (mask == 0) continue;
+                    boolean filter = mask == MASK_CEILING_INTERNAL;
+                    Block block = filter ? FILTER_BLOCK : CASING_BLOCK;
+                    int meta = filter ? FILTER_META : CASING_META;
+                    if (hintsOnly) StructureLibAPI.hintParticle(world, x + dx, y + dy, z + dz, block, meta);
+                    else world.setBlock(x + dx, y + dy, z + dz, block, meta, 2);
+                }
             }
         }
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        if (elementBudget <= 0) return 0;
+
+        IGregTechTileEntity baseEntity = getBaseMetaTileEntity();
+        World world = baseEntity.getWorld();
+        if (world.isRemote) return 0;
+
+        int radius = getConstructionRadius(stackSize);
+        int floorDepth = Math.max(radius * 2, 3);
+        int built = 0;
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dy = 0; dy >= -floorDepth; dy--) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    int mask = getConstructionMask(dx, dy, dz, radius, floorDepth);
+                    if (mask == 0) continue;
+                    int x = baseEntity.getXCoord() + dx;
+                    int y = baseEntity.getYCoord() + dy;
+                    int z = baseEntity.getZCoord() + dz;
+                    if (!world.blockExists(x, y, z)) return built;
+
+                    if (getBlockType(baseEntity, dx, dy, dz, mask & ~MASK_DOOR) != CleanroomBlockType.INVALID) continue;
+                    if ((mask & MASK_DOOR) != 0 && baseEntity.getBlockOffset(dx, dy, dz) instanceof BlockIC2Door
+                        && getDoorOrientation(baseEntity, dx, dy, dz) >= 0) continue;
+
+                    boolean filter = mask == MASK_CEILING_INTERNAL;
+                    PlaceResult result = StructureUtility.survivalPlaceBlock(
+                        filter ? FILTER_BLOCK : CASING_BLOCK,
+                        filter ? FILTER_META : CASING_META,
+                        world,
+                        x,
+                        y,
+                        z,
+                        env.getSource(),
+                        env.getActor(),
+                        env.getActor()::addChatComponentMessage);
+                    if (result != PlaceResult.ACCEPT) {
+                        StructureLibAPI.markHintParticleError(env.getActor(), world, x, y, z);
+                        return built;
+                    }
+                    if (++built >= elementBudget) return built;
+                }
+            }
+        }
+        return built == 0 ? -1 : built;
+    }
+
+    private static int getConstructionRadius(ItemStack trigger) {
+        return Math.max(1, Math.min(trigger.stackSize, MAX_WIDTH / 2));
+    }
+
+    private static int getConstructionMask(int dx, int dy, int dz, int radius, int floorDepth) {
+        if (dx == 0 && dy == 0 && dz == 0) return 0;
+        boolean xEdge = Math.abs(dx) == radius;
+        boolean zEdge = Math.abs(dz) == radius;
+        if (dy == 0) return xEdge || zEdge ? MASK_CEILING_EDGE : MASK_CEILING_INTERNAL;
+        if (dy == -floorDepth) return xEdge || zEdge ? MASK_FLOOR_EDGE : MASK_FLOOR_INTERNAL;
+        if (xEdge && zEdge) return MASK_WALL_EDGE;
+        return xEdge || zEdge ? MASK_WALL_INTERNAL : 0;
     }
 
     @Override
@@ -761,7 +830,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             return meta;
         } else if (meta < 8) {
             // Bottom part of an open door.
-            if (aBaseMetaTileEntity.getBlockOffset(dx, dy + 1, dz) instanceof ic2.core.block.BlockIC2Door) {
+            if (aBaseMetaTileEntity.getBlockOffset(dx, dy + 1, dz) instanceof BlockIC2Door) {
                 return getDoorOrientation(meta, aBaseMetaTileEntity.getMetaIDOffset(dx, dy + 1, dz));
             } else {
                 // Bottom part of a door without the top part? Cheater!
@@ -769,7 +838,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             }
         } else if (meta < 10) {
             // Top part of a door.
-            if (aBaseMetaTileEntity.getBlockOffset(dx, dy - 1, dz) instanceof ic2.core.block.BlockIC2Door) {
+            if (aBaseMetaTileEntity.getBlockOffset(dx, dy - 1, dz) instanceof BlockIC2Door) {
                 return getDoorOrientation(aBaseMetaTileEntity.getMetaIDOffset(dx, dy - 1, dz), meta);
             } else {
                 // Top part of a door without the bottom part? Cheater!
