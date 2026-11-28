@@ -2,8 +2,9 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.OrePrefixes;
 
-/// Save migration table for other mods' items that GregTech unifies onto a MaterialLib pair. Each row maps one item
-/// to the prefix and material its saved stacks convert to. See [PosteaTransformers] for the migration.
+/// Save migration table for other mods' items that GregTech unifies onto a MaterialLib pair. Each row maps one item to
+/// the prefix and material its saved stacks convert to. See [gregtech.loaders.postload.postea.ForeignPartTransformers]
+/// for the migration.
 ///
 /// Rows are never removed. A missing row leaves that item unconverted in existing worlds.
 public final class ForeignPartTable {

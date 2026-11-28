@@ -3,7 +3,8 @@ package gregtech.api.items;
 import net.minecraft.util.IIcon;
 
 /// A GregTech meta-item whose custom items occupy damage 32000 to 32765. Damage values below 32000 are unused;
-/// [gregtech.loaders.postload.PosteaTransformers] converts saved stacks from that range into MaterialLib items.
+/// [gregtech.loaders.postload.postea.GregTechTransformers] converts saved stacks from that range into MaterialLib
+/// items.
 public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     public MetaGeneratedItemX32(String aUnlocalized) {

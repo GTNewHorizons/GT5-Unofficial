@@ -135,10 +135,10 @@ import gregtech.loaders.postload.ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.postload.MachineTooltipsLoader;
 import gregtech.loaders.postload.MissingMappingsHandler;
-import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScannerHandlerLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
+import gregtech.loaders.postload.postea.PosteaTransformers;
 import gregtech.loaders.postload.recipes.BECRecipes;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
@@ -604,7 +604,7 @@ public class GTMod {
         GTPostLoad.changeWoodenVanillaTools();
 
         // Register postea transformers
-        new PosteaTransformers().run();
+        PosteaTransformers.register();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the

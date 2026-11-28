@@ -11,7 +11,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.TEBlockShapes;
 
 /// Save migration table mapping each legacy per-material wire, cable and pipe MTE id to the MaterialLib shape and
-/// material it becomes. See [PosteaTransformers] for the migration.
+/// material it becomes. See [gregtech.loaders.postload.postea.GregTechTransformers] for the migration.
 ///
 /// Rows are never removed or renumbered. Ids absent from the table have no migration and must stay untouched.
 public final class LegacyPipeCutoverTable {
