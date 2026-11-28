@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
@@ -76,7 +77,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     @SubscribeEvent
     public void receiveMetricsData(MetricsCoverDataEvent event) {
         final Coordinates coordinates = event.getCoordinates();
-        store(event.getFrequency(), State.OPERATIONAL, event.getPayload(), coordinates);
+        store(event.getFrequency(), State.OPERATIONAL, event.getPayload(), event.getChatPayload(), coordinates);
 
         if (!REVERSE_LOOKUP.containsKey(coordinates)) {
             REVERSE_LOOKUP.put(coordinates, new HashSet<>());
@@ -239,7 +240,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
      * @param state     The new cover state.
      */
     private static void store(@NotNull UUID frequency, @NotNull State state) {
-        store(frequency, state, null, null);
+        store(frequency, state, null, null, null);
     }
 
     /**
@@ -252,8 +253,8 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
      * @param coordinates Coordinates of the active machine (including dimension.)
      */
     private static void store(@NotNull UUID frequency, @NotNull State state, @Nullable List<String> payload,
-        @Nullable Coordinates coordinates) {
-        final Data newData = new Data(state, payload, coordinates);
+        @Nullable List<IChatComponent> chatPayload, @Nullable Coordinates coordinates) {
+        final Data newData = new Data(state, payload, chatPayload, coordinates);
         final Data oldData = DATABASE.put(frequency, newData);
 
         if (state != State.OPERATIONAL && (oldData == null || oldData != newData)) {
@@ -317,23 +318,29 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         @Nullable
         private final List<String> payload;
         @Nullable
+        private final List<IChatComponent> chatPayload;
+        @Nullable
         private final Coordinates coordinates;
 
         public Data(@NotNull State state) {
             this.state = state;
             this.payload = null;
+            this.chatPayload = null;
             this.coordinates = null;
         }
 
         public Data(@NotNull State state, @Nullable List<String> payload) {
             this.state = state;
             this.payload = payload;
+            this.chatPayload = null;
             this.coordinates = null;
         }
 
-        public Data(@NotNull State state, @Nullable List<String> payload, @Nullable Coordinates coordinates) {
+        public Data(@NotNull State state, @Nullable List<String> payload, @Nullable List<IChatComponent> chatPayload,
+            @Nullable Coordinates coordinates) {
             this.state = state;
             this.payload = payload;
+            this.chatPayload = chatPayload;
             this.coordinates = coordinates;
 
         }
@@ -348,6 +355,11 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         @NotNull
         public Optional<List<String>> getPayload() {
             return Optional.ofNullable(payload);
+        }
+
+        @NotNull
+        public Optional<List<IChatComponent>> getChatPayload() {
+            return Optional.ofNullable(chatPayload);
         }
 
         /**

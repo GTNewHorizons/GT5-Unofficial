@@ -5,14 +5,16 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugBlockMiner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,6 +25,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -404,19 +407,18 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            String.format(
-                "%s%s%s",
-                EnumChatFormatting.BLUE,
-                StatCollector.translateToLocal("GT5U.machines.miner"),
-                EnumChatFormatting.RESET),
-            String.format(
-                "%s: %s%d%s %s",
-                StatCollector.translateToLocal("GT5U.machines.workarea"),
-                EnumChatFormatting.GREEN,
-                (radiusConfig * 2 + 1),
-                EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.blocks")) };
+        return GTValues.emptyStringArray;
+    }
+
+    @Override
+    public void addInfoDataComp(List<IChatComponent> components) {
+        components
+            .add(GTUtility.styledComp(new ChatComponentTranslation("GT5U.machines.miner"), EnumChatFormatting.BLUE));
+        components.add(
+            new ChatComponentTranslation(
+                "GT5U.machines.workarea.s",
+                GTUtility.styledComp(radiusConfig * 2 + 1, EnumChatFormatting.GREEN),
+                new ChatComponentTranslation("GT5U.machines.blocks")));
     }
 
     @Override

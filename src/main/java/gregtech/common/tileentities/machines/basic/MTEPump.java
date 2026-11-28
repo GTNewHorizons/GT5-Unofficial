@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -17,7 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,6 +32,7 @@ import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -874,14 +875,18 @@ public class MTEPump extends MTEBasicMachine {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump") + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                + EnumChatFormatting.GREEN
-                + (radiusConfig * 2 + 1)
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.machines.blocks") };
+        return GTValues.emptyStringArray;
+    }
+
+    @Override
+    public void addInfoDataComp(List<IChatComponent> components) {
+        components
+            .add(GTUtility.styledComp(new ChatComponentTranslation("GT5U.machines.pump"), EnumChatFormatting.BLUE));
+        components.add(
+            new ChatComponentTranslation(
+                "GT5U.machines.workarea.s",
+                GTUtility.styledComp(radiusConfig * 2 + 1, EnumChatFormatting.GREEN),
+                new ChatComponentTranslation("GT5U.machines.blocks")));
     }
 
     @SideOnly(Side.CLIENT)
