@@ -25,6 +25,8 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import appeng.api.crafting.ICraftingIconProvider;
+import appeng.api.crafting.IPatternTargetKey;
+import appeng.api.crafting.IPatternTargetKeyProvider;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
@@ -70,7 +72,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
+public abstract class MetaTileEntity extends CommonMetaTileEntity
+    implements ICraftingIconProvider, IPatternTargetKeyProvider {
 
     /**
      * Inventory wrapper for ModularUI
@@ -178,7 +181,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         if (capability == ICleanroomReceiver.class) {
             return capability.cast(cleanroomReference);
         }
-        if (capability == ICraftingIconProvider.class) {
+        if (capability == ICraftingIconProvider.class || capability == IPatternTargetKeyProvider.class) {
             return capability.cast(this);
         }
         return super.getCapability(capability, side);
@@ -716,6 +719,12 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public ItemStack getMachineCraftingIcon() {
         return getStackForm(1);
+    }
+
+    @Nullable
+    @Override
+    public IPatternTargetKey getTargetKey() {
+        return null;
     }
 
     // === Waila compat ===
