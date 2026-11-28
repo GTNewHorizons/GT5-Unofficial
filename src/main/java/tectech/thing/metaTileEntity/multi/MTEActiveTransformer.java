@@ -1,19 +1,17 @@
 package tectech.thing.metaTileEntity.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -22,10 +20,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -37,13 +38,21 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.IStructureInstance;
+import gregtech.api.structure.IStructureProvider;
+import gregtech.api.structure.StructureWrapper;
+import gregtech.api.structure.StructureWrapperInstanceInfo;
+import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEActiveTransformerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.misc.GTStructureChannels;
+import it.unimi.dsi.fastutil.Pair;
 import tectech.thing.casing.BlockGTCasingsTT;
-import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -53,7 +62,8 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  * Created by danie_000 on 17.12.2016.
  */
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
+public class MTEActiveTransformer extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider, IStructureProvider<MTEActiveTransformer> {
 
     // Gives a one-chance grace period for deforming the multi. This is to allow you to hotswap hatches without
     // powerfailing due to an unlucky tick timing - this grace period is already a part of base TecTech but the
@@ -74,15 +84,140 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     private static final double INV_30SECS = 1d / 30d;
     private static final double INV_60SECS = 1d / 60d;
 
+    private static final int MAX_LENGTH = 8;
+    private static final int MIDDLE_SLICE_LENGTH = MAX_LENGTH - 2; // max - 2 to account for first and last slice
+    private static final String STRUCTURE_SHAPE_FIRST = "first";
+    private static final String STRUCTURE_SHAPE_MIDDLE = "middle";
+    private static final String STRUCTURE_SHAPE_LAST = "last";
+
+    private static final String[] FIRST = { "111", "1~1", "111" };
+
+    private static final String[] MIDDLE = { "111", "101", "111" };
+
+    private static final String[] LAST = { "111", "111", "111" };
+
+    protected final StructureWrapper<MTEActiveTransformer> structure;
+    protected final StructureWrapperInstanceInfo<MTEActiveTransformer> structureInstanceInfo;
+
+    @Override
+    public String[][] getDefinition() {
+        return new String[][] { FIRST, MIDDLE, LAST };
+    }
+
+    @Override
+    public String[][] getMaxDefinition() {
+        ArrayList<String[]> slices = new ArrayList<>();
+
+        slices.add(FIRST);
+
+        for (int i = 0; i < MIDDLE_SLICE_LENGTH; i++) slices.add(MIDDLE);
+
+        slices.add(LAST);
+
+        return slices.toArray(new String[0][]);
+    }
+
+    @Override
+    public IStructureDefinition<MTEActiveTransformer> compile(String[][] definition) {
+        structure.addCasing('1', Casings.HighPowerCasing)
+            .withUnlimitedHatches(1, Arrays.asList(Energy, HatchElement.EnergyMulti, Dynamo, HatchElement.DynamoMulti));
+        structure.addCasing('0', Casings.SuperconductingCoilBlock);
+        var shapes = Arrays.asList(
+            Pair.of(STRUCTURE_SHAPE_FIRST, new String[][] { FIRST }),
+            Pair.of(STRUCTURE_SHAPE_MIDDLE, new String[][] { MIDDLE }),
+            Pair.of(STRUCTURE_SHAPE_LAST, new String[][] { LAST }));
+
+        return structure.getStructureBuilder(shapes)
+            .build();
+    }
+
+    @Override
+    public void construct(ItemStack trigger, boolean hintsOnly) {
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MIDDLE_SLICE_LENGTH);
+
+        Vec3Impl offset = new Vec3Impl(0, 0, 0);
+        Vec3Impl inc = new Vec3Impl(0, 0, -1);
+
+        structure.construct(this, trigger, hintsOnly, STRUCTURE_SHAPE_FIRST, offset);
+
+        for (int i = 0; i < length; i++) {
+            offset = offset.add(inc);
+
+            structure.construct(this, trigger, hintsOnly, STRUCTURE_SHAPE_MIDDLE, offset);
+        }
+
+        offset = offset.add(inc);
+
+        structure.construct(this, trigger, hintsOnly, STRUCTURE_SHAPE_LAST, offset);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int length = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(trigger, 1, MIDDLE_SLICE_LENGTH);
+
+        Vec3Impl offset = new Vec3Impl(0, 0, 0);
+        Vec3Impl inc = new Vec3Impl(0, 0, -1);
+
+        int built = 0, temp;
+
+        temp = structure.survivalConstruct(this, trigger, elementBudget - built, env, STRUCTURE_SHAPE_FIRST, offset);
+
+        if (temp > -1) built += temp;
+        if (elementBudget - built <= 0) return built;
+
+        for (int i = 0; i < length; i++) {
+            offset = offset.add(inc);
+
+            temp = structure
+                .survivalConstruct(this, trigger, elementBudget - built, env, STRUCTURE_SHAPE_MIDDLE, offset);
+
+            if (temp > -1) built += temp;
+            if (elementBudget - built <= 0) return built;
+        }
+
+        offset = offset.add(inc);
+
+        temp = structure.survivalConstruct(this, trigger, elementBudget - built, env, STRUCTURE_SHAPE_LAST, offset);
+
+        if (temp > -1) built += temp;
+
+        return temp == -1 ? -1 : built;
+    }
+
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
-        casingCount = 0;
-        checkPiece("main", 1, 1, 0, errors);
+        Vec3Impl offset = new Vec3Impl(0, 0, 0);
+        Vec3Impl inc = new Vec3Impl(0, 0, -1);
+        int length = 0;
 
-        checkCasingMin(errors, casingCount, 5);
+        if (!structure.checkStructure(this, STRUCTURE_SHAPE_FIRST, offset, errors)) return;
+
+        offset = offset.add(inc);
+
+        while (length < MIDDLE_SLICE_LENGTH && structure.checkStructure(this, STRUCTURE_SHAPE_MIDDLE, offset, errors)) {
+            length++;
+            offset = offset.add(inc);
+        }
+
+        // reset here as a middle slice can check an end slice as a middle slice, and error.
+        errors.clear();
+
+        // if there is no middle slice at all, add an error
+        if (length == 0) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+        }
+        if (!structure.checkStructure(this, STRUCTURE_SHAPE_LAST, offset, errors)) return;
+
+        // Hack to prevent hatch duplication due to middle slice checking end slice as a middle slice
+        GTDataUtils.dedupList(mExoticEnergyHatches);
+        GTDataUtils.dedupList(mEnergyHatches);
+        GTDataUtils.dedupList(eEnergyMulti);
+        GTDataUtils.dedupList(eDynamoMulti);
+
         checkHasAnyEnergy(errors);
 
+        structureInstanceInfo.validate(errors);
         if (errors.isEmpty()) {
             grace = true;
         } else if (grace) {
@@ -92,47 +227,43 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (!mMachine) {
-            aBaseMetaTileEntity.disableWorking();
-        }
+    public IStructureInstance<MTEActiveTransformer> getStructureInstance() {
+        return structureInstanceInfo;
     }
-
-    private static final IStructureDefinition<MTEActiveTransformer> STRUCTURE_DEFINITION = IStructureDefinition
-        .<MTEActiveTransformer>builder()
-        .addShape(
-            "main",
-            new String[][] { { "111", "1~1", "111", }, { "111", "101", "111", }, { "111", "111", "111", }, })
-        .addElement('0', ofBlock(sBlockCasings1, 15))
-        .addElement(
-            '1',
-            buildHatchAdder(MTEActiveTransformer.class)
-                .atLeast(Energy, HatchElement.EnergyMulti, Dynamo, HatchElement.DynamoMulti)
-                .casingIndex(BlockGTCasingsTT.textureOffset)
-                .hint(1)
-                .buildAndChain(onElementPass(t -> t.casingCount++, ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))))
-        .build();
-    private int casingCount = 0;
 
     @Override
-    public IStructureDefinition<MTEActiveTransformer> getStructure_EM() {
-        return STRUCTURE_DEFINITION;
+    public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
+        return structure.structureDefinition;
     }
+
     // endregion
 
     public MTEActiveTransformer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         eDismantleBoom = false;
+        structure = new StructureWrapper<>(this);
+        structureInstanceInfo = null;
+
+        structure.loadStructure();
     }
 
-    public MTEActiveTransformer(String aName) {
-        super(aName);
-        eDismantleBoom = false;
+    public MTEActiveTransformer(MTEActiveTransformer prototype) {
+        super(prototype.mName);
+
+        structure = prototype.structure;
+        structureInstanceInfo = new StructureWrapperInstanceInfo<>(structure);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEActiveTransformer(mName);
+        return new MTEActiveTransformer(this);
+    }
+
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (!mMachine) {
+            aBaseMetaTileEntity.disableWorking();
+        }
     }
 
     @Override
@@ -176,17 +307,24 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        StructureWrapperTooltipBuilder<MTEActiveTransformer> tt = new StructureWrapperTooltipBuilder<>(structure);
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype"))
-            .addMarkdown(new ResourceLocation("gregtech", "active-transformer"))
+            .addMarkdown(new ResourceLocation("gregtech", "active-transformer"), ImmutableMap.<String, Object>builder().put("max_length",MAX_LENGTH).build())
             .addSupportAny()
-            .beginStructureBlock(3, 3, 3, false)
+            .beginVariableStructureBlock(3,3,3,3,3,MAX_LENGTH,false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
-            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
             .addEnergyHatch("1+", anyCasingText(), 1)
             .addDynamoHatch("0+", anyCasingText(), 1)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("0-26", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addStructureInfoSeparator()
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing("0-8",StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
+            .addStructureInfoSeparator()
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
         // spotless:on
         return tt;
@@ -374,17 +512,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece("main", stackSize, hintsOnly, 1, 1, 0);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) return -1;
-        return survivalBuildPiece("main", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
-    }
-
-    @Override
     public boolean isSafeVoidButtonEnabled() {
         return false;
     }
@@ -408,4 +535,5 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     public boolean hasRunningText() {
         return false;
     }
+
 }
