@@ -365,7 +365,6 @@ gt.blockmachines.gt.icecreammachine.name=Ice Cream Machine
 gt.blockmachines.hatch.advancedbeamlineoutput.name=Выходной люк фильтруемого пучка
 gt.blockmachines.hatch.air.intake.tier.00.name=Воздухозаборный шлюз
 gt.blockmachines.hatch.air.intake.tier.01.name=Экстремальный воздухозаборный шлюз
-gt.blockmachines.hatch.air.intake.tier.01.tooltip=Для ввода жидкости в мультиблоки\nЁмкость: 256,000Л\nТир шлюза: §bZPM§r\nНЕ ЗАГРАЖДАЙТЕ ВХОД!\nВсасывает воздух из окружающей среды\nСоздает 40,000Л воздуха каждые 20 тиков\n§7Добавлено: §2Alkalus §7- §c[GT++]
 gt.blockmachines.hatch.air.intake.tier.02.name=Атмосферный воздухозаборный шлюз
 gt.blockmachines.hatch.beamlineinput.name=Входной шлюз установки для литографии
 gt.blockmachines.hatch.beamlineoutput.name=Выходной шлюз установки для литографии
@@ -418,7 +417,6 @@ gt.blockmachines.hatch.maintenance.auto.tooltip=Для автоматическ�
 gt.blockmachines.hatch.milling.name=Хранилище измельчающих шариков
 gt.blockmachines.hatch.milling.tooltip=Спец хранилище для измельчающих шариков\nДобавлено: §2Alkalus §7- §c[GT++]
 gt.blockmachines.hatch.multi.input.tier.11.name=Счетверенный огромный входной шлюз
-gt.blockmachines.hatch.multi.input.tier.11.tooltip=Для ввода жидкости в мультиблоки\nЁмкость: 500,000,000 Л\nМожет вместить 4 типа жидкости.
 gt.blockmachines.hatch.nanite.name=Хранилище нанитов
 gt.blockmachines.hatch.nanite.tooltip=Содержит наниты для использования в мультиблоках\nСохраняет своё содержимое при сборе
 gt.blockmachines.hatch.nanite.singularity.name=Сингулярное хранилище нанитов
@@ -489,7 +487,6 @@ gt.blockmachines.pollutiondetector.01.tier.single.name=Устройство об
 gt.blockmachines.pollutiondetector.01.tier.single.tooltip=Сообщает вам, живете ли вы уже в Гвалиоре.\nПКМ для проверки уровня загрязнения.\nНастройте с помощью отвёртки количество выходного редстоун сигнала.\nНе потребляет энергию.\nДобавлено: §2Alkalus §7- §c[GT++]
 
 gt.blockmachines.quantum.tank.debug.name=Отладочный жидкостный резервуар
-gt.blockmachines.quantum.tank.debug.tooltip=Хранит 2,147,483,640 Л жидкости\nСохраняет своё содержимое при сборе
 
 gt.blockmachines.redstone.lamp.name=Лампа управляемая красным камнем
 gt.blockmachines.redstone.lamp.tooltip=Лампа управляемая красным камнем\nДобавлено: §2Alkalus §7- §c[GT++]
@@ -1961,8 +1958,6 @@ GT5U.MBTT.CondensateDetectorHatch=Шлюз-детектор конденсата
 GT5U.MBTT.AnyModule=Любой модуль
 GT5U.MBTT.IgnoredHatch=Любой шлюз (используется подключённым модулем)
 
-gt.unit.liter=Л
-gt.unit.liter_per_second=Л/сек
 
 GT5U.MBTT.Parallel.Base=%s параллелей
 GT5U.MBTT.Parallel.Additional=%s параллелей за %s тир
@@ -4614,7 +4609,6 @@ GT5U.nei.nuclear.breeder.reactor_hull_heat=За каждые %d тепла ко�
 GT5U.nei.nuclear.breeder.required_pulse=Требуемые импульсы: %d
 GT5U.nei.purified_water.base_chance=Базовый шанс успеха: %s%%
 GT5U.nei.purified_water.grade_3.0=Расходуется во время работы
-GT5U.nei.purified_water.grade_3.1=+%s%%/%dЛ
 GT5U.nei.purified_water.grade_3.2=Возвращается в количестве, эквивалентном потребленному флокулянту.
 GT5U.nei.purified_water.grade_4.0=+%s pH/стак
 GT5U.nei.purified_water.grade_4.1=%s pH/1000Л
@@ -4758,10 +4752,8 @@ gt.interact.desc.fluid_regulator.InvertedMachProcState=Использовать 
 
 gt.interact.desc.fluid_regulator.ExpImp=§8Экспорт/Импорт
 gt.interact.desc.fluid_regulator.Conditional=§8Условный
-gt.interact.desc.fluid_regulator.L=§8 Л
 gt.interact.desc.fluid_regulator.Ticks=§8 тиков
 gt.interact.desc.fluid_regulator.Average=Средне:
-gt.interact.desc.fluid_regulator.L_Sec=Л/сек
 
 ## Item Filter
 gt.interact.desc.Item_Filter.Whitelist_Mode=Режим белого списка
@@ -6559,7 +6551,6 @@ GT5U.waila.transformer.step_down=Понижающий режим
 GT5U.waila.transformer.step_up=Повышающий режим
 GT5U.waila.transformer.input=Ввод:§r %s(%dA)
 GT5U.waila.transformer.output=Вывод:§r %s(%dA)
-GT5U.waila.boiler_solar.output=Выход солнечного бойлера:§r %d/%d Л/с
 GT5U.waila.large_boiler.steam_output=Выход пара: §e%s§r %s/t
 GT5U.waila.large_boiler.superheated_steam_output=Выход перегретого пара: §e%s§r %s/t
 GT5U.waila.large_boiler.energy_output=Выход энергии: §a%s§r %s/t
@@ -7780,8 +7771,6 @@ GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§8Разрешить вв�
 GTPP.gui.text.cover_overflow_valve_block_fluid_input=§8Блокировать ввод жидкости
 GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§8Разрешить вывод жидкости
 GTPP.gui.text.cover_overflow_valve_block_fluid_output=§8Блокировать вывод жидкости
-GTPP.gui.text.cover_overflow_valve_liter=§8Л
-GTPP.gui.text.cover_overflow_valve_l_per_update=§8Л/обновление
 
 GTPP.EBF.heat=Теплоёмкость
 

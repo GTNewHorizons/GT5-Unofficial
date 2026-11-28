@@ -1,13 +1,15 @@
 package gregtech.common.gui.mui1.cover;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -27,13 +29,6 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
     private static final int startY = 25;
     private static final int spaceX = 18;
     private static final int spaceY = 18;
-
-    private static final NumberFormatMUI numberFormat;
-
-    static {
-        numberFormat = new NumberFormatMUI();
-        numberFormat.setMaximumFractionDigits(2);
-    }
 
     public FluidRegulatorUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);
@@ -145,7 +140,7 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
                 new TextWidget(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Conditional"))
                     .setPos(3 + startX + spaceX * 4, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L"))
+                new TextWidget(EnumChatFormatting.DARK_GRAY + " " + getFluidUnit())
                     .setPos(startX + spaceX * 4, 4 + startY + spaceY * 2))
             .widget(
                 new TextWidget(StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Ticks"))
@@ -156,10 +151,10 @@ public class FluidRegulatorUIFactory extends CoverUIFactory<CoverFluidRegulator>
                 int tickRate = cover.getTickRateForUi();
                 return new Text(
                     StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Average")
-                        + numberFormat.format(tickRate == 0 ? 0 : cover.getSpeed() * 20d / tickRate)
-                        + " "
-                        + StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L_Sec"))
-                            .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
+                        + StatCollector.translateToLocalFormatted(
+                            "gt.interact.desc.fluid_regulator.fluid_per_sec",
+                            formatFluid(tickRate == 0 ? 0 : cover.getSpeed() * 20d / tickRate)))
+                                .color(warn.get() ? COLOR_TEXT_WARN.get() : COLOR_TEXT_GRAY.get());
             })
                 .setPos(startX + spaceX * 0, 4 + startY + spaceY * 3));
     }

@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,7 +91,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public String[] getDescription() {
         return GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.input_hatch_solidifier.desc", formatNumber(getCapacity()));
+            .splitLocalizedFormatted("gt.blockmachines.input_hatch_solidifier.desc", formatFluid(getCapacity()));
     }
 
     public static ItemStack findMatchingMold(ItemStack stack) {

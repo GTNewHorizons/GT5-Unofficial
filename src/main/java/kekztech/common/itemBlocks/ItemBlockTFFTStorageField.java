@@ -1,6 +1,7 @@
 package kekztech.common.itemBlocks;
 
-import java.text.NumberFormat;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -42,13 +43,11 @@ public class ItemBlockTFFTStorageField extends ItemBlock {
             lines.add(
                 StatCollector.translateToLocalFormatted(
                     "tooltip.kekztech.tfft.capacity",
-                    NumberFormat.getNumberInstance()
-                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity())));
+                    formatFluid(MTETankTFFT.Field.VALUES[meta - 1].getCapacity())));
             lines.add(
                 StatCollector.translateToLocalFormatted(
                     "tooltip.kekztech.tfft.capacity.per_fluid",
-                    NumberFormat.getNumberInstance()
-                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)));
+                    formatFluid(MTETankTFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)));
             lines.add(
                 StatCollector.translateToLocalFormatted(
                     "tooltip.kekztech.tfft.power_draw",

@@ -1,8 +1,11 @@
 package gregtech.common.gui.modularui.cover;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MAX;
 import static gregtech.common.covers.CoverFluidRegulator.TICK_RATE_MIN;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +18,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -26,13 +28,6 @@ import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
-
-    private static final NumberFormatMUI numberFormat;
-
-    static {
-        numberFormat = new NumberFormatMUI();
-        numberFormat.setMaximumFractionDigits(2);
-    }
 
     public CoverFluidRegulatorGui(CoverFluidRegulator cover) {
         super(cover);
@@ -95,7 +90,8 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
                     .numbersInt(cover::getMinSpeed, cover::getMaxSpeed)
                     .setFocusOnGuiOpen(true))
             .child(
-                IKey.lang("gt.interact.desc.fluid_regulator.L")
+                IKey.str(" " + getFluidUnit())
+                    .style(EnumChatFormatting.DARK_GRAY)
                     .asWidget())
             .child(
                 makeNumberField(36).value(new IntSyncValue(cover::getTickRateForUi, cover::setTickRateForUi).allowC2S())
@@ -138,8 +134,8 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
 
     private @NotNull String getAverageSpeedText() {
         return StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.Average") + " "
-            + numberFormat.format(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi())
-            + " "
-            + StatCollector.translateToLocal("gt.interact.desc.fluid_regulator.L_Sec");
+            + StatCollector.translateToLocalFormatted(
+                "gt.interact.desc.fluid_regulator.fluid_per_sec",
+                formatFluid(cover.getTickRateForUi() == 0 ? 0 : cover.getSpeed() * 20d / cover.getTickRateForUi()));
     }
 }

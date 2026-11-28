@@ -1,5 +1,8 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -62,9 +65,9 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
                 currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
                 currentTip.add(
                     StatCollector.translateToLocalFormatted(
-                        "GT5U.nei.purified_water.grade_3.1",
-                        MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL,
-                        MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL));
+                        "GT5U.nei.purified_water.grade_3.1.v2",
+                        formatNumber(MTEPurificationUnitFlocculation.SUCCESS_PER_LEVEL),
+                        formatFluid(MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL)));
             } else if (fluid.isFluidEqual(Materials.FlocculationWasteLiquid.getFluid(1_000))) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));
             }

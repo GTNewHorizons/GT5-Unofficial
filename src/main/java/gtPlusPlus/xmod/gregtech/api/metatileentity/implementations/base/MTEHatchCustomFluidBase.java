@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_STEAM_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
@@ -174,7 +175,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch implements ISmartInputHatc
                 GTSplit.splitLocalizedFormatted(
                     isSteam ? "gt.blockmachines.hatch.custom_fluid.steam.desc"
                         : "gt.blockmachines.hatch.custom_fluid.desc",
-                    getCapacity(),
+                    formatFluid(getCapacity()),
                     fluid),
                 GTPPCore.GT_Tooltip.get());
     }

@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.outputme;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
@@ -95,7 +95,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalized("gt.blockmachines.output_hatch_me.desc");
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_hatch_me.desc", formatFluid(DEFAULT_CAPACITY));
     }
 
     @Override
@@ -314,7 +314,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         ss.add(
             translateToLocalFormatted(
                 "GT5U.waila.hatch.outputme.fluid_cache_capacity",
-                formatNumber(tag.getLong("cacheCapacity"))));
+                formatFluid(tag.getLong("cacheCapacity"))));
         provider.getWailaCacheBody(ss, accessor);
     }
 

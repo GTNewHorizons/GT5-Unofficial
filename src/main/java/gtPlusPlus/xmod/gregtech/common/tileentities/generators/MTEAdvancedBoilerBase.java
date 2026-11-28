@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -47,7 +50,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
             aID,
             "electricboiler." + tier + ".tier.single",
             aNameRegional,
-            "Produces " + (STEAM_PER_SECOND * tier) + "L of Steam per second");
+            "Produces %%%" + formatFluid(STEAM_PER_SECOND * tier) + "%%% of Steam per second");
         this.steamPerSecond = STEAM_PER_SECOND * tier;
         this.tier = tier;
     }
@@ -71,9 +74,9 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Produces " + getPollution() + " pollution/sec",
-            "Consumes fuel only when temperature is less than 100C",
-            "Fuel with burn time greater than 500 is more efficient.",
+            "Produces %%%" + formatNumber(getPollution()) + "%%% pollution/sec",
+            "Consumes fuel only when temperature is less than %%%" + formatNumber(100) + "%%%C",
+            "Fuel with burn time greater than %%%" + formatNumber(500) + "%%% is more efficient.",
             "Doesn't explode if there's no water",
             GTPPCore.GT_Tooltip.get());
     }
@@ -344,7 +347,8 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
         boolean isProducingSteam = tag.getBoolean("isProducingSteam");
         int power = tag.getInteger("power");
         if (isProducingSteam) {
-            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", power));
+            currenttip
+                .add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", formatFluid(power)));
         }
     }
 

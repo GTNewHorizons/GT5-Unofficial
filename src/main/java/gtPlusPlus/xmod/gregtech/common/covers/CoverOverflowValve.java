@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -244,7 +245,10 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatTrans(aPlayer, "GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint);
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "GTPP.chat.text.cover_overflow_valve_overflow_point",
+            new ChatComponentFluid(overflowPoint));
     }
 
     @Override
@@ -259,7 +263,10 @@ public class CoverOverflowValve extends Cover {
         if (overflowPoint > maxOverflowPoint) overflowPoint = minOverflowPoint;
         if (overflowPoint <= minOverflowPoint) overflowPoint = maxOverflowPoint;
 
-        GTUtility.sendChatTrans(aPlayer, "GTPP.chat.text.cover_overflow_valve_overflow_point", overflowPoint);
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "GTPP.chat.text.cover_overflow_valve_overflow_point",
+            new ChatComponentFluid(overflowPoint));
         return true;
     }
     // GUI

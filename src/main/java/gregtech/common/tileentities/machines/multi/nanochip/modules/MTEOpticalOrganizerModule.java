@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE_GLOW;
@@ -129,7 +131,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.1"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.2"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.2", getFluidUnit()))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.3"))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.4"))
             .addSeparator()
@@ -165,7 +167,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         return translateToLocalFormatted(
             "GT5U.tooltip.nac.module.optical_organizer.body.water",
             grade,
-            amount,
+            formatNumber(amount),
             effectColor,
             effect);
     }

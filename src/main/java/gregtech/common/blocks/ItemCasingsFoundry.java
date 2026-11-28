@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.coolingStrOrder;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createFoundryFlavorText;
 import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createModuleBaseText;
@@ -169,15 +171,18 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
-                        coolingStrOrder("100", "50"),
+                        coolingStrOrder(formatNumber(100), formatFluid(50)),
                         coolingStrOrder("Super Coolant", "Spacetime"),
-                        coolingStrOrder("1", "2")));
+                        coolingStrOrder(formatNumber(1), formatNumber(2))));
                 tooltip
                     .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
                 tooltip
                     .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));
-                tooltip
-                    .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip5"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.hypercooler.tooltip5",
+                        formatFluid(25),
+                        formatNumber(3)));
                 tooltip
                     .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
                 tooltip.add(createTierLine(11));

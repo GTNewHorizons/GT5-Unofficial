@@ -43,7 +43,7 @@ gui.detrav.scanner.gibbl=gibbl
 gui.detrav.scanner.unknown_fluid=Unknown Fluid name!
 
 gui.detrav.scanner.tooltip.fluid_name=Fluid Name: %s
-gui.detrav.scanner.tooltip.fluid_amount=Fluid Amount: %s L
+gui.detrav.scanner.tooltip.fluid_amount=Fluid Amount: %s
 gui.detrav.scanner.tooltip.no_fluid=Empty
 gui.detrav.scanner.tooltip.ore_pos=X: %d, Z: %d
 gui.detrav.scanner.tooltip.ore_depth=Y: %d

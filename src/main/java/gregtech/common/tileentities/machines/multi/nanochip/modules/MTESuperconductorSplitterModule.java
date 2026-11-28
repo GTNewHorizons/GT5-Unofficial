@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_ACTIVE;
@@ -191,12 +192,15 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.superconductor_splitter.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.body.1")) // todo: maybe make
-                                                                                                 // this
-                                                                                                 // more interesting /
-                                                                                                 // use higher tier
-                                                                                                 // coolants for higher
-                                                                                                 // tier sc
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.superconductor_splitter.body.1",
+                    formatFluid(COOLANT_CONSUMED_PER_SEC))) // todo: maybe make
+            // this
+            // more interesting /
+            // use higher tier
+            // coolants for higher
+            // tier sc
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
             .beginStructureBlock(7, 10, 7, false)

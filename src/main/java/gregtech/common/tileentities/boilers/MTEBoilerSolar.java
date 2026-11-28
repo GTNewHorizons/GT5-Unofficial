@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.boilers;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
 
@@ -58,8 +59,8 @@ public class MTEBoilerSolar extends MTEBoiler {
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.boiler.solar.desc",
-            formatNumber(getMaxOutputPerSecond()),
-            formatNumber(getMinOutputPerSecond()));
+            formatFluid(getMaxOutputPerSecond()),
+            formatFluid(getMinOutputPerSecond()));
     }
 
     public int getMinOutputPerSecond() {
@@ -290,9 +291,9 @@ public class MTEBoilerSolar extends MTEBoiler {
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
             GOLD + StatCollector.translateToLocalFormatted(
-                "GT5U.waila.boiler_solar.output",
-                tag.getInteger("calcificationOutput"),
-                tag.getInteger("maxCalcificationOutput")));
+                "GT5U.waila.boiler_solar.output.v2",
+                formatNumber(tag.getInteger("calcificationOutput")),
+                formatFluid(tag.getInteger("maxCalcificationOutput"))));
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }

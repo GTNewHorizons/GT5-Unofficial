@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
@@ -305,8 +306,8 @@ public abstract class MetaBaseItem extends GTGenericItem
                 EnumChatFormatting.BLUE
                     + translateToLocalFormatted(
                         "gt.item.desc.fluid_info",
-                        tFluid == null ? 0 : formatNumber(tFluid.amount),
-                        formatNumber(tStats[0]))
+                        formatFluid(tFluid == null ? 0 : tFluid.amount),
+                        formatFluid(tStats[0]))
                     + EnumChatFormatting.GRAY);
         }
 

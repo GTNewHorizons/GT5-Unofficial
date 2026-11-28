@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
 import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -73,6 +74,10 @@ public class ScannerHelper {
     private static IChatComponent goldComp(Object val) {
         return new ChatComponentText(String.valueOf(val))
             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
+    }
+
+    private static IChatComponent goldFluidComp(Number amount) {
+        return new ChatComponentFluid(amount).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
     }
     // endregion
 
@@ -262,11 +267,16 @@ public class ScannerHelper {
                 if (tanks != null && tanks.length > 0) {
                     list.add(addTitleComp("title_fluid_handler_info"));
                     for (int i = 0; i < tanks.length; i++) {
-                        String currAmount = formatNumber((tanks[i].fluid == null ? 0 : tanks[i].fluid.amount));
-                        String maxAmount = formatNumber(tanks[i].capacity);
+                        int currAmount = tanks[i].fluid == null ? 0 : tanks[i].fluid.amount;
                         String name = getFluidName(tanks[i].fluid, true);
 
-                        list.add(transComp("fluid_handler_info_1", i, goldComp(currAmount), goldComp(maxAmount), name));
+                        list.add(
+                            transComp(
+                                "fluid_handler_info_1",
+                                i,
+                                goldFluidComp(currAmount),
+                                goldFluidComp(tanks[i].capacity),
+                                name));
                         euAmount += 500;
                     }
                 }
@@ -498,10 +508,9 @@ public class ScannerHelper {
         if (player.capabilities.isCreativeMode) {
             final FluidStack fluid = undergroundOilReadInformation(currentChunk);
             if (fluid != null) {
-                list.add(
-                    transComp("chunk_info_3", new ChatComponentFluidName(fluid), goldComp(formatNumber(fluid.amount))));
+                list.add(transComp("chunk_info_3", new ChatComponentFluidName(fluid), goldFluidComp(fluid.amount)));
             } else {
-                list.add(transComp("chunk_info_4"));
+                list.add(transComp("chunk_info_4", goldFluidComp(0)));
             }
         }
     }

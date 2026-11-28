@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.TinkerConstruct;
@@ -42,6 +43,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
+
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluid;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
@@ -534,15 +537,14 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         if (oldCapacity != newPipe.mCapacity) {
             EnumChatFormatting capacityColor = newPipe.mCapacity > oldCapacity ? EnumChatFormatting.GREEN
                 : EnumChatFormatting.RED;
-            message.appendText(formatNumber(oldCapacity * 20));
-            message.appendSibling(new ChatComponentTranslation("gt.unit.liter_per_second"));
+            message.appendSibling(
+                new ChatComponentTranslation("gt.unit.fluid_per_second", new ChatComponentFluid(oldCapacity * 20)));
             message.appendText(" → ");
             message.appendSibling(
-                new ChatComponentText(formatNumber(newPipe.mCapacity * 20L))
-                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
-            message.appendSibling(
-                new ChatComponentTranslation("gt.unit.liter_per_second")
-                    .setChatStyle(new ChatStyle().setColor(capacityColor)));
+                new ChatComponentTranslation(
+                    "gt.unit.fluid_per_second",
+                    new ChatComponentFluid(newPipe.mCapacity * 20L))
+                        .setChatStyle(new ChatStyle().setColor(capacityColor)));
             hasContent = true;
         }
 
@@ -938,7 +940,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
             StatCollector
-                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatNumber(mCapacity * 20L)));
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatFluid(mCapacity * 20L)));
         descriptions.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));

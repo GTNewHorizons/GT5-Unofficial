@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluidCompact;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
@@ -2919,8 +2921,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
-                            + formatNumber(tag.getLong("outputFluidCount" + i))
-                            + "L");
+                            + formatFluid(tag.getLong("outputFluidCount" + i)));
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
@@ -3822,7 +3823,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 Long itemCount = entry.getValue();
                 String itemName = entry.getKey()
                     .getDisplayName();
-                String shortenedCount = formatShortenedLong(itemCount);
+                String shortenedCount = formatFluidCompact(itemCount);
                 String rateShort = appendRate(false, itemCount, true);
                 int amountLen = (translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount)
                     + rateShort).length();
@@ -3915,6 +3916,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
         final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
 
+        final Function<Number, String> formatAmount = value -> isLiquid ? formatFluid(value) : formatNumber(value);
+
         final Function<Double, Double> roundNumber = (number) -> {
             if (Math.abs(number) < 10) {
                 return Math.round(number * 100) / 100.0;
@@ -3935,37 +3938,29 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond)));
         } else {
             ret.append(EnumChatFormatting.RESET);
-            ret.append(
-                amountText + EnumChatFormatting.GOLD
-                    + formatNumber(amount)
-                    + (isLiquid ? "L" : "")
-                    + EnumChatFormatting.RESET);
+            ret.append(amountText + EnumChatFormatting.GOLD + formatAmount.apply(amount) + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perSecondText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perSecond))
-                    + (isLiquid ? "L" : "")
+                    + formatAmount.apply(roundNumber.apply(perSecond))
                     + largeSuffix.apply(perSecond)
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perMinute))
-                    + (isLiquid ? "L" : "")
+                    + formatAmount.apply(roundNumber.apply(perMinute))
                     + largeSuffix.apply(perMinute)
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perHour))
-                    + (isLiquid ? "L" : "")
+                    + formatAmount.apply(roundNumber.apply(perHour))
                     + largeSuffix.apply(perHour)
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perDay))
-                    + (isLiquid ? "L" : "")
+                    + formatAmount.apply(roundNumber.apply(perDay))
                     + largeSuffix.apply(perDay)
                     + EnumChatFormatting.RESET);
         }

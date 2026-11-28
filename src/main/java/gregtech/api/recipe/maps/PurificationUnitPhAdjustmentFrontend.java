@@ -1,5 +1,8 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -66,7 +69,8 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
             currentTip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.nei.purified_water.grade_4.1",
-                    MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100));
+                    formatNumber(MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100),
+                    formatFluid(1_000)));
         }
 
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);

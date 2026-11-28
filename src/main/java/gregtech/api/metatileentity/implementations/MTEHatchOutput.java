@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
@@ -524,7 +523,7 @@ public class MTEHatchOutput extends MTEHatch
 
     @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", formatNumber(getCapacity()));
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", formatFluid(getCapacity()));
     }
 
     @Override

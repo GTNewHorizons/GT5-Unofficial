@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluidCompact;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -167,7 +168,7 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount) {
-        String shortenedCount = GTUtility.formatShortenedLong(amount);
+        String shortenedCount = formatFluidCompact(amount);
         String rateShort = GTUtility.appendRate(false, amount, true, 1);
         int amountLen = (translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount)
             + rateShort).length();

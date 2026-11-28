@@ -1661,7 +1661,6 @@ gt.blockmachines.gt.icecreammachine.name=冰淇凌机
 gt.blockmachines.hatch.advancedbeamlineoutput.name=过滤式束流输出仓
 gt.blockmachines.hatch.air.intake.tier.00.name=进气仓
 gt.blockmachines.hatch.air.intake.tier.01.name=超级进气仓
-gt.blockmachines.hatch.air.intake.tier.01.tooltip=多方块机器的流体输入端\n容量：256,000 L\n仓室等级：§bZPM§r\n§c请勿阻塞输入！\n从周围环境吸入空气\n每20tick生成40000L空气\n添加者：§2Alkalus §7- §c[GT++]
 gt.blockmachines.hatch.air.intake.tier.02.name=大气层进气仓
 gt.blockmachines.hatch.beamlineinput.name=束流输入仓
 gt.blockmachines.hatch.beamlineoutput.name=束流输出仓
@@ -1714,7 +1713,6 @@ gt.blockmachines.hatch.maintenance.auto.tooltip=用于自动维护多方块机�
 gt.blockmachines.hatch.milling.name=研磨球仓
 gt.blockmachines.hatch.milling.tooltip=专用研磨球存储\n添加者：§2Alkalus §7- §c[GT++]
 gt.blockmachines.hatch.multi.input.tier.11.name=巨型四重输入仓
-gt.blockmachines.hatch.multi.input.tier.11.tooltip=多方块机器的流体输入端\n容量：500,000,000L\n可容纳4种流体。
 gt.blockmachines.hatch.nanite.name=纳米蜂群收容总线
 gt.blockmachines.hatch.nanite.tooltip=存储用于多方块结构的纳米蜂群\n拆卸后保留其内容物
 gt.blockmachines.hatch.nanite.singularity.name=奇点纳米蜂群收容总线
@@ -1785,7 +1783,6 @@ gt.blockmachines.pollutiondetector.01.tier.single.name=污染探测仪
 gt.blockmachines.pollutiondetector.01.tier.single.tooltip=是的，你正居住在瓜廖尔\n右键查看污染水平\n用螺丝刀配置红石信号输出\n不消耗能源\n添加者：§2Alkalus §7- §c[GT++]
 
 gt.blockmachines.quantum.tank.debug.name=Debug 流体储罐
-gt.blockmachines.quantum.tank.debug.tooltip=可以存储2,147,483,640 L流体\n拆卸后保留其中流体
 
 gt.blockmachines.redstone.lamp.name=红石控制灯具
 gt.blockmachines.redstone.lamp.tooltip=红石控制灯具\n添加者：§2Alkalus §7- §c[GT++]

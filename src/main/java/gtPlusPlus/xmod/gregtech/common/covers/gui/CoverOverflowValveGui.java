@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.covers.gui;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
+
+import net.minecraft.util.EnumChatFormatting;
+
 import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -39,7 +43,8 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
                 makeNumberField().value(new IntSyncValue(cover::getOverflowPoint, cover::setOverflowPoint).allowC2S())
                     .numbersInt(cover::getMinOverflowPoint, cover::getMaxOverflowPoint))
             .child(
-                IKey.lang("GTPP.gui.text.cover_overflow_valve_liter")
+                IKey.str(getFluidUnit())
+                    .style(EnumChatFormatting.DARK_GRAY)
                     .asWidget());
     }
 
@@ -50,7 +55,7 @@ public class CoverOverflowValveGui extends CoverBaseGui<CoverOverflowValve> {
                     .numbersInt(cover::getMinOverflowPoint, cover::getMaxOverflowPoint)
                     .setFocusOnGuiOpen(true))
             .child(
-                IKey.lang("GTPP.gui.text.cover_overflow_valve_l_per_update")
+                IKey.lang("GTPP.gui.text.cover_overflow_valve_fluid_per_update", getFluidUnit())
                     .asWidget());
     }
 

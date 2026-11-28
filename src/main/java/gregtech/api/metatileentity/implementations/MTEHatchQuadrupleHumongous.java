@@ -1,9 +1,11 @@
 package gregtech.api.metatileentity.implementations;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchQuadrupleHumongous extends MTEHatchMultiInput {
 
     public MTEHatchQuadrupleHumongous(int aID, int aSlot, String aName, String aNameRegional) {

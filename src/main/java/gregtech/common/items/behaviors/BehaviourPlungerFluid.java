@@ -1,5 +1,7 @@
 package gregtech.common.items.behaviors;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +22,8 @@ import gregtech.api.util.GTUtility;
 
 public class BehaviourPlungerFluid extends BehaviourNone {
 
+    private static final int DRAIN_AMOUNT = 1_000;
+
     private final int mCosts;
 
     public BehaviourPlungerFluid(int aCosts) {
@@ -32,7 +36,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
         if (aWorld.isRemote) {
             return false;
         }
-        int drainAmount = aPlayer.isSneaking() ? Integer.MAX_VALUE : 1000;
+        int drainAmount = aPlayer.isSneaking() ? Integer.MAX_VALUE : DRAIN_AMOUNT;
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if ((aTileEntity instanceof IFluidHandler)) {
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
@@ -61,7 +65,7 @@ public class BehaviourPlungerFluid extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.plunger.fluid"));
+        aList.add(StatCollector.translateToLocalFormatted("gt.behaviour.plunger.fluid", formatFluid(DRAIN_AMOUNT)));
         return aList;
     }
 }

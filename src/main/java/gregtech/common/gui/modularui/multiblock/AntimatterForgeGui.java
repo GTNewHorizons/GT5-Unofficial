@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -13,14 +15,12 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import goodgenerator.blocks.tileEntity.AntimatterForge;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
 
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
     protected static DecimalFormat standardFormat;
     static {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
@@ -54,7 +54,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.0.s",
-                            numberFormat.format(containedSync.getLongValue())))).setEnabledIf(w -> multiblock.mMachine))
+                            formatFluid(containedSync.getLongValue())))).setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
@@ -74,7 +74,7 @@ public class AntimatterForgeGui extends MTEMultiBlockBaseGui<AntimatterForge> {
                     IKey.dynamic(
                         () -> StatCollector.translateToLocalFormatted(
                             "gui.AntimatterForge.3.s",
-                            numberFormat.format(amChangeSync.getLongValue())))).setEnabledIf(w -> multiblock.mMachine));
+                            formatFluid(amChangeSync.getLongValue())))).setEnabledIf(w -> multiblock.mMachine));
 
     }
 }

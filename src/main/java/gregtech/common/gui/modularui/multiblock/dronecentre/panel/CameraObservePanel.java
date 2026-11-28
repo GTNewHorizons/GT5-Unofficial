@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -333,7 +335,7 @@ public class CameraObservePanel extends ModularPanel {
                 EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.drone_output_fluid",
                     fluidName,
-                    status.getInteger("outputFluidCount" + i)));
+                    formatFluid(status.getInteger("outputFluidCount" + i))));
         }
 
         if (itemCount == 0 && fluidCount == 0) {
