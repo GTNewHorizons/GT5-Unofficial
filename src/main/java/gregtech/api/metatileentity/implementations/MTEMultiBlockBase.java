@@ -108,6 +108,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -434,11 +435,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
             if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
-                SingleRecipeCheck c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
-                if (c != null) mSingleRecipeCheck = c;
-                // the old recipe is gone. we disable the machine to prevent making garbage in case of shared inputs
-                // maybe use a better way to inform player in the future.
-                else getBaseMetaTileEntity().disableWorking();
+                NBTTagCompound recipeCache = aNBT.getCompoundTag("mSingleRecipeCheck");
+                int specialValue = recipeCache.getInteger("specialValue");
+                // Temporary cache reset, remove after one stable release with environment metadata
+                if (specialValue == -100 || specialValue == -200 || specialValue == -300) {
+                    mSingleRecipeCheck = null;
+                    aNBT.removeTag("mSingleRecipeCheck");
+                } else {
+                    SingleRecipeCheck c = loadSingleRecipeChecker(recipeCache);
+                    if (c != null) mSingleRecipeCheck = c;
+                    // An unrelated recipe change retains the existing shutdown behavior
+                    else getBaseMetaTileEntity().disableWorking();
+                }
             }
         }
         // Item NBT (e.g. from setItemNBT) may lack this key, keep the configured default then
@@ -649,7 +657,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (mMachine) {
                     checkMaintenance();
                     if (getRepairStatus() > 0) {
-                        runMachine(aBaseMetaTileEntity, aTick);
+                        if (mMaxProgresstime > 0 && !satisfiesActiveRecipeEnvironments()) {
+                            stopMachine(getEnvironmentShutdownReason());
+                        } else {
+                            runMachine(aBaseMetaTileEntity, aTick);
+                        }
                     } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                         stopMachine(ShutDownReasonRegistry.NO_REPAIR);
                     }
@@ -771,6 +783,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public void onRecipeEnvironmentChanged() {
+        super.onRecipeEnvironmentChanged();
+        scheduleRecipeCheckImmediate();
+    }
+
+    @Override
     public void scheduleRecipeCheck(RecipeCheckReason reason) {
         if (reason.throttled) {
             recipeCheckThrottled = true;
@@ -780,8 +798,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected boolean shouldCheckRecipeThisTick(long aTick) {
-        // Recipe checks are purely event-driven: hatches and config changes push via scheduleRecipeCheck(reason)
-        // instead of being polled on a periodic timer.
+        // Hatches and config changes schedule checks
+        // Environment-blocked recipes also retry below
         if (recipeCheckImmediately) {
             // An immediate push (new inputs, drained output, user/structure change) always runs, and covers any
             // pending throttled push too.
@@ -794,7 +812,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             recipeCheckThrottled = false;
             return true;
         }
-        if (doPeriodicChecks) {
+        if (doPeriodicChecks || (CheckRecipeResultRegistry.MISSING_ENVIRONMENT.equals(checkRecipeResult)
+            && mTotalRunTime >= recipeCheckCooldownUntil)) {
             // Perform more frequent recipe change after the machine just shuts down.
             long timeElapsed = mTotalRunTime - mLastWorkingTick;
 
@@ -842,6 +861,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (mMaxProgresstime > 0) {
                     incrementProgressTime();
                     if (mProgresstime >= mMaxProgresstime) {
+                        if (!satisfiesActiveRecipeEnvironments(true)) {
+                            stopMachine(getEnvironmentShutdownReason());
+                            return;
+                        }
                         // Record production data
                         if (!mMaintenanceHatches.isEmpty()
                             && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
@@ -866,6 +889,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         mOutputItems = null;
                         mProgresstime = 0;
                         mMaxProgresstime = 0;
+                        setActiveRecipeEnvironments(RecipeEnvironmentRequirements.EMPTY);
                         if (processingLogic != null) {
                             recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
                         } else {
@@ -1471,6 +1495,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             throw new RuntimeException(String.format("Reason %s is not registered for registry", reason.getID()));
         }
         mLastWorkingTick = mTotalRunTime;
+        setActiveRecipeEnvironments(RecipeEnvironmentRequirements.EMPTY);
         mOutputItems = null;
         mOutputFluids = null;
         mEUt = 0;

@@ -319,6 +319,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
                 aNBT.setTag("Inventory", tItemList);
 
                 try {
+                    if (getMetaTileEntity() instanceof MetaTileEntity machine) machine.saveRecipeEnvironmentsNBT(aNBT);
                     getMetaTileEntity().saveNBTData(aNBT);
                 } catch (Exception e) {
                     GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
@@ -347,6 +348,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             }
 
             try {
+                if (getMetaTileEntity() instanceof MetaTileEntity machine) machine.loadRecipeEnvironmentsNBT(aNBT);
                 getMetaTileEntity().loadNBTData(aNBT);
             } catch (Exception e) {
                 GT_FML_LOGGER.error("Encountered Exception while loading MetaTileEntity.");

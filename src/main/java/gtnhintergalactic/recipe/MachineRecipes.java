@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.TickTime.MINUTE;
+import static gregtech.api.recipe.RecipeEnvironment.CLEANROOM;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
@@ -101,7 +102,7 @@ public class MachineRecipes implements Runnable {
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.GlueAdvanced, FluidShapes.fluidLiquid, 720))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_ZPM)
-            .requiresCleanRoom()
+            .requiresEnvironment(CLEANROOM)
             .addTo(assemblerRecipes);
 
         // Space Elevator Cable

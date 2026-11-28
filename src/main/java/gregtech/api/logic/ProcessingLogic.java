@@ -17,7 +17,9 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GTDualInputPattern;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -458,6 +460,12 @@ public class ProcessingLogic {
      */
     @Nonnull
     private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+        RecipeEnvironmentRequirements requirements = recipe.getEnvironmentRequirements();
+        if (!requirements.isEmpty()
+            && (!(machine instanceof MetaTileEntity controller) || !requirements.matches(controller, false))) {
+            return CalculationResult.ofFailure(CheckRecipeResultRegistry.MISSING_ENVIRONMENT);
+        }
+
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return CalculationResult.ofFailure(result);
@@ -473,7 +481,11 @@ public class ProcessingLogic {
             return CalculationResult.ofFailure(helper.getResult());
         }
 
-        return CalculationResult.ofSuccess(applyRecipe(recipe, helper, calculator, result));
+        CheckRecipeResult applied = applyRecipe(recipe, helper, calculator, result);
+        if (applied.wasSuccessful() && machine instanceof MetaTileEntity controller) {
+            controller.setActiveRecipeEnvironments(requirements);
+        }
+        return CalculationResult.ofSuccess(applied);
     }
 
     /**

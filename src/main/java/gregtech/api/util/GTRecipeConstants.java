@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,6 +24,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.materials.FluidShapes;
@@ -29,6 +32,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.api.recipe.RecipeEnvironment;
+import gregtech.api.recipe.RecipeEnvironmentRequirements;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.CompressionTierKey;
@@ -40,6 +45,7 @@ import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
+import gregtech.nei.RecipeDisplayInfo;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -49,17 +55,33 @@ import gtnhlanth.common.register.LanthItemList;
 public class GTRecipeConstants {
 
     /**
-     * Set to true to signal the recipe require low gravity. do nothing if recipe set specialValue explicitly. Can
-     * coexist with CLEANROOM just fine
+     * @deprecated Use {@link RecipeEnvironment#LOW_GRAVITY} with the builder's requiresEnvironment method
      */
+    @Deprecated
     public static final RecipeMetadataKey<Boolean> LOW_GRAVITY = SimpleRecipeMetadataKey
         .create(Boolean.class, "low_gravity");
     /**
-     * Set to true to signal the recipe require cleanroom. do nothing if recipe set specialValue explicitly. Can coexist
-     * with LOW_GRAVITY just fine
+     * @deprecated Use {@link RecipeEnvironment#CLEANROOM} with the builder's requiresEnvironment method
      */
+    @Deprecated
     public static final RecipeMetadataKey<Boolean> CLEANROOM = SimpleRecipeMetadataKey
         .create(Boolean.class, "cleanroom");
+
+    public static final RecipeMetadataKey<RecipeEnvironmentRequirements> ENVIRONMENT_REQUIREMENTS = new RecipeMetadataKey<>(
+        RecipeEnvironmentRequirements.class,
+        "environment_requirements") {
+
+        @Override
+        public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
+            RecipeEnvironmentRequirements requirements = cast(value, RecipeEnvironmentRequirements.EMPTY);
+            for (String id : requirements.getIds()) {
+                RecipeEnvironment environment = RecipeEnvironment.get(id);
+                if (environment == RecipeEnvironment.CLEANROOM && !GTMod.proxy.mEnableCleanroom) continue;
+                if (environment == RecipeEnvironment.LOW_GRAVITY && !GTMod.proxy.mLowGravProcessing) continue;
+                recipeInfo.drawText(environment == null ? id : environment.getDescription());
+            }
+        }
+    };
     /**
      * Common additive to use in recipe, e.g. for PBF, this is coal amount.
      */
@@ -408,7 +430,7 @@ public class GTRecipeConstants {
                 .addTo(RecipeMaps.chemicalReactorRecipes),
             convertCellToFluid(builder, false)
                 // LCR does not need cleanroom.
-                .metadata(CLEANROOM, false)
+                .requiresEnvironment(RecipeEnvironment.CLEANROOM, false)
                 .addTo(RecipeMaps.multiblockChemicalReactorRecipes));
     });
 
