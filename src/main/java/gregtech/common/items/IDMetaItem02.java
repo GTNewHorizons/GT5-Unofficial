@@ -13,10 +13,12 @@ public enum IDMetaItem02 {
     ThermosCan_Tea(7),
     ThermosCan_Sweet_Tea(8),
     ThermosCan_Ice_Tea(9),
-    GelledToluene(10),
-    Dynamite(11),
+    // 0-19 reserved for thermos drinks
     PlantBall(20),
     BioChaff(21),
+    GelledToluene(22),
+    Dynamite(23),
+    // 100-199 reserved for bottled drinks
     Bottle_Purple_Drink(100),
     Bottle_Grape_Juice(101),
     Bottle_Wine(102),
@@ -55,6 +57,7 @@ public enum IDMetaItem02 {
     Bottle_Cave_Johnsons_Grenade_Juice(135),
     Bottle_Milk(136),
     Bottle_Holy_Water(137),
+    // 100-199 reserved for bottled drinks
     Food_Potato_On_Stick(200),
     Food_Potato_On_Stick_Roasted(201),
     Food_Raw_Fries(202),

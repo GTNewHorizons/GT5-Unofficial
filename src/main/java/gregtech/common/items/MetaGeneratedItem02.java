@@ -4098,10 +4098,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         if (aDamage < 32000) {
             return null;
         }
-        if (aDamage < 32100) {
+        if (aDamage < 32020) {
             return ItemList.ThermosCan_Empty.get(1L);
         }
-        if (aDamage < 32200) {
+        if (aDamage <= 32199 && aDamage >= 32100) {
             return ItemList.Bottle_Empty.get(1L);
         }
         return null;
