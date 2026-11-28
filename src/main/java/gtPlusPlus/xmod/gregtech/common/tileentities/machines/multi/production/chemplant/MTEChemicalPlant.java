@@ -409,7 +409,6 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
         pipeCasingTier = 0;
         coilTier = 0;
         maxTierOfHatch = 0;
-        catalystBuses.clear();
         setCoilMeta(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
@@ -455,6 +454,10 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
         IMetaTileEntity imte = igte.getMetaTileEntity();
         if (imte instanceof MTEHatchMaintenance) {
             return addToMachineList(igte, baseCasingIndex);
+        }
+        if (imte instanceof MTEHatchCatalysts hatch) {
+            addIfSmartInput(hatch);
+            return catalystBuses.add(hatch);
         }
         switch (imte) {
             case MTEHatchInputBus bus -> maxTierOfHatch = Math.max(maxTierOfHatch, bus.mTier);
@@ -672,16 +675,7 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
 
         @Override
         public IGTHatchAdder<? super MTEChemicalPlant> adder() {
-            return (self, igte, texture) -> {
-                if (igte.getMetaTileEntity() instanceof MTEHatchCatalysts imte) {
-                    imte.updateTexture(texture);
-                    imte.updateCraftingIcon(self.getMachineCraftingIcon(), self.getBaseMetaTileEntity());
-                    self.addIfSmartInput(imte);
-                    self.catalystBuses.add(imte);
-                    return true;
-                }
-                return false;
-            };
+            return MTEChemicalPlant::addChemicalPlantList;
         }
 
         @Override
