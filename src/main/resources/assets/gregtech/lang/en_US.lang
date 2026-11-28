@@ -4627,6 +4627,7 @@ GT5U.armor.part.name.HoloInventory=Augment: Holographic Inventory
 GT5U.armor.part.name.Terrasteel=Augment: Terrestrial Enhancement
 GT5U.armor.part.name.Soulbound=Augment: Soul Tether
 GT5U.armor.part.name.Magnet=Augment: Item Attractor
+GT5U.armor.part.name.AutoFeeder=Augment: Nutrient Dispenser
 GT5U.armor.part.name.ApprenticeStriders=Augment: Apprentice Striders
 GT5U.armor.part.name.ArchmageStriders=Augment: Archmage Striders
 GT5U.armor.part.name.EldritchStriders=Augment: Eldritch Striders
@@ -4655,6 +4656,7 @@ GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby invento
 GT5U.armor.part.tooltip.Terrasteel=Grants the Will of the Ancients. Effects include:\n - 40%% Mana Discount\n - Passive Mana generation for Mana Tablets\n - Passive health regeneration when not fully fed
 GT5U.armor.part.tooltip.Soulbound=Prevents this armor piece from being dropped on death
 GT5U.armor.part.tooltip.Magnet=Instantly picks up nearby items and XP while active
+GT5U.armor.part.tooltip.AutoFeeder=Feeds you when you're hungry. Prioritizes Tin Cans. Link helmet once added in a ME Security Terminal to pull cans and other food from your network.
 GT5U.armor.part.tooltip.ApprenticeStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 GT5U.armor.part.tooltip.ArchmageStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
 GT5U.armor.part.tooltip.EldritchStriders=Allows the user to run faster, jump higher, grants step assist and a vis discount
@@ -4686,6 +4688,7 @@ GT5U.armor.behavior.Terrasteel=Will of the Ancients
 GT5U.armor.behavior.Soulbound=Soulbound
 GT5U.armor.behavior.Levitation=Levitation Mode
 GT5U.armor.behavior.Magnet=Magnet
+GT5U.armor.behavior.AutoFeeder=Auto-Feeder
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
@@ -4694,6 +4697,8 @@ GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
 GT5U.armor.message.speed_set=§6New speed:§r %s
 GT5U.armor.message.jump_boost_set=§6New jump boost:§r %s
 
+GT5U.armor.tooltip.me_linked=Linked to ME System
+GT5U.armor.tooltip.me_not_linked=Not Linked to ME System
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s
 GT5U.armor.tooltip.energycorelabel=Energy Core: %s
@@ -5595,6 +5600,12 @@ gt.item.item_filter.import.tooltip=Right click with an item to set filter (Only 
 ## Fluid Limiter Cover
 gt.item.cover.fluid_limiter.name=Fluid Limiter Cover
 gt.item.cover.fluid_limiter.tooltip=Limits fluid input depending on fill level
+gt.item.tin_can.empty.name=Tin Can
+gt.item.tin_can.empty.tooltip=Fill it with food in a Canning Machine
+gt.item.tin_can.filled.name=Tin Can (Filled)
+gt.item.tin_can.filled.tooltip=Right-click to consume can
+gt.item.tin_can.spoiled.name=Tin Can (Spoiled)
+gt.item.tin_can.spoiled.tooltip=Hmmm this can definitely has botulism. Would not eat it if i were you.
 
 ## Conveyor Modules
 gt.item.conveyor_module.lv.name=Conveyor Module (LV)

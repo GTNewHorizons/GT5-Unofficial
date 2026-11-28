@@ -421,6 +421,9 @@ import static gregtech.common.items.IDMetaItem01.T3Sawblade;
 import static gregtech.common.items.IDMetaItem01.T4Sawblade;
 import static gregtech.common.items.IDMetaItem01.Tesseract;
 import static gregtech.common.items.IDMetaItem01.Thermos_Can_Empty;
+import static gregtech.common.items.IDMetaItem01.TinCan_Empty;
+import static gregtech.common.items.IDMetaItem01.TinCan_Filled;
+import static gregtech.common.items.IDMetaItem01.TinCan_Spoiled;
 import static gregtech.common.items.IDMetaItem01.Tool_Cheat;
 import static gregtech.common.items.IDMetaItem01.Tool_Cover_Copy_Paste;
 import static gregtech.common.items.IDMetaItem01.Tool_DataOrb;
@@ -528,6 +531,7 @@ import gregtech.common.items.behaviors.BehaviourSensorKit;
 import gregtech.common.items.behaviors.BehaviourSprayColor;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
+import gregtech.common.items.behaviors.BehaviourTinCan;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
@@ -2293,6 +2297,31 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Cover_FluidLimiter.ID,
                 "gt.item.cover.fluid_limiter.name",
                 "gt.item.cover.fluid_limiter.tooltip"));
+
+        ItemList.TinCan_Empty.set(
+            addItemWithLocalizationKeys(
+                TinCan_Empty.ID,
+                "gt.item.tin_can.empty.name",
+                "gt.item.tin_can.empty.tooltip",
+                new ItemData(Materials.Tin, OrePrefixes.itemCasing.getMaterialAmount()),
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
+        ItemList.TinCan_Filled.set(
+            addItemWithLocalizationKeys(
+                TinCan_Filled.ID,
+                "gt.item.tin_can.filled.name",
+                "gt.item.tin_can.filled.tooltip",
+                new BehaviourTinCan(false),
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
+        ItemList.TinCan_Spoiled.set(
+            addItemWithLocalizationKeys(
+                TinCan_Spoiled.ID,
+                "gt.item.tin_can.spoiled.name",
+                "gt.item.tin_can.spoiled.tooltip",
+                new BehaviourTinCan(true),
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 1L)));
 
         ItemList.Conveyor_Module_LV.set(
             addItemWithLocalizationKeys(

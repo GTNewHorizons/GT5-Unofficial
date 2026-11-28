@@ -56,6 +56,10 @@ public class GTFoodStat implements IFoodStat {
         return this;
     }
 
+    public boolean isExplosive() {
+        return mExplosive;
+    }
+
     public GTFoodStat setMilk() {
         mMilk = true;
         return this;

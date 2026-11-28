@@ -92,6 +92,9 @@ public enum ItemList implements IItemContainer {
     IC2_Food_Can_Empty,
     IC2_Food_Can_Filled,
     IC2_Food_Can_Spoiled,
+    TinCan_Empty,
+    TinCan_Filled,
+    TinCan_Spoiled,
     IC2_ShaftIron,
     IC2_ShaftSteel,
     IC2_Industrial_Diamond,
@@ -2887,6 +2890,7 @@ public enum ItemList implements IItemContainer {
     Augment_MilkInfusion,
     Augment_HoloInventory,
     Augment_Terrasteel,
+    Augment_AutoFeeder,
     Augment_Soulbound,
 
     CompressedOutputBusLuV,
