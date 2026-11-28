@@ -188,9 +188,9 @@ public class RecipesMachinesCustom {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.PlasmaTurbine.get(1),
-                MaterialsAlloy.PIKYONIUM.getPlate(8),
-                MaterialsAlloy.PIKYONIUM.getScrew(16),
-                MaterialsAlloy.PIKYONIUM.getGear(4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NaquadahAlloy, 8),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 16),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.NaquadahAlloy, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
             .circuit(18)
             .itemOutputs(ItemList.PlasmaTurbineXL.get(1))
