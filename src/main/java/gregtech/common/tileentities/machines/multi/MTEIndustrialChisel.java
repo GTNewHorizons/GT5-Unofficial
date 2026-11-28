@@ -311,6 +311,14 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
                 if (foundResult.wasSuccessful()) return foundResult;
                 if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
             }
+
+            // Default recipe, without a target block
+            processingLogic.setInputItems(busItems.toArray(new ItemStack[0]));
+            processingLogic.setSpecialSlotItem(null);
+
+            CheckRecipeResult foundResult = processingLogic.process();
+            if (foundResult.wasSuccessful()) return foundResult;
+            if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
         }
         return result;
     }
