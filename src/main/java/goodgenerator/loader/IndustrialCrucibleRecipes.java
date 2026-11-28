@@ -1,7 +1,7 @@
 package goodgenerator.loader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipe.GTRecipe_WithAlt;
 import gregtech.api.util.GTUtility;
 
 public class IndustrialCrucibleRecipes {
@@ -25,11 +25,27 @@ public class IndustrialCrucibleRecipes {
 
     public static class CrucibleRecipeInfo {
 
-        public ItemStack catalyst;
+        private ItemStack[] catalysts;
         public int circuitID;
         public thaumcraft.api.aspects.AspectList aspects;
         public ItemStack output;
         public String researchKey;
+
+        public boolean matchesCatalyst(ItemStack input) {
+            for (ItemStack catalyst : catalysts) {
+                if (thaumcraft.api.ThaumcraftApiHelper.itemMatches(catalyst, input, false)) return true;
+            }
+            return false;
+        }
+
+        private boolean sharesCatalyst(CrucibleRecipeInfo other) {
+            for (ItemStack catalyst : catalysts) {
+                for (ItemStack alternative : other.catalysts) {
+                    if (GTUtility.areStacksEqual(catalyst, alternative, true)) return true;
+                }
+            }
+            return false;
+        }
     }
 
     public static final List<CrucibleRecipeInfo> CRUCIBLE_RECIPES = new ArrayList<>();
@@ -117,49 +133,46 @@ public class IndustrialCrucibleRecipes {
 
     private static void loadRecipesFromThaumcraft() {
         CRUCIBLE_RECIPES.clear();
-        Map<String, Integer> totalOccurrences = new HashMap<>();
-        List<thaumcraft.api.crafting.CrucibleRecipe> validRecipes = new ArrayList<>();
-
         Item aspectItem = GameRegistry.findItem("aspectrecipeindex", "itemAspect");
         if (aspectItem == null) aspectItem = GameRegistry.findItem("aspectrecipeindex", "aspect");
 
         for (Object obj : thaumcraft.api.ThaumcraftApi.getCraftingRecipes()) {
-            if (obj instanceof thaumcraft.api.crafting.CrucibleRecipe) {
-                thaumcraft.api.crafting.CrucibleRecipe recipe = (thaumcraft.api.crafting.CrucibleRecipe) obj;
-                ItemStack catalyst = recipe.catalyst instanceof ItemStack ? (ItemStack) recipe.catalyst
-                    : (recipe.catalyst instanceof List && !((List<?>) recipe.catalyst).isEmpty()
-                        ? (ItemStack) ((List<?>) recipe.catalyst).get(0)
-                        : null);
-
-                if (catalyst == null || recipe.getRecipeOutput() == null) continue;
-                validRecipes.add(recipe);
-                String key = catalyst.getUnlocalizedName() + ":" + catalyst.getItemDamage();
-                totalOccurrences.put(key, totalOccurrences.getOrDefault(key, 0) + 1);
+            if (!(obj instanceof thaumcraft.api.crafting.CrucibleRecipe recipe) || recipe.getRecipeOutput() == null) {
+                continue;
             }
-        }
 
-        Map<String, Integer> currentCounts = new HashMap<>();
-        for (thaumcraft.api.crafting.CrucibleRecipe recipe : validRecipes) {
-            ItemStack catalyst = recipe.catalyst instanceof ItemStack ? (ItemStack) recipe.catalyst
-                : (ItemStack) ((List<?>) recipe.catalyst).get(0);
-            String key = catalyst.getUnlocalizedName() + ":" + catalyst.getItemDamage();
-            int total = totalOccurrences.get(key);
-            int circuitID = (total > 1) ? currentCounts.getOrDefault(key, 0) + 1 : 0;
-            if (total > 1) currentCounts.put(key, circuitID);
+            List<ItemStack> catalysts = new ArrayList<>();
+            if (recipe.catalyst instanceof ItemStack catalyst) {
+                catalysts.add(catalyst.copy());
+            } else if (recipe.catalyst instanceof List<?>alternatives) {
+                for (Object alternative : alternatives) {
+                    if (alternative instanceof ItemStack catalyst) catalysts.add(catalyst.copy());
+                }
+            }
+            if (catalysts.isEmpty()) continue;
 
             CrucibleRecipeInfo info = new CrucibleRecipeInfo();
-            info.catalyst = catalyst.copy();
-            info.circuitID = circuitID;
+            info.catalysts = catalysts.toArray(new ItemStack[0]);
             info.aspects = recipe.aspects.copy();
             info.output = recipe.getRecipeOutput()
                 .copy();
-
             info.researchKey = recipe.key;
-
             CRUCIBLE_RECIPES.add(info);
+        }
+
+        for (CrucibleRecipeInfo info : CRUCIBLE_RECIPES) {
+            BitSet circuits = new BitSet();
+            boolean sharesCatalyst = false;
+            for (CrucibleRecipeInfo other : CRUCIBLE_RECIPES) {
+                if (other == info || !info.sharesCatalyst(other)) continue;
+                sharesCatalyst = true;
+                circuits.set(other.circuitID);
+            }
+            int circuitID = sharesCatalyst ? circuits.nextClearBit(1) : 0;
+            info.circuitID = circuitID;
 
             List<ItemStack> neiInputs = new ArrayList<>();
-            neiInputs.add(info.catalyst.copy());
+            neiInputs.add(info.catalysts[0].copy());
             if (circuitID > 0) neiInputs.add(GTUtility.getIntegratedCircuit(circuitID));
 
             for (Map.Entry<thaumcraft.api.aspects.Aspect, Integer> entry : info.aspects.aspects.entrySet()) {
@@ -174,8 +187,10 @@ public class IndustrialCrucibleRecipes {
                     neiInputs.add(s);
                 }
             }
+            ItemStack[][] alternatives = new ItemStack[neiInputs.size()][];
+            alternatives[0] = info.catalysts;
             sCrucibleRecipes.addRecipe(
-                new GTRecipe(
+                new GTRecipe_WithAlt(
                     false,
                     neiInputs.toArray(new ItemStack[0]),
                     new ItemStack[] { info.output },
@@ -188,7 +203,9 @@ public class IndustrialCrucibleRecipes {
                     null,
                     100,
                     480,
-                    0));
+                    0,
+                    alternatives,
+                    null));
         }
     }
 }

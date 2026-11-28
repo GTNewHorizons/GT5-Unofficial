@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.IndustrialCrucibleRecipes;
 import goodgenerator.loader.Loaders;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -51,6 +52,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumic.tinkerer.common.item.ItemShareBook;
 
 public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvivalConstructable {
 
@@ -194,11 +196,12 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
 
         if (!checkPiece(STRUCTURE_PIECE_TOP, 2, middleLen + 2, 0, errors)) return;
         checkCasingMin(errors, mCasing, 28);
-        checkHasMaintenanceHatch(errors);
-        checkHasMufflerHatch(errors);
-        if (mEnergyHatches.isEmpty()) checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
+        checkOneMufflerHatch(errors);
+        checkHasEnergyHatch(errors);
         if (!errors.isEmpty()) return;
 
+        this.doPeriodicChecks = true;
         this.mCurrentLength = middleLen;
         this.mParallel = this.mCurrentLength * (1 << Math.max(0, this.pTier)) * 2;
     }
@@ -243,7 +246,9 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         if (inputs.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         ItemStack tome = mInventory[1];
-        if (tome == null) return SimpleCheckRecipeResult.ofFailure("ic.no_tome");
+        if (tome == null || !Mods.ThaumicTinkerer.isModLoaded() || !(tome.getItem() instanceof ItemShareBook)) {
+            return SimpleCheckRecipeResult.ofFailure("ic.no_tome");
+        }
         String bookOwner = null;
         if (tome.hasTagCompound() && tome.getTagCompound()
             .hasKey("player"))
@@ -261,7 +266,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         for (IndustrialCrucibleRecipes.CrucibleRecipeInfo r : IndustrialCrucibleRecipes.CRUCIBLE_RECIPES) {
             if (r.circuitID != circuit) continue;
             for (ItemStack item : inputs) {
-                if (GTUtility.areStacksEqual(r.catalyst, item, true)) {
+                if (r.matchesCatalyst(item)) {
                     info = r;
                     break;
                 }
@@ -284,7 +289,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         int maxP = Math.max(1, this.mParallel);
         int totalCat = 0;
         for (ItemStack is : inputs) {
-            if (GTUtility.areStacksEqual(info.catalyst, is, true)) totalCat += is.stackSize;
+            if (info.matchesCatalyst(is)) totalCat += is.stackSize;
         }
         int crafts = Math.min(totalCat, maxP);
 
@@ -306,7 +311,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
 
         int toCons = crafts;
         for (ItemStack in : inputs) {
-            if (GTUtility.areStacksEqual(info.catalyst, in, true)) {
+            if (info.matchesCatalyst(in)) {
                 int t = Math.min(in.stackSize, toCons);
                 in.stackSize -= t;
                 toCons -= t;
@@ -323,7 +328,14 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
             }
         }
 
-        this.mOutputItems = new ItemStack[] { GTUtility.copyAmount(crafts * info.output.stackSize, info.output) };
+        int outputCount = crafts * info.output.stackSize;
+        int stackLimit = info.output.getMaxStackSize();
+        this.mOutputItems = new ItemStack[(outputCount + stackLimit - 1) / stackLimit];
+        for (int i = 0; i < this.mOutputItems.length; i++) {
+            int stackSize = Math.min(outputCount, stackLimit);
+            this.mOutputItems[i] = GTUtility.copyAmount(stackSize, info.output);
+            outputCount -= stackSize;
+        }
         this.mPollution = 2200;
 
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[HV])
