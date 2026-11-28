@@ -32,6 +32,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cricketcraft.chisel.api.IFacade;
+import com.gtnewhorizon.gtnhlib.api.IBlockWithOutlineShape;
+import com.gtnewhorizon.gtnhlib.api.OutlineShape;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
@@ -68,7 +70,8 @@ import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = Mods.ModIDs.CHISEL_API)
-public class BlockMachines extends GTGenericBlock implements IDebugableBlock, ITileEntityProvider, IFacade {
+public class BlockMachines extends GTGenericBlock
+    implements IDebugableBlock, ITileEntityProvider, IFacade, IBlockWithOutlineShape {
 
     private static final ThreadLocal<IGregTechTileEntity> mTemporaryTileEntity = new ThreadLocal<>();
     private boolean renderAsNormalBlock;
@@ -323,9 +326,19 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             return gtTE.getMetaTileEntity()
-                .getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+                .getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
         }
         return super.getSelectedBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    @Override
+    public OutlineShape getOutlineShape(World aWorld, int aX, int aY, int aZ) {
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity()
+                .getOutlineShape();
+        }
+        return OutlineShape.EMPTY;
     }
 
     @Override // THIS
@@ -333,7 +346,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity tTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             final AxisAlignedBB bbb = gtTE.getMetaTileEntity()
-                .getCollisionBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
+                .getSelectedBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
             minX = bbb.minX; // This essentially sets block bounds
             minY = bbb.minY;
             minZ = bbb.minZ;

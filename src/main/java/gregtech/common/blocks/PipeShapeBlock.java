@@ -16,6 +16,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.api.IBlockWithOutlineShape;
+import com.gtnewhorizon.gtnhlib.api.OutlineShape;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
@@ -41,7 +43,7 @@ import gregtech.common.render.GTRendererBlock;
 /// The block for one size of wire, cable, fluid pipe, or item pipe MaterialLib shape. Metadata is the material
 /// index. Each placement carries a [BaseMetaPipeEntity] bound to the shape's material-agnostic MTE ([#mteId]).
 /// World behavior mirrors [BlockMachines].
-public class PipeShapeBlock extends ShapeBlock {
+public class PipeShapeBlock extends ShapeBlock implements IBlockWithOutlineShape {
 
     /// The pipe kind a shape belongs to.
     public enum PipeFamily {
@@ -150,6 +152,12 @@ public class PipeShapeBlock extends ShapeBlock {
     @Override
     public boolean isBlockNormalCube() {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public float getAmbientOcclusionLightValue() {
+        return 1.0F;
     }
 
     @Override
@@ -330,9 +338,19 @@ public class PipeShapeBlock extends ShapeBlock {
         final TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             return gtTE.getMetaTileEntity()
-                .getCollisionBoundingBoxFromPool(world, x, y, z);
+                .getSelectedBoundingBoxFromPool(world, x, y, z);
         }
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    @Override
+    public OutlineShape getOutlineShape(World world, int x, int y, int z) {
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
+            return gtTE.getMetaTileEntity()
+                .getOutlineShape();
+        }
+        return OutlineShape.EMPTY;
     }
 
     @Override
@@ -340,7 +358,7 @@ public class PipeShapeBlock extends ShapeBlock {
         final TileEntity tileEntity = blockAccess.getTileEntity(x, y, z);
         if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.canAccessData()) {
             final AxisAlignedBB bbb = gtTE.getMetaTileEntity()
-                .getCollisionBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
+                .getSelectedBoundingBoxFromPool(gtTE.getWorld(), 0, 0, 0);
             minX = bbb.minX;
             minY = bbb.minY;
             minZ = bbb.minZ;

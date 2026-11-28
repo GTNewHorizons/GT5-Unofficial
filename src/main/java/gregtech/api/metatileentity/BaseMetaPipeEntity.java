@@ -949,9 +949,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public boolean onRightclick(final EntityPlayer aPlayer, final ForgeDirection side, final float aX, final float aY,
         final float aZ) {
         final ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-        final ForgeDirection effectiveSide = (!hasCoverAtSide(side)) ? wrenchingSide : side;
-        Cover effectiveSideCover = getCoverAtSide(effectiveSide);
         final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+        final boolean clicksShape = tCurrentItem == null && hasValidMetaTileEntity()
+            && mMetaTileEntity.hasCoverPlates();
+        final boolean clicksGridCell = GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)
+            || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)
+            || CoverRegistry.isCover(tCurrentItem);
+        final ForgeDirection effectiveSide = clicksShape ? mMetaTileEntity.getCoverSideAt(side, aX, aY, aZ)
+            : clicksGridCell || !hasCoverAtSide(side) ? wrenchingSide : side;
+        Cover effectiveSideCover = getCoverAtSide(effectiveSide);
 
         if (tCurrentItem != null) {
             if (!hasCoverAtSide(effectiveSide)) {
@@ -1017,7 +1023,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     return true;
                 }
                 if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)) {
-                    if (!hasCoverAtSide(side) && hasCoverAtSide(wrenchingSide)) {
+                    if (effectiveSide != side) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             getCoverAtSide(wrenchingSide).onCoverScrewdriverClick(aPlayer, 0.5F, 0.5F, 0.5F);
                             mMetaTileEntity.onScrewdriverRightClick(wrenchingSide, aPlayer, aX, aY, aZ, tCurrentItem);

@@ -150,7 +150,19 @@ public class BlockOverlayRenderer {
             return;
         }
 
-        if ((event.currentItem == null && event.player.isSneaking())
+        // `BaseMetaPipeEntity.onRightclick()` uses the grid cell for these items on a covered face too
+        if (aTileEntity instanceof BaseMetaPipeEntity
+            && (GTUtility.isStackInList(event.currentItem, GregTechAPI.sCrowbarList)
+                || GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)
+                || CoverRegistry.isCover(event.currentItem))) {
+            drawGrid(event, true, false, true);
+            return;
+        }
+
+        if ((event.currentItem == null && event.player.isSneaking()
+            && !(aTileEntity instanceof IGregTechTileEntity gtEntity
+                && gtEntity.getMetaTileEntity() instanceof MetaPipeEntity pipe
+                && pipe.hasCoverPlates()))
             || GTUtility.isStackInList(event.currentItem, GregTechAPI.sCrowbarList)
             || GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)) {
             if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(event.target.sideHit)))
