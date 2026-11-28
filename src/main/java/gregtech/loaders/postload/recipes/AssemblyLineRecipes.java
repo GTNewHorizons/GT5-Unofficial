@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Variants.AlteredPricing;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -59,6 +60,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV motor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -75,6 +77,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // ZPM motor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -94,6 +97,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV motor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -122,6 +126,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Pump
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -135,11 +140,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS), Materials.Lubricant.getFluid(250))
                 .itemOutputs(ItemList.Electric_Pump_LuV.get(1))
                 .eut(TierEU.RECIPE_IV)
-                .duration(600)
+                .duration(30 * SECONDS)
                 .addTo(AssemblyLine);
 
             // ZPM Pump
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -158,6 +164,7 @@ public class AssemblyLineRecipes implements Runnable {
 
             // UV Pump
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -174,7 +181,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
                     Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
 
@@ -182,6 +189,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Conveyor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -194,11 +202,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Conveyor_Module_LuV.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS), Materials.Lubricant.getFluid(250))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_IV)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
 
             // ZPM Conveyor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -211,11 +220,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Conveyor_Module_ZPM.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS), Materials.Lubricant.getFluid(750))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // UV Conveyor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Conveyor_Module_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -231,7 +241,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
                     Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
 
@@ -239,6 +249,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Piston
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -253,11 +264,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_LuV.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * INGOTS), Materials.Lubricant.getFluid(250))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_IV)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
 
             // ZPM Pistons
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -272,11 +284,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_ZPM.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS), Materials.Lubricant.getFluid(750))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // UV Piston
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Piston_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -294,7 +307,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
                     Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
 
@@ -302,6 +315,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Robot Arm
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -317,11 +331,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Robot_Arm_LuV.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS), Materials.Lubricant.getFluid(250))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_IV)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
 
             // ZPM Robot Arm
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -337,11 +352,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Robot_Arm_ZPM.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS), Materials.Lubricant.getFluid(750))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // UV Robot Arm
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Robot_Arm_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -360,7 +376,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS),
                     Materials.Lubricant.getFluid(2_000))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
 
@@ -368,6 +384,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Emitter
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -383,11 +400,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Emitter_LuV.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_IV)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
 
             // ZPM Emitter
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -403,11 +421,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Emitter_ZPM.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // UV Emitter
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Emitter_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -425,7 +444,7 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
 
@@ -433,6 +452,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Sensor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -448,11 +468,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Sensor_LuV.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_IV)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
 
             // ZPM Sensor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -468,11 +489,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Sensor_ZPM.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // UV Sensor
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Sensor_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -490,7 +512,7 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
 
@@ -498,6 +520,7 @@ public class AssemblyLineRecipes implements Runnable {
         {
             // LuV Field Generator
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_IV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_EV))
                 .itemInputs(
@@ -514,11 +537,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Field_Generator_LuV.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(4 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_IV)
+                .eut(TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
 
             // ZPM Field Generator
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_LuV.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_IV))
                 .itemInputs(
@@ -535,11 +559,12 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Field_Generator_ZPM.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(8 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // UV Field Generator
             GTValues.RA.stdBuilder()
+                .modifiedByVariant(AlteredPricing)
                 .metadata(RESEARCH_ITEM, ItemList.Field_Generator_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
@@ -560,7 +585,7 @@ public class AssemblyLineRecipes implements Runnable {
                     Materials.Naquadria.getMolten(9 * INGOTS),
                     MaterialsAlloy.INDALLOY_140.getFluidStack(16 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
         }
 
@@ -584,7 +609,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Energy_LuV.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(2_000), MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
                 .duration(20 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // ZPM Energy Hatch
@@ -605,7 +630,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Energy_ZPM.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(4_000), MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
 
             // UV Energy Hatch
@@ -630,7 +655,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Energy_UV.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(8_000), MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS))
                 .duration(40 * SECONDS)
-                .eut((int) TierEU.RECIPE_UV)
+                .eut(TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
         }
 
@@ -654,7 +679,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Dynamo_LuV.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(2_000), MaterialsAlloy.INDALLOY_140.getFluidStack(5 * INGOTS))
                 .duration(20 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // ZPM Dynamo Hatch
@@ -675,7 +700,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Dynamo_ZPM.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(4_000), MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
                 .duration(30 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
 
             // UV Dynamo Hatch
@@ -700,7 +725,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Dynamo_UV.get(1))
                 .fluidInputs(GTModHandler.getIC2Coolant(8_000), MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS))
                 .duration(40 * SECONDS)
-                .eut((int) TierEU.RECIPE_UV)
+                .eut(TierEU.RECIPE_UV)
                 .addTo(AssemblyLine);
         }
 
@@ -869,7 +894,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                     Materials.VanadiumGallium.getMolten(8 * INGOTS))
                 .duration(50 * SECONDS)
-                .eut((int) TierEU.RECIPE_LuV)
+                .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
 
             // mkII
@@ -938,7 +963,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Energy_Module.get(1))
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS), GTModHandler.getIC2Coolant(16_000))
                 .duration(1 * MINUTES + 40 * SECONDS)
-                .eut((int) TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
 
             // Energy Cluster

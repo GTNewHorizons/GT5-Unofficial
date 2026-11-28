@@ -69,6 +69,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.api.AEApi;
+import appeng.api.crafting.IPatternTargetKey;
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.interfaces.IInterfaceNameProvider;
@@ -731,8 +732,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
     @Override
     public IChatComponent getNameSuffix() {
-        if (hasCustomName()) return null;
+        return hasCustomName() ? null : getPatternTargetSuffix();
+    }
 
+    @Override
+    public IChatComponent getPatternTargetSuffix() {
         IChatComponent suffix = null;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -740,18 +744,33 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             suffix = nameProvider.getInterfaceNameSuffix();
         }
 
-        List<ItemStack> manualSlots = new ArrayList<>();
-        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
-            if (mInventory[i] != null) {
-                manualSlots.add(mInventory[i]);
-            }
-        }
+        final List<ItemStack> manualSlots = getManualConfigItems();
         if (!manualSlots.isEmpty()) {
             IChatComponent manualSuffix = new ChatComponentNonConsumedItemsSuffix(manualSlots);
             suffix = suffix == null ? manualSuffix : suffix.appendSibling(manualSuffix);
         }
 
         return suffix;
+    }
+
+    @Override
+    public List<ItemStack> getMachineConfigIcons() {
+        final List<ItemStack> icons = new ArrayList<>();
+        if (getBaseMetaTileEntity() instanceof IInterfaceNameProvider provider) {
+            icons.addAll(provider.getMachineConfigIcons());
+        }
+        icons.addAll(getManualConfigItems());
+        return icons;
+    }
+
+    private List<ItemStack> getManualConfigItems() {
+        List<ItemStack> manualSlots = new ArrayList<>();
+        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
+            if (mInventory[i] != null) {
+                manualSlots.add(mInventory[i]);
+            }
+        }
+        return manualSlots;
     }
 
     @Override
@@ -1128,6 +1147,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         sharedItems[0] = mInventory[SLOT_CIRCUIT];
         System.arraycopy(mInventory, SLOT_MANUAL_START, sharedItems, 1, SLOT_MANUAL_SIZE);
         return ArrayExt.withoutNulls(sharedItems, ItemStack[]::new);
+    }
+
+    @Override
+    public List<IPatternTargetKey> getPatternTargetKeys() {
+        final IPatternTargetKey key = getTargetKey();
+        return key == null ? Collections.emptyList() : Collections.singletonList(key);
     }
 
     @Override
