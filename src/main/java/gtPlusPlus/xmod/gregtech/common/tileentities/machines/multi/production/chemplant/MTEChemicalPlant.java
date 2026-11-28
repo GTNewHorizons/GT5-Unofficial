@@ -580,7 +580,7 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
 
     @Override
     protected MaxSpecialValue getPatternRecipeFilter() {
-        return new MaxSpecialValue(mSolidCasingTier);
+        return new MaxSpecialValue(solidCasingTier);
     }
 
     @Override
