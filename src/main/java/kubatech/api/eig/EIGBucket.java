@@ -3,7 +3,7 @@ package kubatech.api.eig;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -89,6 +89,10 @@ public abstract class EIGBucket {
         return this.seedCount;
     }
 
+    public int getSeedMaxStackSize() {
+        return this.seed.getMaxStackSize();
+    }
+
     /**
      * Gets the display name of the seed in this bucket
      *
@@ -140,26 +144,30 @@ public abstract class EIGBucket {
             return maxConsume;
         }
 
-        // Check if the item is found
-        LinkedList<ItemStack> toConsumeFrom = new LinkedList<>();
-        supportLoop: for (ItemStack supportItem : this.supportItems) {
-            for (ItemStack otherInput : greenhouse.getStoredInputs()) {
+        final List<ItemStack> stored = greenhouse.getStoredInputs();
+        final ItemStack[] supportSources = new ItemStack[this.supportItems.length];
+
+        for (int i = 0; i < this.supportItems.length; i++) {
+            final ItemStack supportItem = this.supportItems[i];
+            ItemStack found = null;
+            for (ItemStack otherInput : stored) {
                 // filter usable inputs
                 if (otherInput == null || otherInput.stackSize <= 0) continue;
                 if (!GTUtility.areStacksEqual(supportItem, otherInput, false)) continue;
                 // update max consume again
                 maxConsume = Math.min(maxConsume, otherInput.stackSize);
-                toConsumeFrom.addLast(otherInput);
-                continue supportLoop;
+                found = otherInput;
+                break;
             }
             // no support found, no seeds added
-            return -1;
+            if (found == null) return -1;
+            supportSources[i] = found;
         }
 
         // consume items
         if (!simulate) {
             input.stackSize -= maxConsume;
-            for (ItemStack stack : toConsumeFrom) {
+            for (ItemStack stack : supportSources) {
                 stack.stackSize -= maxConsume;
             }
             this.seedCount += maxConsume;
