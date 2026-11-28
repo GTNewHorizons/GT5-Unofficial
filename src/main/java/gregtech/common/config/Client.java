@@ -175,6 +175,11 @@ public class Client {
         @Config.Comment("Which cape to use")
         @Config.DefaultString("cape_mc")
         public String selectedCape;
+
+        @Config.Comment("If true, skips the GUI warning when enabling LSC wireless mode.")
+        @Config.DefaultBoolean(false)
+        @Config.Name("Skip LSC Wireless Warning Dialog")
+        public boolean skipLSCWirelessWarningDialog;
     }
 
     @Config.LangKey("GT5U.gui.config.client.blockoverlay")

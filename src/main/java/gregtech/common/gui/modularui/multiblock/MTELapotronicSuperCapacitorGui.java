@@ -170,7 +170,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
 
     private ModularPanel warningPanel() {
 
-        return ModularPanel.defaultPanel("warning")
+        return ModularPanel.defaultPanel("warning panel")
             .coverChildren()
             .padding(4)
             .paddingBottom(8)
@@ -269,8 +269,11 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
                 .avgLong());
         BooleanSyncValue wirelessMode = new BooleanSyncValue(multiblock::isWireless_mode, multiblock::setWireless_mode)
             .allowC2S();
-        BooleanSyncValue warningSync = new BooleanSyncValue(multiblock::getShowWarning, multiblock::setShowWarning)
-            .allowC2S();
+        BooleanSyncValue warningSync = new BooleanSyncValue(
+            () -> multiblock.getShowWarning(syncManager.getPlayer()),
+            multiblock::setShowWarning,
+            () -> multiblock.getShowWarning(null),
+            multiblock::setShowWarning).allowC2S();
         BooleanSyncValue canRebalance = new BooleanSyncValue(multiblock::getCanRebalance, multiblock::setCanRebalance)
             .allowC2S();
         BooleanSyncValue hasRebalanced = new BooleanSyncValue(
