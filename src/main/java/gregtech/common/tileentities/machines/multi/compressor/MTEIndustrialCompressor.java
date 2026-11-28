@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -171,6 +172,14 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
         checkHasOutputBus(errors);
     }
 
+    private static final Predicate<GTRecipe> PATTERN_RECIPE_FILTER = recipe -> recipe
+        .getMetadataOrDefault(COMPRESSION_TIER, 0) <= 0;
+
+    @Override
+    protected Predicate<GTRecipe> getPatternRecipeFilter() {
+        return PATTERN_RECIPE_FILTER;
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -178,7 +187,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return CheckRecipeResultRegistry.NO_RECIPE;
+                if (!PATTERN_RECIPE_FILTER.test(recipe)) return CheckRecipeResultRegistry.NO_RECIPE;
                 return super.validateRecipe(recipe);
             }
         }.noRecipeCaching()

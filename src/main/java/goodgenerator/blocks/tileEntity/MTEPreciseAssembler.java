@@ -81,6 +81,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.crossmod.ae2.PatternTargetKey.MaxSpecialValue;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
@@ -198,16 +199,20 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
+    protected MaxSpecialValue getPatternRecipeFilter() {
+        return machineMode == MACHINEMODE_PRECISE ? new MaxSpecialValue(casingTier + 1) : null;
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @Nonnull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (machineMode == MACHINEMODE_PRECISE) {
-                    if (recipe.mSpecialValue > (casingTier + 1)) {
-                        return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
-                    }
+                final MaxSpecialValue filter = getPatternRecipeFilter();
+                if (filter != null && !filter.test(recipe)) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
