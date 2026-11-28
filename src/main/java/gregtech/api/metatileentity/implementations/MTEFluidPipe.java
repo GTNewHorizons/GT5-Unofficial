@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.TinkerConstruct;
@@ -938,16 +939,18 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
             StatCollector
-                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatNumber(mCapacity * 20L)));
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatFluid(mCapacity * 20L)));
         descriptions.add(
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
         if (!mGasProof) {
             descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }
-        if (mPipeAmount != 1) {
+        if (mPipeAmount > 1) {
             descriptions.add(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.fluidpipe.pipe_amount.desc", mPipeAmount));
+                StatCollector.translateToLocalFormatted(
+                    "gt.blockmachines.fluidpipe.pipe_amount.desc",
+                    formatNumber(mPipeAmount)));
         }
         return descriptions.toArray(new String[0]);
     }
@@ -988,34 +991,25 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
         // Basic pipe stats
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
-                + EnumChatFormatting.BLUE
-                + formatNumber(mCapacity * 20L)
-                + " L/s");
-
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatFluid(mCapacity * 20L)));
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(mHeatResistance)
-                + "K");
-
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
         // Gas handling info
-        if (mGasProof) {
-            currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
-                    + EnumChatFormatting.GREEN
-                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.yes"));
-        } else {
-            currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
-                    + EnumChatFormatting.RED
-                    + StatCollector.translateToLocal("GT5U.item.pipe.gas_proof.no"));
-        }
+        currenttip.add(
+            StatCollector.translateToLocal("GT5U.item.pipe.gas_proof") + ": "
+                + (mGasProof ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
+                + StatCollector
+                    .translateToLocal(mGasProof ? "GT5U.item.pipe.gas_proof.yes" : "GT5U.item.pipe.gas_proof.no")
+                + EnumChatFormatting.RESET);
 
         // Multi-pipe info
         if (mPipeAmount > 1) {
             currenttip.add(
-                StatCollector.translateToLocal("GT5U.item.pipe.amount") + ": " + EnumChatFormatting.AQUA + mPipeAmount);
+                StatCollector.translateToLocalFormatted(
+                    "gt.blockmachines.fluidpipe.pipe_amount.desc",
+                    formatNumber(mPipeAmount)));
         }
     }
 

@@ -311,14 +311,16 @@ gt.blockmachines.output_bus_void.desc=Voids items from Multiblocks\nMust be conf
 gt.blockmachines.output_bus_super.desc=Item Output for Multiblocks\n%s Slots\nLeft click with data stick to save filter config\nRight click with data stick to load filter config
 gt.blockmachines.muffler.desc=Outputs the Pollution (Might cause ... things)\nDO NOT OBSTRUCT THE OUTPUT!\nReduces Pollution to %s%%
 gt.blockmachines.boiler.solar.desc=Steam Power by the Sun\nProduces %sL of Steam per second\nCalcifies over time, reducing Steam output to %sL/s\nBreak and replace to descale
-gt.blockmachines.fluidpipe.capacity.desc=§9Fluid Capacity: %s L/sec§7
-gt.blockmachines.fluidpipe.heat.desc=§cHeat Limit: %s K§7
-gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle gas§7
-gt.blockmachines.fluidpipe.pipe_amount.desc=§bPipe Amount: %s§7
-gt.blockmachines.itempipe.capacity.second=Item Capacity: %s Stacks/%s sec
-gt.blockmachines.itempipe.capacity.persecond=Item Capacity: %s Stacks/sec
-gt.blockmachines.itempipe.capacity.tick=Item Capacity: %s Stacks/%s ticks
-gt.blockmachines.itempipe.rounting_value=Routing Value: %s
+gt.blockmachines.fluidpipe.capacity.desc=Fluid Capacity: §9%s/s§r
+gt.blockmachines.fluidpipe.heat.desc=Heat Limit: §c%sK§r
+gt.blockmachines.fluidpipe.no_gas_proof.desc=§2Cannot handle Gas§r
+gt.blockmachines.fluidpipe.pipe_amount.desc=Pipe Amount: §b%s§r
+gt.blockmachines.itempipe.stack.singular=Stack
+gt.blockmachines.itempipe.stack.plural=Stacks
+gt.blockmachines.itempipe.capacity.second=Item Capacity: §6%s %s every %s seconds§r
+gt.blockmachines.itempipe.capacity.persecond=Item Capacity: §6%s %s every second§r
+gt.blockmachines.itempipe.capacity.tick=Item Capacity: §6%s %s every %s ticks§r
+gt.blockmachines.itempipe.rounting_value=Routing Value: §b%s§r
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
 
