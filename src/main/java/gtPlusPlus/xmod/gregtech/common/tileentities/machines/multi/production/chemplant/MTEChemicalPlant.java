@@ -87,6 +87,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.crossmod.ae2.PatternTargetKey.MaxSpecialValue;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -578,6 +579,11 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
     }
 
     @Override
+    protected MaxSpecialValue getPatternRecipeFilter() {
+        return new MaxSpecialValue(mSolidCasingTier);
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -586,7 +592,7 @@ public class MTEChemicalPlant extends MTEExtendedPowerMultiBlockBase<MTEChemical
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > solidCasingTier) {
+                if (!getPatternRecipeFilter().test(recipe)) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue + 1);
                 }
                 // checks if it has a catalyst
