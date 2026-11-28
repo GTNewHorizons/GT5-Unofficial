@@ -1412,8 +1412,7 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("lvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PCP", "POP", "PCP", 'C', "cableGt01Tin", 'O', GTModHandler.getIC2Item("coil", 1L), 'P',
-                "plankWood" });
+            new Object[] { "PCP", "POP", "PCP", 'C', "cableGt01Tin", 'O', ItemList.LV_Coil.get(1L), 'P', "plankWood" });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("hvTransformer", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -1434,10 +1433,6 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CCC", "XWX", aTextIron2, 'C', "cableGt01Copper", 'X', "plateIron", 'W',
                 GTModHandler.getIC2Item("waterMill", 1L) });
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("coil", 1L),
-            bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CCC", "CXC", "CCC", 'C', "wireGt01Copper", 'X', "ingotAnyIron" });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("powerunit", 1L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,

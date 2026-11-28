@@ -37,6 +37,7 @@ final class IC2Transformers {
         // IC2 still registers, run on the live id
         replaceItem("IC2:itemPartCircuit", ItemList.Circuit_BasicElectronic.get(1));
         replaceItem("IC2:itemPartCircuitAdv", ItemList.Circuit_Integrated_Advanced.get(1));
+        replaceItem("IC2:itemRecipePart", 0, ItemList.LV_Coil.get(1));
 
         // IC2's empty and filled cells share one id. The IC2 air cell holds 2000 mB and the MaterialLib cell 1000 mB,
         // and so does the meta-15 cell
