@@ -345,11 +345,10 @@ gg.infodata.yottank.stored=Current Used: §a%s§r L (§a%s§r%%)
 gg.infodata.yottank.locked=Locked to: §e%s§r
 
 #GUI Info
-GT5U.gui.text.ic.missing_research=Missing Research
-GT5U.gui.text.ic.no_energy=Not enough energy
-GT5U.gui.text.ic.no_vis=Node too small (Ignis, Aqua, Ordo)
-GT5U.gui.text.ic.no_aspects=Missing required Aspects
-GT5U.gui.text.ic.no_tome=Missing Tome of Knowledge
+GT5U.gui.text.recipe_result.ic.missing_research=Missing Research
+GT5U.gui.text.recipe_result.ic.no_vis=Node too small (Ignis, Aqua, Ordo)
+GT5U.gui.text.recipe_result.ic.no_aspects=Missing required Aspects
+GT5U.gui.text.recipe_result.ic.no_tome=Missing Tome of Knowledge
 GT5U.gui.text.recipe_result.node_too_small=§7Node too small
 
 gui.NeutronSensor.0=Input the value of Neutron Kinetic Energy.

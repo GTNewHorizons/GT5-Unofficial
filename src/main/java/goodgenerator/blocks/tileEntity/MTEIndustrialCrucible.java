@@ -6,11 +6,14 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofSpecificTileAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.VoltageIndex.HV;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -233,8 +236,8 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
         long v = getMaxInputVoltage();
-        if (mEnergyHatches.isEmpty() || v < 512 || getBaseMetaTileEntity().getStoredEU() < (v * 15 / 16))
-            return SimpleCheckRecipeResult.ofFailure("ic.no_energy");
+        if (mEnergyHatches.isEmpty() || v < V[HV]) return CheckRecipeResultRegistry.insufficientVoltage(V[HV]);
+        if (getMaxInputEu() < VP[HV]) return CheckRecipeResultRegistry.insufficientPower(VP[HV]);
 
         ArrayList<ItemStack> inputs = getStoredInputs();
         if (inputs.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -323,7 +326,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         this.mOutputItems = new ItemStack[] { GTUtility.copyAmount(crafts * info.output.stackSize, info.output) };
         this.mPollution = 2200;
 
-        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(480)
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(VP[HV])
             .setEUt(getMaxInputEu())
             .setDuration(120)
             .calculate();
@@ -342,7 +345,7 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mMachine && aTick % 10 == 0) {
             long v = getMaxInputVoltage();
-            if (v >= 512) {
+            if (v >= V[HV]) {
                 int tier = GTUtility.getTier(v);
                 int maxBuf = tier * 100000;
                 int dr = (1 << (tier + 2)) * 25;

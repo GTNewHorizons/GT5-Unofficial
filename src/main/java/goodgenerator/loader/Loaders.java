@@ -459,7 +459,10 @@ public class Loaders {
             MetaTileEntityIDs.LargeEssentiaSmeltery.ID,
             "LargeEssentiaSmeltery",
             "Large Essentia Smeltery").getStackForm(1L);
-        Loaders.IC = new MTEIndustrialCrucible(32670, "IndustrialCrucible", "Industrial Crucible").getStackForm(1L);
+        Loaders.IC = new MTEIndustrialCrucible(
+            MetaTileEntityIDs.IndustrialCrucible.ID,
+            "IndustrialCrucible",
+            "Industrial Crucible").getStackForm(1L);
         essentiaOutputHatch = new BlockTEContainer(
             "essentiaOutputHatch",
             new String[] { Mods.ModIDs.GOOD_GENERATOR + ":essentiaOutputHatch" },

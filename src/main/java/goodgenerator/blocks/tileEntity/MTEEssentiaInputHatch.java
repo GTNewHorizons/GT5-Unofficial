@@ -44,18 +44,6 @@ public class MTEEssentiaInputHatch extends TileThaumcraft implements IAspectCont
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        this.mAspects.readFromNBT(nbt);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        this.mAspects.writeToNBT(nbt);
-    }
-
-    @Override
     public void updateEntity() {
         super.updateEntity();
         if (!this.worldObj.isRemote && ++this.count % 5 == 0) {
