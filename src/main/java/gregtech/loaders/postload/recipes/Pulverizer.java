@@ -26,7 +26,6 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
-import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -42,14 +41,6 @@ public class Pulverizer implements Runnable {
             .outputChances(10000, 8000)
             .duration(20 * SECONDS)
             .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("iridiumOre", 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.IridiumMetalResidue, Shapes.dust, 1))
-            .duration(16 * TICKS)
-            .eut(4)
-            .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()

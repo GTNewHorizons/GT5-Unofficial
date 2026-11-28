@@ -77,13 +77,6 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("iridiumShard", 9))
-            .itemOutputs(GTModHandler.getIC2Item("iridiumOre", 1))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.clay_ball, 4))
             .itemOutputs(new ItemStack(Blocks.clay, 1))
             .duration(15 * SECONDS)

@@ -94,19 +94,6 @@ public class GTPostLoad {
         Map<IRecipeInput, RecipeOutput> aThermalCentrifugeRecipeList) {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        // remove gemIridium exploit
-        ItemStack iridiumOre = GTModHandler.getIC2Item("iridiumOre", 1);
-        aCompressorRecipeList.entrySet()
-            .parallelStream()
-            .filter(
-                e -> e.getKey()
-                    .getInputs()
-                    .size() == 1 && e.getKey()
-                        .getInputs()
-                        .get(0)
-                        .isItemEqual(iridiumOre))
-            .findAny()
-            .ifPresent(e -> aCompressorRecipeList.remove(e.getKey()));
         // Remove all IC2
         GTModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
