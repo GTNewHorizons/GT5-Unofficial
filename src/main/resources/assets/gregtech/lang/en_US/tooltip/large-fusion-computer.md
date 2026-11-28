@@ -5,4 +5,4 @@ Can only run {VNF:tier} recipes and below
 {hr}
 {color_note:Changing recipes consumes the start cost again}
 {color_mechanic:Performs {var:eu_per_oc}/{var:time_per_oc} Perfect Overclocks}
-Toggle Render with {color_name:Screwdriver}
+Use a {color_name:Screwdriver} to toggle render
