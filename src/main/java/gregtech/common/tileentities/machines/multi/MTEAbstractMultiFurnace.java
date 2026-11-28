@@ -1,12 +1,11 @@
 package gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class MTEAbstractMultiFurnace<T extends MTEAbstractMultiFurnace<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> {
+import gregtech.api.ec.implementations.MTEMultiBlockECBase;
+import gregtech.api.ec.implementations.MultiblockComponentBuilder;
 
-    private HeatingCoilLevel mCoilLevel;
+public abstract class MTEAbstractMultiFurnace<T extends MTEAbstractMultiFurnace<T>> extends MTEMultiBlockECBase<T> {
 
     protected MTEAbstractMultiFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -16,11 +15,10 @@ public abstract class MTEAbstractMultiFurnace<T extends MTEAbstractMultiFurnace<
         super(aName);
     }
 
-    public HeatingCoilLevel getCoilLevel() {
-        return mCoilLevel;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mCoilLevel = aCoilLevel;
+    @Override
+    protected void configureComponents(@NotNull MultiblockComponentBuilder builder) {
+        super.configureComponents(builder);
+        builder.enableExtendedPower()
+            .enableCoils();
     }
 }

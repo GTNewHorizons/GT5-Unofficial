@@ -293,7 +293,7 @@ public class MTEQuadcellPlasmaCollider extends MTEExtendedPowerMultiBlockBase<MT
         if (FORCE_CURRENT_DR > 0 && RUNITE_CURRENT_DR > 0 && CELESTIAL_TUNGSTEN_CURRENT_DR > 0) {
             if (residueCycles == CYCLES_FOR_RESIDUE) {
                 int residueOutput = Math.floorDiv(drainedSinceLastOutput, RESIDUE_CONVERSION_DIVISOR);
-                addOutput(Materials.CollisionResidue.getFluid(residueOutput));
+                addOutputPartial(Materials.CollisionResidue.getFluid(residueOutput));
                 residueCycles = 0;
                 drainedSinceLastOutput = 0;
             }

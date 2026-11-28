@@ -10,9 +10,13 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
+import gregtech.api.ec.IECMultiblock;
+import gregtech.api.ec.component.IRecipeLogicComponent;
+import gregtech.api.ec.component.multiblock.IControllerToolWearComponent;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -95,7 +99,7 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
 
         if (tileEntity instanceof IGregTechTileEntity) {
             IMetaTileEntity metaTE = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-            if (metaTE instanceof MTEMultiBlockBase multiTE) {
+            if (metaTE instanceof IMultiblockController multiTE) {
                 int ideal = multiTE.getIdealStatus();
                 int real = multiTE.getRepairStatus();
 
@@ -104,7 +108,7 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
                     case ONE_ISSUE, TWO_ISSUES, THREE_ISSUES, FOUR_ISSUES, FIVE_ISSUES -> signal = ideal - real
                         >= mode.ordinal();
                     case ROTOR_80, ROTOR_100 -> {
-                        ItemStack rotor = multiTE.getRealInventory()[1];
+                        ItemStack rotor = multiTE.getControllerSlot();
                         if (CoverNeedMaintainance.isRotor(rotor)) {
                             long max = MetaGeneratedTool.getToolMaxDamage(rotor);
                             long current = MetaGeneratedTool.getToolDamage(rotor);
@@ -112,11 +116,23 @@ public class CoverWirelessMaintenanceDetector extends CoverAdvancedRedstoneTrans
                             if (mode == MaintenanceMode.ROTOR_80) {
                                 signal = current >= max * 8 / 10;
                             } else {
-                                long expectedDamage = Math.round(
-                                    Math.min(
-                                        (double) multiTE.mEUt / multiTE.damageFactorLow,
-                                        Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
-                                signal = current + expectedDamage * 2 >= max;
+                                if (multiTE instanceof MTEMultiBlockBase legacy) {
+                                    long expectedDamage = Math.round(
+                                        Math.min(
+                                            (double) legacy.mEUt / legacy.damageFactorLow,
+                                            Math.pow(legacy.mEUt, legacy.damageFactorHigh)));
+                                    signal = current + expectedDamage * 2 >= max;
+                                } else if (multiTE instanceof IECMultiblock ecMulti) {
+                                    long currentEUt = 0;
+                                    var recipeLogic = ecMulti.tryGetComponent(IRecipeLogicComponent.KEY);
+                                    if (recipeLogic != null) currentEUt = recipeLogic.getEUt();
+                                    long maxExpectedDamage = 0;
+                                    for (var comp : ecMulti.getComponents(IControllerToolWearComponent.KEY)) {
+                                        maxExpectedDamage = Math
+                                            .max(maxExpectedDamage, comp.calculateDamageModifier(currentEUt));
+                                    }
+                                    signal = current + maxExpectedDamage * 2 >= max;
+                                }
                             }
                         } else {
                             signal = true;

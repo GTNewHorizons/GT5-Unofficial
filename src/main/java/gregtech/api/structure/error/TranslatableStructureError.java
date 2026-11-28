@@ -9,7 +9,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record TranslatableStructureError(TranslatableText message) implements StructureError {
@@ -32,7 +31,7 @@ public record TranslatableStructureError(TranslatableText message) implements St
     private static final int TEXT_COLOR = 0xFFE0E0E0;
 
     @Override
-    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
+    public IWidget createWidget(IStructureErrorGui gui) {
         return message.toIKey()
             .color(TEXT_COLOR)
             .alignment(Alignment.CenterLeft)

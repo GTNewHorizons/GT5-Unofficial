@@ -63,6 +63,8 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
+import gregtech.api.ec.IECMultiblock;
+import gregtech.api.ec.component.multiblock.ICoilLogicComponent;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -70,6 +72,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -654,15 +657,28 @@ public class GTStructureUtility {
         }, aHeatingCoilGetter);
     }
 
-    public static <T extends MTEMultiBlockBase> IStructureElement<T> activeCoils(IStructureElement<T> element) {
+    public static <T extends IECMultiblock> IStructureElement<T> ofECActiveCoil() {
+        return activeCoils(
+            ofCoil(
+                (T t, HeatingCoilLevel level) -> t.getComponent(ICoilLogicComponent.KEY)
+                    .setCoilLevel(level),
+                (T t) -> t.getComponent(ICoilLogicComponent.KEY)
+                    .getCoilLevel()));
+    }
+
+    public static <T extends IMultiblockController> IStructureElement<T> activeCoils(IStructureElement<T> element) {
         return new ProxyStructureElement<>(element) {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 if (!element.check(t, world, x, y, z)) return false;
-
-                t.mCoils.add(CoordinatePacker.pack(x, y, z));
-
+                long packed = CoordinatePacker.pack(x, y, z);
+                if (t instanceof MTEMultiBlockBase legacy) {
+                    legacy.mCoils.add(packed);
+                } else if (t instanceof IECMultiblock multiblock) {
+                    multiblock.getComponent(ICoilLogicComponent.KEY)
+                        .addCoilCoordinate(packed);
+                }
                 return true;
             }
         };

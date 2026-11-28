@@ -7,6 +7,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import javax.annotation.Nullable;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.Iterators;
@@ -15,7 +17,6 @@ import com.google.common.collect.PeekingIterator;
 import gregtech.api.enums.OutputHatchType;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
-import gregtech.api.interfaces.tileentity.IVoidable;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 
 public class FluidEjectionHelper {
@@ -26,10 +27,6 @@ public class FluidEjectionHelper {
         OutputHatchType.class);
 
     private boolean active = true;
-
-    public FluidEjectionHelper(IVoidable voidable) {
-        this(voidable.getOutputHatches(), voidable.protectsExcessFluid());
-    }
 
     public FluidEjectionHelper(List<? extends IOutputHatch> hatches, boolean protectFluids) {
         this(hatches, protectFluids, false);
@@ -68,6 +65,10 @@ public class FluidEjectionHelper {
         return ejected;
     }
 
+    public long ejectFluids(List<FluidStack> outputs, long startingParallels) {
+        return ejectFluids(outputs, startingParallels, null);
+    }
+
     /**
      * Ejects fluids into the contained output hatch transactions, and calculates the number of parallels that were
      * successfully ran.
@@ -75,9 +76,11 @@ public class FluidEjectionHelper {
      * @param outputs           The fluids to eject per parallel. Each stack is multiplied by startingParallels to
      *                          determine the total number of fluids to eject. This param is not modified.
      * @param startingParallels The number of parallels to calculate. Must be an integer >= 0.
+     * @param remaining         A list to collect the remaining output stacks that couldn't be ejected, can be null if
+     *                          not need.
      * @return The number of parallels that can be safely ran without voiding fluids.
      */
-    public long ejectFluids(List<FluidStack> outputs, long startingParallels) {
+    public long ejectFluids(List<FluidStack> outputs, long startingParallels, @Nullable List<FluidStack> remaining) {
         if (outputs == null || outputs.isEmpty()) return 0;
         if (!active)
             throw new IllegalStateException("Cannot eject additional fluids after committing an FluidEjectionHelper");
@@ -150,18 +153,23 @@ public class FluidEjectionHelper {
             }
         }
 
-        if (fluidProtectionEnabled) {
+        if (fluidProtectionEnabled || remaining != null) {
             // If we care about protecting the fluids, reduce the starting parallels by however many batches of fluids
             // were ejected.
             // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
 
             for (FluidParallelData parallelData : outputParallels) {
-                long ejected = parallelData.initialAmount - parallelData.remainingAmount;
-
-                startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                if (fluidProtectionEnabled) {
+                    long ejected = parallelData.initialAmount - parallelData.remainingAmount;
+                    startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                }
+                if (remaining != null && parallelData.remainingAmount > 0) {
+                    var tmp = parallelData.tmpStack.copy();
+                    GTUtility.setFluidAmount(tmp, parallelData.remainingAmount);
+                    remaining.add(tmp);
+                }
             }
         }
-
         return startingParallels;
     }
 

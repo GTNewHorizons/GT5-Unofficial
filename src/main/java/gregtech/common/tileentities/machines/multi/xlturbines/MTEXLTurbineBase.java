@@ -699,17 +699,6 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    public boolean addEnergyOutput(long aEU) {
-        if (aEU <= 0) {
-            return true;
-        }
-        if (!mDynamoHatches.isEmpty() || !mExoticDynamoHatches.isEmpty()) {
-            return addEnergyOutputMultipleDynamos(aEU, true);
-        }
-        return false;
-    }
-
-    @Override
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
         long injected = 0;
 

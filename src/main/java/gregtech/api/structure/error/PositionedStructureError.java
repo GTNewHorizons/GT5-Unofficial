@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.enums.StructureErrorId;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class PositionedStructureError implements StructureError {
 
@@ -67,7 +66,7 @@ public class PositionedStructureError implements StructureError {
     }
 
     @Override
-    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
+    public IWidget createWidget(IStructureErrorGui gui) {
         String text = buildDisplayText();
         boolean multiLine = expectedBlocks.size() > 1 || text.length() > 40;
 

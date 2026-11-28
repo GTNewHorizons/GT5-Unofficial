@@ -14,8 +14,8 @@ import net.minecraftforge.common.DimensionManager;
 
 import com.cleanroommc.modularui.network.NetworkUtils;
 
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -39,10 +39,10 @@ public class DroneConnection {
     private boolean isSelected;
     private long groupMask;
 
-    private final MTEMultiBlockBase cachedCentre;
-    private final MTEMultiBlockBase cachedMachine;
+    private final IMultiblockController cachedCentre;
+    private final IMultiblockController cachedMachine;
 
-    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
+    public DroneConnection(IMultiblockController machine, MTEDroneCentre centre) {
         this.machineItem = machine.getStackForm(1);
         this.machineCoord = machine.getBaseMetaTileEntity()
             .getCoords();
@@ -58,7 +58,7 @@ public class DroneConnection {
             .getFrontFacing()
             .ordinal();
         this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + machineWorld).getBytes());
-        this.unlocalizedName = machine.mName;
+        this.unlocalizedName = machine.getMetaName();
         // Empty means no custom name; the machine name is localized on the client
         this.customName = centre.getConnectionName(uuid, "");
         this.groupMask = centre.getConnectionGroups(uuid);
@@ -101,11 +101,11 @@ public class DroneConnection {
         }
     }
 
-    public MTEMultiBlockBase getLinkedMachine() {
+    public IMultiblockController getLinkedMachine() {
         return cachedMachine;
     }
 
-    public MTEMultiBlockBase getLinkedCentre() {
+    public IMultiblockController getLinkedCentre() {
         return cachedCentre;
     }
 
@@ -176,11 +176,11 @@ public class DroneConnection {
         return aNBT;
     }
 
-    public MTEMultiBlockBase getLoadedGTBaseMachineAt(ChunkCoordinates coords, World world, boolean isLoaded) {
+    public IMultiblockController getLoadedGTBaseMachineAt(ChunkCoordinates coords, World world, boolean isLoaded) {
         if (coords == null || world == null) return null;
         TileEntity te = GTUtil.getTileEntity(world, coords, isLoaded);
         if (te == null) return null;
-        return (MTEMultiBlockBase) ((IGregTechTileEntity) te).getMetaTileEntity();
+        return (IMultiblockController) ((IGregTechTileEntity) te).getMetaTileEntity();
     }
 
     private NBTTagCompound transCoordsToNBT(ChunkCoordinates coord) {

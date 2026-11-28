@@ -16,6 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -177,7 +178,7 @@ public class MTEMagicalMaintenanceHatch extends MTEHatchMaintenance {
     }
 
     @Override
-    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+    public void onMaintenancePerformed(IMultiblockController aMaintenanceTarget) {
         setMaintenanceSound(focusMaintenanceSound, 1.0F, 1.0F);
         super.onMaintenancePerformed(aMaintenanceTarget);
     }

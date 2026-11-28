@@ -18,8 +18,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.CoilLeaseType;
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.net.GTCoilStatus;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectFunction;
@@ -78,7 +78,7 @@ public class GTCoilTracker {
     /**
      * Used to prevent duplicate lease registrations by the same multi. {multi reference, lease type: lease reference}
      */
-    private final Table<MTEMultiBlockBase, CoilLeaseType, MultiCoilLease> leasesByMulti = HashBasedTable.create();
+    private final Table<IMultiblockController, CoilLeaseType, MultiCoilLease> leasesByMulti = HashBasedTable.create();
 
     private static final Long2ObjectFunction<LongSet> CHUNK_LIST_CTOR = ignored -> new LongOpenHashSet();
 
@@ -86,17 +86,17 @@ public class GTCoilTracker {
      * An object that represents an activated set of coils. These are always owned by a multi, and must be deactivated
      * at some point or the coils will remain active forever.
      *
-     * @see GTCoilTracker#activate(MTEMultiBlockBase, LongList)
+     * @see GTCoilTracker#activate(IMultiblockController, LongList)
      * @see GTCoilTracker#deactivate(MultiCoilLease)
      */
     public static class MultiCoilLease {
 
         // intentionally package private
         final WeakReference<GTCoilTracker> tracker;
-        final WeakReference<MTEMultiBlockBase> multi;
+        final WeakReference<IMultiblockController> multi;
         final LongList coils;
 
-        MultiCoilLease(WeakReference<GTCoilTracker> tracker, MTEMultiBlockBase multi, LongList coils) {
+        MultiCoilLease(WeakReference<GTCoilTracker> tracker, IMultiblockController multi, LongList coils) {
             this.tracker = tracker;
             this.multi = new WeakReference<>(multi);
             this.coils = coils;
@@ -108,7 +108,7 @@ public class GTCoilTracker {
         this.world = new WeakReference<>(world);
     }
 
-    private MultiCoilLease activateImpl(MTEMultiBlockBase multi, CoilLeaseType coilType, LongList coils) {
+    private MultiCoilLease activateImpl(IMultiblockController multi, CoilLeaseType coilType, LongList coils) {
         MultiCoilLease lease = new MultiCoilLease(self, multi, new LongArrayList(coils));
 
         MultiCoilLease existing = leasesByMulti.put(multi, coilType, lease);
@@ -132,7 +132,7 @@ public class GTCoilTracker {
         // remove the coils so that this lease can't be double-deactivated
         lease.coils.clear();
 
-        MTEMultiBlockBase multi = lease.multi.get();
+        IMultiblockController multi = lease.multi.get();
 
         if (multi != null) {
             leasesByMulti.remove(multi, leaseType);
@@ -234,7 +234,7 @@ public class GTCoilTracker {
      * @return A lease owned by the given multi that should be deactivated when needed (see
      *         {@link #deactivate(MultiCoilLease)}
      */
-    public static MultiCoilLease activate(MTEMultiBlockBase multi, LongList coils) {
+    public static MultiCoilLease activate(IMultiblockController multi, LongList coils) {
         IGregTechTileEntity base = multi.getBaseMetaTileEntity();
 
         if (base == null || base.isDead()) return null;
@@ -253,7 +253,7 @@ public class GTCoilTracker {
      * @return A lease owned by the given multi that should be deactivated when needed (see
      *         {@link #deactivate(MultiCoilLease)}
      */
-    public static MultiCoilLease activate(MTEMultiBlockBase multi, CoilLeaseType coilType, LongList coils) {
+    public static MultiCoilLease activate(IMultiblockController multi, CoilLeaseType coilType, LongList coils) {
         IGregTechTileEntity base = multi.getBaseMetaTileEntity();
 
         if (base == null || base.isDead()) return null;

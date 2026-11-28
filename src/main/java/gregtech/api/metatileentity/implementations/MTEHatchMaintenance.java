@@ -43,6 +43,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -243,7 +244,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
         return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
-    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+    public void onMaintenancePerformed(IMultiblockController aMaintenanceTarget) {
         IGregTechTileEntity tMte = getBaseMetaTileEntity();
 
         if (tMte == null || tMte.isMuffled()) return;

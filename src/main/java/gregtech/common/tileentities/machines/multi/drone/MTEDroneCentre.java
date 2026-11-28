@@ -56,10 +56,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
@@ -555,7 +555,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         for (DroneConnection droneConnection : connectionList) {
             if (droneConnection.isValid()
                 && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
-                MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
+                var linkedMachine = droneConnection.getLinkedMachine();
                 if (linkedMachine != null) {
                     IGregTechTileEntity igte = linkedMachine.getBaseMetaTileEntity();
                     if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
@@ -571,7 +571,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         for (DroneConnection droneConnection : connectionList) {
             if (droneConnection.isValid()
                 && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
-                MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
+                var linkedMachine = droneConnection.getLinkedMachine();
                 if (linkedMachine != null) {
                     linkedMachine.disableWorking();
                     if (force && linkedMachine.getBaseMetaTileEntity() != null) {
@@ -642,7 +642,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         this.connectionList = connectionList;
     }
 
-    public Optional<MTEMultiBlockBase> findConnection(UUID uuid) {
+    public Optional<IMultiblockController> findConnection(UUID uuid) {
         return connectionList.stream()
             .filter(connection -> connection.uuid.equals(uuid))
             .findFirst()

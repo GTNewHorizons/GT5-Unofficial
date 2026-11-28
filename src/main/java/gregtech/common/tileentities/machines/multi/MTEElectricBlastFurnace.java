@@ -2,27 +2,25 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.ECHatchElement.Energy;
+import static gregtech.api.enums.ECHatchElement.InputBus;
+import static gregtech.api.enums.ECHatchElement.InputHatch;
+import static gregtech.api.enums.ECHatchElement.Maintenance;
+import static gregtech.api.enums.ECHatchElement.Muffler;
+import static gregtech.api.enums.ECHatchElement.OutputBus;
+import static gregtech.api.enums.ECHatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.ofECActiveCoil;
 
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,17 +30,21 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.ec.OrderedSectionBuilder;
+import gregtech.api.ec.component.IWailaBodyProviderComponent;
+import gregtech.api.ec.component.multiblock.IMultiblockEnergyInputLogicComponent;
+import gregtech.api.ec.implementations.MultiblockComponentBuilder;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -58,14 +60,11 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
@@ -94,10 +93,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                 .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-        .addElement(
-            'C',
-            GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEElectricBlastFurnace::setCoilLevel, MTEElectricBlastFurnace::getCoilLevel))))
+        .addElement('C', GTStructureChannels.HEATING_COIL.use(ofECActiveCoil()))
         .addElement(
             'b',
             buildHatchAdder(MTEElectricBlastFurnace.class)
@@ -116,8 +112,19 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+    protected @NotNull MTEElectricBlastFurnace createNewMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEElectricBlastFurnace(this.mName);
+    }
+
+    @Override
+    protected void configureComponents(@NotNull MultiblockComponentBuilder builder) {
+        super.configureComponents(builder);
+        builder.configureCoil(comp -> comp.setOnCoilValidated(this::updateHeatingCapacity))
+            .enablePollution(GTMod.proxy.mPollutionEBFPerSecond)
+            .configureInputSeparation((comp) -> comp.setAllowScrewdriverToggle(true))
+            .setActivitySound(SoundResource.GT_MACHINES_EBF_LOOP)
+            .enableStandardQoL()
+            .enableRecipeLocking();
     }
 
     @Override
@@ -134,7 +141,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                     .put("heat_per_poc", OverclockCalculator.HEAT_OVERCLOCK_THRESHOLD)
                     .put("base_tier_for_heat_increase", BASE_TIER_FOR_HEAT_INCREASE)
                     .build())
-            .addPollutionAmount(getPollutionPerSecond(null))
+            .addPollutionAmount(GTMod.proxy.mPollutionEBFPerSecond)
             .beginStructureBlock(3, 4, 3, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("16", StatCollector.translateToLocal("GT5U.structure.heating_coil"), true)
@@ -172,11 +179,6 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     }
 
     @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.proxy.mPollutionEBFPerSecond;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.blastFurnaceRecipes;
     }
@@ -207,25 +209,25 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         };
     }
 
+    private void updateHeatingCapacity(HeatingCoilLevel coilLevel) {
+        long inputTier = GTUtility.getTier(getComponent(IMultiblockEnergyInputLogicComponent.KEY).getMaxInputVoltage());
+        long bonusHeat = HEAT_PER_VOLTAGE_TIER * (inputTier - BASE_TIER_FOR_HEAT_INCREASE);
+        mHeatingCapacity = GTUtility.longToInt(coilLevel.getHeat() + bonusHeat);
+    }
+
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mHeatingCapacity = 0;
 
-        setCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
+    }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) {
-            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
-        }
-
+    @Override
+    public void verifyMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-
-        this.mHeatingCapacity = (int) getCoilLevel().getHeat()
-            + HEAT_PER_VOLTAGE_TIER * (GTUtility.getTier(getMaxInputVoltage()) - BASE_TIER_FOR_HEAT_INCREASE);
     }
 
     @Override
@@ -240,47 +242,8 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
+        if (isFormed()) return SURVIVAL_BUILD_DONE;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        inputSeparation = !inputSeparation;
-        GTUtility.sendChatTrans(
-            aPlayer,
-            inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
-    }
-
-    @Override
-    public void loadNBTData(final NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (aNBT.hasKey("isBussesSeparate")) {
-            // backward compatibility
-            inputSeparation = aNBT.getBoolean("isBussesSeparate");
-        }
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_EBF_LOOP;
     }
 
     @Override
@@ -290,10 +253,14 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     }
 
     @Override
-    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
-        IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        list.add(
-            StatCollector
-                .translateToLocalFormatted("GT5U.multiblock.heat", formatNumber(tag.getInteger("heatingCapacity"))));
+    protected void appendWailaBody(
+        @NotNull OrderedSectionBuilder<IWailaBodyProviderComponent.WailaBodyProvider> builder) {
+        builder.add("ebf.heat", IWailaBodyProviderComponent.Section.CUSTOM, (ctx, tip) -> {
+            var tag = ctx.tag();
+            tip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.multiblock.heat",
+                    formatNumber(tag.getInteger("heatingCapacity"))));
+        });
     }
 }

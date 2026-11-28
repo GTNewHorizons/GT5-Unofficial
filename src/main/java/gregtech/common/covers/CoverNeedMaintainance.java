@@ -13,9 +13,13 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
+import gregtech.api.ec.IECMultiblock;
+import gregtech.api.ec.component.IRecipeLogicComponent;
+import gregtech.api.ec.component.multiblock.IControllerToolWearComponent;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.metatileentity.IMultiblockController;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -73,10 +77,10 @@ public class CoverNeedMaintainance extends CoverLegacyData {
         boolean needsRepair = false;
         if (coverable instanceof IGregTechTileEntity tTileEntity) {
             final IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
-            if (mTileEntity instanceof MTEMultiBlockBase multi) {
+            if (mTileEntity instanceof IMultiblockController multi) {
                 final int ideal = multi.getIdealStatus();
                 final int real = multi.getRepairStatus();
-                final ItemStack tRotor = multi.getRealInventory()[1];
+                final ItemStack tRotor = multi.getControllerSlot();
                 final int coverVar = this.coverData >>> 1;
                 if (coverVar < 5) {
                     if (ideal - real > coverVar) needsRepair = true;
@@ -87,11 +91,23 @@ public class CoverNeedMaintainance extends CoverLegacyData {
                         if (coverVar == 5) {
                             needsRepair = (tCur >= tMax * 8 / 10);
                         } else {
-                            long mExpectedDamage = Math.round(
-                                Math.min(
-                                    multi.mEUt / multi.damageFactorLow,
-                                    Math.pow(multi.mEUt, multi.damageFactorHigh)));
-                            needsRepair = tCur + mExpectedDamage * 2 >= tMax;
+                            if (multi instanceof MTEMultiBlockBase legacy) {
+                                long mExpectedDamage = Math.round(
+                                    Math.min(
+                                        (double) legacy.mEUt / legacy.damageFactorLow,
+                                        Math.pow(legacy.mEUt, legacy.damageFactorHigh)));
+                                needsRepair = tCur + mExpectedDamage * 2 >= tMax;
+                            } else if (multi instanceof IECMultiblock ecMulti) {
+                                long currentEUt = 0;
+                                var recipeLogic = ecMulti.tryGetComponent(IRecipeLogicComponent.KEY);
+                                if (recipeLogic != null) currentEUt = recipeLogic.getEUt();
+                                long maxExpectedDamage = 0;
+                                for (var comp : ecMulti.getComponents(IControllerToolWearComponent.KEY)) {
+                                    maxExpectedDamage = Math
+                                        .max(maxExpectedDamage, comp.calculateDamageModifier(currentEUt));
+                                }
+                                needsRepair = tCur + maxExpectedDamage * 2 >= tMax;
+                            }
                         }
                     } else {
                         needsRepair = true;

@@ -10,7 +10,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
 public record SingletonStructureError(StructureErrorId id, String langKey, Supplier<IWidget> widgetSupplier)
@@ -48,7 +47,7 @@ public record SingletonStructureError(StructureErrorId id, String langKey, Suppl
     }
 
     @Override
-    public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
+    public IWidget createWidget(IStructureErrorGui gui) {
         return widgetSupplier.get();
     }
 
