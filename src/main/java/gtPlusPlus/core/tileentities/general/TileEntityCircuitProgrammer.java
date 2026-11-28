@@ -255,7 +255,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
             } else {
                 aCurrentMode++;
             }
-            GTUtility.sendChatToPlayer(player, "Now configuring units for type " + aCurrentMode + ".");
+            GTUtility.sendChatTrans(player, "GT5U.chat.circuit_programmer.mode", aCurrentMode);
             return true;
         } catch (Exception t) {
             return false;

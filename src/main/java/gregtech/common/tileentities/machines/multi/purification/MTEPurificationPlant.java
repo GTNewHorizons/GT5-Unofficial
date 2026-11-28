@@ -26,7 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -416,7 +416,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         dataStick.setStackDisplayName(
             "Purification Plant Link Data Stick (" + aBaseMetaTileEntity
                 .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
-        aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-saved-link-data"));
     }
 
     @Override

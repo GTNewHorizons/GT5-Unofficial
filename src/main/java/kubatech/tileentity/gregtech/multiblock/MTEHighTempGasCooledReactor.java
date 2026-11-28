@@ -866,9 +866,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             return;
         }
         this.empty = !this.empty;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            "HTGR is now running in " + (this.empty ? "emptying mode." : "normal Operation"));
+        GTUtility.sendChatTrans(aPlayer, this.empty ? "GT5U.chat.htgr.emptying" : "GT5U.chat.htgr.normal");
     }
 
     @Override

@@ -1,7 +1,5 @@
 package gregtech.common.powergoggles;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +7,9 @@ import java.util.List;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.commands.GTBaseCommand;
@@ -30,7 +31,7 @@ public class PowerGogglesCommand extends GTBaseCommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: /powergoggles <subcommand>. Valid subcommands are: " + String.join(", ", SUBCOMMANDS) + ".";
+        return "/powergoggles <subcommand>";
     }
 
     @Override
@@ -47,12 +48,16 @@ public class PowerGogglesCommand extends GTBaseCommand {
     protected List<IChatComponent> getHelpMessages() {
 
         List<IChatComponent> messages = new ArrayList<>();
-        messages.add(new ChatComponentText(getCommandUsage(null)));
-        messages.add(new ChatComponentText(" config - Opens power goggles configuration menu"));
-        messages.add(new ChatComponentText(" chart - Toggles the power goggles chart"));
-        messages.add(new ChatComponentText(" measurements - Toggles the power goggles measurements section"));
+        messages.add(
+            new ChatComponentTranslation(
+                "GT5U.chat.command.usage_with_subcommands",
+                getCommandUsage(null),
+                String.join(", ", SUBCOMMANDS)));
+        messages.add(new ChatComponentTranslation("GT5U.chat.goggles.help.config"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.goggles.help.chart"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.goggles.help.measurements"));
         messages.add(new ChatComponentText(""));
-        messages.add(new ChatComponentText("Aliases: powergoggles, goggles, pg"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.command.aliases", "powergoggles, goggles, pg"));
         return messages;
 
     }
@@ -88,7 +93,10 @@ public class PowerGogglesCommand extends GTBaseCommand {
             case "measurements" -> PowerGogglesEventHandler.getInstance()
                 .toggleMeasurements();
             default -> {
-                sendChatToPlayer(sender, RED + "Illegal subcommand: " + args[0]);
+                sendChatToPlayer(
+                    sender,
+                    new ChatComponentTranslation("GT5U.chat.command.invalid_subcommand", args[0])
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
                 sendHelpMessage(sender);
             }
         }

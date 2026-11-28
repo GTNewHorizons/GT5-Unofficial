@@ -233,24 +233,21 @@ public class MTEHatchTurbine extends MTEHatch {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
-            GTUtility.sendChatToPlayer(aPlayer, "Using Animations? " + usingAnimations());
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                "Active? " + this.getBaseMetaTileEntity()
-                    .isActive());
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.turbine.animations", usingAnimations());
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.turbine.active", getBaseMetaTileEntity().isActive());
             boolean hasTurbine = this.hasTurbine();
-            GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + hasTurbine);
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.turbine.inserted", hasTurbine);
             if (hasTurbine) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
                 String aSize = getTurbineSizeString(getTurbineSize(getTurbine()));
-                GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.getLocalizedName() + " " + aSize);
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.turbine.in_use", aMat.getLocalizedName(), aSize);
             }
         } else {
             this.mUsingAnimation = !mUsingAnimation;
             if (this.mUsingAnimation) {
-                GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture.");
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.spinmatron.texture.animated");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Using Static Turbine Texture.");
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.spinmatron.texture.static");
             }
         }
     }
@@ -271,13 +268,13 @@ public class MTEHatchTurbine extends MTEHatch {
                 if (aPlayer.capabilities.isCreativeMode || GTModHandler.damageOrDechargeItem(aTool, 1, 1000, aPlayer)) {
                     aPlayer.inventory.addItemStackToInventory((this.getTurbine()));
                     this.mInventory[0] = null;
-                    GTUtility.sendChatToPlayer(aPlayer, "Removed turbine with wrench.");
+                    GTUtility.sendChatTrans(aPlayer, "GT5U.chat.turbine.removed");
                     return true;
                 }
             } else {
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    aHasTurbine ? "Cannot remove turbine, no free inventory space." : "No turbine to remove.");
+                    aHasTurbine ? "GT5U.chat.turbine.no_inventory_space" : "GT5U.chat.turbine.missing");
             }
             return false;
         }

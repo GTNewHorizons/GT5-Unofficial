@@ -515,7 +515,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         float aX, float aY, float aZ, ItemStack aTool) {
         if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             mAnimationEnabled = !mAnimationEnabled;
-            GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
+            GTUtility.sendChatTrans(
+                aPlayer,
+                mAnimationEnabled ? "GT5U.machines.animations.enabled" : "GT5U.machines.animations.disabled");
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }

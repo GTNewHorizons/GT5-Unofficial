@@ -11,6 +11,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -192,19 +194,28 @@ public class MTETesseractGenerator extends MTEBasicTank {
                         break;
                 }
                 if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this) {
-                    GTUtility.sendChatToPlayer(
-                        aPlayer,
-                        "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
+                    sendOccupiedFrequency(aPlayer);
                 } else {
-                    GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
+                    GTUtility.sendChatTrans(aPlayer, "gtpp.infodata.tesseract_generator.frequency", this.mFrequency);
                 }
             } else if (aPlayer.getUniqueID()
                 .compareTo(this.mOwner) != 0) {
-                    GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
+                    GTUtility.sendChatTrans(aPlayer, "GT5U.chat.tesseract.generator.not_owner");
                 }
         }
 
         return true;
+    }
+
+    private void sendOccupiedFrequency(EntityPlayer player) {
+        ChatComponentTranslation message = new ChatComponentTranslation(
+            "gtpp.infodata.tesseract_generator.frequency",
+            mFrequency);
+        message.appendText(" ")
+            .appendSibling(
+                new ChatComponentTranslation("GT5U.chat.tesseract.occupied")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+        player.addChatMessage(message);
     }
 
     @Override
@@ -246,15 +257,13 @@ public class MTETesseractGenerator extends MTEBasicTank {
                     }
                 }
                 if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this) {
-                    GTUtility.sendChatToPlayer(
-                        aPlayer,
-                        "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
+                    sendOccupiedFrequency(aPlayer);
                 } else {
-                    GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
+                    GTUtility.sendChatTrans(aPlayer, "gtpp.infodata.tesseract_generator.frequency", this.mFrequency);
                 }
             }
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.tesseract.generator.not_owner");
         }
     }
 

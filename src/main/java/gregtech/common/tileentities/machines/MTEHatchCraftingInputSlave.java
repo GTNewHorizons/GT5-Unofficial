@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -283,10 +282,10 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
         int y = nbt.getInteger("y");
         int z = nbt.getInteger("z");
         if (trySetMasterFromCoord(x, y, z) != null) {
-            aPlayer.addChatMessage(new ChatComponentText("Link successful"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.link.success"));
             return true;
         }
-        aPlayer.addChatMessage(new ChatComponentText("Link failed"));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.link.failed"));
         return true;
     }
 
@@ -316,7 +315,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
         var master = getMaster();
         if (master == null) {
-            aPlayer.addChatMessage(new ChatComponentText("Can't copy an unlinked proxy!"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.link.unlinked_proxy"));
             return;
         }
 

@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.cape.GTPacketListCapes;
@@ -46,21 +46,22 @@ public class GTCapeCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (args.length == 0) {
-            sender.addChatMessage(new ChatComponentText("Usage: " + this.getCommandUsage(sender)));
+            sender.addChatMessage(new ChatComponentTranslation("commands.generic.usage", this.getCommandUsage(sender)));
             return;
         }
         switch (args[0]) {
             case "get" -> sender
-                .addChatMessage(new ChatComponentText("Current cape: " + Client.preference.selectedCape));
+                .addChatMessage(new ChatComponentTranslation("GT5U.chat.cape.current", Client.preference.selectedCape));
             case "list" -> GTValues.NW.sendToServer(new GTPacketListCapes());
             case "set" -> {
                 if (args.length == 1) {
-                    sender.addChatMessage(new ChatComponentText("Usage: /cape set <name>"));
+                    sender.addChatMessage(new ChatComponentTranslation("commands.generic.usage", "/cape set <name>"));
                     return;
                 }
                 GTValues.NW.sendToServer(new GTPacketSetCape(args[1]));
             }
-            default -> sender.addChatMessage(new ChatComponentText("Usage: " + this.getCommandUsage(sender)));
+            default -> sender
+                .addChatMessage(new ChatComponentTranslation("commands.generic.usage", this.getCommandUsage(sender)));
         }
     }
 }

@@ -134,9 +134,9 @@ public class MTETransformerHiAmp extends MTETransformer {
         ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
-            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 2A:8A in/out Ratio.");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.transformer.ratio", "2A", "8A");
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "Transformer is now running at 4A:16A in/out Ratio.");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.transformer.ratio", "4A", "16A");
         }
     }
 }

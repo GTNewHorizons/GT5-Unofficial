@@ -314,18 +314,20 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         if (!getShowMessages(baubleStack)) return;
 
         if (hp > 0 || hunger > 0 || saturation > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
+            GTUtility.sendChatTrans((EntityPlayer) arg1, "GT5U.chat.nano_booster.activated");
 
-        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hp) + " hp.");
+        if (hp > 0) GTUtility.sendChatTrans((EntityPlayer) arg1, "GT5U.chat.nano_booster.health", formatNumber(hp));
 
-        if (hunger > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hunger) + " hunger.");
+        if (hunger > 0)
+            GTUtility.sendChatTrans((EntityPlayer) arg1, "GT5U.chat.nano_booster.hunger", formatNumber(hunger));
 
         if (saturation > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + formatNumber(saturation) + ".");
+            GTUtility.sendChatTrans((EntityPlayer) arg1, "GT5U.chat.nano_booster.saturation", formatNumber(saturation));
 
-        if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
+        if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatTrans(
             (EntityPlayer) arg1,
-            "You check it's remaining uses, it has " + formatNumber(secondsLeft(baubleStack)) + " seconds left.");
+            "GT5U.chat.nano_booster.remaining",
+            formatNumber(secondsLeft(baubleStack)));
 
     }
 
@@ -347,7 +349,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             boolean oldState = getShowMessages(superStack);
             boolean newState = !oldState;
             ItemHealingDevice.setShowMessages(superStack, newState);
-            GTUtility.sendChatToPlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
+            GTUtility.sendChatTrans(
+                aPlayer,
+                oldState ? "GT5U.chat.nano_booster.hide_info" : "GT5U.chat.nano_booster.show_info");
         }
         return superStack;
     }

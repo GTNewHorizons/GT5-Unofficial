@@ -1754,3 +1754,6 @@ gt.blockmachines.multimachine.em.plasma_module.name=Гелиотермальны
 gt.blockmachines.multimachine.em.research.name=Исследовательская станция
 gt.blockmachines.multimachine.em.smelting_module.name=Гелиовспывшковая кузня
 gt.blockmachines.multimachine.tm.teslacoil.name=Башня Теслы
+
+# GUI tooltips
+tt.gui.tooltip.full_led_desc.value=Значение: §b%s

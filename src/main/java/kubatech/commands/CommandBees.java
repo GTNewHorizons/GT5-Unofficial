@@ -32,7 +32,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -61,8 +61,9 @@ public class CommandBees extends CommandBase {
     public void processCommand(ICommandSender sender, String[] args) {
 
         if (!ModUtils.isClientSided) {
-            sender
-                .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command is single-player only!"));
+            sender.addChatMessage(
+                new ChatComponentTranslation("GT5U.chat.command.singleplayer_only")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 
@@ -95,12 +96,11 @@ public class CommandBees extends CommandBase {
             writer.flush();
             writer.close();
             sender.addChatMessage(
-                new ChatComponentText(
-                    EnumChatFormatting.YELLOW + "Click to open file : "
-                        + EnumChatFormatting.RESET
-                        + f.getAbsolutePath()).setChatStyle(
-                            new ChatStyle()
-                                .setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, f.getAbsolutePath()))));
+                new ChatComponentTranslation(
+                    "GT5U.chat.command.open_file",
+                    EnumChatFormatting.RESET + f.getAbsolutePath()).setChatStyle(
+                        new ChatStyle().setColor(EnumChatFormatting.YELLOW)
+                            .setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, f.getAbsolutePath()))));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

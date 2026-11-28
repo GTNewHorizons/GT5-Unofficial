@@ -254,10 +254,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
             if (wirelessModeEnabled) {
-                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
+                GTUtility.sendChatTrans(aPlayer, "gg.chat.antimatter_generator.wireless_mode.enable");
                 WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
+                GTUtility.sendChatTrans(aPlayer, "gg.chat.antimatter_generator.wireless_mode.disable");
                 WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
             }
         }

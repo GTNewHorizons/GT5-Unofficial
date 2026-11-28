@@ -1,9 +1,10 @@
 package gregtech.common.misc;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
-
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.ChatMessage;
 import gregtech.common.config.Client;
@@ -36,7 +37,10 @@ public class GTPowerfailCommandClient extends GTPowerfailCommand {
             case "clear", "clear-dim", "list" -> // Pass it to the server
                 player.sendChatMessage("/" + getCommandName() + " " + String.join(" ", args));
             default -> {
-                sendChatToPlayer(sender, RED + "Illegal subcommand: " + args[0]);
+                sendChatToPlayer(
+                    sender,
+                    new ChatComponentTranslation("GT5U.chat.command.invalid_subcommand", args[0])
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
                 sendHelpMessage(sender);
             }
         }

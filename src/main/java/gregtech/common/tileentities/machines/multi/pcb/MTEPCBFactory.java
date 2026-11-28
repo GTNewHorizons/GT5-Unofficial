@@ -32,7 +32,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -566,7 +566,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         dataStick.setStackDisplayName(
             "PCB Factory Link Data Stick (" + aBaseMetaTileEntity
                 .getXCoord() + ", " + aBaseMetaTileEntity.getYCoord() + ", " + aBaseMetaTileEntity.getZCoord() + ")");
-        aPlayer.addChatMessage(new ChatComponentText("Saved Link Data to Data Stick"));
+        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-saved-link-data"));
     }
 
     @Override

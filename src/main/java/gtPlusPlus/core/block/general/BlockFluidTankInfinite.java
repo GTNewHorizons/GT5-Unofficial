@@ -75,9 +75,9 @@ public class BlockFluidTankInfinite extends BlockContainer {
                 if (player.isSneaking()) {
                     switch (tank.changeMode()) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                            .sendChatToPlayer(player, "This tank is now in single fluid mode.");
+                            .sendChatTrans(player, "GT5U.chat.infinite_tank.single");
                         case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
-                            .sendChatToPlayer(player, "This tank is now in supply all fluids mode.");
+                            .sendChatTrans(player, "GT5U.chat.infinite_tank.all");
                     }
                     return true;
                 }
@@ -105,17 +105,16 @@ public class BlockFluidTankInfinite extends BlockContainer {
                         .getLocalizedName();
                     switch (tank.mode) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                            .sendChatToPlayer(player, "This tank contains " + fluidName + ".");
-                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility.sendChatToPlayer(
-                            player,
-                            "This tank contains " + fluidName + " and can supply any fluid that is requested from it.");
+                            .sendChatTrans(player, "GT5U.chat.infinite_tank.contains", fluidName);
+                        case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
+                            .sendChatTrans(player, "GT5U.chat.infinite_tank.contains_any", fluidName);
                     }
                 } else {
                     switch (tank.mode) {
                         case TileEntityInfiniteFluid.SINGLE_FLUID -> GTUtility
-                            .sendChatToPlayer(player, "This tank is empty.");
+                            .sendChatTrans(player, "GT5U.chat.infinite_tank.empty");
                         case TileEntityInfiniteFluid.SUPPLY_ALL_FLUIDS -> GTUtility
-                            .sendChatToPlayer(player, "This tank can supply any fluid that is requested from it.");
+                            .sendChatTrans(player, "GT5U.chat.infinite_tank.any");
                     }
                 }
                 return true;

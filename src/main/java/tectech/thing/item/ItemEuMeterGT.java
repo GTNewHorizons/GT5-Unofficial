@@ -49,25 +49,18 @@ public class ItemEuMeterGT extends Item {
         }
         if (aPlayer instanceof EntityPlayerMP && !aPlayer.isSneaking() && tTileEntity instanceof IGregTechTileEntity) {
             if (tTileEntity instanceof BaseMetaTileEntity) {
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatComp(
                     aPlayer,
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
-                        + "-----"
-                        + EnumChatFormatting.RESET
-                        + EnumChatFormatting.AQUA
-                        + " X:"
-                        + aX
-                        + " Y:"
-                        + aY
-                        + " Z:"
-                        + aZ
-                        + " D:"
-                        + aWorld.provider.dimensionId
-                        + " S:"
-                        + ordinalSide
-                        + " "
-                        + EnumChatFormatting.STRIKETHROUGH
-                        + "-----");
+                    new ChatComponentTranslation(
+                        "GT5U.chat.behaviour.cover_tool.position",
+                        aX,
+                        aY,
+                        aZ,
+                        aWorld.provider.dimensionId).appendText(" ")
+                            .appendSibling(
+                                new ChatComponentTranslation(
+                                    "GT5U.chat.cover.fluid_storage_monitor.side",
+                                    ordinalSide)));
                 GTUtility.sendChatComp(
                     aPlayer,
                     new ChatComponentTranslation("tt.keyphrase.Stored_energy").appendText(

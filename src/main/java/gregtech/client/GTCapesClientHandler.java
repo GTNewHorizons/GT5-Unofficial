@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
@@ -114,7 +114,7 @@ public class GTCapesClientHandler {
 
     public static void printCapes(Collection<String> capes) {
         Minecraft.getMinecraft().thePlayer
-            .addChatMessage(new ChatComponentText("Available capes: " + String.join(", ", capes)));
+            .addChatMessage(new ChatComponentTranslation("GT5U.chat.cape.available", String.join(", ", capes)));
     }
 
     private static ResourceLocation capeFromString(@Nullable String capeName) {

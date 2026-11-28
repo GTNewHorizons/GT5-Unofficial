@@ -6,7 +6,7 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 import com.google.common.collect.ImmutableList;
@@ -54,7 +54,7 @@ public class WorldgenCommand implements ICommand {
                 HEEIslandScanner.clearCache();
 
                 if (asteroidConfig == null) {
-                    pCommandSender.addChatMessage(new ChatComponentText("This chunk cannot spawn asteroids"));
+                    pCommandSender.addChatMessage(new ChatComponentTranslation("GT5U.chat.asteroid.no_spawn"));
                     return;
                 }
 
@@ -65,7 +65,7 @@ public class WorldgenCommand implements ICommand {
                     world.provider.dimensionId,
                     asteroidConfig.Probability);
 
-                pCommandSender.addChatMessage(new ChatComponentText("spawns: " + spawns));
+                pCommandSender.addChatMessage(new ChatComponentTranslation("GT5U.chat.asteroid.spawns", spawns));
             }
             case "generate" -> {
                 for (int offsetZ = -2; offsetZ <= 2; offsetZ++) {
@@ -77,8 +77,10 @@ public class WorldgenCommand implements ICommand {
                         }
 
                         pCommandSender.addChatMessage(
-                            new ChatComponentText(
-                                "found asteroid seed at " + (chunkX + offsetX) + ", " + (chunkZ + offsetZ)));
+                            new ChatComponentTranslation(
+                                "GT5U.chat.asteroid.seed",
+                                chunkX + offsetX,
+                                chunkZ + offsetZ));
 
                         gen.generateChunk(world, chunkX, chunkZ);
                     }

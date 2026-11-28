@@ -14,6 +14,8 @@
 package bartworks.common.commands;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import bartworks.system.worldgen.MapGenRuins;
@@ -42,7 +44,10 @@ public class SummonRuin extends GTBaseCommand {
             final int z = Integer.parseInt(args[1]);
             new MapGenRuins.RuinsBase().generate(sender.getEntityWorld(), sender.getEntityWorld().rand, x, 256, z);
         } catch (Exception e) {
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "Something went wrong!");
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("GT5U.chat.summon_ruin.failed")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
         }
     }
 }

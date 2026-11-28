@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -76,45 +77,45 @@ public class SPCommand extends GTBaseCommand {
         EntityPlayerMP teamLeader = getCommandSenderAsPlayer(sender);
         EntityPlayerMP teamMember = getPlayer(sender, playerInvited);
         invite.add(Pair.of(teamMember, teamLeader));
-        String message = EnumChatFormatting.GOLD + teamLeader.getCommandSenderName()
-            + EnumChatFormatting.RESET
-            + " has sent you an invite to join their team. Accept it with"
-            + EnumChatFormatting.GOLD
-            + " /sp accept "
-            + teamLeader.getCommandSenderName();
-        sendChatToPlayer(teamMember, message);
+        sendChatToPlayer(
+            teamMember,
+            new ChatComponentTranslation(
+                "GT5U.chat.space_project.invite",
+                EnumChatFormatting.GOLD + teamLeader.getCommandSenderName() + EnumChatFormatting.RESET,
+                EnumChatFormatting.GOLD + "/sp accept "
+                    + teamLeader.getCommandSenderName()
+                    + EnumChatFormatting.RESET));
     }
 
     private void processAccept(ICommandSender sender, String playerInviter) {
         EntityPlayerMP teamMember = getCommandSenderAsPlayer(sender);
         EntityPlayerMP teamLeader = getPlayer(sender, playerInviter);
         if (invite.contains(Pair.of(teamMember, teamLeader))) {
-            String message = EnumChatFormatting.GOLD + teamMember.getCommandSenderName()
-                + EnumChatFormatting.RESET
-                + " has accepted the invite.";
             SpaceProjectManager.putInTeam(teamMember.getUniqueID(), teamLeader.getUniqueID());
-            sendChatToPlayer(teamLeader, message);
+            sendChatToPlayer(
+                teamLeader,
+                new ChatComponentTranslation(
+                    "GT5U.chat.space_project.invite_accepted",
+                    EnumChatFormatting.GOLD + teamMember.getCommandSenderName() + EnumChatFormatting.RESET));
             invite.remove(Pair.of(teamMember, teamLeader));
         }
     }
 
     private void processLeave(ICommandSender sender) {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
-        String message = "Are you sure you want to leave the team. You will lose all progress. Use "
-            + EnumChatFormatting.GOLD
-            + "/sp confirm"
-            + EnumChatFormatting.RESET
-            + " to confirm this. This does nothing if you are the team leader.";
-        sendChatToPlayer(player, message);
+        sendChatToPlayer(
+            player,
+            new ChatComponentTranslation(
+                "GT5U.chat.space_project.leave_confirm",
+                EnumChatFormatting.GOLD + "/sp confirm" + EnumChatFormatting.RESET));
         confirm.add(player);
     }
 
     private void processConfirm(ICommandSender sender) {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
         if (confirm.contains(player)) {
-            String message = "Successfully left the team.";
             SpaceProjectManager.putInTeam(player.getUniqueID(), player.getUniqueID());
-            sendChatToPlayer(player, message);
+            sendChatToPlayer(player, new ChatComponentTranslation("GT5U.chat.space_project.left"));
             confirm.remove(player);
         }
     }

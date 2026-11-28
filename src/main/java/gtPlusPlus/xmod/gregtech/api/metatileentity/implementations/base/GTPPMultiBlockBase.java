@@ -611,17 +611,15 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aHatchIndex = 0;
-        GTUtility.sendChatToPlayer(aPlayer, "Trying to clear " + mOutputHatches.size() + " output hatches.");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.output_hatch.clear", mOutputHatches.size());
         for (MTEHatchOutput hatch : this.mOutputHatches) {
             if (hatch.mFluid != null) {
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    "Clearing " + hatch.mFluid.amount
-                        + "L of "
-                        + hatch.mFluid.getLocalizedName()
-                        + " from hatch "
-                        + aHatchIndex
-                        + ".");
+                    "GT5U.chat.output_hatch.clear_fluid",
+                    hatch.mFluid.amount,
+                    hatch.mFluid.getLocalizedName(),
+                    aHatchIndex);
                 hatch.mFluid = null;
             }
             aHatchIndex++;

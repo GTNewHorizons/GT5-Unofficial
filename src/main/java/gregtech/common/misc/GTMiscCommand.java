@@ -17,7 +17,8 @@ import java.util.UUID;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -54,41 +55,41 @@ public final class GTMiscCommand extends GTBaseCommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|oregenpattern|pollution|toggle>";
+        return "gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|oregenpattern|pollution|toggle>";
     }
 
     // spotless:off
     @Override
     protected List<IChatComponent> getHelpMessages() {
         final List<IChatComponent> list = new ArrayList<>();
-        list.add(new ChatComponentText("Usage: gt <chunks|cleanroom_bypass|dump_music_durations|global_energy_add|global_energy_display|global_energy_join|global_energy_set|oregenpattern|pollution|toggle>"));
-        list.add(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
-        list.add(new ChatComponentText("\"cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>\" - Bypass cleanroom and/or low-grav requirements"));
-        list.add(new ChatComponentText("\"dump_music_durations\" - dumps soundmeta/durations.json for all registered records in the game to the log. Client-only"));
-        list.add(new ChatComponentText("\"oregenpattern [set <pattern> [confirm]]\" - show the ore vein pattern of this world, or override it"));
-        list.add(new ChatComponentText("\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, \n if <amount> isn't specified, will add" + GTMod.proxy.mPollutionSmogLimit + "gibbl."));
-        list.add(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
-        list.add(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
-        list.add(new ChatComponentText("\"toggle debugChunkloaders\" - toggles chunkloaders debug"));
-        list.add(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
-        list.add(new ChatComponentText("\"toggle debugDriller\" - toggles oil drill debug log"));
-        list.add(new ChatComponentText("\"toggle debugBlockMiner\" - Possible issues with miners"));
-        list.add(new ChatComponentText("\"toggle debugBlockPump\" - Possible issues with pumps"));
-        list.add(new ChatComponentText("\"toggle debugEntityCramming\" - How long it takes and how many entities it finds"));
-        list.add(new ChatComponentText("\"toggle debugMulti\" - toggles structurelib debug"));
-        list.add(new ChatComponentText("\"toggle debugOrevein\" - toggles worldgen ore vein debug"));
-        list.add(new ChatComponentText("\"toggle debugSmallOres\" - toggles worldgen small vein debug"));
-        list.add(new ChatComponentText("\"toggle debugStones\" - toggles worldgen stones debug"));
-        list.add(new ChatComponentText("\"toggle debugWorldGen\" - toggles generic worldgen debug"));
-        list.add(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global wireless EU controls ---"));
-        list.add(new ChatComponentText("Allows you to set the amount of EU in a users wireless network."));
-        list.add(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_set " + EnumChatFormatting.BLUE + "[Name] " + EnumChatFormatting.LIGHT_PURPLE + "[EU]"));
-        list.add(new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
-        list.add(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_add " + EnumChatFormatting.BLUE + "[Name] " + EnumChatFormatting.LIGHT_PURPLE + "[EU]"));
-        list.add(new ChatComponentText("Allows you to join two users together into one network. Can be undone by writing the users name twice."));
-        list.add(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_join " + EnumChatFormatting.BLUE + "[User joining] [User to join]"));
-        list.add(new ChatComponentText("Shows the amount of EU in a users energy network."));
-        list.add(new ChatComponentText("Usage:" + EnumChatFormatting.RED + " global_energy_display " + EnumChatFormatting.BLUE + "[Name]"));
+        list.add(new ChatComponentTranslation("commands.generic.usage", getCommandUsage(null)));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.chunks", "chunks"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.cleanroom_bypass", "cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.dump_music_durations", "dump_music_durations"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.oregenpattern", "oregenpattern [set <pattern> [confirm]]"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.pollution", "pollution <amount>", GTMod.proxy.mPollutionSmogLimit));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug", "toggle D1"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug2", "toggle D2"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_chunkloaders", "toggle debugChunkloaders"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_cleanroom", "toggle debugCleanroom"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_driller", "toggle debugDriller"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_block_miner", "toggle debugBlockMiner"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_block_pump", "toggle debugBlockPump"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_entity_cramming", "toggle debugEntityCramming"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_multi", "toggle debugMulti"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_orevein", "toggle debugOrevein"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_small_ores", "toggle debugSmallOres"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_stones", "toggle debugStones"));
+        list.add(new ChatComponentTranslation("GT5U.chat.command.gt.help.debug_worldgen", "toggle debugWorldGen"));
+        list.add(new ChatComponentTranslation("GT5U.chat.wireless.help.title").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+        list.add(new ChatComponentTranslation("GT5U.chat.wireless.help.set"));
+        list.add(new ChatComponentTranslation("commands.generic.usage", EnumChatFormatting.RED + " global_energy_set " + EnumChatFormatting.BLUE + "[Name] " + EnumChatFormatting.LIGHT_PURPLE + "[EU]"));
+        list.add(new ChatComponentTranslation("GT5U.chat.wireless.help.add"));
+        list.add(new ChatComponentTranslation("commands.generic.usage", EnumChatFormatting.RED + " global_energy_add " + EnumChatFormatting.BLUE + "[Name] " + EnumChatFormatting.LIGHT_PURPLE + "[EU]"));
+        list.add(new ChatComponentTranslation("GT5U.chat.wireless.help.join"));
+        list.add(new ChatComponentTranslation("commands.generic.usage", EnumChatFormatting.RED + " global_energy_join " + EnumChatFormatting.BLUE + "[User joining] [User to join]"));
+        list.add(new ChatComponentTranslation("GT5U.chat.wireless.help.display"));
+        list.add(new ChatComponentTranslation("commands.generic.usage", EnumChatFormatting.RED + " global_energy_display " + EnumChatFormatting.BLUE + "[Name]"));
         return list;
     }
     // spotless:on
@@ -177,7 +178,10 @@ public final class GTMiscCommand extends GTBaseCommand {
             case "global_energy_set" -> this.processGlobalEnergySetCommand(sender, args);
             case "toggle" -> this.processToggleCommand(sender, args);
             default -> {
-                sendChatToPlayer(sender, EnumChatFormatting.RED + "Invalid command/syntax detected.");
+                sendChatToPlayer(
+                    sender,
+                    new ChatComponentTranslation("commands.generic.syntax")
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
                 sendHelpMessage(sender);
             }
         }
@@ -196,14 +200,14 @@ public final class GTMiscCommand extends GTBaseCommand {
         try {
             Field field = GTValues.class.getDeclaredField(args[1]);
             if (field.getType() != boolean.class) {
-                sendChatToPlayer(sender, "Wrong variable: " + args[1]);
+                sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.command.wrong_variable", args[1]));
                 return;
             }
             boolean b = !field.getBoolean(null);
             field.setBoolean(null, b);
             sendChatToPlayer(sender, args[1] + " = " + b);
         } catch (Exception e) {
-            sendChatToPlayer(sender, "No such variable: " + args[0]);
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.command.unknown_variable", args[0]));
         }
     }
 
@@ -211,7 +215,10 @@ public final class GTMiscCommand extends GTBaseCommand {
         if (args.length < 2) {
             sendChatToPlayer(
                 sender,
-                EnumChatFormatting.RED + "Usage: gt cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>");
+                new ChatComponentTranslation(
+                    "commands.generic.usage",
+                    "gt cleanroom_bypass <on|off|status> <all|cleanroom|lowgrav>")
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
         String act = args[1].toLowerCase();
@@ -244,18 +251,22 @@ public final class GTMiscCommand extends GTBaseCommand {
         }
         sendChatToPlayer(
             sender,
-            EnumChatFormatting.YELLOW + "Cleanroom Bypass: "
-                + (FakeCleanroom.CLEANROOM_BYPASS ? EnumChatFormatting.GREEN + "Enabled"
-                    : EnumChatFormatting.RED + "Disabled")
-                + EnumChatFormatting.YELLOW
-                + " & LowGrav Bypass: "
-                + (FakeCleanroom.LOWGRAV_BYPASS ? EnumChatFormatting.GREEN + "Enabled"
-                    : EnumChatFormatting.RED + "Disabled"));
+            new ChatComponentTranslation(
+                "GT5U.chat.cleanroom.bypass_status",
+                bypassStatus(FakeCleanroom.CLEANROOM_BYPASS),
+                bypassStatus(FakeCleanroom.LOWGRAV_BYPASS))
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+    }
+
+    private static IChatComponent bypassStatus(boolean enabled) {
+        return new ChatComponentTranslation(
+            enabled ? "GT5U.gui.button.feature_enabled" : "GT5U.gui.button.feature_disabled")
+                .setChatStyle(new ChatStyle().setColor(enabled ? EnumChatFormatting.GREEN : EnumChatFormatting.RED));
     }
 
     private void processChunksCommand(ICommandSender sender) {
         GTChunkManager.printTickets();
-        sendChatToPlayer(sender, "Forced chunks logged to GregTech.log");
+        sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.command.chunks_logged"));
     }
 
     private void processPollutionCommand(ICommandSender sender, String[] args) {
@@ -298,26 +309,20 @@ public final class GTMiscCommand extends GTBaseCommand {
         if (addEUToGlobalEnergyMap(uuid, eu)) {
             sendChatToPlayer(
                 sender,
-                "Successfully added " + EU_string_formatted
-                    + "EU to the global energy network of "
-                    + formatted_username
-                    + ".");
+                new ChatComponentTranslation("GT5U.chat.wireless.added", EU_string_formatted, formatted_username));
         } else {
             sendChatToPlayer(
                 sender,
-                "Failed to add " + EU_string_formatted
-                    + "EU to the global energy map of "
-                    + formatted_username
-                    + ". Insufficient energy in network.");
+                new ChatComponentTranslation("GT5U.chat.wireless.add_failed", EU_string_formatted, formatted_username));
         }
 
         sendChatToPlayer(
             sender,
-            formatted_username + " currently has "
-                + EnumChatFormatting.RED
-                + formatNumber(new BigInteger(getUserEU(uuid).toString()))
-                + EnumChatFormatting.RESET
-                + "EU in their network.");
+            new ChatComponentTranslation(
+                "GT5U.chat.wireless.balance",
+                formatted_username,
+                EnumChatFormatting.RED + formatNumber(new BigInteger(getUserEU(uuid).toString()))
+                    + EnumChatFormatting.RESET));
     }
 
     private void processGlobalEnergySetCommand(ICommandSender sender, String[] args) {
@@ -330,7 +335,7 @@ public final class GTMiscCommand extends GTBaseCommand {
         BigInteger eu = parseEU(args[2]);
 
         if ((eu.compareTo(BigInteger.ZERO)) < 0) {
-            sendChatToPlayer(sender, "Cannot set a users energy network to a negative value.");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.wireless.negative_balance"));
             return;
         }
 
@@ -338,12 +343,10 @@ public final class GTMiscCommand extends GTBaseCommand {
 
         sendChatToPlayer(
             sender,
-            "Successfully set " + formatted_username
-                + "'s global energy network to "
-                + EnumChatFormatting.RED
-                + formatNumber(eu)
-                + EnumChatFormatting.RESET
-                + "EU.");
+            new ChatComponentTranslation(
+                "GT5U.chat.wireless.balance_set",
+                formatted_username,
+                EnumChatFormatting.RED + formatNumber(eu) + EnumChatFormatting.RESET));
     }
 
     private void processGlobalEnergyJoinCommand(ICommandSender sender, String[] args) {
@@ -363,7 +366,7 @@ public final class GTMiscCommand extends GTBaseCommand {
             SpaceProjectManager.putInTeam(uuidSubject, uuidSubject);
             sendChatToPlayer(
                 sender,
-                "User " + formattedUsernameSubject + " has rejoined their own global energy network.");
+                new ChatComponentTranslation("GT5U.chat.wireless.rejoined", formattedUsernameSubject));
             return;
         }
 
@@ -371,19 +374,20 @@ public final class GTMiscCommand extends GTBaseCommand {
 
         if (SpaceProjectManager.getLeader(uuidSubject)
             .equals(SpaceProjectManager.getLeader(uuidTeam))) {
-            sendChatToPlayer(sender, "They are already in the same network!");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.wireless.same_network"));
             return;
         }
 
         SpaceProjectManager.putInTeam(uuidSubject, uuidTeam);
 
-        sendChatToPlayer(sender, "Success! " + formattedUsernameSubject + " has joined " + formattedUsernameTeam + ".");
         sendChatToPlayer(
             sender,
-            "To undo this simply join your own network again with /gt global_energy_join " + formattedUsernameSubject
-                + " "
-                + formattedUsernameSubject
-                + ".");
+            new ChatComponentTranslation("GT5U.chat.wireless.joined", formattedUsernameSubject, formattedUsernameTeam));
+        sendChatToPlayer(
+            sender,
+            new ChatComponentTranslation(
+                "GT5U.chat.wireless.join_undo",
+                "/gt global_energy_join " + formattedUsernameSubject + " " + formattedUsernameSubject));
     }
 
     private void processGlobalEnergyDisplayCommand(ICommandSender sender, String[] args) {
@@ -394,27 +398,24 @@ public final class GTMiscCommand extends GTBaseCommand {
         UUID userUUID = SpaceProjectManager.getPlayerUUIDFromName(username);
 
         if (!SpaceProjectManager.isInTeam(userUUID)) {
-            sendChatToPlayer(sender, "User " + formatted_username + " has no global energy network.");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.wireless.no_network", formatted_username));
             return;
         }
         UUID teamUUID = SpaceProjectManager.getLeader(userUUID);
 
         sendChatToPlayer(
             sender,
-            "User " + formatted_username
-                + " has "
-                + EnumChatFormatting.RED
-                + formatNumber(getUserEU(userUUID))
-                + EnumChatFormatting.RESET
-                + "EU in their network.");
+            new ChatComponentTranslation(
+                "GT5U.chat.wireless.balance",
+                formatted_username,
+                EnumChatFormatting.RED + formatNumber(getUserEU(userUUID)) + EnumChatFormatting.RESET));
         if (!userUUID.equals(teamUUID)) sendChatToPlayer(
             sender,
-            "User " + formatted_username
-                + " is currently in network of "
-                + EnumChatFormatting.BLUE
-                + SpaceProjectManager.getPlayerNameFromUUID(teamUUID)
-                + EnumChatFormatting.RESET
-                + ".");
+            new ChatComponentTranslation(
+                "GT5U.chat.wireless.member",
+                formatted_username,
+                EnumChatFormatting.BLUE + SpaceProjectManager.getPlayerNameFromUUID(teamUUID)
+                    + EnumChatFormatting.RESET));
     }
 
     private static String[] patternNames() {
@@ -427,38 +428,48 @@ public final class GTMiscCommand extends GTBaseCommand {
         if (args.length < 2) {
             sendChatToPlayer(
                 sender,
-                EnumChatFormatting.YELLOW + "Ore vein pattern: "
-                    + EnumChatFormatting.WHITE
-                    + GTWorldgenerator.getOregenPattern()
-                    + EnumChatFormatting.YELLOW
-                    + " ("
-                    + GTWorldgenerator.getOregenPatternSource().description
-                    + ")");
+                new ChatComponentTranslation(
+                    "GT5U.chat.oregen.pattern.status",
+                    EnumChatFormatting.WHITE + GTWorldgenerator.getOregenPattern()
+                        .name() + EnumChatFormatting.YELLOW,
+                    patternSource()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
             // An operator who just set this does not need to be told it looks wrong
             if (GTWorldgenerator.getOregenPattern() == GTWorldgenerator.OregenPattern.AXISSYMMETRICAL
                 && GTWorldgenerator.getOregenPatternSource() != GTWorldgenerator.PatternSource.COMMAND) {
                 // spotless:off
-                sendChatToPlayer(sender, EnumChatFormatting.GRAY + "Worlds created since July 2023 use EQUAL_SPACING. If this one was, the value above is");
-                sendChatToPlayer(sender, EnumChatFormatting.GRAY + "wrong and its veins do not sit where prospecting tools report them.");
+                sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.date_hint", "EQUAL_SPACING").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
+                sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.date_hint_effect").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
                 // spotless:on
             }
             return;
         }
 
         if (!"set".equals(args[1])) {
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "Usage: gt oregenpattern [set <pattern> [confirm]]");
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("commands.generic.usage", "gt oregenpattern [set <pattern> [confirm]]")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 
         // gt already requires permission level 4, this makes the gate explicit on the destructive branch
         if (sender instanceof EntityPlayerMP && !isOpedPlayer(sender)) {
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "You are not allowed to change the ore vein pattern.");
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("GT5U.chat.oregen.pattern.no_permission")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 
         if (args.length < 3) {
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "Usage: gt oregenpattern set <pattern> [confirm]");
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "Valid patterns: " + String.join(", ", patternNames()));
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("commands.generic.usage", "gt oregenpattern set <pattern> [confirm]")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("GT5U.chat.oregen.pattern.valid", String.join(", ", patternNames()))
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 
@@ -466,13 +477,19 @@ public final class GTMiscCommand extends GTBaseCommand {
         try {
             newPattern = GTWorldgenerator.OregenPattern.valueOf(args[2].toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "Unknown ore vein pattern: " + args[2]);
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("GT5U.chat.oregen.pattern.unknown", args[2])
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 
         final World overworld = DimensionManager.getWorld(0);
         if (overworld == null) {
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "The overworld is not loaded, cannot change it now.");
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("GT5U.chat.oregen.pattern.overworld_unloaded")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 
@@ -480,13 +497,13 @@ public final class GTMiscCommand extends GTBaseCommand {
 
         if (args.length < 4 || !"confirm".equals(args[3])) {
             // spotless:off
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "This changes where GregTech places ore veins. Read before confirming.");
-            sendChatToPlayer(sender, EnumChatFormatting.YELLOW + "Current: " + EnumChatFormatting.WHITE + oldPattern + EnumChatFormatting.YELLOW + " (" + GTWorldgenerator.getOregenPatternSource().description + ")");
-            sendChatToPlayer(sender, EnumChatFormatting.YELLOW + "New:     " + EnumChatFormatting.WHITE + newPattern);
-            sendChatToPlayer(sender, EnumChatFormatting.GRAY + "Veins that already generated do not move. Chunks generated from now on use the new");
-            sendChatToPlayer(sender, EnumChatFormatting.GRAY + "pattern, and prospecting tools report it for the whole world, including the parts");
-            sendChatToPlayer(sender, EnumChatFormatting.GRAY + "that were generated with the old one. Only do this if the current value is wrong.");
-            sendChatToPlayer(sender, EnumChatFormatting.GREEN + "Run \"/gt oregenpattern set " + newPattern + " confirm\" to apply.");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.warning").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.current", EnumChatFormatting.WHITE + oldPattern.name() + EnumChatFormatting.YELLOW, patternSource()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.new", EnumChatFormatting.WHITE + newPattern.toString()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.existing").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.prospecting").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.only_if_wrong").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.pattern.confirm", "/gt oregenpattern set " + newPattern + " confirm").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
             // spotless:on
             return;
         }
@@ -494,28 +511,34 @@ public final class GTMiscCommand extends GTBaseCommand {
         if (!GTWorldgenerator.OregenPatternSavedData.overridePattern(overworld, newPattern)) {
             sendChatToPlayer(
                 sender,
-                EnumChatFormatting.RED
-                    + "The stored pattern was written by a newer GregTech and cannot be replaced. See the log.");
+                new ChatComponentTranslation("GT5U.chat.oregen.pattern.newer_format")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 
         sendChatToPlayer(
             sender,
-            EnumChatFormatting.GREEN + "Ore vein pattern changed from "
-                + EnumChatFormatting.WHITE
-                + oldPattern
-                + EnumChatFormatting.GREEN
-                + " to "
-                + EnumChatFormatting.WHITE
-                + newPattern
-                + EnumChatFormatting.GREEN
-                + ".");
+            new ChatComponentTranslation(
+                "GT5U.chat.oregen.pattern.changed",
+                EnumChatFormatting.WHITE + oldPattern.name() + EnumChatFormatting.GREEN,
+                EnumChatFormatting.WHITE + newPattern.name() + EnumChatFormatting.GREEN)
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+    }
+
+    private static IChatComponent patternSource() {
+        return new ChatComponentTranslation(
+            "GT5U.chat.oregen.pattern.source." + GTWorldgenerator.getOregenPatternSource()
+                .name()
+                .toLowerCase(Locale.ROOT));
     }
 
     private void processDumpMusicDurationsCommand(ICommandSender sender) {
         if (!FMLLaunchHandler.side()
             .isClient()) {
-            sendChatToPlayer(sender, EnumChatFormatting.RED + "This command is client-only.");
+            sendChatToPlayer(
+                sender,
+                new ChatComponentTranslation("GT5U.chat.command.client_only")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
         }
         GTMusicSystem.ClientSystem.dumpAllRecordDurations();
     }
