@@ -370,6 +370,14 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(Math.max(aMaterialMass * 9L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
                 .addTo(benderRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                .circuit(1)
+                .itemOutputs(GTUtility.copyAmount(1, aStack))
+                .duration(Math.max(aMaterialMass * 9L, 1L))
+                .eut(calculateRecipeEU(aMaterial, 96) * 4)
+                .addTo(compressorRecipes);
         }
     }
 
@@ -382,6 +390,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 || aMaterial.contains(SubTag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
+                .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
                 .duration(Math.max(aMaterialMass * 32L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
