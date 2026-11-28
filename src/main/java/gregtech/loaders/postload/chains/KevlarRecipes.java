@@ -244,9 +244,7 @@ public class KevlarRecipes {
                 .fluidInputs(
                     Materials.ParaPhenylenediamine.getFluid(1000),
                     Materials.TerephthaloylChloride.getFluid(1000))
-                .fluidOutputs(
-                    Materials.LiquidCrystalKevlar.getFluid(2000L),
-                    Materials.HydrochloricAcid.getFluid(2000))
+                .fluidOutputs(Materials.LiquidCrystalKevlar.getFluid(2000L), Materials.HydrochloricAcid.getFluid(2000))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(multiblockChemicalReactorRecipes);
