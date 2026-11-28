@@ -84,13 +84,10 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
             String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
             if (neededProject != null && !neededProject.isEmpty()) {
                 specialInfo.add(
-                    String.format(
-                        StatCollector.translateToLocal("ig.nei.spaceassembler.project"),
+                    StatCollector.translateToLocalFormatted(
+                        "ig.nei.spaceassembler.project_requirement",
                         SpaceProjectManager.getProject(neededProject)
-                            .getLocalizedName()));
-                specialInfo.add(
-                    String.format(
-                        StatCollector.translateToLocal("ig.nei.spaceassembler.projectAt"),
+                            .getLocalizedName(),
                         neededProjectLocation == null || neededProjectLocation.isEmpty()
                             ? StatCollector.translateToLocal("ig.nei.spaceassembler.projectAnyLocation")
                             : StatCollector.translateToLocal(

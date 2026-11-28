@@ -1,13 +1,16 @@
 package gregtech.nei;
 
+import static gregtech.api.util.GTUtility.breakLines;
 import static gregtech.api.util.GTUtility.isStringInvalid;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
@@ -90,9 +93,16 @@ public class RecipeDisplayInfo {
      */
     public void drawText(@Nullable String text, int xStart, int yShift) {
         if (isStringInvalid(text)) return;
-        Minecraft.getMinecraft().fontRenderer
-            .drawString(text, xStart, yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
-        yPos += yShift;
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        List<String> lines = Arrays.asList(breakLines(text.replace("\n", "\\n")));
+        if (lines.size() > 1) {
+            // Preserve formatting across explicit line breaks without adding width-based wrapping.
+            lines = fontRenderer.listFormattedStringToWidth(String.join("\n", lines), Integer.MAX_VALUE);
+        }
+        for (String line : lines) {
+            fontRenderer.drawString(line, xStart, yPos, neiTextColorOverride != -1 ? neiTextColorOverride : 0x000000);
+            yPos += yShift;
+        }
     }
 
     public void drawTextMultipleLines(List<String> texts) {
