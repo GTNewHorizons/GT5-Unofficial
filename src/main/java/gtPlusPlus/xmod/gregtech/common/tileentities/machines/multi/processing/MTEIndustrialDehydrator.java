@@ -62,6 +62,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
+import gregtech.crossmod.ae2.PatternTargetKey.MaxSpecialValue;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -223,13 +224,18 @@ public class MTEIndustrialDehydrator extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
+    protected MaxSpecialValue getPatternRecipeFilter() {
+        return new MaxSpecialValue(getCoilLevel().getHeat());
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                return recipe.mSpecialValue <= getCoilLevel().getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
+                return getPatternRecipeFilter().test(recipe) ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
 

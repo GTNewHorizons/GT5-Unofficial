@@ -1186,14 +1186,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             : getMaxInputAmps();
     }
 
-    protected long getPatternMaxRecipeEUt() {
-        final long voltage = getAverageInputVoltage();
-        final long amps = getProcessingAmperage();
-        if (voltage <= 0 || amps <= 0 || voltage > Long.MAX_VALUE / amps) return Long.MAX_VALUE;
-        return voltage * amps;
+    private long getPatternMaxRecipeEUt() {
+        final ProcessingLogic logic = createProcessingLogic();
+        final ProcessingLogic power = logic == null ? new ProcessingLogic() : logic;
+        setProcessingLogicPower(power);
+        return power.getPatternMaxRecipeEUt();
     }
 
-    /** Returns a stable recipe filter for pattern matching, or null if the recipe map is enough. */
+    /** Returns an immutable recipe filter with value equality for the current machine configuration. */
     @Nullable
     protected Predicate<GTRecipe> getPatternRecipeFilter() {
         return null;
@@ -1277,17 +1277,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         final List<List<ItemStack>> sets = new ArrayList<>();
         final ItemStack controllerItem = canUseControllerSlotForRecipe() ? getControllerSlot() : null;
         final byte hatchColor = hatch.getColor();
-        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
-            if (bus instanceof MTEHatchCraftingInputME) continue;
-            final byte busColor = bus.getColor();
-            if (hatchColor != -1 && busColor != -1 && hatchColor != busColor) continue;
-            final List<ItemStack> items = new ArrayList<>();
-            addPatternConfigItems(items, bus, maps);
-            if (controllerItem != null) items.add(controllerItem);
-            sets.add(items);
-        }
-        if (sets.isEmpty()) {
-            sets.add(controllerItem != null ? Collections.singletonList(controllerItem) : Collections.emptyList());
+        final List<ItemStack> controllerOnly = controllerItem != null ? Collections.singletonList(controllerItem)
+            : Collections.emptyList();
+        short colors = getHatchColors();
+        if (colors == 0) colors = 0b1;
+        final Iterable<MTEHatchInputBus> buses = validMTEList(mInputBusses);
+        for (byte color = 0; color < 16; color++) {
+            if (isColorAbsent(colors, color) || (hatchColor != -1 && hatchColor != color)) continue;
+            final int before = sets.size();
+            for (MTEHatchInputBus bus : buses) {
+                final byte busColor = bus.getColor();
+                if (bus instanceof MTEHatchCraftingInputME || (busColor != -1 && busColor != color)) continue;
+                final List<ItemStack> items = new ArrayList<>();
+                addPatternConfigItems(items, bus, maps);
+                if (controllerItem != null) items.add(controllerItem);
+                sets.add(items);
+            }
+            if (sets.size() == before) sets.add(controllerOnly);
         }
         return sets;
     }

@@ -36,6 +36,15 @@ public record PatternTargetKey(List<RecipeMap<?>> recipeMaps, long maxRecipeEUt,
     @Nullable ItemId specialItem, @Nullable GTRecipe lockedRecipe, @Nullable Predicate<GTRecipe> recipeFilter)
     implements IPatternTargetKey {
 
+    @Desugar
+    public record MaxSpecialValue(long limit) implements Predicate<GTRecipe> {
+
+        @Override
+        public boolean test(GTRecipe recipe) {
+            return recipe.mSpecialValue <= limit;
+        }
+    }
+
     /** Builds a key with one set of additional inputs and a special slot. */
     public static PatternTargetKey of(RecipeMap<?> map, long voltage, Collection<ItemStack> items,
         @Nullable ItemStack specialItem, Predicate<GTRecipe> recipeFilter) {
