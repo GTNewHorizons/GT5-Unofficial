@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -47,6 +48,7 @@ import appeng.util.ReadableNumberConverter;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.item.ItemFluidDisplay;
 import codechicken.nei.recipe.Badge;
 import codechicken.nei.recipe.GuiRecipe;
@@ -80,6 +82,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
+import gregtech.nei.transfer.RecipeTransferContainer;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -410,6 +413,14 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     @Override
     public String getOverlayIdentifier() {
         return recipeCategory.unlocalizedName;
+    }
+
+    @Override
+    public IRecipeOverlayRenderer getOverlayRenderer(GuiContainer gui, int recipe) {
+        if (gui.inventorySlots instanceof RecipeTransferContainer container) {
+            return container.createOverlayRenderer(getIngredientStacks(recipe));
+        }
+        return super.getOverlayRenderer(gui, recipe);
     }
 
     @Override
