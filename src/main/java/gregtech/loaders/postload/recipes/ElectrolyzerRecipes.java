@@ -377,32 +377,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .eut(60)
             .addTo(electrolyzerRecipes);
 
-        // CH5N = C + 5H + N
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getEmptyCell(1))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cellGas, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methylamine, FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 5_000))
-            .duration(5 * SECONDS + 12 * TICKS)
-            .eut(90)
-            .addTo(electrolyzerRecipes);
-
-        // C3H9N = 3C + 9H + N
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getEmptyCell(1))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cellGas, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Trimethylamine, FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 9_000))
-            .duration(10 * SECONDS + 8 * TICKS)
-            .eut(90)
-            .addTo(electrolyzerRecipes);
-
         // C2H4O2 = 2C + 2H2 + O2
 
         GTValues.RA.stdBuilder()

@@ -2705,7 +2705,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, 4),
+                ItemList.WovenKevlar.get(4),
                 MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, 4),
                 ItemList.Casing_Fusion.get(1))
             .itemOutputs(ItemList.Casing_Fusion2.get(1))
@@ -3008,14 +3008,6 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Indalloy140, FluidShapes.fluidMolten, 9 * INGOTS))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.KevlarFiber.get(8))
-            .circuit(8)
-            .itemOutputs(ItemList.WovenKevlar.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -6723,7 +6715,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.plate, 6),
                 MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, TEBlockShapes.frameGt, 1))
-            .itemOutputs(ItemList.Casing_Advanced_Rhodium_Palladium.get(1))
+            .itemOutputs(ItemList.Casing_Secure_Rhodium_Palladium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);

@@ -110,6 +110,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTELayerSignal;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
@@ -197,6 +198,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 import gregtech.common.tileentities.machines.multi.MTELargeNaquadahReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
 import gregtech.common.tileentities.machines.multi.MTELatex;
+import gregtech.common.tileentities.machines.multi.MTELayeringMachine;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTEMegaDistillationTower;
@@ -810,6 +812,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MegaChemicalReactor.ID,
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
+
+        ItemList.LayeringMachine.set(
+            new MTELayeringMachine(
+                LayeringMachine.ID,
+                "Layeringmachine.controller.tier.single",
+                "Sequential Layering Device").getStackForm(1));
 
         ItemList.IndustrialCuttingMachine.set(
             new MTEIndustrialCuttingMachine(
@@ -9401,6 +9409,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 8).getStackForm(1L));
         ItemList.Hatch_HeatSensor
             .set(new MTEHeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_LayerSignal.set(
+            new MTELayerSignal(LAYER_SIGNAL_HATCH.ID, "hatch.layersignal", "Layer Signal Hatch", 7).getStackForm(1));
         ItemList.Hatch_ToxicResidueSensor.set(
             new MTEToxicResidueSensor(
                 TOXIC_RESIDUE_DETECTOR_HATCH.ID,

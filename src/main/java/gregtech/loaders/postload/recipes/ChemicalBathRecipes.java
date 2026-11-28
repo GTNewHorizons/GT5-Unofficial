@@ -324,14 +324,6 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.WovenKevlar.get(1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Kevlar, Shapes.plate, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PolyurethaneResin, FluidShapes.fluidLiquid, 1_000))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(chemicalBathRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.CubicZirconia, Shapes.gemExquisite, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Firestone, Shapes.gem, 1))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 250))

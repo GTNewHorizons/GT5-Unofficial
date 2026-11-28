@@ -187,6 +187,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
 import static gregtech.common.items.IDMetaItem03.Dim_Prismarine;
+import static gregtech.common.items.IDMetaItem03.DrawnKevlarFiber;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
@@ -231,7 +232,6 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER
 import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
 import static gregtech.common.items.IDMetaItem03.IridiumAlloyPlate;
 import static gregtech.common.items.IDMetaItem03.Isolated_BDM_Strands;
-import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.Lost_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
@@ -295,6 +295,7 @@ import static gregtech.common.items.IDMetaItem03.Raw_Manifold_Bud;
 import static gregtech.common.items.IDMetaItem03.Realized_Quantum_Circuit_Rack;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
+import static gregtech.common.items.IDMetaItem03.SpunKevlarFiber;
 import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableBosonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.StableEmptyContainmentUnit;
@@ -1403,11 +1404,17 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
                 "gt.item.small_gallium_arsenide_crystal.name",
                 "gt.item.small_gallium_arsenide_crystal.tooltip",
                 o));
-        ItemList.KevlarFiber.set(
+        ItemList.DrawnKevlarFiber.set(
             addItemWithLocalizationKeys(
-                KevlarFiber.ID,
-                "gt.item.kevlar_fiber.name",
-                "gt.item.kevlar_fiber.tooltip",
+                DrawnKevlarFiber.ID,
+                "gt.item.drawn_kevlar_fiber.name",
+                "gt.item.drawn_kevlar_fiber.tooltip",
+                o));
+        ItemList.SpunKevlarFiber.set(
+            addItemWithLocalizationKeys(
+                SpunKevlarFiber.ID,
+                "gt.item.spun_kevlar_fiber.name",
+                "gt.item.spun_kevlar_fiber.tooltip",
                 o));
         ItemList.WovenKevlar.set(
             addItemWithLocalizationKeys(

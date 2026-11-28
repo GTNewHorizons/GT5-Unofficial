@@ -622,6 +622,9 @@ public class Materials {
     public static Material IVNitroaniline;
     public static Material Acetylene;
     public static Material TerephthaloylChloride;
+    public static Material Hexachloroxylene;
+    public static Material PhosgenatedMDIMixture;
+    public static Material MethyleneDiphenylDiisocyanate;
     public static Material NMethylIIPyrrolidone;
     public static Material PolyurethaneResin;
     public static Material Pentaerythritol;
@@ -13672,12 +13675,15 @@ public class Materials {
             .setTint(0xFFFBEC5D)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
+            .addToFamily(Families.liquids)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "para-Phenylenediamine")
             .setLocalizationKey("Material.pphenylenediamine")
             .setProperty(GTMaterialProperties.MELTING_POINT, 293)
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 293)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 779)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 6L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 2L)))
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("TERRA", 1), new AspectRefStack("VITREUS", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "C₆H₈N₂")
@@ -13716,15 +13722,65 @@ public class Materials {
             .setTint(0xFF00FF0C)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
+            .addToFamily(Families.liquids)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Terephthaloyl Chloride")
             .setLocalizationKey("Material.terephthaloylchloride")
             .setProperty(GTMaterialProperties.MELTING_POINT, 355)
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 355)
             .setProperty(GTMaterialProperties.OLD_SUB_ID, 782)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 4L), new MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
             .setProperty(GTMaterialProperties.DYE, "dyeGreen")
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("TERRA", 1), new AspectRefStack("VITREUS", 1)))
             .setProperty(GTMaterialProperties.FORMULA, "C₈H₄Cl₂O₂")
+            .build();
+        Materials.Hexachloroxylene = MaterialLibAPI.newMaterial("gregtech", "Hexachloroxylene", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFFFFFFF)
+            .addToFamily(Families.all)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Hexachloroxylene")
+            .setLocalizationKey("Material.hexachloroxylene")
+            .setProperty(GTMaterialProperties.MELTING_POINT, 480)
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 480)
+            .setProperty(GTMaterialProperties.OLD_SUB_ID, 571)
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 8L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 4L), new
+                MaterialRefStack(MaterialRef.of(() -> Materials.Chlorine), 6L)))
+            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .setProperty(GTMaterialProperties.DYE, "dyeWhite")
+            .build();
+        Materials.PhosgenatedMDIMixture = MaterialLibAPI.newMaterial("gregtech", "PhosgenatedMDIMixture", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFF663300)
+            .addToFamily(Families.all)
+            .addToFamily(Families.dusts)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Phosgenated MDI Mixture")
+            .setLocalizationKey("Material.phosgenatedmdimixture")
+            .setProperty(GTMaterialProperties.MELTING_POINT, 179)
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 179)
+            .setProperty(GTMaterialProperties.OLD_SUB_ID, 572)
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 15L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 10L), new
+                MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
+            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .setProperty(GTMaterialProperties.DYE, "dyeBrown")
+            .build();
+        Materials.MethyleneDiphenylDiisocyanate = MaterialLibAPI.newMaterial("gregtech", "MethyleneDiphenylDiisocyanate", TextureSet.of("gregtech", "FLUID"))
+            .setTint(0xFFFFFF00)
+            .addToFamily(Families.all)
+            .addToFamily(Families.dusts)
+            .addToFamily(Families.liquids)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Methylene Diphenyl Diisocyanate")
+            .setLocalizationKey("Material.methylenediphenyldiisocyanate")
+            .setProperty(GTMaterialProperties.MELTING_POINT, 179)
+            .setProperty(GTMaterialProperties.LIQUID_TEMPERATURE, 179)
+            .setProperty(GTMaterialProperties.OLD_SUB_ID, 573)
+            .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(MaterialRef.of(() -> Materials.Carbon), 15L), new MaterialRefStack(MaterialRef.of(() -> Materials.Hydrogen), 10L), new
+                MaterialRefStack(MaterialRef.of(() -> Materials.Nitrogen), 2L), new MaterialRefStack(MaterialRef.of(() -> Materials.Oxygen), 2L)))
+            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, MaterialRef.of(() -> Materials.Wood))
+            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
+            .setProperty(GTMaterialProperties.DYE, "dyeYellow")
             .build();
         Materials.NMethylIIPyrrolidone = MaterialLibAPI.newMaterial("gregtech", "NMethylpyrolidone", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)

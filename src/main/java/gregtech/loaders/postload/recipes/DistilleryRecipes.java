@@ -413,18 +413,6 @@ public class DistilleryRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
-        // C15H10N2O2(5HCl) = C15H10N2O2 + 5HCl
-
-        GTValues.RA.stdBuilder()
-            .itemOutputs(MaterialLibAPI.getStack(Materials.DiphenylmethaneDiisocyanate, Shapes.dust, 29))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DiphenylmethaneDiisocyanateMixture, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 5_000))
-            .duration(2 * MINUTES + 5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(distillationTowerRecipes);
-
         GTValues.RA.stdBuilder()
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dustSmall, 1))

@@ -639,37 +639,11 @@ public class BlastFurnaceRecipes implements Runnable {
             .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
             .addTo(BlastFurnaceWithGas);
 
-        // CaO + 3C = CaC2 + CO
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 3))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CalciumCarbide, Shapes.dust, 3))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
-            .duration(30 * SECONDS)
-            .eut((int) TierEU.RECIPE_HV)
-            .metadata(COIL_HEAT, 2573)
-            .addTo(blastFurnaceRecipes);
-
-        // Ni + 3Al = NiAl3
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, 3))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.NickelAluminide, Shapes.ingot, 4))
-            .duration(45 * SECONDS)
-            .eut((int) TierEU.RECIPE_HV)
-            .metadata(COIL_HEAT, 1688)
-            .addTo(blastFurnaceRecipes);
-
         ItemStack[] tSiliconDioxide = new ItemStack[] {
             MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3),
             MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, 3),
             MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 3),
             MaterialLibAPI.getStack(Materials.Quartzite, Shapes.dust, 6) };
-
         // Roasting
 
         for (ItemStack silicon : tSiliconDioxide) {

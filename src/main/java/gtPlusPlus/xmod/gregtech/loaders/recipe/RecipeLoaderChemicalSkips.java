@@ -371,9 +371,9 @@ public class RecipeLoaderChemicalSkips {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 16_000),
                     MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 16_000))
+                .itemOutputs(ItemList.WovenKevlar.get(32))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(Materials.PolyurethaneResin, FluidShapes.fluidLiquid, 32_000),
-                    MaterialLibAPI.getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, STACKS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)

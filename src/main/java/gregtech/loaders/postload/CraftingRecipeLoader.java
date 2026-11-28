@@ -1743,7 +1743,7 @@ public class CraftingRecipeLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Clay, Shapes.dust, 1) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
+            ItemList.Casing_Secure_Rhodium_Palladium.get(1L),
             bits | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
                 MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.plate, 1), 'F',

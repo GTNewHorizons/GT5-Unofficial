@@ -87,6 +87,5 @@ public class FluidHeaterRecipes implements Runnable {
             .duration(8 * SECONDS)
             .eut(160)
             .addTo(fluidHeaterRecipes);
-
     }
 }

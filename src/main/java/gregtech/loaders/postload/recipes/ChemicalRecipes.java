@@ -13,8 +13,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.core.fluids.GTPPFluids.Formaldehyde;
-import static gtPlusPlus.core.util.minecraft.FluidUtils.getFilledCellFromFluidName;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.Locale;
@@ -42,7 +40,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalRecipes implements Runnable {
@@ -807,84 +804,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
-        // Ni + 4CO = Ni(CO)4
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cellGas, 4))
-            .itemOutputs(ItemList.Cell_Empty.get(4))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NickelTetracarbonyl, FluidShapes.fluidLiquid, 1_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, 1))
-            .circuit(1)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 4_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.NickelTetracarbonyl, FluidShapes.fluidLiquid, 1_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, 1), ItemList.Cell_Empty.get(1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.NickelTetracarbonyl, CellShapes.cell, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 4_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(chemicalReactorRecipes);
-
-        // C2H4O + H2O = C2H6O2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.EthyleneOxide, CellShapes.cellGas, 1))
-            .circuit(1)
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(GTUtility.getWater(1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethyleneglycol, FluidShapes.fluidLiquid, 1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // C2H4 + O = C2H4O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, CellShapes.cellGas, 2))
-            .circuit(4)
-            .itemOutputs(ItemList.Cell_Empty.get(2))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Acetaldehyde, FluidShapes.fluidGas, 1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 1))
-            .circuit(5)
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 2_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Acetaldehyde, FluidShapes.fluidGas, 1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
-        // NiAl3 + 2NaOH + 2H2O = NiAl + 2NaAlO2 + 6H
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.NickelAluminide, Shapes.ingot, 4),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 6))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.RaneyNickelActivated, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.SodiumAluminate, Shapes.dust, 8))
-            .fluidInputs(GTUtility.getWater(2_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 6_000))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(UniversalChemical);
-
         // Cu + O = CuO
 
         GTValues.RA.stdBuilder()
@@ -904,77 +823,6 @@ public class ChemicalRecipes implements Runnable {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
-
-        // 2Bi + 3O = Bi2O3
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Bismuth, Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cellGas, 6))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BismuthIIIOxide, Shapes.dust, 10),
-                ItemList.Cell_Empty.get(6))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Bismuth, Shapes.dust, 4))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.BismuthIIIOxide, Shapes.dust, 10))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 6_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(chemicalReactorRecipes);
-
-        // C4H6O2 + CNH5 = C5H9NO + H2O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Methylamine, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.GammaButyrolactone, CellShapes.cell, 1))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.NMethylIIPyrrolidone, CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 8))
-            .circuit(2)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 16_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfurDichloride, FluidShapes.fluidLiquid, 8_000))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
-
-        // SCl2 + SO3 = SO2 + SOCl2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.SulfurDichloride, CellShapes.cell, 1))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.ThionylChloride, CellShapes.cell, 1),
-                ItemList.Cell_Empty.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 1_000))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // C8H10 + 6O =CoC22H14O4= C8H6O4 + 2H2O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.IVDimethylbenzene, CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 41))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.TerephthalicAcid, CellShapes.cell, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 6_000))
-            .fluidOutputs(GTUtility.getWater(2_000))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
 
         // 2CH4 + C6H6 = C8H10 + 4H
 
@@ -1021,65 +869,6 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
             .duration(3 * MINUTES + 20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CobaltIIHydroxide, Shapes.dust, 5))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 41))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaphthenicAcid, FluidShapes.fluidLiquid, 1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CobaltIIAcetate, Shapes.dust, 15))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 41))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaphthenicAcid, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 1_500))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // Co + 2HNO3 = Co(NO3)2 + 2H
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 2))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIINitrate, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 2))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
-        // Co(NO3)2 + 2KOH = CoH2O2 + 2KNO3
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CobaltIINitrate, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.PotassiumHydroxide, Shapes.dust, 6))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIIHydroxide, Shapes.dust, 5),
-                MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 10))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
-        // CoO + 2C2H4O2 = CoC4H6O4 + 2H
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CobaltOxide, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.AceticAcid, CellShapes.cell, 2))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIIAcetate, Shapes.dust, 15),
-                ItemList.Cell_Empty.get(2))
-            .fluidOutputs(GTUtility.getWater(2_000))
-            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
 
@@ -3955,70 +3744,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
-        // C4H8O + 2H =Pd= C4H10O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Butyraldehyde, CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.Palladium, Shapes.dustTiny, 1))
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("butanol"), 1000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
-
-        // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                getFilledCellFromFluidName(Formaldehyde, 4),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Pentaerythritol, Shapes.dust, 21), GTUtility.getEmptyCell(4))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Acetaldehyde, FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Acetaldehyde, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Pentaerythritol, Shapes.dust, 21), GTUtility.getEmptyCell(1))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 4_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(chemicalReactorRecipes);
-
-        // CaC2 + 2H2O = Ca(OH)2 + C2H2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CalciumCarbide, Shapes.dust, 3))
-            .circuit(1)
-            .itemOutputs(GregtechItemList.CalciumHydroxideDust.get(5))
-            .fluidInputs(GTUtility.getWater(2_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Acetylene, FluidShapes.fluidGas, 1_000))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
-        // Co(NO3)2 + 2NaOH = Co(OH)2 + 2NaNO3
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CobaltIINitrate, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.SodiumHydroxide, Shapes.dust, 6))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIIHydroxide, Shapes.dust, 5),
-                MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 10))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
-
         if (Forestry.isModLoaded()) {
 
             // Americium comb processing
@@ -4357,57 +4082,12 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.EthyleneOxide, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 5))
-            .itemOutputs(ItemList.Cell_Empty.get(6))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Dimethyldichlorosilane, FluidShapes.fluidLiquid, 4_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SiliconOil, FluidShapes.fluidLiquid, 5_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.EthyleneOxide, CellShapes.cellGas, 1),
-                MaterialLibAPI.getStack(Materials.Dimethyldichlorosilane, CellShapes.cell, 4))
-            .itemOutputs(ItemList.Cell_Empty.get(5))
-            .fluidInputs(GTUtility.getWater(5_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SiliconOil, FluidShapes.fluidLiquid, 5_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1))
             .circuit(2)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.EthyleneOxide, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethyleneglycol, FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CobaltIIHydroxide, Shapes.dust, 5),
-                MaterialLibAPI.getStack(Materials.NaphthenicAcid, CellShapes.cell, 1))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 41),
-                ItemList.Cell_Empty.get(1))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CobaltIIAcetate, Shapes.dust, 15),
-                MaterialLibAPI.getStack(Materials.NaphthenicAcid, CellShapes.cell, 1))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 41),
-                ItemList.Cell_Empty.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 1_500))
-            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
 
@@ -4487,27 +4167,6 @@ public class ChemicalRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.SiliconSG, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cellGas, 4))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(chemicalReactorRecipes);
-
-        // S + 2Cl = SCl2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 8),
-                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cellGas, 16))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SulfurDichloride, CellShapes.cell, 8),
-                ItemList.Cell_Empty.get(8))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 8), ItemList.Cell_Empty.get(8))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SulfurDichloride, CellShapes.cell, 8))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 16_000))
-            .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
@@ -5160,155 +4819,6 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(2)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.EthyleneOxide, FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Dimethyldichlorosilane, FluidShapes.fluidLiquid, 4_000),
-                GTUtility.getWater(5_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SiliconOil, FluidShapes.fluidLiquid, 5_000))
-            .duration(15 * TICKS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(8)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.EthyleneOxide, FluidShapes.fluidGas, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Dimethyldichlorosilane, FluidShapes.fluidLiquid, 36_000),
-                GTUtility.getWater(45_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SiliconOil, FluidShapes.fluidLiquid, 45_000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // NH3 + CH4O =SiO2,Al2O3= CH5N + H2O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
-            .circuit(10)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methylamine, FluidShapes.fluidGas, 1_000),
-                GTUtility.getWater(1_000))
-            .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.KevlarCatalyst, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Pentaerythritol, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.DiphenylmethaneDiisocyanate, Shapes.dust, 5))
-            .circuit(1)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethyleneglycol, FluidShapes.fluidLiquid, 4_000),
-                MaterialLibAPI.getFluidStack(Materials.SiliconOil, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PolyurethaneResin, FluidShapes.fluidLiquid, 1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.KevlarCatalyst, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Pentaerythritol, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.DiphenylmethaneDiisocyanate, Shapes.dust, 45))
-            .circuit(9)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethyleneglycol, FluidShapes.fluidLiquid, 36_000),
-                MaterialLibAPI.getFluidStack(Materials.SiliconOil, FluidShapes.fluidLiquid, 9_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PolyurethaneResin, FluidShapes.fluidLiquid, 9_000))
-            .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // 3NH3 + 6CH4O =Al2O3,SiO2= CH5N + C2H7N + C3H9N + 6H2O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
-            .circuit(3)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 6_000),
-                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 3_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methylamine, FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Dimethylamine, FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Trimethylamine, FluidShapes.fluidGas, 1_000),
-                GTUtility.getWater(6_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Aluminiumoxide, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 9))
-            .circuit(11)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 54_000),
-                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 27_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methylamine, FluidShapes.fluidGas, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Dimethylamine, FluidShapes.fluidGas, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Trimethylamine, FluidShapes.fluidGas, 9_000),
-                GTUtility.getWater(54_000))
-            .duration(2 * MINUTES + 30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // 18SOCl2 + 5C10H10O4 + 6CO2 = 7C8H4Cl2O2 + 22HCl + 18SO2
-
-        GTValues.RA.stdBuilder()
-            .circuit(1)
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TerephthaloylChloride, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.TerephthaloylChloride, Shapes.dust, 48))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.ThionylChloride, FluidShapes.fluidLiquid, 18_000),
-                MaterialLibAPI.getFluidStack(Materials.DimethylTerephthalate, FluidShapes.fluidLiquid, 5_000),
-                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 6_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.DilutedHydrochloricAcid, FluidShapes.fluidLiquid, 22_000),
-                MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 18_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // 2CH4O + C8H6O4 =H2SO4= C10H10O4 + 2H2O
-
-        GTValues.RA.stdBuilder()
-            .circuit(1)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TerephthalicAcid, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 2_000),
-                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.DimethylTerephthalate, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 2_000))
-            .duration(12 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(9)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TerephthalicAcid, FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 18_000),
-                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 18_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.DimethylTerephthalate, FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 18_000))
-            .duration(1 * MINUTES + 27 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(2)
-            .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 2_000))
             .fluidOutputs(
@@ -5392,40 +4902,6 @@ public class ChemicalRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 27_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 27_000))
             .duration(11 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CobaltIIAcetate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIIAcetate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIIAcetate, Shapes.dust, 7))
-            .circuit(9)
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 49))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaphthenicAcid, FluidShapes.fluidLiquid, 9_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 13_500))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CobaltIIHydroxide, Shapes.dust, 45))
-            .circuit(9)
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.CobaltIINaphthenate, Shapes.dust, 49))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaphthenicAcid, FluidShapes.fluidLiquid, 9_000))
-            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -6296,20 +5772,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
-        // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
-
-        GTValues.RA.stdBuilder()
-            .circuit(1)
-            .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 1_000),
-                new FluidStack(FluidRegistry.getFluid("aniline"), 2_000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.DiaminodiphenylmethanMixture, FluidShapes.fluidLiquid, 1_000))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
         // C6H5NO2 + 6H =Pd= C6H7N + 2H2O
 
         GTValues.RA.stdBuilder()
@@ -6337,221 +5799,6 @@ public class ChemicalRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 3_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // C13H14N2(HCl) + 2COCl2 = C15H10N2O2(5HCl)
-
-        GTValues.RA.stdBuilder()
-            .circuit(1)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.DiaminodiphenylmethanMixture, FluidShapes.fluidLiquid, 1_000),
-                new FluidStack(FluidRegistry.getFluid("phosgene"), 2_000))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DiphenylmethaneDiisocyanateMixture, FluidShapes.fluidLiquid, 1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Palladium, Shapes.dust, 1))
-            .circuit(9)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Butyraldehyde, FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 18_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("butanol"), 9_000))
-            .duration(4 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.dust, 1))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.KevlarCatalyst, Shapes.dust, 1))
-            .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("butanol"), 2_000),
-                new FluidStack(FluidRegistry.getFluid("propionicacid"), 1_000),
-                MaterialLibAPI.getFluidStack(Materials.IronIIIChloride, FluidShapes.fluidLiquid, 100))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.dust, 9))
-            .circuit(9)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.KevlarCatalyst, Shapes.dust, 9))
-            .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("butanol"), 18_000),
-                new FluidStack(FluidRegistry.getFluid("propionicacid"), 9_000),
-                MaterialLibAPI.getFluidStack(Materials.IronIIIChloride, FluidShapes.fluidLiquid, 900))
-            .duration(3 * MINUTES + 45 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // C2H4 + CO + H2O =C4NiO= C3H6O2
-
-        GTValues.RA.stdBuilder()
-            .circuit(1)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.NickelTetracarbonyl, FluidShapes.fluidLiquid, 100),
-                GTUtility.getWater(1_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("propionicacid"), 1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(9)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.NickelTetracarbonyl, FluidShapes.fluidLiquid, 900),
-                GTUtility.getWater(9_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("propionicacid"), 9_000))
-            .duration(1 * MINUTES + 15 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // C6H7N + HNO3 =H2SO4,C4H6O3= C6H6N2O2 + H2O
-
-        GTValues.RA.stdBuilder()
-            .circuit(2)
-            .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("aniline"), 1_000),
-                new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 100),
-                MaterialLibAPI.getFluidStack(Materials.NitrationMixture, FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.IVNitroaniline, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_000))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(9)
-            .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("aniline"), 9_000),
-                new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 900),
-                MaterialLibAPI.getFluidStack(Materials.NitrationMixture, FluidShapes.fluidLiquid, 18_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.IVNitroaniline, FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 9_000))
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // C6H6N2O2 + 6H =Pd,NO2= C6H8N2 + 2H2O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Palladium, Shapes.dust, 1))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.ParaPhenylenediamine, Shapes.dust, 16))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitrogenDioxide, FluidShapes.fluidGas, 100),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 6_000),
-                MaterialLibAPI.getFluidStack(Materials.IVNitroaniline, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(GTUtility.getWater(2_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // C4H10O2 =Cu= C4H6O2 + 4H
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1))
-            .circuit(1)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.GammaButyrolactone, FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 9))
-            .circuit(9)
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 9_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.GammaButyrolactone, FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 36_000))
-            .duration(35 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // 2CH2O + C2H2 =SiO2,CuO,Bi2O3= C4H6O2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CupricOxide, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.BismuthIIIOxide, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
-            .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.IIButinIIVdiol, Shapes.dust, 12))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Acetylene, FluidShapes.fluidGas, 1_000),
-                new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 2_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CupricOxide, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.BismuthIIIOxide, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 9))
-            .circuit(9)
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.IIButinIIVdiol, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.IIButinIIVdiol, Shapes.dust, 44))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Acetylene, FluidShapes.fluidGas, 9_000),
-                new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 18_000))
-            .duration(2 * MINUTES + 30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // C4H6O2 + 4H =NiAl= C4H10O2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.IIButinIIVdiol, Shapes.dust, 12),
-                MaterialLibAPI.getStack(Materials.RaneyNickelActivated, Shapes.dust, 1))
-            .circuit(1)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 4_000))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("1,4-butanediol"), 1_000))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.ParaPhenylenediamine, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.TerephthaloylChloride, Shapes.dust, 9))
-            .circuit(1)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NMethylIIPyrrolidone, FluidShapes.fluidLiquid, 1_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.DilutedHydrochloricAcid, FluidShapes.fluidLiquid, 2_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 7),
-                MaterialLibAPI.getStack(Materials.ParaPhenylenediamine, Shapes.dust, 63),
-                MaterialLibAPI.getStack(Materials.TerephthaloylChloride, Shapes.dust, 63))
-            .circuit(9)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NMethylIIPyrrolidone, FluidShapes.fluidLiquid, 7_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, 63_000),
-                MaterialLibAPI.getFluidStack(Materials.DilutedHydrochloricAcid, FluidShapes.fluidLiquid, 14_000))
-            .duration(2 * MINUTES + 55 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // Na2B4O7(H2O)10 + 2HCl = 2NaCl + 4H3BO3 + 5H2O
