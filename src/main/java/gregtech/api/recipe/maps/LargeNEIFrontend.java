@@ -21,10 +21,10 @@ import gregtech.common.gui.modularui.UIHelper;
 @MethodsReturnNonnullByDefault
 public class LargeNEIFrontend extends RecipeMapFrontend {
 
-    private static final int xDirMaxCount = 3;
-    private static final int yOrigin = 8;
+    protected static final int xDirMaxCount = 3;
+    protected static final int yOrigin = 8;
 
-    private final int itemRowCount;
+    protected final int itemRowCount;
     private final int fluidRowCount;
 
     public LargeNEIFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
@@ -32,7 +32,14 @@ public class LargeNEIFrontend extends RecipeMapFrontend {
         super(uiPropertiesBuilder.logoPos(new Pos2d(80, 62)), neiPropertiesBuilder);
         this.itemRowCount = getItemRowCount();
         this.fluidRowCount = getFluidRowCount();
-        neiProperties.recipeBackgroundSize = new Size(170, 82 + (Math.max(itemRowCount + fluidRowCount - 4, 0)) * 18);
+    }
+
+    @Override
+    protected NEIRecipePropertiesBuilder modifyNEIProperties(NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        int itemRowCount = getItemRowCount();
+        int fluidRowCount = getFluidRowCount();
+        return neiPropertiesBuilder
+            .recipeBackgroundSize(new Size(170, 82 + (Math.max(itemRowCount + fluidRowCount - 4, 0)) * 18));
     }
 
     @Override

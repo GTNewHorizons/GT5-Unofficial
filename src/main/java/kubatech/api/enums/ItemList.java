@@ -76,7 +76,9 @@ public enum ItemList implements IItemContainer {
     DEFCWyvernSchematic,
     DEFCAwakenedSchematic,
     DEFCChaoticSchematic,
-    KubaFakeItemEECVoid;
+    KubaFakeItemEECVoid,
+    ElectrodeHatch,
+    ElectrodeDetectorHatch,;
 
     private @Nullable ItemStack mStack;
     private boolean mHasNotBeenSet = true;
@@ -182,7 +184,7 @@ public enum ItemList implements IItemContainer {
                 tWord.substring(1)
                     .toLowerCase(Locale.US));
         }
-        if (tCamelCasedDisplayNameBuilder.length() == 0) {
+        if (tCamelCasedDisplayNameBuilder.isEmpty()) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
             tCamelCasedDisplayNameBuilder.append(((Long) (long) aDisplayName.hashCode()));
         }

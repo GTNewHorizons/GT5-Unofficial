@@ -6,6 +6,8 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.container.ContainerCircuitProgrammer;
 import gtPlusPlus.core.container.ContainerFishTrap;
@@ -48,9 +50,7 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) return null;
 
         return switch (ID) {
-            case GUI5 -> {
-                yield null;
-            }
+            case GUI5 -> null;
             case GUI6 -> new ContainerFishTrap(player.inventory, (TileEntityFishTrap) te);
             case GUI8 -> new ContainerCircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
             case GUI18 -> new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
@@ -59,6 +59,7 @@ public class GuiHandler implements IGuiHandler {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x,
         final int y, final int z) {
         TileEntity te = world.getTileEntity(x, y, z);

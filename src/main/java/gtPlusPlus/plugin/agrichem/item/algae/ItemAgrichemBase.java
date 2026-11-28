@@ -49,11 +49,6 @@ public class ItemAgrichemBase extends Item {
     }
 
     @Override
-    public boolean shouldRotateAroundWhenRendering() {
-        return super.shouldRotateAroundWhenRendering();
-    }
-
-    @Override
     public EnumRarity getRarity(ItemStack p_77613_1_) {
         return EnumRarity.common;
     }
@@ -68,7 +63,7 @@ public class ItemAgrichemBase extends Item {
         for (int i = 0; i < base.length; i++) {
             switch (i) {
                 // skip no longer used items
-                case 16, 18, 19, 20, 21 -> {}
+                case 16, 18, 19, 20, 21, 22 -> {}
                 default -> aList.add(new ItemStack(aItem, 1, i));
             }
         }
@@ -135,9 +130,8 @@ public class ItemAgrichemBase extends Item {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack aStack, EntityPlayer player, List<String> list, boolean adv) {
         boolean aHasSpecialTooltips = false;
         int aMaxDamage = 0;
         int aDamageSegment = 0;
@@ -164,7 +158,7 @@ public class ItemAgrichemBase extends Item {
             }
             list.add(durability + "" + (aDam) + EnumChatFormatting.GRAY + " / " + aMaxDamage);
         }
-        super.addInformation(aStack, player, list, bool);
+        super.addInformation(aStack, player, list, adv);
     }
 
     @Override

@@ -631,6 +631,19 @@ public class ProcessingLogic {
         return calculatedParallels;
     }
 
+    /** Returns the recipe power limit for pattern matching from the configured voltage, amperage and tier skips. */
+    public long getPatternMaxRecipeEUt() {
+        if (availableVoltage == 0 && availableAmperage == 0) return Long.MAX_VALUE;
+        final long budget = availableAmperage > 0 && availableVoltage > Long.MAX_VALUE / availableAmperage
+            ? Long.MAX_VALUE
+            : availableVoltage * availableAmperage;
+        return Math.min(budget, getMaxAllowedRecipeEUt());
+    }
+
+    public long getMaxAllowedRecipeEUt() {
+        return OverclockCalculator.getMaxAllowedRecipeEUt(availableVoltage, maxTierSkips);
+    }
+
     // endregion
 
     /**

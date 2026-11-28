@@ -60,7 +60,7 @@ public class MTELargeFluidExtractorGui extends MTEMultiBlockBaseGui<MTELargeFlui
                     () -> EnumChatFormatting.DARK_RED
                         + StatCollector
                             .translateToLocalFormatted(
-                                "GT5U.gui.text.large_fluid_extractor.not_enough_casings",
+                                "GT5U.gui.text.structure_error.large_fluid_extractor_not_enough_casings",
                                 BASE_CASING_COUNT - MAX_HATCHES_ALLOWED,
                                 casingCountSyncer.getIntValue())
                             .replace("\\n", "\n")
@@ -71,7 +71,7 @@ public class MTELargeFluidExtractorGui extends MTEMultiBlockBaseGui<MTELargeFlui
             .child(
                 IKey.dynamic(
                     () -> String.format(
-                        "%sEnergy hatch tier (%s) is too high\nfor the glass tier (%s).%s",
+                        "%sEnergy Hatch Tier (%s) is too high\nfor the Glass Tier (%s).%s",
                         EnumChatFormatting.DARK_RED,
                         VN[GTUtility.clamp(hatchTierSyncer.getIntValue(), 0, VN.length - 1)],
                         VN[GTUtility.clamp(glassTierSyncer.getIntValue(), 0, VN.length - 1)],

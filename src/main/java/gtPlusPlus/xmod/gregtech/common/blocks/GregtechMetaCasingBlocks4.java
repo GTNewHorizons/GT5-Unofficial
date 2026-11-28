@@ -63,11 +63,11 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
     }
 
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        aList.add(new ItemStack(aItem, 1, 3));
-        aList.add(new ItemStack(aItem, 1, 4));
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        list.add(new ItemStack(item, 1, 3));
+        list.add(new ItemStack(item, 1, 4));
 
-        aList.add(new ItemStack(aItem, 1, 10));
-        aList.add(new ItemStack(aItem, 1, 11));
+        list.add(new ItemStack(item, 1, 10));
+        list.add(new ItemStack(item, 1, 11));
     }
 }

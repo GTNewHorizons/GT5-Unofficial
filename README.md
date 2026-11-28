@@ -40,6 +40,8 @@ the chance of strange errors.
 Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
 Many sound effects were backported from the GregTech Community Edition Unofficial / Modern team: https://github.com/GregTechCEu/
 
+Credit to [EtVitki](https://linktr.ee/ekvitki) for the Spacetime material textures, adapted from their [original work.](https://www.reddit.com/r/PixelArt/comments/e1j9yt/i_need_some_space/)
+
 ## Music duration metadata
 
 The electric jukebox requires duration metadata to specify how many milliseconds each disk plays for.

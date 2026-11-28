@@ -29,11 +29,12 @@ public class CoverLiquidMeterGui extends CoverBaseGui<CoverLiquidMeter> {
         return Flow.row()
             .name("fluid_threshold")
             .child(
-                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold))
-                    .setNumbers(0, maxCapacity)
+                makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S())
+                    .numbersInt(0, maxCapacity)
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gt.interact.desc.Fluid_Meter.FluidThreshold")
-                    .asWidget());
+                    .asWidget())
+            .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
 }

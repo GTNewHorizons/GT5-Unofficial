@@ -40,7 +40,7 @@ public class GTPPPropolis extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (GTPPPropolisType type : GTPPPropolisType.values()) {
             if (type.mShowInList) {
                 list.add(this.getStackForType(type));
@@ -83,9 +83,9 @@ public class GTPPPropolis extends Item {
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .itemOutputs(aOutput)
-                .outputChances(Math.min(Math.max(10000 - (aProp.mMaterial.vTier * 625), 100), 10000))
-                .duration(aProp.mMaterial.vTier * 15 * SECONDS)
-                .eut(aProp.mMaterial.vVoltageMultiplier)
+                .outputChances(Math.min(Math.max(10000 - (aProp.mMaterial.tier * 625), 100), 10000))
+                .duration(aProp.mMaterial.tier * 15 * SECONDS)
+                .eut(aProp.mMaterial.voltageMultiplier)
                 .addTo(extractorRecipes);
 
         }

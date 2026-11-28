@@ -1,19 +1,35 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gtPlusPlus.core.util.Utils;
+import gregtech.api.util.GTSplit;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchSuperBusInput extends MTEHatchInputBus {
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        // GT5U.MBTT.Deprecated colours the whole line, which suits a tooltip but not a name.
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.MBTT.Deprecated",
+            EnumChatFormatting.RESET + StatCollector
+                .translateToLocalFormatted("gt.blockmachines.hatch.superbus.input.name", GTValues.VN[mTier]));
+    }
 
     @Override
     protected boolean useMui2() {
@@ -45,7 +61,10 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedFormattedWithAlkalus("gt.blockmachines.input_bus_super.desc", getSlots(this.mTier));
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.input_bus_super.desc",
+            GTPPCore.GT_Tooltip.get(),
+            getSlots(this.mTier));
     }
 
     @Override

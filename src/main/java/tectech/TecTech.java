@@ -62,7 +62,6 @@ public class TecTech {
     public static final byte tectechTexturePage1 = 8;
 
     @Mod.EventHandler
-    @SuppressWarnings("unused")
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         enderWorldSavedData = new EnderWorldSavedData();
         FMLCommonHandler.instance()
@@ -76,19 +75,16 @@ public class TecTech {
     }
 
     @Mod.EventHandler
-    @SuppressWarnings("unused")
     public void Load(FMLInitializationEvent event) {
         MainLoader.load();
     }
 
     @Mod.EventHandler
-    @SuppressWarnings("unused")
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         MainLoader.postLoad();
     }
 
     @Mod.EventHandler
-    @SuppressWarnings("unused")
     public void onLoadCompleted(FMLLoadCompleteEvent event) {
         eyeOfHarmonyRecipeStorage = new EyeOfHarmonyRecipeStorage();
         MainLoader.onLoadCompleted();

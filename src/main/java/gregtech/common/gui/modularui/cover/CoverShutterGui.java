@@ -28,10 +28,10 @@ public class CoverShutterGui extends CoverBaseGui<CoverShutter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<ShutterMode> modeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<ShutterMode, ?> modeSyncValue = new EnumSyncValue<>(
             ShutterMode.class,
             cover::getShutterMode,
-            cover::setShutterMode);
+            cover::setShutterMode).allowC2S();
         syncManager.syncValue("mode", modeSyncValue);
 
         column.child(

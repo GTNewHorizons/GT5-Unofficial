@@ -61,7 +61,7 @@ public abstract class CoverAdvancedWirelessRedstoneBase extends Cover {
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
-        ICoverable cover = coveredTile.get();;
+        ICoverable cover = coveredTile.get();
         if (cover != null && cover.getWorld() != null) {
             GregTechAPI.sAdvancedWirelessRedstone
                 .computeIfAbsent(uuid == null ? "null" : uuid.toString(), (k) -> new ConcurrentHashMap<>())

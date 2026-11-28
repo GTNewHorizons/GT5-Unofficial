@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchAdvancedOutputBeamlineGui;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
     // specifically for the Particle value in the input map, will save with id
@@ -28,6 +30,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     private static final String NBT_VALUE_DESCRIPTOR = "VALUE";
 
     private boolean initialized = false;
+    private MTEBeamMultiBase.FundamentalForce force = null;
     public Map<Particle, Boolean> acceptedInputMap = new HashMap<>();
 
     @Override
@@ -35,6 +38,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         super.saveNBTData(aNBT);
         saveInputMapToNBT(aNBT, this.acceptedInputMap);
         aNBT.setBoolean("init", initialized);
+        if (force != null) aNBT.setString("force", force.name());
     }
 
     @Override
@@ -43,6 +47,11 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
         loadInputMapFromNBT(aNBT, this.acceptedInputMap);
         initialized = aNBT.getBoolean("init");
+        // TODO: flatten if after 2.10
+        if (aNBT.hasKey("force")) {
+            var forceName = aNBT.getString("force");
+            this.force = MTEBeamMultiBase.FundamentalForce.fromName(forceName);
+        }
     }
 
     public void saveInputMapToNBT(NBTTagCompound aNBT, Map<Particle, Boolean> map) {
@@ -66,16 +75,26 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         }
     }
 
-    public void setInitialParticleList(List<Particle> initialParticleList) {
-
-        if (initialized) return;
-
-        acceptedInputMap.clear();
-        for (Particle p : initialParticleList) {
-            acceptedInputMap.put(p, true);
+    public void setInitialParticleList(List<Particle> initialParticleList, MTEBeamMultiBase.FundamentalForce force) {
+        // called by structure check. for particle migration purposes, it will add missing particles and remove invalid
+        // particles
+        // fresh hatch
+        if (!initialized) {
+            acceptedInputMap.clear();
+            for (Particle p : initialParticleList) acceptedInputMap.put(p, true);
+            this.force = force;
+            initialized = true;
+            return;
         }
-        initialized = true;
-
+        // existing hatch
+        // TODO: remove null check for 2.10
+        if (this.force == null || this.force == force) {
+            this.force = force;
+            // drop particles not valid for this force
+            acceptedInputMap.keySet()
+                .retainAll(initialParticleList);
+            for (Particle p : initialParticleList) acceptedInputMap.putIfAbsent(p, false);
+        }
     }
 
     public MTEHatchAdvancedOutputBeamline(int id, String name, String nameRegional, int tier) {
@@ -97,6 +116,13 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         return true;
     }
 
+    public List<Particle> getParticleList() {
+        return this.acceptedInputMap.keySet()
+            .stream()
+            .sorted(Comparator.comparingInt(Particle::getId))
+            .toList();
+    }
+
     public Map<Particle, Boolean> getParticleMap() {
         return this.acceptedInputMap;
     }
@@ -108,26 +134,12 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
-        saveInputMapToNBT(data, acceptedInputMap);
-        return data;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        loadInputMapFromNBT(data, acceptedInputMap);
-    }
-
-    @Override
     protected boolean useMui2() {
         return true;
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-
         return new MTEHatchAdvancedOutputBeamlineGui(this).build(data, syncManager, uiSettings);
     }
 

@@ -25,7 +25,7 @@ public class LatheRecipes implements Runnable {
                 new ItemStack(Items.bowl, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);
 
         GTValues.RA.stdBuilder()
@@ -41,7 +41,7 @@ public class LatheRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("plankWood", 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 2L))
             .duration(10 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);
 
         GTValues.RA.stdBuilder()
@@ -50,7 +50,7 @@ public class LatheRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
             .duration(8 * SECONDS)
-            .eut(7)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);
 
         // From ProcessingSaplings
@@ -60,7 +60,7 @@ public class LatheRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Wood, 1L))
             .duration(16 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);
     }
 }

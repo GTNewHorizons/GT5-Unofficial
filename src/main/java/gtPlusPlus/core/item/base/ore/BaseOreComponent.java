@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.base.ore;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,17 +12,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.material.Material;
@@ -33,10 +32,9 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 public class BaseOreComponent extends Item {
 
     @SideOnly(Side.CLIENT)
-    private IIcon base;
-
+    private IIcon iconBase;
     @SideOnly(Side.CLIENT)
-    private IIcon overlay;
+    private IIcon iconOverlay;
 
     public final Material componentMaterial;
     public final String materialName;
@@ -99,23 +97,22 @@ public class BaseOreComponent extends Item {
         return this.materialName;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-        final boolean bool) {
+    public final void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
+        final boolean adv) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                componentMaterial.addTooltips(list);
+                componentMaterial.addTooltips(tooltip);
             } else {
                 if (Client.tooltip.showFormula) {
                     String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                     if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                        list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                        tooltip.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
                     }
                 }
             }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, tooltip, adv);
     }
 
     @Override
@@ -124,7 +121,7 @@ public class BaseOreComponent extends Item {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
                 iStack.stackSize,
-                this.componentMaterial.vRadiationLevel,
+                this.componentMaterial.radiationLevel,
                 world,
                 entityHolding);
         }
@@ -146,49 +143,37 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
         if (this.componentType == ComponentTypes.MILLED) {
-            this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
+            this.iconBase = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
             if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister
+                this.iconOverlay = par1IconRegister
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else {
-            this.base = par1IconRegister
-                .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
-            if (this.componentType.hasOverlay()) {
-                final String overlayPath = GregTech.ID + ":"
-                    + "materialicons/METALLIC/"
-                    + this.componentType.COMPONENT_NAME
-                    + "_OVERLAY";
-                final ResourceLocation overlayResource = ResourceUtils
-                    .getCompleteItemTextureResourceLocation(overlayPath);
-
-                this.overlay = ResourceUtils.resourceExists(overlayResource)
-                    ? par1IconRegister.registerIcon(overlayPath)
-                    : Textures.InvisibleIcon.INVISIBLE_ICON;
-            }
+            IIconContainer container = Textures.ItemIcons.textureSetWithRegister(
+                Mods.GregTech.resourceDomain,
+                "METALLIC",
+                "/" + this.componentType.COMPONENT_NAME,
+                par1IconRegister);
+            iconBase = container.getIcon();
+            iconOverlay = container.getOverlayIcon();
         }
     }
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-        if (this.componentType == ComponentTypes.MILLED) {
-            if (renderPass == 1) {
-                return Utils.rgbtoHexValue(230, 230, 230);
-            }
-        } else {
-            if (renderPass == 1) {
-                return Utils.rgbtoHexValue(230, 230, 230);
-            }
+        if (renderPass == 1) {
+            return Utils.rgbtoHexValue(230, 230, 230);
         }
         return this.componentColour;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.base;
+            return iconBase;
         }
-        return this.overlay;
+        return iconOverlay;
     }
 
     public enum ComponentTypes {

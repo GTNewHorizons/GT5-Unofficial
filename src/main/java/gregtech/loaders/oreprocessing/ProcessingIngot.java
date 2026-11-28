@@ -57,7 +57,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .addTo(GTRecipeConstants.Fuel);
                 }
                 if (aMaterial.mStandardMoltenFluid != null
-                    && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                    && !(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()
@@ -81,7 +81,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         null,
                         false,
                         false);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,

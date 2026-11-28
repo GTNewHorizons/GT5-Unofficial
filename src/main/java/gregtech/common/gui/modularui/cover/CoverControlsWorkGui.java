@@ -30,12 +30,12 @@ public class CoverControlsWorkGui extends CoverBaseGui<CoverControlsWork> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<RedstoneCondition> conditionModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<RedstoneCondition, ?> conditionModeSyncValue = new EnumSyncValue<>(
             RedstoneCondition.class,
             cover::getRedstoneCondition,
-            cover::setRedstoneCondition);
+            cover::setRedstoneCondition).allowC2S();
         syncManager.syncValue("condition_mode", conditionModeSyncValue);
-        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode);
+        BooleanSyncValue safeModeSyncValue = new BooleanSyncValue(cover::isSafeMode, cover::setSafeMode).allowC2S();
 
         column.child(
             new Grid().marginLeft(WIDGET_MARGIN)

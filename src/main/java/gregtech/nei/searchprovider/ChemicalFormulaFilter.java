@@ -25,7 +25,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
         Material.mComponentMap.forEach((name, components) -> {
             Material material = Material.mMaterialsByName.get(name);
             if (material != null) {
-                String chemicalFormula = material.vChemicalFormula;
+                String chemicalFormula = material.chemicalFormula;
                 String sanitizedFormula = isValidFormula(chemicalFormula) ? sanitizeFormula(chemicalFormula) : "";
                 components.forEach((orePrefix, stack) -> {
                     synchronized (formulaCache) {
@@ -126,10 +126,9 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
     public static String normalizeCustomGlyphs(String s) {
 
-        for (Map.Entry<String, String> e : GlyphReplacements.customGlyphs.entrySet()) {
-            if (e.getValue() != null) {
-                s = s.replace(e.getKey(), e.getValue());
-            }
+        for (Map.Entry<Character, Character> e : GlyphReplacements.getGlyphReplacementsMap()
+            .char2CharEntrySet()) {
+            s = s.replace(e.getKey(), e.getValue());
         }
 
         return s;

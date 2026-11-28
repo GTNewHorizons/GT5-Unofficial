@@ -152,7 +152,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)
+                if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)
                     && !(aMaterial.contains(SubTag.NO_SMELTING))
                     && aPrefix == OrePrefixes.ingot) {
                     if (aMaterial.mStandardMoltenFluid != null) {
@@ -289,17 +289,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         }
                     }
                 }
-                if (tAmount * 2 <= 64) {
-                    if (GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial.mSmeltInto, 1L) != null) {
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Wire.get(0L))
-                            .itemOutputs(
-                                GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial.mSmeltInto, tAmount * 2))
-                            .duration(((int) Math.max(aMaterialMass * 2L * tAmount, tAmount)) * TICKS)
-                            .eut(calculateRecipeEU(aMaterial, 6 * tVoltageMultiplier))
-                            .addTo(extruderRecipes);
-                    }
-                }
+
                 if (tAmount * 8 <= 64) {
                     if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial.mSmeltInto, 1L) != null) {
                         GTValues.RA.stdBuilder()
@@ -428,7 +418,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);
                     }
-                    case "Iron", "WroughtIron" -> {
+                    case "Iron", "CastIron" -> {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Cell.get(0L))
                             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(tAmount))

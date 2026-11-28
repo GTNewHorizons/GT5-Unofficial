@@ -1,10 +1,15 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.util.tooltip.TooltipHelper.anyCasingText;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,14 +17,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.google.common.collect.ImmutableMap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -28,17 +31,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTUtility;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.gui.modularui.multiblock.TileEntityModulePumpGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import tectech.thing.metaTileEntity.multi.base.INameFunction;
-import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
-import tectech.thing.metaTileEntity.multi.base.LedStatus;
-import tectech.thing.metaTileEntity.multi.base.Parameters;
+import tectech.thing.metaTileEntity.multi.base.parameter.CompositeParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -46,44 +50,20 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
-public abstract class TileEntityModulePump extends TileEntityModuleBase {
+public abstract class TileEntityModulePump extends TileEntityModuleBase implements IParametrized {
 
     /** Energy consumption of the module (1A UHV) */
     public static final long ENERGY_CONSUMPTION = (int) GTValues.VP[9];
 
-    /** Input parameters */
-    Parameters.Group.ParameterIn[] parallelSettings;
+    /** New MUI2 parameters */
+    private IntegerParameter batchParameter;
+    private CompositeParameter[] recipeParameters;
+    private IntegerParameter[] planetTypeParameters;
+    private IntegerParameter[] gasTypeParameters;
+    private IntegerParameter[] parallelParameters;
 
-    Parameters.Group.ParameterIn[] gasTypeSettings;
-    Parameters.Group.ParameterIn[] planetTypeSettings;
-    Parameters.Group.ParameterIn batchSetting;
-
-    /** Name of the planet type setting */
-    private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
-        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.0") + " " + (p.hatchId() / 2 + 1); // Planet
-                                                                                                                         // Type
-    /** Status of the planet type setting */
-    private static final IStatusFunction<TileEntityModulePump> PLANET_TYPE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
-    /** Name of the gas type setting */
-    private static final INameFunction<TileEntityModulePump> GAS_TYPE_SETTING_NAME = (base,
-        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.1") + " " + (p.hatchId() / 2 + 1); // Gas
-                                                                                                                         // Type
-    /** Status of the gas type setting */
-    private static final IStatusFunction<TileEntityModulePump> GAS_TYPE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
-    /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModulePump> PARALLEL_SETTING_NAME = (base,
-        p) -> GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.2") + " " + (p.hatchId() / 2 + 1); // Parallels
-    /** Status of the parallel setting */
-    private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
-    /** Name of the batch setting */
-    private static final INameFunction<TileEntityModulePump> BATCH_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.ig.pump.cfgi.3"); // Batch size
-    /** Status of the batch setting */
-    private static final IStatusFunction<TileEntityModulePump> BATCH_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 32, 128);
+    public static final int PUMP_BATCH_MIN = 1;
+    public static final int PUMP_BATCH_MAX = 128;
 
     /** Flag if this machine has an ME output hatch, will be updated in the structure check */
     protected boolean hasMeOutputHatch = false;
@@ -115,6 +95,67 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         super(aName, tTier, tModuleTier, tMinMotorTier);
     }
 
+    @Override
+    public void initParameters() {
+        int recipes = getParallelRecipes();
+
+        batchParameter = new IntegerParameter(
+            PUMP_BATCH_MIN,
+            "gt.blockmachines.multimachine.project.ig.pump.cfgi.3",
+            "batch",
+            () -> PUMP_BATCH_MIN,
+            () -> PUMP_BATCH_MAX);
+
+        planetTypeParameters = new IntegerParameter[recipes];
+        gasTypeParameters = new IntegerParameter[recipes];
+        parallelParameters = new IntegerParameter[recipes];
+        recipeParameters = new CompositeParameter[recipes];
+        for (int i = 0; i < recipes; i++) {
+            planetTypeParameters[i] = new IntegerParameter(
+                1,
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.0",
+                "planetType",
+                () -> 0,
+                () -> 100);
+            gasTypeParameters[i] = new IntegerParameter(
+                1,
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.1",
+                "gasType",
+                () -> 0,
+                () -> 100);
+            parallelParameters[i] = new IntegerParameter(
+                getParallels(),
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.2",
+                "parallel",
+                () -> 0,
+                this::getParallels);
+
+            List<Parameter<?, ?>> parameters = new ArrayList<>();
+            parameters.add(planetTypeParameters[i]);
+            parameters.add(gasTypeParameters[i]);
+            parameters.add(parallelParameters[i]);
+
+            recipeParameters[i] = new CompositeParameter(
+                parameters,
+                "gt.blockmachines.multimachine.project.ig.pump.cfgi.recipe",
+                "recipe" + i,
+                i + 1);
+        }
+    }
+
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {}
+
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        List<Parameter<?, ?>> parameters = new ArrayList<>();
+
+        parameters.add(batchParameter);
+        parameters.addAll(Arrays.asList(recipeParameters));
+
+        return parameters;
+    }
+
     /**
      * Check if any recipe can be started with the given inputs
      *
@@ -130,21 +171,19 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         ArrayList<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
         // We store the highest batch size as time multiplier
-        int maxBatchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+        int maxBatchSize = Math.clamp(batchParameter.getValue(), PUMP_BATCH_MIN, PUMP_BATCH_MAX);
         for (int i = 0; i < getParallelRecipes(); i++) {
             FluidStack fluid = SpacePumpingRecipes.RECIPES
-                .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
+                .get(Pair.of(planetTypeParameters[i].getValue(), gasTypeParameters[i].getValue()));
             if (fluid != null) {
-                int batchSize = (int) Math.min(Math.max(batchSetting.get(), 1.0D), 128.0D);
+                int batchSize = Math.clamp(batchParameter.getValue(), PUMP_BATCH_MIN, PUMP_BATCH_MAX);
                 MTEHatchOutput targetOutput = null;
                 if (!hasMeOutputHatch && !eSafeVoid) {
                     for (MTEHatchOutput output : mOutputHatches) {
                         if (output.mFluid != null && output.mFluid.getFluid() != null
-                            && output.getLockedFluidName() != null
-                            && output.getLockedFluidName()
-                                .equals(
-                                    fluid.getFluid()
-                                        .getName())
+                            && output.getLockedFluid() != null
+                            && output.getLockedFluid()
+                                .equals(fluid.getFluid())
                             && output.mFluid.getFluid()
                                 .equals(fluid.getFluid())) {
                             targetOutput = output;
@@ -152,7 +191,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                         }
                     }
                 }
-                int parallels = Math.min((int) parallelSettings[i].get(), getParallels());
+                int parallels = Math.min(parallelParameters[i].getValue(), getParallels());
                 if (targetOutput != null) {
                     int outputSpace = targetOutput.getCapacity() - targetOutput.getFluidAmount();
                     if (outputSpace < fluid.amount) {
@@ -188,18 +227,17 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        boolean state = super.checkMachine_EM(aBaseMetaTileEntity, aStack);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        checkHasOutputHatch(errors);
         hasMeOutputHatch = false;
-        if (state) {
-            for (MTEHatchOutput output : mOutputHatches) {
-                if (output instanceof MTEHatchOutputME) {
-                    hasMeOutputHatch = true;
-                    break;
-                }
+        if (!errors.isEmpty()) return;
+        for (MTEHatchOutput output : mOutputHatches) {
+            if (output instanceof MTEHatchOutputME) {
+                hasMeOutputHatch = true;
+                break;
             }
         }
-        return state;
     }
 
     /**
@@ -207,80 +245,14 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      *
      * @return Number of possible parallels
      */
-    protected abstract int getParallels();
+    public abstract int getParallels();
 
     /**
      * Get the number of parallel recipes that this module can handle
      *
      * @return Number of possible parallel recipes
      */
-    protected abstract int getParallelRecipes();
-
-    /**
-     * Instantiate parameters of the controller
-     */
-    @Override
-    protected void parametersInstantiation_EM() {
-        super.parametersInstantiation_EM();
-        int parallels = getParallelRecipes();
-        planetTypeSettings = new Parameters.Group.ParameterIn[parallels];
-        gasTypeSettings = new Parameters.Group.ParameterIn[parallels];
-        parallelSettings = new Parameters.Group.ParameterIn[parallels];
-        for (int i = 0; i < getParallelRecipes(); i++) {
-            planetTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                .makeInParameter(0, 1, PLANET_TYPE_SETTING_NAME, PLANET_TYPE_STATUS);
-            gasTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                .makeInParameter(1, 1, GAS_TYPE_SETTING_NAME, GAS_TYPE_STATUS);
-            parallelSettings[i] = parametrization.getGroup(i * 2 + 1, false)
-                .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
-        }
-        batchSetting = parametrization.getGroup(9, false)
-            .makeInParameter(1, 1, BATCH_SETTING_NAME, BATCH_STATUS);
-    }
-
-    /**
-     * Draw texts on the project module GUI
-     *
-     * @param screenElements Column that holds all screen elements
-     * @param inventorySlot  Inventory slot of the controller
-     */
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.gui.config"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine));
-
-        for (int i = 0; i < getParallelRecipes(); i++) {
-            final int fluidIndex = i;
-            screenElements.widget(TextWidget.dynamicString(() -> {
-                String fluidName = getPumpedFluid(fluidIndex);
-                if (fluidName != null) {
-                    return " - " + fluidName;
-                }
-                return "";
-            })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && getPumpedFluid(fluidIndex) != null))
-                .widget(
-                    new FakeSyncWidget.IntegerSyncer(
-                        () -> (int) planetTypeSettings[fluidIndex].get(),
-                        val -> parametrization.trySetParameters(
-                            planetTypeSettings[fluidIndex].id % 10,
-                            planetTypeSettings[fluidIndex].id / 10,
-                            planetTypeSettings[fluidIndex].get())))
-                .widget(
-                    new FakeSyncWidget.IntegerSyncer(
-                        () -> (int) planetTypeSettings[fluidIndex].get(),
-                        val -> parametrization.trySetParameters(
-                            gasTypeSettings[fluidIndex].id % 10,
-                            gasTypeSettings[fluidIndex].id / 10,
-                            gasTypeSettings[fluidIndex].get())));
-        }
-    }
+    public abstract int getParallelRecipes();
 
     /** Texture that will be displayed on the side of the module */
     protected static IIconContainer engraving;
@@ -314,8 +286,23 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_PUMP_MODULE");
+        engraving = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_SIDE_PUMP_MODULE");
         super.registerIcons(aBlockIconRegister);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new TileEntityModulePumpGui(this);
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
+        return false;
     }
 
     @Override
@@ -329,18 +316,46 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      * @param index Recipe index, which is needs to be between 0 and getParallelRecipes()
      * @return Name of the fluid if settings are valid, else null
      */
-    private String getPumpedFluid(int index) {
+    public String getPumpedFluid(int index) {
         if (index < 0 || index >= getParallelRecipes()) {
             return null;
         }
         FluidStack fluid = SpacePumpingRecipes.RECIPES
-            .get(Pair.of((int) planetTypeSettings[index].get(), (int) gasTypeSettings[index].get()));
+            .get(Pair.of(planetTypeParameters[index].getValue(), gasTypeParameters[index].getValue()));
         if (fluid == null) {
             return null;
         }
         return fluid.getLocalizedName();
     }
 
+    @Override
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
+        ImmutableMap.Builder<String, Object> mapBuilder = ImmutableMap.<String, Object>builder()
+            .put("voltageTier", this.getTier())
+            .put("moduleTier", this.tModuleTier)
+            .put("motorTier", this.getNeededMotorTier())
+            .put("parallels", this.getParallels());
+        if (this.getParallelRecipes() > 1) {
+            mapBuilder.put("parallel_recipes", this.getParallelRecipes());
+        }
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+            .addMarkdown(new ResourceLocation("gregtech", "space/pumping-module"),
+                mapBuilder
+                    .build())
+            .beginStructureBlock(1, 5, 2, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-8", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addOutputHatch("1+", anyCasingText(), 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
+            .toolTipFinisher();
+        // spotless:on
+        return tt;
+    }
+
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModulePumpT1 extends TileEntityModulePump {
 
         /** Voltage tier of this module */
@@ -380,7 +395,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Number of possible parallels
          */
         @Override
-        protected int getParallels() {
+        public int getParallels() {
             return MAX_PARALLELS;
         }
 
@@ -390,7 +405,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Number of possible parallel recipes
          */
         @Override
-        protected int getParallelRecipes() {
+        public int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }
 
@@ -404,35 +419,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
             return new TileEntityModulePumpT1(mName);
         }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController("Front, 4th layer")
-                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .toolTipFinisher();
-            return tt;
-        }
     }
 
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModulePumpT2 extends TileEntityModulePump {
 
         /** Voltage tier of this module */
@@ -472,7 +461,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Number of possible parallels
          */
         @Override
-        protected int getParallels() {
+        public int getParallels() {
             return MAX_PARALLELS;
         }
 
@@ -482,7 +471,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Number of possible parallel recipes
          */
         @Override
-        protected int getParallelRecipes() {
+        public int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }
 
@@ -496,35 +485,9 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
             return new TileEntityModulePumpT2(mName);
         }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .toolTipFinisher();
-            return tt;
-        }
     }
 
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModulePumpT3 extends TileEntityModulePump {
 
         /** Voltage tier of this module */
@@ -564,7 +527,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Number of possible parallels
          */
         @Override
-        protected int getParallels() {
+        public int getParallels() {
             return MAX_PARALLELS;
         }
 
@@ -574,7 +537,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
          * @return Number of possible parallel recipes
          */
         @Override
-        protected int getParallelRecipes() {
+        public int getParallelRecipes() {
             return MAX_PARALLEL_RECIPES;
         }
 
@@ -587,33 +550,6 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         @Override
         public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
             return new TileEntityModulePumpT3(mName);
-        }
-
-        /**
-         * Create the tooltip of this controller
-         *
-         * @return Tooltip builder
-         */
-        @Override
-        protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .toolTipFinisher();
-            return tt;
         }
     }
 }

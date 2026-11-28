@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 
+import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreMaterial;
@@ -30,7 +31,7 @@ import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GTLog;
+import gregtech.api.util.GTInflectionManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.config.Gregtech;
@@ -68,7 +69,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreBlackgranite = new OrePrefixBuilder("oreBlackgranite")
         .withDefaultLocalName("Black Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Black Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -79,7 +80,7 @@ public class OrePrefixes {
     /** In case of an End-Ores Mod. Ore -> Material is a Oneway Operation! */
     public static final OrePrefixes oreRedgranite = new OrePrefixBuilder("oreRedgranite")
         .withDefaultLocalName("Red Granite Ores")
-        .withPrefix("Granite ")
+        .withPrefix("Red Granite ")
         .withSuffix(" Ore")
         .unifiable()
         .materialBased()
@@ -210,6 +211,351 @@ public class OrePrefixes {
         .materialGenerationBits(ORE)
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
+
+    // region space ores
+    /** Prefix for ores on the moon */
+    public static final OrePrefixes oreMoon = new OrePrefixBuilder("oreMoon").withDefaultLocalName("Moon Ores")
+        .withPrefix("Moon ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Mars */
+    public static final OrePrefixes oreMars = new OrePrefixBuilder("oreMars").withDefaultLocalName("Mars Ores")
+        .withPrefix("Mars ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Asteroid */
+    public static final OrePrefixes oreAsteroid = new OrePrefixBuilder("oreAsteroid")
+        .withDefaultLocalName("Asteroid Ores")
+        .withPrefix("Asteroid ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Phobos */
+    public static final OrePrefixes orePhobos = new OrePrefixBuilder("orePhobos").withDefaultLocalName("Phobos Ores")
+        .withPrefix("Phobos ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Deimos */
+    public static final OrePrefixes oreDeimos = new OrePrefixBuilder("oreDeimos").withDefaultLocalName("Deimos Ores")
+        .withPrefix("Deimos ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Ceres */
+    public static final OrePrefixes oreCeres = new OrePrefixBuilder("oreCeres").withDefaultLocalName("Ceres Ores")
+        .withPrefix("Ceres ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Io */
+    public static final OrePrefixes oreIo = new OrePrefixBuilder("oreIo").withDefaultLocalName("Io Ores")
+        .withPrefix("Io ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Europa */
+    public static final OrePrefixes oreEuropa = new OrePrefixBuilder("oreEuropa").withDefaultLocalName("Europa Ores")
+        .withPrefix("Europa ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Ganymede */
+    public static final OrePrefixes oreGanymede = new OrePrefixBuilder("oreGanymede")
+        .withDefaultLocalName("Ganymede Ores")
+        .withPrefix("Ganymede ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Callisto */
+    public static final OrePrefixes oreCallisto = new OrePrefixBuilder("oreCallisto")
+        .withDefaultLocalName("Callisto Ores")
+        .withPrefix("Callisto ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Enceladus */
+    public static final OrePrefixes oreEnceladus = new OrePrefixBuilder("oreEnceladus")
+        .withDefaultLocalName("Enceladus Ores")
+        .withPrefix("Enceladus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Titan */
+    public static final OrePrefixes oreTitan = new OrePrefixBuilder("oreTitan").withDefaultLocalName("Titan Ores")
+        .withPrefix("Titan ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Miranda */
+    public static final OrePrefixes oreMiranda = new OrePrefixBuilder("oreMiranda").withDefaultLocalName("Miranda Ores")
+        .withPrefix("Miranda ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Oberon */
+    public static final OrePrefixes oreOberon = new OrePrefixBuilder("oreOberon").withDefaultLocalName("Oberon Ores")
+        .withPrefix("Oberon ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Proteus */
+    public static final OrePrefixes oreProteus = new OrePrefixBuilder("oreProteus").withDefaultLocalName("Proteus Ores")
+        .withPrefix("Proteus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Triton */
+    public static final OrePrefixes oreTriton = new OrePrefixBuilder("oreTriton").withDefaultLocalName("Triton Ores")
+        .withPrefix("Triton ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Pluto */
+    public static final OrePrefixes orePluto = new OrePrefixBuilder("orePluto").withDefaultLocalName("Pluto Ores")
+        .withPrefix("Pluto ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Haumea */
+    public static final OrePrefixes oreHaumea = new OrePrefixBuilder("oreHaumea").withDefaultLocalName("Haumea Ores")
+        .withPrefix("Haumea ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Makemake */
+    public static final OrePrefixes oreMakemake = new OrePrefixBuilder("oreMakemake")
+        .withDefaultLocalName("Makemake Ores")
+        .withPrefix("Makemake ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Venus */
+    public static final OrePrefixes oreVenus = new OrePrefixBuilder("oreVenus").withDefaultLocalName("Venus Ores")
+        .withPrefix("Venus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Mercury */
+    public static final OrePrefixes oreMercury = new OrePrefixBuilder("oreMercury").withDefaultLocalName("Mercury Ores")
+        .withPrefix("Mercury ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Alpha Centauri */
+    public static final OrePrefixes oreAlphaCentauri = new OrePrefixBuilder("oreAlphaCentauri")
+        .withDefaultLocalName("Alpha Centauri Ores")
+        .withPrefix("Alpha Centauri ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on T Ceti E */
+    public static final OrePrefixes oreTCetiE = new OrePrefixBuilder("oreTCetiE").withDefaultLocalName("T Ceti E Ores")
+        .withPrefix("T Ceti E ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Vega B */
+    public static final OrePrefixes oreVegaB = new OrePrefixBuilder("oreVegaB").withDefaultLocalName("Vega B Ores")
+        .withPrefix("Vega B ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Barnarda E */
+    public static final OrePrefixes oreBarnardaE = new OrePrefixBuilder("oreBarnardaE")
+        .withDefaultLocalName("Barnarda E Ores")
+        .withPrefix("Barnarda E ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Barnarda F */
+    public static final OrePrefixes oreBarnardaF = new OrePrefixBuilder("oreBarnardaF")
+        .withDefaultLocalName("Barnarda F Ores")
+        .withPrefix("Barnarda F ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Horus */
+    public static final OrePrefixes oreHorus = new OrePrefixBuilder("oreHorus").withDefaultLocalName("Horus Ores")
+        .withPrefix("Horus ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ores on Anubis and Maahes */
+    public static final OrePrefixes oreAnubisAndMaahes = new OrePrefixBuilder("oreAnubisAndMaahes")
+        .withDefaultLocalName("Anubis And Maahes Ores")
+        .withPrefix("Anubis And Maahes ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for packed ice ores */
+    public static final OrePrefixes orePackedIce = new OrePrefixBuilder("orePackedIce")
+        .withDefaultLocalName("Packed Ice Ores")
+        .withPrefix("Packed Ice ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for ice ores on Seth */
+    public static final OrePrefixes oreSethIce = new OrePrefixBuilder("oreSethIce")
+        .withDefaultLocalName("Seth Ice Ores")
+        .withPrefix("Seth Ice ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for clay ores on Seth */
+    public static final OrePrefixes oreSethClay = new OrePrefixBuilder("oreSethClay")
+        .withDefaultLocalName("Seth Clay Ores")
+        .withPrefix("Seth Clay ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for tuff ores */
+    public static final OrePrefixes oreTuff = new OrePrefixBuilder("oreTuff").withDefaultLocalName("Tuff Ores")
+        .withPrefix("Tuff ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
+    /** Prefix for blue ice ores */
+    public static final OrePrefixes oreBlueIce = new OrePrefixBuilder("oreBlueIce")
+        .withDefaultLocalName("Blue Ice Ores")
+        .withPrefix("Blue Ice ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+    // endregion
 
     /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
     public static final OrePrefixes ore = new OrePrefixBuilder("ore").withDefaultLocalName("Ores")
@@ -980,6 +1326,14 @@ public class OrePrefixes {
         .textureIndex(OrePrefixTextureID.TURBINE_BLADE)
         .build();
 
+    /** consumed by the industrial arc furnace to run */
+    public static final OrePrefixes electrode = new OrePrefixBuilder("electrode").withDefaultLocalName("Electrodes")
+        .withSuffix(" Electrode")
+        .materialBased()
+        .materialGenerationBits(TOOL)
+        .textureIndex(OrePrefixTextureID.ELECTRODE)
+        .build();
+
     /** vanilly Sword */
     public static final OrePrefixes toolSword = new OrePrefixBuilder("toolSword").withDefaultLocalName("Swords")
         .materialBased()
@@ -1348,6 +1702,7 @@ public class OrePrefixes {
         .build();
 
     public static final OrePrefixes frameGt = new OrePrefixBuilder("frameGt").withDefaultLocalName("Frame Boxes")
+        .withSuffix(" Frame Box")
         .unifiable()
         .materialBased()
         .skipActiveUnification()
@@ -2433,7 +2788,6 @@ public class OrePrefixes {
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;
     public MaterialStack mSecondaryMaterial = null;
-    public OrePrefixes mPrefixInto = this;
     public float mHeatDamage = 0.0F; // Negative for Frost Damage
     private final ObjectSet<ItemStack> mContainsTestCache = new ObjectOpenCustomHashSet<>(
         512,
@@ -2487,25 +2841,32 @@ public class OrePrefixes {
         if (!this.mDisabledItems.contains(aMaterial)) this.mDisabledItems.add(aMaterial);
     }
 
-    public static OrePrefixes getOrePrefix(String aOre) {
-        for (OrePrefixes tPrefix : VALUES) if (aOre.startsWith(tPrefix.toString())) {
-            if (tPrefix == oreNether && aOre.equals("oreNetherQuartz")) return ore;
-            if (tPrefix == oreNether && aOre.equals("oreNetherStar")) return ore;
-            if (tPrefix == oreBasalt && aOre.equals("oreBasalticMineralSand")) return ore;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuvwire")) return stick;
-            if (tPrefix == stickLong && aOre.equals("stickLongasssuperconductornameforuhvwire")) return stick;
-            return tPrefix;
+    public static OrePrefixes getOrePrefix(String oreDictName) {
+        for (OrePrefixes prefix : VALUES) {
+            if (!oreDictName.startsWith(prefix.name)) {
+                continue;
+            }
+
+            if (prefix == orePluto && oreDictName.equals("orePlutonium")) return ore;
+            if (prefix == orePluto && oreDictName.equals("orePlutonium241")) return ore;
+            if (prefix == oreTitan && oreDictName.equals("oreTitanium")) return ore;
+            if (prefix == oreTitan && oreDictName.equals("oreTitanite")) return ore;
+            if (prefix == oreCallisto && oreDictName.equals("oreCallistoIce")) return ore;
+            if (prefix == oreNether && oreDictName.equals("oreNetherQuartz")) return ore;
+            if (prefix == oreNether && oreDictName.equals("oreNetherStar")) return ore;
+            if (prefix == oreBasalt && oreDictName.equals("oreBasalticMineralSand")) return ore;
+            if (prefix == stickLong && oreDictName.equals("stickLongasssuperconductornameforuvwire")) return stick;
+            if (prefix == stickLong && oreDictName.equals("stickLongasssuperconductornameforuhvwire")) return stick;
+            return prefix;
         }
+
         return null;
     }
 
-    public static String stripPrefix(String aOre) {
-        for (OrePrefixes tPrefix : VALUES) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), "");
-            }
-        }
-        return aOre;
+    public static String stripPrefix(String oreDictName) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return oreDictName;
+        return oreDictName.substring(prefix.name.length());
     }
 
     public static class ParsedOreDictName {
@@ -2543,14 +2904,10 @@ public class OrePrefixes {
         }
     }
 
-    public static ParsedOreDictName detectPrefix(String oredictName) {
-        for (OrePrefixes prefix : VALUES) {
-            if (oredictName.startsWith(prefix.name)) {
-                return new ParsedOreDictName(prefix, oredictName.substring(prefix.name.length()));
-            }
-        }
-
-        return null;
+    public static ParsedOreDictName detectPrefix(String oreDictName) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return null;
+        return new ParsedOreDictName(prefix, oreDictName.substring(prefix.name.length()));
     }
 
     private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<ParsedOreDictName>>> PREFIX_CACHE = ThreadLocal
@@ -2586,13 +2943,10 @@ public class OrePrefixes {
         return prefixes;
     }
 
-    public static String replacePrefix(String aOre, OrePrefixes aPrefix) {
-        for (OrePrefixes tPrefix : VALUES) {
-            if (aOre.startsWith(tPrefix.toString())) {
-                return aOre.replaceFirst(tPrefix.toString(), aPrefix.toString());
-            }
-        }
-        return "";
+    public static String replacePrefix(String oreDictName, OrePrefixes replacement) {
+        OrePrefixes prefix = getOrePrefix(oreDictName);
+        if (prefix == null) return "";
+        return replacement.name + oreDictName.substring(prefix.name.length());
     }
 
     private static final Map<String, OrePrefixes> NAME_TO_OREPREFIX = new ConcurrentHashMap<>();
@@ -2710,14 +3064,12 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLog.ore.println(
-                    "Processing '" + aOreDictName
-                        + "' with the Prefix '"
-                        + name
-                        + "' and the Material '"
-                        + aMaterial.mName
-                        + "' at "
-                        + GTUtility.getClassName(tRegistrator));
+                GTLoggers.GT_ORE_DICT_LOGGER.info(
+                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
+                    aOreDictName,
+                    name,
+                    aMaterial.mName,
+                    GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }
@@ -2763,7 +3115,7 @@ public class OrePrefixes {
                 if (name.startsWith("foil")) return "Thin " + "%material" + " Sheet";
             }
             case "FierySteel" -> {
-                if (isContainer) return materialPrefix + "Fiery Blood" + materialPostfix;
+                if (isContainer && this != cellMolten) return materialPrefix + "Fiery Blood" + materialPostfix;
             }
             case "Steeleaf" -> {
                 if (name.startsWith("ingot")) return materialPrefix + "%material";
@@ -2811,14 +3163,7 @@ public class OrePrefixes {
             }
             case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> {
                 if (name.startsWith("dust")) return materialPrefix + "%material";
-                switch (name) {
-                    case "crushedCentrifuged", "crushedPurified" -> {
-                        return materialPrefix + "%material";
-                    }
-                    case "crushed" -> {
-                        return "Ground " + "%material";
-                    }
-                }
+                if (this == crushed) return "Ground " + "%material" + materialPostfix;
             }
         }
         if (ProcessingModSupport.aEnableThaumcraftMats) {
@@ -2844,7 +3189,6 @@ public class OrePrefixes {
         if (this == ore) {
             return switch (aMaterial.getInternalName()) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
             };
         }
@@ -2879,14 +3223,66 @@ public class OrePrefixes {
     }
 
     public String getLocalizedNameForItem(IOreMaterial materials) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(materials), materials);
     }
 
-    public static String getLocalizedNameForItem(String prefix, String materialName) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix), materialName);
+    public static String getLocalizedNameForItem(String prefix, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix), material);
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String formatString, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), material);
     }
 
     public static String getLocalizedNameForItem(String prefix, String formatString, String materialName) {
-        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix, formatString), materialName);
+        return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), materialName);
+    }
+
+    /**
+     * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialName} if
+     * available; otherwise attempts inflection formatting.
+     */
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material) {
+        return getLocalizedNameForItemWithInflection(prefixKey, material, material.getLocalizedNameKey());
+    }
+
+    /** Formats a material prefix with additional localization keys, such as the host stone of an ore. */
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, IOreMaterial material,
+        String... formatterKeys) {
+        final String key = prefixKey + "."
+            + material.getInternalName()
+                .toLowerCase();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        final String phraseKey = prefixKey + ".phrase";
+        if (StatCollector.canTranslate(phraseKey)
+            && usesPhraseTemplate(material.getLocalizedName(), material.getLocalizedNameKey())) {
+            return GTInflectionManager.formatInflection(phraseKey, formatterKeys);
+        }
+        return GTInflectionManager.formatInflection(prefixKey, formatterKeys);
+    }
+
+    /**
+     * Gets the localized item name with inflection. Prioritizes the special key {@code prefixKey.materialKey} if
+     * available; otherwise attempts inflection formatting.
+     */
+    public static String getLocalizedNameForItemWithInflection(String prefixKey, String materialKey) {
+        final String key = prefixKey + "." + materialKey.toLowerCase();
+        if (StatCollector.canTranslate(key)) {
+            return StatCollector.translateToLocal(key);
+        }
+        final String phraseKey = prefixKey + ".phrase";
+        if (StatCollector.canTranslate(phraseKey)
+            && usesPhraseTemplate(StatCollector.translateToLocal(materialKey), materialKey)) {
+            return GTInflectionManager.formatInflection(phraseKey, materialKey);
+        }
+        return GTInflectionManager.formatInflection(prefixKey, materialKey);
+    }
+
+    // Adjective-first templates cannot be filled by a multi-word name or by a material without an adjective form
+    private static boolean usesPhraseTemplate(String localizedName, String materialKey) {
+        return localizedName.trim()
+            .indexOf(' ') != -1 || !StatCollector.canTranslate(materialKey + ".adj_m_nom");
     }
 }

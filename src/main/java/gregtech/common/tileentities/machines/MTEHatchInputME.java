@@ -40,6 +40,9 @@ import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
@@ -58,13 +61,13 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.item.AEFluidStack;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -78,6 +81,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputMEGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -105,7 +109,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
-    private boolean expediteRecipeCheck = false;
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
      * operations.
@@ -145,9 +148,17 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
+                if (justHadNewFluids) {
+                    // Advanced hatch auto pull always have immediate check, to not break automations
+                    scheduleRecipeCheck(RecipeCheckReason.IMMEDIATE);
+                    justHadNewFluids = false;
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
+                if (!autoPullAvailable) {
+                    aBaseMetaTileEntity.tryDisableTicking();
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
@@ -160,20 +171,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (igte == null || !igte.isAllowedToWork()) return false;
 
-        AENetworkProxy proxy = getProxy();
-
-        if (!proxy.isActive()) return false;
-
-        return true;
+        this.proxyCheckup();
+        return getProxy().isActive();
     }
 
     @Override
     public void onEnableWorking() {
         super.onEnableWorking();
 
-        if (expediteRecipeCheck) {
-            justHadNewFluids = true;
-        }
+        justHadNewFluids = true;
     }
 
     @Override
@@ -237,21 +243,21 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot newSlot = slots[index];
             FluidStack newStack = null;
             if (newSlot != null) {
-                newSlot.extracted = newStack = curr.getFluidStack();
-                newSlot.extractedAmount = newSlot.extracted.amount;
+                newSlot.extracted = newStack = GTUtility.createFluidStack(curr.getFluidStack(), curr.getStackSize());
+                newSlot.extractedAmount = GTUtility.getFluidAmount(newSlot.extracted);
             }
             boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
             if (newStack != null) {
                 // lower amount/disappearance is not considered 'new fluids'
                 if (sametype) {
-                    if (newStack.amount > oldStack.amount) {
+                    if (GTUtility.getFluidAmount(newStack) > GTUtility.getFluidAmount(oldStack)) {
                         justHadNewFluids = true; // same type, higher amount
                     }
                 } else {
                     justHadNewFluids = true; // different type
                 }
             }
-            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+            if (!((oldStack == null && newStack == null) || sametype)) {
                 configChanged = true;
             }
             index++;
@@ -337,28 +343,32 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public boolean justUpdated() {
-        if (expediteRecipeCheck && isAllowedToWork()) {
-            boolean ret = justHadNewFluids;
-            justHadNewFluids = false;
-            return ret;
-        }
-        return false;
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
     }
 
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-        configureWatchers();
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
 
-        // Changing this field requires a structure check/update, so let's do that automatically
-        if (igte.isServerSide()) {
-            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
-        }
+    @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
     }
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
+        return drain(side, fluid, fluid == null ? 0 : GTUtility.getFluidAmount(fluid), doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
+        return drain(side, fluid, (long) amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, long amount, boolean doDrain) {
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
@@ -368,12 +378,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot slot = getMatchingSlot(fluid, true);
             if (slot == null) return null;
 
-            int toDrain = Math.min(slot.extracted.amount, fluid.amount);
+            long toDrain = Math.min(GTUtility.getFluidAmount(slot.extracted), amount);
 
             FluidStack drained = GTUtility.copyAmount(toDrain, slot.extracted);
 
             if (doDrain) {
-                slot.extracted.amount -= toDrain;
+                GTUtility.decFluidAmount(slot.extracted, toDrain);
             }
 
             return drained;
@@ -381,8 +391,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             // Outside of processing a recipe, we need to extract everything manually
             Slot slot = getMatchingSlot(fluid, false);
             if (slot == null) return null;
+            // AE can't use 0 for exist check, just assume exist
+            // Other hatch also don't have existence check
+            if (amount == 0) return new FluidStack(fluid, 0);
 
             IAEFluidStack request = AEFluidStack.create(fluid);
+            request.setStackSize(amount);
 
             IMEMonitor<IAEFluidStack> sg;
             IEnergyGrid energy;
@@ -396,9 +410,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 return null;
             }
 
-            IAEFluidStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+            IAEFluidStack result;
+            if (doDrain) {
+                result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+                updateAllInformationSlots();
+            } else {
+                result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+            }
 
-            return result == null ? null : result.getFluidStack();
+            return result == null ? null : GTUtility.createFluidStack(result.getFluidStack(), result.getStackSize());
         }
     }
 
@@ -410,6 +430,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         updateAllInformationSlots();
     }
 
+    // Sometimes onFirstTick() going too late
+    private void proxyCheckup() {
+        final AENetworkProxy proxy = getProxy();
+        if (!proxy.isReady()) proxy.onReady();
+    }
+
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
@@ -418,12 +444,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         IEnergyGrid energy;
 
         try {
-            AENetworkProxy proxy = getProxy();
-
             // on some setup endRecipeProcessing() somehow runs before onFirstTick();
             // test world
             // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
-            if (!proxy.isReady()) proxy.onReady();
+            this.proxyCheckup();
+            AENetworkProxy proxy = getProxy();
 
             sg = proxy.getStorage()
                 .getFluidInventory();
@@ -438,13 +463,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             if (slot == null || slot.extracted == null || slot.extractedAmount == 0) continue;
 
-            int toExtract = slot.extractedAmount - slot.extracted.amount;
+            long toExtract = slot.extractedAmount - GTUtility.getFluidAmount(slot.extracted);
 
             if (toExtract <= 0) continue;
 
             // Reset the extracted amount to prevent double endRecipeProcessing calls from extracting twice, but keep
             // the extracted stack intact so that it looks nice.
-            slot.extractedAmount = slot.extracted.amount;
+            slot.extractedAmount = GTUtility.getFluidAmount(slot.extracted);
 
             IAEFluidStack request = AEFluidStack.create(slot.extracted);
             request.setStackSize(toExtract);
@@ -511,7 +536,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public @NotNull AENetworkProxy getProxy() {
         if (gridProxy == null) {
-            if (getBaseMetaTileEntity() instanceof IGridProxyable) {
+            var base = getBaseMetaTileEntity();
+            if (base instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
                     this,
                     "proxy",
@@ -519,12 +545,23 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                    getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
+    }
+
+    @MENetworkEventSubscribe
+    public void powerChangeME(MENetworkPowerStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
+    }
+
+    @MENetworkEventSubscribe
+    public void bootChangeME(MENetworkBootingStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
     }
 
     @Override
@@ -537,26 +574,32 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return getProxy().isActive();
     }
 
+    @OCMethod
     public int getMinAutoPullAmount() {
         return minAutoPullAmount;
     }
 
+    @OCMethod
     public void setMinAutoPullAmount(int minAutoPullAmount) {
         this.minAutoPullAmount = minAutoPullAmount;
     }
 
+    @OCMethod
     public int getAutoPullRefreshTime() {
         return autoPullRefreshTime;
     }
 
+    @OCMethod
     public void setAutoPullRefreshTime(int autoPullRefreshTime) {
         this.autoPullRefreshTime = autoPullRefreshTime;
     }
 
+    @OCMethod
     public boolean isAutoPullFluidList() {
         return autoPullFluidList;
     }
 
+    @OCMethod
     public void setAutoPullFluidList(boolean pullFluidList) {
         if (!autoPullAvailable) {
             return;
@@ -572,11 +615,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 refreshFluidList();
             }
         }
-    }
-
-    @Override
-    public boolean doFastRecipeCheck() {
-        return expediteRecipeCheck;
     }
 
     protected void updateAllInformationSlots() {
@@ -595,6 +633,31 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public void setSlotConfig(int index, FluidStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        // Keep the AE stack watcher in sync, or a hatch configured after joining the grid never gets onStackChange for
+        // the new fluid and a machine idling on it never wakes when the network restocks.
+        configureWatchers();
+    }
+
+    @OCMethod
+    public FluidStack getSlotConfig(int index) {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
+
+        return slot == null || slot.config == null ? null : slot.config.copy();
+    }
+
+    @OCMethod
+    public boolean setSlotConfigAndUpdate(int index, FluidStack config) {
+        if (index < 0 || index >= slots.length) return false;
+
+        setSlotConfig(index, config);
+
+        try {
+            updateInformationSlot(index);
+        } catch (GridAccessException e) {
+            // :)
+        }
+
+        return true;
     }
 
     /**
@@ -614,17 +677,18 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             .getFluidInventory();
 
         IAEFluidStack request = AEFluidStack.create(slot.config);
-        request.setStackSize(Integer.MAX_VALUE);
+        request.setStackSize(Long.MAX_VALUE);
 
         IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
-        slot.extracted = result != null ? result.getFluidStack() : null;
-        slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.amount;
+        slot.extracted = result != null ? GTUtility.createFluidStack(result.getFluid(), result.getStackSize()) : null;
+        slot.extractedAmount = slot.extracted == null ? 0 : GTUtility.getFluidAmount(slot.extracted);
 
     }
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
@@ -730,7 +794,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         aNBT.setBoolean("autoPull", autoPullFluidList);
         aNBT.setInteger("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
-        aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
 
@@ -756,11 +819,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         minAutoPullAmount = aNBT.getInteger("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
-        expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         switch (aNBT.getInteger("version")) {
@@ -771,6 +833,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     for (int i = 0; i < c; i++) {
                         NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
                         FluidStack fluidStack = GTUtility.loadFluid(nbtTagCompound);
+                        if (fluidStack == null) continue;
 
                         Slot slot = new Slot(fluidStack);
                         slots[i] = slot;
@@ -787,7 +850,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
 
                 // noinspection unchecked
-                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                for (NBTTagCompound tag : (List<NBTTagCompound>) (List<?>) slotList.tagList) {
                     Slot slot = Slot.readFromNBT(tag);
 
                     if (slot != null) slots[tag.getInteger("index")] = slot;
@@ -822,7 +885,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
             minAutoPullAmount = nbt.getInteger("minAmount");
             autoPullRefreshTime = nbt.getInteger("refreshTime");
-            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
         }
         additionalConnection = nbt.getBoolean("additionalConnection");
 
@@ -831,8 +893,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             clearSlotConfigs();
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
-                slots[i] = new Slot(GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i)));
+                final FluidStack fs = GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i));
+                if (fs == null) continue;
+                slots[i] = new Slot(fs);
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
@@ -852,7 +918,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
-        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setByte("color", this.getColor());
 
         if (!autoPullFluidList) {
@@ -942,7 +1007,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public final FluidStack config;
 
         /** The amount of stuff initially in the ME system when the recipe check started. */
-        public int extractedAmount;
+        public long extractedAmount;
         /**
          * The extracted stack (almost certainly equal to config). This is shared as a reference to the multiblock,
          * which decrements the stored amount as it gets consumed. After the recipe check has finished, the amount in
@@ -973,9 +1038,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         public Slot copy() {
-            Slot copy = new Slot(this.config);
+            Slot copy = new Slot(this.config.copy());
 
-            copy.extracted = this.extracted;
+            copy.extracted = extracted == null ? null : this.extracted.copy();
             copy.extractedAmount = this.extractedAmount;
 
             return copy;
@@ -985,7 +1050,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             tag.setTag("config", config.writeToNBT(new NBTTagCompound()));
             if (extracted != null) {
                 tag.setTag("extracted", extracted.writeToNBT(new NBTTagCompound()));
-                tag.setInteger("extractedAmount", extractedAmount);
+                tag.setLong("extractedAmount", extractedAmount);
             }
         }
 
@@ -995,17 +1060,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (slot.config == null) return null;
 
             if (tag.hasKey("extracted")) {
-                slot.extracted = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("extracted"));
-                slot.extractedAmount = tag.getInteger("extractedAmount");
+                slot.extracted = GTUtility.loadFluid(tag, "extracted");
+                slot.extractedAmount = tag.getLong("extractedAmount");
             }
 
             return slot;
         }
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override
@@ -1035,11 +1095,14 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            if (expediteRecipeCheck) for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEFluidStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEFluidStack.create(slot.config));
+                    }
                 }
             }
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
     }
 
@@ -1052,6 +1115,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
         StorageChannel chan) {
-        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewFluids = true;
+        if (diffStack.getStackSize() > 0) {
+            justHadNewFluids = true;
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+        }
+    }
+
+    private void scheduleRecipeCheck(RecipeCheckReason reason) {
+        for (var multi : watchers) {
+            multi.scheduleRecipeCheck(reason);
+        }
     }
 }

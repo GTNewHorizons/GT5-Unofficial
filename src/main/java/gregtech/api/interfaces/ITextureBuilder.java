@@ -35,13 +35,6 @@ public interface ITextureBuilder {
     ITextureBuilder setRGBA(final short[] rgba);
 
     /**
-     * Texture will render with same orientation as with vanilla blocks
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder stdOrient();
-
-    /**
      * Texture will orientate from block's {@link ExtendedFacing}
      *
      * @return {@link ITextureBuilder} for chaining
@@ -52,6 +45,12 @@ public interface ITextureBuilder {
      * Texture always render with full brightness to glow in the dark
      *
      * @return {@link ITextureBuilder} for chaining
+     *
+     * @implSpec Must be overridden to actually do something
      */
+    default ITextureBuilder glow(boolean glow) {
+        return this;
+    }
+
     ITextureBuilder glow();
 }

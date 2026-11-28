@@ -14,7 +14,7 @@ import com.google.gson.JsonSerializationContext;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 
@@ -40,7 +40,7 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
                         entry.getValue()
                             .getAsString());
                 } else {
-                    GTMod.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
+                    GTLoggers.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
                 }
             }
         }

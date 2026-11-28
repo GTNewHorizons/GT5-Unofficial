@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -22,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +34,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -45,13 +49,17 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator> implements ISurvivalConstructable {
 
     public MTESteamMacerator(String aName) {
@@ -69,36 +77,54 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     public String getMachineType() {
-        return "Macerator";
+        return StatCollector.translateToLocal("gt.mbtt.machine_type.macerator");
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private IStructureDefinition<MTESteamMacerator> STRUCTURE_DEFINITION = null;
 
-    private final String[][] shape = new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" },
-        { "CCC", "CCC", "CCC" } };
-    // spotless:on
+    private static final int HORIZONTAL_OFFSET = 1;
+    private static final int VERTICAL_OFFSET = 2;
+    private static final int DEPTH_OFFSET = 0;
 
-    private static final int HORIZONTAL_OFF_SET = 1;
-    private static final int VERTICAL_OFF_SET = 1;
-    private static final int DEPTH_OFF_SET = 0;
-
-    private int mCounCasing = 0;
+    private int casingAmount = 0;
 
     private int tierMachine = 0;
 
     private int tierMachineCasing = -1;
+    private int tierGearboxCasing = -1;
+    private int tierFrame = -1;
 
     @Nullable
     public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
-            mCounCasing++;
+            casingAmount++;
             return 1;
         }
         if (block == sBlockCasings2 && 0 == meta) {
-            mCounCasing++;
+            casingAmount++;
             return 2;
+        }
+        return null;
+    }
+
+    @Nullable
+    public Integer getTierGearboxCasing(Block block, int meta) {
+        if (block == sBlockCasings2 && meta == 2) {
+            return 1;
+        }
+        if (block == sBlockCasings2 && meta == 3) {
+            return 2;
+        }
+        return null;
+    }
+
+    @Nullable
+    public static Integer getTierFrame(Block block, int meta) {
+        if (block == GregTechAPI.sBlockFrames) {
+            if (meta == Materials.Bronze.mMetaItemSubID) return 1;
+            if (meta == Materials.Steel.mMetaItemSubID) return 2;
         }
         return null;
     }
@@ -111,7 +137,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     protected boolean isHighPressure() {
-        return tierMachineCasing == 2;
+        return tierMachineCasing == 2 || tierGearboxCasing == 2 || tierFrame == 2;
     }
 
     @Override
@@ -135,12 +161,27 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamMacerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMacerator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+                // spotless:off
+                .addShape(STRUCTURE_PIECE_MAIN, new String[][] {
+                    {" A ", "CAC", "C~C", "AAA"},
+                    {"ABA", "A A", "A A", "AAA"},
+                    {" A ", "CAC", "CAC", "AAA"}})
+                // spotless:on
                 .addElement(
-                    'C',
+                    'A',
                     ofChain(
                         buildSteamInput(MTESteamMacerator.class).casingIndex(10)
                             .hint(1)
@@ -149,6 +190,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
                             .hint(1)
+                            .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,
@@ -156,6 +198,25 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                             -1,
                             (t, m) -> t.tierMachineCasing = m,
                             t -> t.tierMachineCasing)))
+                .addElement(
+                    'B',
+                    ofBlocksTiered(
+                        this::getTierGearboxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                        -1,
+                        (t, m) -> t.tierGearboxCasing = m,
+                        t -> t.tierGearboxCasing))
+                .addElement(
+                    'C',
+                    ofBlocksTiered(
+                        MTESteamMacerator::getTierFrame,
+                        ImmutableList.of(
+                            Pair.of(GregTechAPI.sBlockFrames, Materials.Bronze.mMetaItemSubID),
+                            Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)),
+                        -1,
+                        (t, m) -> t.tierFrame = m,
+                        t -> t.tierFrame))
+
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -163,7 +224,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
     }
 
     @Override
@@ -171,9 +232,9 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
-            HORIZONTAL_OFF_SET,
-            VERTICAL_OFF_SET,
-            DEPTH_OFF_SET,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
             elementBudget,
             env,
             false,
@@ -181,29 +242,26 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tierMachineCasing = -1;
-        mCounCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing == 1 && mCounCasing >= 14 && checkHatches()) {
+        tierGearboxCasing = -1;
+        tierFrame = -1;
+        casingAmount = 0;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
+
+        checkCasingMin(errors, casingAmount, 14);
+        if (tierFrame >= 1 && tierFrame <= 2 && tierFrame == tierMachineCasing && tierFrame == tierGearboxCasing) {
+            tierMachine = tierFrame;
             updateHatchTexture();
-            tierMachine = 1;
-            return true;
-        }
-        if (tierMachineCasing == 2 && mCounCasing >= 14 && checkHatches()) {
-            updateHatchTexture();
-            tierMachine = 2;
-            return true;
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
 
-        return false;
-    }
-
-    private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && mOutputHatches.isEmpty()
-            && mInputHatches.isEmpty();
+        checkHasSteamInput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override
@@ -253,27 +311,29 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        String anyNormalCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_normal_casing");
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
-            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
+            .addInfo(TooltipHelper.recipeSlotLimit(getItemOutputLimit()))
+            .addInfo(StatCollector.translateToLocal("GT5U.MBTT.Steam.HighPressure"))
+            .beginStructureBlock(3, 4, 3, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addSteamHatch("1", anyNormalCasing, 1)
+            .addSteamInputBus("1+", anyNormalCasing, 1)
+            .addSteamOutputBus("1+", anyNormalCasing, 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "14-22x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("14-17", Casings.BronzePlatedBricks.getLocalizedName(), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Bronze), false)
+            .addCasing("1", Casings.BronzeGearBoxCasing.getLocalizedName(), false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "14-22x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("14-17", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("8", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Steel), false)
+            .addCasing("1", Casings.SteelGearBoxCasing.getLocalizedName(), false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher();
         return tt;
     }
@@ -281,28 +341,21 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+        info.add(StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.tier", tierMachine));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.tier",
-                "" + EnumChatFormatting.YELLOW + tierMachine));
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "gtpp.infodata.multi.steam.parallel",
-                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
+            StatCollector.translateToLocalFormatted("gtpp.infodata.multi.steam.parallel", getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
                 + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
@@ -310,9 +363,8 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());
     }
@@ -337,8 +389,4 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
         return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
-    }
 }

@@ -1,0 +1,222 @@
+package kubatech.loaders;
+
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
+
+import java.util.List;
+import java.util.function.Consumer;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.MaterialsElements;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
+
+public enum ArcFurnaceElectrode {
+
+    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
+    GraphiteElectrode(0, Materials.Graphite, 1, 4, 2d, 4d, 200, 1, 0, e -> {}),
+    TantalumElectrode(1, Materials.Tantalum, 1.2d, 2, 4d, 4d, 500, 1.2d, 3),
+    MolybdenumElectrode(2, Materials.Molybdenum, 0.9d, 16, 3d, 4d, 400, 0.8d, 1),
+    TungstenElectrode(3, Materials.Tungsten, 1, 128, 1d, 4d, 1000, 0.75d, 0.5d),
+    TungstenSteelElectrode(4, Materials.TungstenSteel, 0.8d, 256, 1d, 4d, 1600, 0.5d, 0.5d),
+    // Empty event handler to generate tooltip text, special effect handled as electrode parameter
+    GrapheneElectrode(5, Materials.Graphene, 2.5d, 16, 2d, 4d, 900, 1, 0, e -> {}),
+    YBCOElectrode(6, Materials.YttriumBariumCuprate, 1.2d, 8, 6d, 4d, 900, 1d, 6d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventPostRecipeCheck postRecipe) {
+            if (!postRecipe.result.wasSuccessful()) return;
+            int performedOC = postRecipe.calculator.getPerformedOverclocks();
+            postRecipe.arcFurnace.setDurabilityConsumptionThisRun(
+                postRecipe.arcFurnace.getDurabilityConsumptionThisRun() * (1 + performedOC));
+        }
+    }),
+    NetheriteElectrode(7, Materials.Netherite, 2.2d, 64, 1.5d, 4d, 1500, 1.25d, 2d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventStartShutdown startShutdown) {
+            startShutdown.duration = 1;
+        }
+        if (event instanceof ArcFurnaceProcessingEvent.EventStartIgnition startIgnition) {
+            long lastCompletedStartupTick = event.arcFurnace.getLastCompletedStartupTick();
+            if (lastCompletedStartupTick >= 0
+                && event.arcFurnace.getTotalRunTime() - lastCompletedStartupTick < 20 * 4) {
+                startIgnition.duration = 1;
+                startIgnition.eut = 1;
+            }
+        }
+    }),
+    TritaniumElectrode(8, Materials.Tritanium, 3d, 48, 2d, 4d, 1200, 1.1d, 2d),
+    InfinityElectrode(9, Materials.Infinity, 4.2d, 1, 1d, 4d, 2000, 1d, 1d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventConfigureProcessing configure) {
+            configure.processingLogic.setMaxParallel(getInfinityTargetParallel(configure.arcFurnace.getEffectState()));
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventCreateParallelHelper parallelHelperEvent) {
+            parallelHelperEvent.parallelHelper.setAvailableEUt(Long.MAX_VALUE);
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventConfigureOverclock configureOC) {
+            configureOC.overclockCalculator.setAmperage(1L);
+            configureOC.overclockCalculator.setEUt(Long.MAX_VALUE);
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            NBTTagCompound state = completed.arcFurnace.getEffectState();
+            int next = getInfinityTargetParallel(state);
+            next = next > Integer.MAX_VALUE / 2 ? Integer.MAX_VALUE : next * 2;
+            state.setInteger("infinityTargetParallel", next);
+        } else if (event instanceof ArcFurnaceProcessingEvent.EventReset reset) {
+            reset.arcFurnace.getEffectState()
+                .setInteger("infinityTargetParallel", 1);
+        }
+    }),
+    HypogenElectrode(10, MaterialsElements.STANDALONE.HYPOGEN, 6.5d, 256, 1d, 4d, 2500, 1.3d, 0.5d),
+
+    // nanite electrodes
+    NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 256, 2d, 4d, 1750, 2d, 0d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
+                && completed.arcFurnace.getRandomNumber(100) < 70) {
+                completed.arcFurnace.setDurabilityConsumptionThisRun(0);
+            }
+        }
+    }),
+    TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 3500, 1.5d, 0d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))) {
+                completed.arcFurnace.setDurabilityConsumptionThisRun(-1);
+            }
+        }
+    }),
+    UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 5000, 1d, 0d, event -> {
+        if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
+            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
+                completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
+            }
+        }
+    });
+
+    private static final Int2ObjectOpenHashMap<ArcFurnaceElectrode> ID_MAP = new Int2ObjectOpenHashMap<>();
+
+    public final int id;
+    public final IOreMaterial associatedMaterial;
+    public final double speedModifier;
+    public final int parallelLimit;
+    public final double OCSpeedFactor;
+    public final double OCPowerFactor;
+    public final int durability;
+    public final double euModifier;
+    public final double startupPenalty;
+    public final Consumer<ArcFurnaceProcessingEvent> specialEffect;
+
+    private ItemStack electrodeItem;
+
+    ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty) {
+        this(
+            id,
+            associatedMaterial,
+            speedModifier,
+            parallelLimit,
+            OCSpeedFactor,
+            OCPowerFactor,
+            durability,
+            euModifier,
+            startupPenalty,
+            null);
+    }
+
+    ArcFurnaceElectrode(int id, IOreMaterial associatedMaterial, double speedModifier, int parallelLimit,
+        double OCSpeedFactor, double OCPowerFactor, int durability, double euModifier, double startupPenalty,
+        Consumer<ArcFurnaceProcessingEvent> specialEffect) {
+        this.id = id;
+        this.associatedMaterial = associatedMaterial;
+        this.speedModifier = speedModifier;
+        this.parallelLimit = parallelLimit;
+        this.OCSpeedFactor = OCSpeedFactor;
+        this.OCPowerFactor = OCPowerFactor;
+        this.durability = durability;
+        this.euModifier = euModifier;
+        this.startupPenalty = startupPenalty;
+        this.specialEffect = specialEffect;
+    }
+
+    public static void registerElectrodes() {
+        for (ArcFurnaceElectrode electrode : values()) {
+            if (ID_MAP.put(electrode.id, electrode) != null)
+                throw new IllegalStateException("Duplicate electrode id: " + electrode.id);
+            electrode.electrodeItem = ARC_FURNACE_ELECTRODE.getElectrodeStack(electrode);
+        }
+    }
+
+    public ItemStack getElectrodeItem(int amount) {
+        return GTUtility.copyAmount(amount, this.electrodeItem);
+    }
+
+    public static ArcFurnaceElectrode getById(int id) {
+        return ID_MAP.get(id);
+    }
+
+    public static ArcFurnaceElectrode getByStack(ItemStack stack) {
+        return ARC_FURNACE_ELECTRODE.getElectrodeFromStack(stack);
+    }
+
+    public String getUnlocalizedName() {
+        return "item.arc_furnace_electrode." + this.name();
+    }
+
+    public void addInformation(List<String> tooltip, int durability) {
+        double durRatio = this.durability > 0 ? (double) durability / this.durability : 0;
+        EnumChatFormatting durColor = durRatio >= 1.0 ? EnumChatFormatting.BLUE
+            : durRatio >= 0.5 ? EnumChatFormatting.GREEN
+                : durRatio >= 0.25 ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED;
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.durability",
+                EnumChatFormatting.BLUE + Integer.toString(this.durability) + EnumChatFormatting.GRAY,
+                durColor + Integer.toString(durability)));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.parallel_limit",
+                EnumChatFormatting.GOLD + Integer.toString(this.parallelLimit)));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.speed",
+                EnumChatFormatting.GREEN + Integer.toString((int) (this.speedModifier * 100)) + "%"));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.eu_usage",
+                EnumChatFormatting.AQUA + formatNumber(this.euModifier) + "x"));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.overclock",
+                EnumChatFormatting.LIGHT_PURPLE + formatNumber(this.OCSpeedFactor),
+                formatNumber(this.OCPowerFactor)));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.startup_penalty",
+                EnumChatFormatting.RED + formatNumber(this.startupPenalty + 1d) + "x"));
+        long startupAmperage = Math.max(
+            1L,
+            (long) Math
+                .ceil(30d / 32d * Math.max(1, this.parallelLimit) * (this.startupPenalty + 1d) * this.euModifier));
+        tooltip.add(
+            StatCollector.translateToLocalFormatted(
+                "item.arc_furnace_electrode.tip.startup_amperage",
+                EnumChatFormatting.WHITE + formatNumber(startupAmperage)));
+        if (specialEffect != null) {
+            tooltip.addAll(
+                Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
+                    StatCollector.translateToLocal("item.arc_furnace_electrode.tip.special_effect." + this.name()),
+                    300));
+        }
+    }
+
+    private static int getInfinityTargetParallel(NBTTagCompound state) {
+        int parallel = state.getInteger("infinityTargetParallel");
+        if (parallel < 1) {
+            parallel = 1;
+            state.setInteger("infinityTargetParallel", parallel);
+        }
+        return parallel;
+    }
+}

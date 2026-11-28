@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 
 import java.math.BigInteger;
@@ -219,10 +218,10 @@ public class GTValues {
      * Sides
      */
     public static final byte SIDE_BOTTOM = 0, SIDE_DOWN = 0, SIDE_TOP = 1, SIDE_UP = 1, SIDE_NORTH = 2, // Also a Side
-                                                                                                        // with a
-                                                                                                        // stupidly
-                                                                                                        // mirrored
-                                                                                                        // Texture
+        // with a
+        // stupidly
+        // mirrored
+        // Texture
         SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
         SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
 
@@ -452,10 +451,10 @@ public class GTValues {
      * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
      * ran.
      */
-    public static boolean DEVENV = Launch.blackboard == null ? true
-        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+    public static boolean DEVENV = Launch.blackboard == null
+        || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
-    public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
+    public static final String TecTechHatches = "Supports multi-amp and laser hatches";
 
     // a list specifically for random selection of formatting codes.
     public static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN,

@@ -4,17 +4,19 @@ import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
 import static gregtech.common.tileentities.machines.MTEHatchInputME.SLOT_COUNT;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -26,25 +28,27 @@ import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.utils.fluid.FluidInteractions;
+import com.cleanroommc.modularui.utils.fluid.FluidUtils;
+import com.cleanroommc.modularui.utils.fluid.IFluidTankLong;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.adapter.MTEHatchInputMESlotAdapter;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -68,11 +72,10 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         BooleanSyncValue isAutoPullSyncer = new BooleanSyncValue(
-            hatch::isAutoPullFluidList,
-            hatch::setAutoPullFluidList);
+            machine::isAutoPullFluidList,
+            machine::setAutoPullFluidList).allowC2S();
 
         Flow mainRow = Flow.row()
-            .paddingLeft(3)
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START);
 
@@ -83,16 +86,11 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
-    private SlotGroupWidget createFilterSlots(PanelSyncManager syncManager, BooleanSyncValue isAutoPullSyncer) {
+    private Grid createFilterSlots(PanelSyncManager syncManager, BooleanSyncValue isAutoPullSyncer) {
         syncManager.registerSlotGroup(FILTER_INV_NAME, FILTER_SLOT_ROW);
 
-        String[] matrix = new String[FILTER_SLOT_ROW];
-        String repeat = StringUtils.getRepetitionOf('s', FILTER_SLOT_PER_ROW);
-        Arrays.fill(matrix, repeat);
-
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key('s', index -> new FluidSlot() {
+        return new Grid().coverChildren()
+            .gridOfWidthHeight(FILTER_SLOT_PER_ROW, FILTER_SLOT_ROW, ($x, $y, index) -> new FluidSlot() {
 
                 @Override
                 protected void addToolTip(RichTooltip tooltip) {
@@ -125,11 +123,11 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
 
                     if (heldFluid != null && containsSuchStack(heldFluid)) return;
 
-                    hatch.setSlotConfig(index, GTUtility.copyAmount(1, heldFluid));
+                    machine.setSlotConfig(index, GTUtility.copyAmount(1, heldFluid));
 
                     if (baseMetaTileEntity.isServerSide()) {
                         try {
-                            hatch.updateInformationSlot(index);
+                            machine.updateInformationSlot(index);
                         } catch (GridAccessException e) {
                             // :P
                         }
@@ -137,12 +135,11 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
                 }
             }.phantom(true)
                 .controlsAmount(false))
-                .background(
+                .backgroundOverlay(
                     new DynamicDrawable(
-                        () -> !isAutoPullSyncer.getBoolValue() ? GTGuiTextures.SLOT_ITEM_DARK : GuiTextures.SLOT_FLUID),
-                    GTGuiTextures.OVERLAY_SLOT_ARROW_ME))
-            .build()
-            .coverChildren();
+                        () -> !isAutoPullSyncer.getBoolValue() ? GTGuiTextures.SLOT_FLUID_DARK
+                            : GuiTextures.SLOT_FLUID),
+                    GTGuiTextures.OVERLAY_SLOT_ARROW_ME));
     }
 
     private boolean containsSuchStack(FluidStack tStack) {
@@ -156,7 +153,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         Flow mainColumn = Flow.col()
             .width(18)
             .mainAxisAlignment(Alignment.MainAxis.START)
-            .coverChildren();
+            .coverChildrenHeight();
 
         // toggle button for config panel
         IPanelHandler settingsPanel = syncManager
@@ -181,7 +178,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }.value(isAutoPullSyncer)
             .size(16)
             .margin(1)
-            .setEnabledIf(b -> hatch.autoPullAvailable)
+            .setEnabledIf(b -> machine.autoPullAvailable)
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED)
             .tooltip(t -> {
@@ -199,16 +196,16 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
     }
 
     private ModularPanel createStackSizeConfigurationPanel(ModularPanel parent) {
-        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(hatch::doFastRecipeCheck, hatch::setRecipeCheck);
         IntSyncValue minAutoPullAmountSyncer = new IntSyncValue(
-            hatch::getMinAutoPullAmount,
-            hatch::setMinAutoPullAmount);
+            machine::getMinAutoPullAmount,
+            machine::setMinAutoPullAmount).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
-            hatch::getAutoPullRefreshTime,
-            hatch::setAutoPullRefreshTime);
+            machine::getAutoPullRefreshTime,
+            machine::setAutoPullRefreshTime).allowC2S();
 
         Flow mainColumn = Flow.col()
-            .padding(3)
+            .coverChildren()
+            .marginTop(15)
             .childPadding(3);
 
         // stack size label
@@ -219,8 +216,8 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         // stack size text field
         mainColumn.child(
             new TextFieldWidget().value(minAutoPullAmountSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
@@ -228,53 +225,32 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         // refresh time label
         mainColumn.child(
             IKey.lang("GT5U.machines.stocking_bus.refresh_time")
-                .asWidget());
+                .asWidget()
+                .maxWidth(72)
+                .textAlign(Alignment.Center));
 
         // refresh time text field
         mainColumn.child(
             new TextFieldWidget().value(autoPullRefreshTimeSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
 
-        Flow recipeRow = Flow.row()
-            .coverChildren();
-
-        // recipe check label
-        recipeRow.child(
-            IKey.lang("GT5U.machines.stocking_bus.force_check")
-                .asWidget()
-                .width(50));
-
-        // recipe check toggle button
-        recipeRow.child(
-            new ToggleButton().value(isRecipeCheckSyncer)
-                .background(true, GTGuiTextures.BUTTON_STANDARD)
-                .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS));
-
-        mainColumn.child(recipeRow);
-
-        return createPopUpPanel("configPanel").size(85, 125)
+        return createPopUpPanel("configPanel").coverChildren()
             .relative(parent)
-            .paddingTop(15)
+            .padding(5)
             .child(mainColumn)
             .leftRel(1)
             .topRel(0);
     }
 
-    private SlotGroupWidget createStockSlots(PanelSyncManager syncManager) {
+    private Grid createStockSlots(PanelSyncManager syncManager) {
         syncManager.registerSlotGroup(STOCK_INV_NAME, STOCK_SLOT_ROW);
 
-        String[] matrix = new String[STOCK_SLOT_ROW];
-        String repeat = StringUtils.getRepetitionOf('s', STOCK_SLOT_PER_ROW);
-        Arrays.fill(matrix, repeat);
-
-        return SlotGroupWidget.builder()
-            .matrix(matrix)
-            .key('s', index -> new FluidSlot() {
+        return new Grid().coverChildren()
+            .gridOfWidthHeight(STOCK_SLOT_PER_ROW, STOCK_SLOT_ROW, ($x, $y, index) -> new FluidSlot() {
 
                 @Override
                 protected void addToolTip(RichTooltip tooltip) {
@@ -285,7 +261,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
                         tooltip.addLine(
                             IKey.lang(
                                 "modularui2.fluid.phantom.amount",
-                                this.formatFluidTooltipAmount(fluid.amount),
+                                this.formatFluidTooltipAmount(FluidUtils.fluidAmount(fluid)),
                                 this.getBaseUnit()));
                         addAdditionalFluidInfo(tooltip, fluid);
 
@@ -304,22 +280,15 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
                 @Override
                 public void tryScrollPhantom(MouseData mouseData) {}
             }.phantom(true))
-                .background(GTGuiTextures.SLOT_ITEM_DARK))
-            .build()
-            .coverChildren();
+                .backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK));
     }
 
     @Override
-    protected boolean supportsLeftCornerFlow() {
-        return true;
-    }
-
-    @Override
-    protected Flow createLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue isActiveSyncer = new BooleanSyncValue(hatch::isActive);
-        BooleanSyncValue isPoweredSyncer = new BooleanSyncValue(hatch::isPowered);
-        BooleanSyncValue isBootingSyncer = new BooleanSyncValue(hatch::isBooting);
-        BooleanSyncValue isAllowedToWorkSyncer = new BooleanSyncValue(hatch::isAllowedToWork);
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue isActiveSyncer = new BooleanSyncValue(machine::isActive);
+        BooleanSyncValue isPoweredSyncer = new BooleanSyncValue(machine::isPowered);
+        BooleanSyncValue isBootingSyncer = new BooleanSyncValue(machine::isBooting);
+        BooleanSyncValue isAllowedToWorkSyncer = new BooleanSyncValue(machine::isAllowedToWork);
 
         syncManager.syncValue("isActive", isActiveSyncer);
         syncManager.syncValue("isPowered", isPoweredSyncer);
@@ -336,18 +305,18 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
 
             if (isActive && isPowered) {
                 return MessageFormat.format(
-                    "{0}{1}§f ({2})",
-                    EnumChatFormatting.GREEN,
-                    state,
+                    "{0} ({1})",
+                    EnumChatFormatting.GREEN + state + EnumChatFormatting.RESET,
                     IKey.lang(
                         isAllowedToWorkSyncer.getBoolValue() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
             } else {
-                return EnumChatFormatting.DARK_RED + state;
+                return EnumChatFormatting.DARK_RED + state + EnumChatFormatting.RESET;
             }
         })
-            .asWidget();
+            .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
 
-        return super.createLeftCornerFlow(panel, syncManager).child(status);
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(status);
     }
 
     @Override
@@ -364,7 +333,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
 
     @Override
     protected int getBasePanelHeight() {
-        return super.getBasePanelHeight() + 16;
+        return super.getBasePanelHeight() + SLOT_SIZE;
     }
 
     protected class ConfigFluidTank implements IFluidTank {
@@ -412,7 +381,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
     }
 
-    protected class ExtractedFluidTank implements IFluidTank {
+    protected class ExtractedFluidTank implements IFluidTankLong {
 
         private final int slotIndex;
 
@@ -421,7 +390,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public FluidStack getFluid() {
+        public FluidStack getFluidStack() {
             Slot slot = GTDataUtils.getIndexSafe(slots, slotIndex);
 
             if (slot == null) return null;
@@ -430,7 +399,13 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public int getFluidAmount() {
+        public Fluid getStoredFluid() {
+            FluidStack stack = getFluidStack();
+            return stack == null ? null : stack.getFluid();
+        }
+
+        @Override
+        public long getFluidAmountLong() {
             Slot slot = GTDataUtils.getIndexSafe(slots, slotIndex);
 
             if (slot == null) return 0;
@@ -439,8 +414,13 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public int getCapacity() {
-            return Integer.MAX_VALUE;
+        public long getRealCapacityLong() {
+            return Long.MAX_VALUE;
+        }
+
+        @Override
+        public long getCapacityLong() {
+            return getRealCapacityLong();
         }
 
         @Override
@@ -449,13 +429,30 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         }
 
         @Override
-        public int fill(FluidStack resource, boolean doFill) {
+        public long fill(Fluid resource, long amount, boolean doFill) {
             return 0;
         }
 
         @Override
-        public FluidStack drain(int maxDrain, boolean doDrain) {
+        public FluidStack drain(long maxDrain, boolean doDrain) {
             return null;
         }
+
+        @Override
+        public ExtractedFluidTank copy() {
+            return new ExtractedFluidTank(slotIndex);
+        }
+
+        @Override
+        public void setFluid(Fluid fluid, long l) {}
+
+        @Override
+        public boolean isFluidEqual(@Nullable IFluidTankLong cached) {
+            return cached != null && this.getFluid() == cached.getFluid();
+        }
+
+        public void loadFromNBT(NBTTagCompound nbt) {}
+
+        public void saveToNBT(NBTTagCompound nbt) {}
     }
 }

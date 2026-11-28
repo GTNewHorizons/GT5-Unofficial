@@ -13,13 +13,29 @@
 
 package bartworks.common.loaders;
 
+import net.minecraft.item.ItemStack;
+
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
+import bartworks.common.items.ItemLabParts;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import gregtech.api.enums.ItemList;
 
 public class BioLabLoader {
 
     public static void run(FMLInitializationEvent event) {
         FluidLoader.run(event);
         BioItemList.registerBioItems();
+        BioCultureEnum.registerAllCultures();
+        BioDataEnum.registerAllDNAItemStacks();
+        BioDataEnum.registerAllPlasmidItemStacks();
+
+        ItemList.EmptyPetriDish.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PETRI_DISH));
+        ItemList.EmptyDNAFlask.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.DNA_FLASK));
+        ItemList.EmptyPlasmid.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PLASMID_CELL));
+        ItemList.DetergentPowder.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.DETERGENT));
+        ItemList.Agarose.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.AGAROSE));
+        ItemList.PlasmaMembrane.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PLASMA_MEMBRANE));
         BioRecipeLoader.run();
     }
 }

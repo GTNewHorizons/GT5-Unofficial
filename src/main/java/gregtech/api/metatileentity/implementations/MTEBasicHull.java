@@ -3,8 +3,10 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GTValues.V;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,6 +14,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEBasicHull extends MTEBasicTank {
 
     public MTEBasicHull(int aID, String aName, String aNameRegional, int aTier, ITexture... aTextures) {
@@ -20,6 +23,12 @@ public class MTEBasicHull extends MTEBasicTank {
 
     public MTEBasicHull(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hull.name", GTValues.VN[mTier]);
     }
 
     @Override

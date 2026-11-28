@@ -90,16 +90,13 @@ public class VolumetricFlaskHelper {
         return Math.min(getMaxFlaskCapacity(aStack), capacity);
     }
 
-    public static boolean setNewFlaskCapacity(ItemStack aStack, int aCapacity) {
-        if (aStack == null || aCapacity <= 0) {
-            return false;
-        }
+    public static void setFlaskCapacity(ItemStack aStack, int aCapacity) {
+        if (aStack == null || aCapacity <= 0) return;
         aCapacity = Math.min(aCapacity, getMaxFlaskCapacity(aStack));
         ItemStackNBT.setInteger(aStack, "Capacity", aCapacity);
-        return true;
     }
 
-    public static Item generateNewFlask(String unlocalized, String english, int maxCapacity) {
-        return new ItemVolumetricFlask(unlocalized, english, maxCapacity);
+    public static Item generateNewFlask(String unlocalized, int maxCapacity) {
+        return new ItemVolumetricFlask(unlocalized, maxCapacity);
     }
 }

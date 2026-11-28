@@ -7,7 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -86,23 +85,6 @@ public class BlockCasingSpaceElevatorMotor extends BlockCasingsAbstract {
     }
 
     /**
-     * Get the icon for this block
-     *
-     * @param world World in which the block exists
-     * @param x     X coordinate of the block
-     * @param y     Y coordinate of the block
-     * @param z     Z coordinate of the block
-     * @param side  Side for which the icon should be gotten
-     * @return Icon of the block
-     */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        int tMeta = world.getBlockMetadata(x, y, z);
-        return getIcon(side, tMeta);
-    }
-
-    /**
      * Get all sub blocks of this block
      *
      * @param item Item that represents this block
@@ -110,8 +92,7 @@ public class BlockCasingSpaceElevatorMotor extends BlockCasingsAbstract {
      * @param list List to which the sub blocks will be added
      */
     @Override
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (int i = 0; i < NUMBER_OF_MOTORS; i++) {
             list.add(new ItemStack(item, 1, i));
         }

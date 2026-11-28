@@ -1,9 +1,9 @@
 package gregtech.client.iconContainers.blocks;
 
-import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -11,10 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
-import gregtech.common.config.Gregtech;
 
 public class GTCustomBlockIconContainer extends AbstractBlockIconContainer implements Runnable {
 
@@ -22,27 +21,31 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
     protected final String mIconName, mOverlayName;
     protected IIcon mIcon, mOverlay = null;
 
-    // TODO: Change to package-private once API no longer extends this implementation
-    protected GTCustomBlockIconContainer(@NotNull String aIconName) {
-        mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
-        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
+    GTCustomBlockIconContainer(@NotNull String domain, @NotNull String aIconName) {
+        mIconName = ResourceUtils.getIconRegisterName(domain, aIconName);
+        iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(domain, aIconName);
 
-        mOverlayName = mIconName + "_OVERLAY";
-        overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mOverlayName);
+        mOverlayName = ResourceUtils.getIconRegisterName(domain, aIconName + Textures.OverlaySuffix);
+        overlayResource = ResourceUtils
+            .getCompleteBlockTextureResourceLocation(domain, aIconName + Textures.OverlaySuffix);
         GregTechAPI.sGTBlockIconload.add(this);
-        if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
+        logRegisterIcons();
     }
 
     protected void logRegisterIcons() {
-        GTLog.ico.println("R " + iconResource);
-        GTLog.ico.println("O " + overlayResource);
+        GT_ICON_LOGGER.info("R {}", iconResource);
+        GT_ICON_LOGGER.info("O {}", overlayResource);
     }
 
-    // 2026-02-03: Counted 1771 unique Block CustomIcons, so 2.5K will avoid resize until 1920 entries
-    private static final Map<String, GTCustomBlockIconContainer> INSTANCES = new ConcurrentHashMap<>(2560);
+    // 2026-13-05: Counted 36 unique Block TextureSetIcons, so 52 will avoid resize until 50 entries
+    private static Map<String, GTCustomBlockIconContainer> INSTANCES = new HashMap<>(52);
 
-    public static @NotNull IIconContainer create(@NotNull String aIconName) {
-        return INSTANCES.computeIfAbsent(aIconName, GTCustomBlockIconContainer::new);
+    public static @NotNull IIconContainer create(@NotNull String domain, @NotNull String aIconName) {
+        return INSTANCES.computeIfAbsent(aIconName, key -> new GTCustomBlockIconContainer(domain, key));
+    }
+
+    public static void cleanup() {
+        INSTANCES = new HashMap<>();
     }
 
     @Override
@@ -51,6 +54,8 @@ public class GTCustomBlockIconContainer extends AbstractBlockIconContainer imple
         // This makes the block _OVERLAY icon totally optional
         if (ResourceUtils.resourceExists(overlayResource)) {
             mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+        } else {
+            mOverlay = null;
         }
     }
 

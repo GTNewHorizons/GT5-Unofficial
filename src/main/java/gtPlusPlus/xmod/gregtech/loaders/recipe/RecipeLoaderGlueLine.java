@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
@@ -14,8 +16,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -351,7 +351,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(new ItemStack(Items.book, 64, 0))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(200))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(

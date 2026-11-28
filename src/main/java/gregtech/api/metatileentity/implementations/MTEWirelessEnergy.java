@@ -1,28 +1,32 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.common.misc.WirelessNetworkManager.TICKS_BETWEEN_ENERGY_ADDITION;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
-import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 import static gregtech.common.misc.WirelessNetworkManager.totalStorage;
 import static java.lang.Long.min;
 
 import java.math.BigInteger;
 import java.util.UUID;
 
-import gregtech.api.enums.GTAuthors;
+import net.minecraft.util.StatCollector;
+
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.WirelessNetworkManager;
 
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
-        .valueOf(2 * V[mTier] * ticks_between_energy_addition);
+        .valueOf(2 * V[mTier] * TICKS_BETWEEN_ENERGY_ADDITION);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
     private UUID owner_uuid;
@@ -36,10 +40,15 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     }
 
     @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.wireless.receiver.name", GTValues.VN[mTier]);
+    }
+
+    @Override
     public String[] getDescription() {
-        return GTSplit.splitLocalizedWithSuffix(
-            "gt.blockmachines.energy_hatch_wireless.desc",
-            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen));
+        return GTSplit.splitLocalized("gt.blockmachines.energy_hatch_wireless.desc");
     }
 
     @Override
@@ -86,9 +95,11 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
         // UUID of the owner.
         owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
 
-        SpaceProjectManager.checkOrCreateTeam(owner_uuid);
+        WirelessNetworkManager.processInitialSettings(getBaseMetaTileEntity());
 
         tryFetchingEnergy();
+
+        GTMod.proxy.wirelessNetworkManager.addHatch(this);
     }
 
     @Override
@@ -97,18 +108,21 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy
-            // network
-            // it should make no difference to them. Minimising the number of operations on BigInteger is essential.
-
-            // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
-            if (aTick % ticks_between_energy_addition == 0L) {
-                tryFetchingEnergy();
+            if (aTick % 20 == 0L) {
+                aBaseMetaTileEntity.tryDisableTicking();
             }
         }
     }
 
-    private void tryFetchingEnergy() {
+    /**
+     * For consistency, the explosion is explicitly disabled. Disable ticking will disable explosion as well.
+     */
+    @Override
+    public boolean willExplodeInRain() {
+        return false;
+    }
+
+    public final void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);

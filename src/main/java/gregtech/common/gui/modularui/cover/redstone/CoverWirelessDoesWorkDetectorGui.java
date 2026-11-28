@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.cover.redstone;
 
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -13,7 +14,7 @@ import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.redstone.CoverWirelessDoesWorkDetector;
 import gregtech.common.gui.modularui.cover.base.CoverAdvancedRedstoneTransmitterBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverWirelessDoesWorkDetectorGui
     extends CoverAdvancedRedstoneTransmitterBaseGui<CoverWirelessDoesWorkDetector> {
@@ -24,10 +25,10 @@ public class CoverWirelessDoesWorkDetectorGui
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode> activityModeSync = new EnumSyncValue<>(
+        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityModeSync = new EnumSyncValue<>(
             CoverWirelessDoesWorkDetector.ActivityMode.class,
             cover::getMode,
-            cover::setMode);
+            cover::setMode).allowC2S();
         syncManager.syncValue("activityMode", activityModeSync);
 
         super.addUIWidgets(syncManager, column, data);
@@ -35,24 +36,23 @@ public class CoverWirelessDoesWorkDetectorGui
 
     @Override
     protected Flow makeThirdFlow(PanelSyncManager syncManager, CoverGuiData data) {
-        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode>) syncManager
+        EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?> activityMode = (EnumSyncValue<CoverWirelessDoesWorkDetector.ActivityMode, ?>) syncManager
             .getSyncHandlerFromMapKey("activityMode:0");
-        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical);
+        BooleanSyncValue physicalSyncer = new BooleanSyncValue(cover::isPhysical, cover::setPhysical).allowC2S();
         return Flow.column()
             .coverChildren()
             .child(
                 Flow.row()
                     .marginBottom(4)
-                    .size(140, 18)
-
+                    .coverChildren(0, 18)
+                    .leftRel(0)
                     .child(
-                        new EnumRowBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
+                        new EnumSeriesBuilder<>(CoverWirelessDoesWorkDetector.ActivityMode.class).value(activityMode)
                             .overlay(
                                 GTGuiTextures.OVERLAY_BUTTON_PROGRESS,
                                 GTGuiTextures.OVERLAY_BUTTON_CHECKMARK,
                                 GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                            .build()
-                            .width(120)
+                            .build(GuiAxis.X)
                             .marginRight(2)
                             .child(
                                 new TextWidget<>(

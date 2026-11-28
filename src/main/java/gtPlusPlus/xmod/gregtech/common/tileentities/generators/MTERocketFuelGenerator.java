@@ -1,20 +1,17 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import net.minecraft.item.ItemStack;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.MTERocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
 
     public MTERocketFuelGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -33,21 +30,12 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.rocketFuels;
+        return RecipeMaps.rocketFuels;
     }
 
     @Override
     public int getEfficiency() {
         return 80 - (10 * (this.mTier - 4));
-    }
-
-    @Override
-    public int getFuelValue(final ItemStack aStack) {
-        int rValue = Math.max((GTModHandler.getFuelValue(aStack) * 6) / 5, super.getFuelValue(aStack));
-        if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
-            rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
-        }
-        return rValue;
     }
 
     private ITexture getCasingTexture() {

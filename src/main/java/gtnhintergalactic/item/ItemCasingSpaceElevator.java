@@ -6,8 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemCasings;
 
 /**
@@ -34,13 +34,11 @@ public class ItemCasingSpaceElevator extends ItemCasings {
      * @param tooltip Tooltip of the item stack
      * @param f3_h    Flag if advanced tooltips are enabled
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip,
-        boolean f3_h) {
-        tooltip.add(GTUtility.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc0"));
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean f3_h) {
+        tooltip.add(StatCollector.translateToLocal("gt.blockcasings.ig." + stack.getItemDamage() + ".desc0"));
         tooltip.add(
             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                + GTUtility.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc1"));
+                + StatCollector.translateToLocal("gt.blockcasings.ig." + stack.getItemDamage() + ".desc1"));
     }
 }

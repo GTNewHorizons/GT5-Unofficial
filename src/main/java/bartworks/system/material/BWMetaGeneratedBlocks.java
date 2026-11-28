@@ -19,41 +19,44 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.gtnhlib.blockstate.properties.IntegerBlockProperty;
+import com.gtnewhorizon.gtnhlib.blockstate.registry.BlockPropertyRegistry;
+
 import bartworks.client.textures.PrefixTextureLinker;
-import bartworks.common.blocks.BWTileEntityContainer;
-import bartworks.util.BWUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.BoundedTextureCache;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
 
-public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implements IBlockWithTextures {
+public abstract class BWMetaGeneratedBlocks extends Block implements IBlockWithTextures {
 
-    public static ThreadLocal<TileEntityMetaGeneratedBlock> mTemporaryTileEntity = new ThreadLocal<>();
-    protected final OrePrefixes prefix;
+    public static final IntegerBlockProperty MATERIAL_ID = IntegerBlockProperty.meta("material_id", 0xFFFF, 0);
+    public final OrePrefixes prefix;
+    public final BoundedTextureCache textureCache = new BoundedTextureCache();
 
-    public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
-        OrePrefixes types) {
-        super(p_i45386_1_, tileEntity, blockName);
+    public BWMetaGeneratedBlocks(Material material, String blockName, OrePrefixes types) {
+        super(material);
+        this.setBlockName(blockName);
         this.setHardness(5.0F);
         this.setResistance(5.0F);
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
         this.prefix = types;
+        BlockPropertyRegistry.registerProperty(this, MATERIAL_ID);
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
 
@@ -74,6 +77,16 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
     @Override
     public @Nullable ITexture[][] getTextures(int meta) {
+        ITexture[][] cached = textureCache.get(meta);
+        if (cached != null) return cached;
+        return cacheTextures(meta);
+    }
+
+    private synchronized ITexture[][] cacheTextures(int meta) {
+        // Another render thread may have populated the cache while this thread waited for the monitor.
+        ITexture[][] cached = textureCache.get(meta);
+        if (cached != null) return cached;
+
         ITexture baseTexture = null;
 
         Werkstoff mat = Werkstoff.werkstoffHashMap.get((short) meta);
@@ -97,20 +110,9 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
         ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };
 
-        return new ITexture[][] { texture, texture, texture, texture, texture, texture };
-    }
-
-    @Override
-    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
-        super.onBlockAdded(aWorld, aX, aY, aZ);
-        // Waste some time to allow the TE to be set, do not use thread sleep here, it doesnt allow for nanoseconds.
-        // This will just waste a few cpu cycles to allow the TE to be set
-        BWUtil.shortSleep(0);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public final TileEntityMetaGeneratedBlock getProperTileEntityForRendering() {
-        return (TileEntityMetaGeneratedBlock) this.createNewTileEntity(null, 0);
+        cached = new ITexture[][] { texture, texture, texture, texture, texture, texture };
+        textureCache.put(meta, cached);
+        return cached;
     }
 
     protected abstract void doRegistrationStuff(Werkstoff w);
@@ -127,40 +129,34 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
 
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof TileEntityMetaGeneratedBlock metaTE) {
-            return metaTE.mMetaData;
-        }
-        return 0;
+        return (short) MATERIAL_ID.getIntValue(aWorld, aX, aY, aZ);
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
-        return ((ITileEntityProvider) this).createNewTileEntity(world, metadata);
+    public int damageDropped(int metadata) {
+        return (short) metadata;
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
+    public boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z) {
+        return false;
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity tTileEntity = world.getTileEntity(x, y, z);
-        if (tTileEntity instanceof TileEntityMetaGeneratedBlock metaTE) {
-            mTemporaryTileEntity.set(metaTE);
-        }
-        super.breakBlock(world, x, y, z, block, meta);
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+        return false;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
     }
 
     @Override
     public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof TileEntityMetaGeneratedBlock metaTE) {
-            return metaTE.getDrops(aFortune);
-        }
-        return mTemporaryTileEntity.get() == null ? new ArrayList<>()
-            : mTemporaryTileEntity.get()
-                .getDrops(aFortune);
+        ArrayList<ItemStack> drops = new ArrayList<>(1);
+        short materialId = (short) aMeta;
+        drops.add(materialId > 0 ? new ItemStack(this, 1, materialId) : new ItemStack(Blocks.cobblestone));
+        return drops;
     }
 }

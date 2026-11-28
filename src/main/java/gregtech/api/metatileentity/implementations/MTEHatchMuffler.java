@@ -4,12 +4,14 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,6 +25,7 @@ import gregtech.common.pollution.Pollution;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
 @IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchMuffler extends MTEHatch {
 
     public MTEHatchMuffler(int aID, String aName, String aNameRegional, int aTier) {
@@ -41,6 +44,12 @@ public class MTEHatchMuffler extends MTEHatch {
     public MTEHatchMuffler(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector.translateToLocalFormatted("gt.blockmachines.hatch.muffler.name", GTValues.VN[mTier]);
     }
 
     @Override
@@ -83,6 +92,11 @@ public class MTEHatchMuffler extends MTEHatch {
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity()
@@ -91,6 +105,9 @@ public class MTEHatchMuffler extends MTEHatch {
                 this.getBaseMetaTileEntity()
                     .getWorld(),
                 ParticleFX.LARGE_SMOKE.toString());
+        }
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
+            aBaseMetaTileEntity.tryDisableTicking();
         }
     }
 
@@ -173,6 +190,10 @@ public class MTEHatchMuffler extends MTEHatch {
         return (int) ((float) aPollution * ((100F - 12.5F * ((float) mTier - 1F)) / 100F));
     }
 
+    private boolean airCheck() {
+        return getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing());
+    }
+
     /**
      * @param mte             The multi-block controller's {@link MetaTileEntity} MetaTileEntity is passed so newer
      *                        muffler hatches can do wacky things with the multis
@@ -180,7 +201,7 @@ public class MTEHatchMuffler extends MTEHatch {
      * @return pollution success
      */
     public boolean polluteEnvironment(MetaTileEntity mte, int pollutionAmount) {
-        if (getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing())) {
+        if (airCheck()) {
             Pollution.addPollution(getBaseMetaTileEntity(), calculatePollutionReduction(pollutionAmount));
             return true;
         }

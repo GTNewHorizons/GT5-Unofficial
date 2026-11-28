@@ -29,12 +29,13 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " s ", "fSx", " S ", 'S', OrePrefixes.stickLong.get(aMaterial) });
         }
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
 
             if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
+
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))

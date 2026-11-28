@@ -401,7 +401,7 @@ public class ParallelHelper {
             result = CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
             return;
         }
-        if (!calculator.getAllowedTierSkip()) {
+        if (recipe.mEUt > calculator.getMaxAllowedRecipeEUt()) {
             result = CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
             return;
         }
@@ -642,11 +642,7 @@ public class ParallelHelper {
 
     public static void addFluidsLong(ArrayList<FluidStack> fluidList, FluidStack origin, long amount) {
         if (amount > 0) {
-            while (amount > Integer.MAX_VALUE) {
-                fluidList.add(GTUtility.copyAmount(Integer.MAX_VALUE, origin));
-                amount -= Integer.MAX_VALUE;
-            }
-            fluidList.add(GTUtility.copyAmount((int) amount, origin));
+            fluidList.add(GTUtility.copyAmount(amount, origin));
         }
     }
 

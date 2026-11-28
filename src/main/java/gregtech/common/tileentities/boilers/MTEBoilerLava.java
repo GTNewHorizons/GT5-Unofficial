@@ -13,6 +13,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DRAIN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +23,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -38,17 +43,17 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEBoilerLava extends MTEBoiler {
 
@@ -402,7 +407,7 @@ public class MTEBoilerLava extends MTEBoiler {
             .setWorld(getBaseMetaTileEntity().getWorld())
             // Particles emitted with a 1 block/s velocity toward rear
             .setMotion(rearDirection.offsetX / 20D, 0D, rearDirection.offsetZ / 20D)
-            .<ParticleEventBuilder>times(
+            .times(
                 8,
                 // Particles emitted from center of rear face (Steam Output)
                 x -> x.setPosition(aX + rearDirection.offsetX / 2D, aY, aZ + rearDirection.offsetZ / 2D)
@@ -417,12 +422,12 @@ public class MTEBoilerLava extends MTEBoiler {
         final FluidStack drainedLava = lavaTank.drain(amountToDrain, false);
         if (drainedLava == null || drainedLava.amount == 0) return;
         lavaTank.drain(amountToDrain, true);
-        this.mProcessingEnergy += drainedLava.amount * ENERGY_PER_LAVA;
+        addProcessingEnergy(drainedLava.amount * ENERGY_PER_LAVA);
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.STEEL;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STEEL;
     }
 
     @Override
@@ -437,11 +442,6 @@ public class MTEBoilerLava extends MTEBoiler {
         return new FluidTankInfo[] { super.getTankInfo(side)[0],
             new FluidTankInfo(this.lavaTank.getFluid(), this.lavaTank.getCapacity()),
             new FluidTankInfo(getDrainableStack(), getSteamCapacity()) };
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEEL;
     }
 
     @Override
@@ -465,5 +465,25 @@ public class MTEBoilerLava extends MTEBoiler {
         public int fill(FluidStack resource, boolean doFill) {
             return GTModHandler.isLava(resource) ? super.fill(resource, doFill) : 0;
         }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        boolean isProducingSteam = tag.getBoolean("isProducingSteam");
+        int power = tag.getInteger("power");
+        if (isProducingSteam) {
+            currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.boiler.steam_producing", power));
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setBoolean("isProducingSteam", this.isProducingSteam());
+        tag.setInteger("power", this.getProductionPerSecond());
     }
 }

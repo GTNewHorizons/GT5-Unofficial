@@ -29,7 +29,7 @@ public class MTEResearchStationGui extends MTEMultiBlockBaseGui<MTEResearchStati
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
-        GenericSyncValue<ItemStack> outputSyncer = new GenericSyncValue<>(
+        GenericSyncValue<ItemStack, ?> outputSyncer = new GenericSyncValue<>(
             ItemStack.class,
             () -> multiblock.researchOutputForGUI,
             val -> multiblock.researchOutputForGUI = val,
@@ -45,14 +45,14 @@ public class MTEResearchStationGui extends MTEMultiBlockBaseGui<MTEResearchStati
         LongSyncValue computationRemSyncer = new LongSyncValue(
             () -> multiblock.computationRemaining,
             val -> multiblock.computationRemaining = val);
-        IntSyncValue ticksUntilPacketLossFailSyncger = new IntSyncValue(
+        IntSyncValue ticksUntilPacketLossFailSyncer = new IntSyncValue(
             () -> multiblock.ticksUntilPacketLossFail,
             val -> multiblock.ticksUntilPacketLossFail = val);
 
         syncManager.syncValue("outputName", outputSyncer);
         syncManager.syncValue("computationRequired", computationReqSyncer);
         syncManager.syncValue("computationRemaining", computationRemSyncer);
-        syncManager.syncValue("ticksUntilPacketLossFail", ticksUntilPacketLossFailSyncger);
+        syncManager.syncValue("ticksUntilPacketLossFail", ticksUntilPacketLossFailSyncer);
 
         ListWidget<IWidget, ?> terminal = super.createTerminalTextWidget(syncManager, parent);
         terminal.child(IKey.dynamic(() -> {

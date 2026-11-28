@@ -524,7 +524,7 @@ public final class MaterialMisc {
         -1, // Protons
         -1,
         false, // Uses Blast furnace?
-        "?Sn?Bi?",
+        "?Sn?Bi?If?",
         0,
         true,
         new MaterialStack(MaterialsElements.getInstance().TIN, 1),

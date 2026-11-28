@@ -23,7 +23,13 @@ public class NodeEnergySink extends ConsumerNode {
     @Override
     public int injectEnergy(long aVoltage, long aMaxAmps) {
         int tUsedAmps = 0;
-        while (aMaxAmps > tUsedAmps && ((IEnergySink) mTileEntity).getDemandedEnergy() > 0
+        final long topologyVersion = getTopologyVersion();
+        // Re-checked after getDemandedEnergy(), which may invalidate this graph.
+        while (aMaxAmps > tUsedAmps && !mInvalid
+            && topologyVersion == getTopologyVersion()
+            && ((IEnergySink) mTileEntity).getDemandedEnergy() > 0
+            && !mInvalid
+            && topologyVersion == getTopologyVersion()
             && ((IEnergySink) mTileEntity).injectEnergy(mSide, aVoltage, aVoltage) < aVoltage) tUsedAmps++;
         return tUsedAmps;
     }

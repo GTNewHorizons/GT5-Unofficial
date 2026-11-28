@@ -14,6 +14,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -40,6 +41,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -168,44 +171,46 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
     }
 
     @Override
-    protected boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mCasing = 0;
         this.pTier = -1;
         this.mCurrentLength = 0;
         this.mParallel = 0;
 
-        if (!structureCheck_EM(STRUCTURE_PIECE_BOTTOM, 2, 0, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 0, 0, errors)) return;
 
         int middleLen = 0;
-        while (middleLen < MAX_MIDDLE_LENGTH && structureCheck_EM(STRUCTURE_PIECE_MIDDLE, 2, 1 + middleLen, 0)) {
+        while (middleLen < MAX_MIDDLE_LENGTH && checkPiece(STRUCTURE_PIECE_MIDDLE, 2, 1 + middleLen, 0, errors)) {
             middleLen++;
         }
-        if (middleLen < MIN_MIDDLE_LENGTH) return false;
-
-        if (!structureCheck_EM(STRUCTURE_PIECE_TOP, 2, middleLen + 2, 0)) return false;
-
-        if (this.mCasing >= 28 && this.mMaintenanceHatches.size() == 1
-            && !this.mEnergyHatches.isEmpty()
-            && this.mMufflerHatches.size() == 1) {
-
-            this.mCurrentLength = middleLen;
-            this.mParallel = this.mCurrentLength * (1 << Math.max(0, this.pTier)) * 2;
-            return true;
+        errors.clear();
+        if (middleLen < MIN_MIDDLE_LENGTH) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
         }
-        return false;
+
+        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, middleLen + 2, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 28);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        if (mEnergyHatches.isEmpty()) checkHasAnyEnergy(errors);
+        if (!errors.isEmpty()) return;
+
+        this.mCurrentLength = middleLen;
+        this.mParallel = this.mCurrentLength * (1 << Math.max(0, this.pTier)) * 2;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_BOTTOM, 2, 0, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
         int len = stackSize.stackSize;
         if (len < MIN_MIDDLE_LENGTH) len = MIN_MIDDLE_LENGTH;
         if (len > MAX_MIDDLE_LENGTH) len = MAX_MIDDLE_LENGTH;
 
         for (int i = 0; i < len; i++) {
-            structureBuild_EM(STRUCTURE_PIECE_MIDDLE, 2, 1 + i, 0, stackSize, hintsOnly);
+            buildPiece(STRUCTURE_PIECE_MIDDLE, stackSize, hintsOnly, 2, 1 + i, 0);
         }
-        structureBuild_EM(STRUCTURE_PIECE_TOP, 2, len + 2, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, len + 2, 0);
     }
 
     @Override
@@ -371,8 +376,8 @@ public class MTEIndustrialCrucible extends TTMultiblockBase implements ISurvival
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         this.mEssentiaHatches.clear();
     }
 

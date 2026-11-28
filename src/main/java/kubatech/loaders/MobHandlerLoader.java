@@ -27,7 +27,6 @@ import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.MO
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.kuba6000.mobsinfo.api.IChanceModifier;
@@ -91,105 +91,105 @@ public class MobHandlerLoader {
             MTE.lEUt = mEUt;
             MTE.mMaxProgresstime = getProgressTimeForAttackDamage(attackDamage);
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
-            this.entityCopy.setPosition(
-                MTE.getBaseMetaTileEntity()
-                    .getXCoord(),
-                MTE.getBaseMetaTileEntity()
-                    .getYCoord(),
-                MTE.getBaseMetaTileEntity()
-                    .getZCoord());
-            for (MobDrop o : this.mOutputs) {
-                if (voidAllDamagedAndEnchantedItems && (o.damages != null || o.enchantable != null)) continue;
-                int chance = o.chance;
 
-                double dChance = (double) chance / 100d;
-                for (IChanceModifier chanceModifier : o.chanceModifiers) {
-                    dChance = chanceModifier.apply(
-                        dChance,
-                        MTE.getBaseMetaTileEntity()
-                            .getWorld(),
-                        stacks,
-                        MTE.EECPlayer,
-                        this.entityCopy);
-                }
+            try {
+                final World world = MTE.getBaseMetaTileEntity()
+                    .getWorld();
+                this.entityCopy.setWorld(world);
+                this.entityCopy.setPosition(
+                    MTE.getBaseMetaTileEntity()
+                        .getXCoord(),
+                    MTE.getBaseMetaTileEntity()
+                        .getYCoord(),
+                    MTE.getBaseMetaTileEntity()
+                        .getZCoord());
+                for (MobDrop o : this.mOutputs) {
+                    if (voidAllDamagedAndEnchantedItems && o.enchantable != null) continue;
+                    int chance = o.chance;
 
-                chance = (int) (dChance * 100d);
-                if (chance == 0) continue;
-
-                if (o.playerOnly) {
-                    chance = (int) ((double) chance * Config.MobHandler.playerOnlyDropsModifier);
-                    if (chance < 1) chance = 1;
-                }
-                int amount = o.stack.stackSize;
-                if (o.lootable && lootinglevel > 0) {
-                    chance += lootinglevel * 5000;
-                    if (chance > 10000) {
-                        int div = (int) Math.ceil(chance / 10000d);
-                        amount *= div;
-                        chance /= div;
+                    double dChance = (double) chance / 100d;
+                    for (IChanceModifier chanceModifier : o.chanceModifiers) {
+                        dChance = chanceModifier.apply(dChance, world, stacks, MTE.EECPlayer, this.entityCopy);
                     }
-                }
-                if (chance == 10000 || rnd.nextInt(10000) < chance) {
-                    ItemStack s = o.stack.copy();
-                    s.stackSize = amount;
-                    if (o.enchantable != null) EnchantmentHelper.addRandomEnchantment(rnd, s, o.enchantable);
-                    if (o.damages != null) {
-                        int rChance = rnd.nextInt(recipe.mMaxDamageChance);
-                        int cChance = 0;
-                        for (Map.Entry<Integer, Integer> damage : o.damages.entrySet()) {
-                            cChance += damage.getValue();
-                            if (rChance <= cChance) {
-                                s.setItemDamage(damage.getKey());
-                                break;
+
+                    chance = (int) (dChance * 100d);
+                    if (chance == 0) continue;
+
+                    if (o.playerOnly) {
+                        chance = (int) ((double) chance * Config.MobHandler.playerOnlyDropsModifier);
+                        if (chance < 1) chance = 1;
+                    }
+                    int amount = o.stack.stackSize;
+                    if (o.lootable && lootinglevel > 0) {
+                        chance += lootinglevel * 5000;
+                        if (chance > 10000) {
+                            int div = (int) Math.ceil(chance / 10000d);
+                            amount *= div;
+                            chance /= div;
+                        }
+                    }
+                    if (chance == 10000 || rnd.nextInt(10000) < chance) {
+                        ItemStack s = o.stack.copy();
+                        s.stackSize = amount;
+                        if (o.enchantable != null) EnchantmentHelper.addRandomEnchantment(rnd, s, o.enchantable);
+                        if (o.damages != null) {
+                            int rChance = rnd.nextInt(recipe.mMaxDamageChance);
+                            int cChance = 0;
+                            for (Map.Entry<Integer, Integer> damage : o.damages.entrySet()) {
+                                cChance += damage.getValue();
+                                if (rChance <= cChance) {
+                                    s.setItemDamage(damage.getKey());
+                                    break;
+                                }
                             }
                         }
+                        if (voidAllDamagedAndEnchantedItems && s.isItemDamaged()) continue;
+                        stacks.add(s);
                     }
-                    stacks.add(s);
                 }
-            }
 
-            if (InfernalMobs.isModLoaded()) {
-                InfernalMobsCore infernalMobsCore = InfernalMobsCore.instance();
-                if (recipe.infernalityAllowed && mEUt * 8 <= MTE.getMaxInputEu()
-                    && !infernalMobsCore.getDimensionBlackList()
-                        .contains(
-                            MTE.getBaseMetaTileEntity()
-                                .getWorld().provider.dimensionId)) {
-                    int p = 0;
-                    int mods = 0;
-                    if (recipe.alwaysinfernal
-                        || (preferInfernalDrops && rnd.nextInt(infernalMobsCore.getEliteRarity()) == 0)) {
-                        p = 1;
-                        if (rnd.nextInt(infernalMobsCore.getUltraRarity()) == 0) {
-                            p = 2;
-                            if (rnd.nextInt(infernalMobsCore.getInfernoRarity()) == 0) p = 3;
+                if (InfernalMobs.isModLoaded()) {
+                    InfernalMobsCore infernalMobsCore = InfernalMobsCore.instance();
+                    if (recipe.infernalityAllowed && mEUt * 8 <= MTE.getMaxInputEu()
+                        && !infernalMobsCore.getDimensionBlackList()
+                            .contains(world.provider.dimensionId)) {
+                        int p = 0;
+                        int mods = 0;
+                        if (recipe.alwaysinfernal
+                            || (preferInfernalDrops && rnd.nextInt(infernalMobsCore.getEliteRarity()) == 0)) {
+                            p = 1;
+                            if (rnd.nextInt(infernalMobsCore.getUltraRarity()) == 0) {
+                                p = 2;
+                                if (rnd.nextInt(infernalMobsCore.getInfernoRarity()) == 0) p = 3;
+                            }
+                        }
+                        ArrayList<ItemStack> infernalstacks = null;
+                        if (p > 0) if (p == 1) {
+                            infernalstacks = infernalMobsCore.getDropIdListElite();
+                            mods = infernalMobsCore.getMinEliteModifiers();
+                        } else if (p == 2) {
+                            infernalstacks = infernalMobsCore.getDropIdListUltra();
+                            mods = infernalMobsCore.getMinUltraModifiers();
+                        } else {
+                            infernalstacks = infernalMobsCore.getDropIdListInfernal();
+                            mods = infernalMobsCore.getMinInfernoModifiers();
+                        }
+                        if (infernalstacks != null) {
+                            ItemStack infernalstack = infernalstacks.get(rnd.nextInt(infernalstacks.size()))
+                                .copy();
+                            EnchantmentHelper.addRandomEnchantment(
+                                rnd,
+                                infernalstack,
+                                infernalstack.getItem()
+                                    .getItemEnchantability());
+                            stacks.add(infernalstack);
+                            MTE.lEUt *= 8L;
+                            MTE.mMaxProgresstime *= mods * infernalMobsCore.getMobModHealthFactor();
                         }
                     }
-                    ArrayList<ItemStack> infernalstacks = null;
-                    if (p > 0) if (p == 1) {
-                        infernalstacks = infernalMobsCore.getDropIdListElite();
-                        mods = infernalMobsCore.getMinEliteModifiers();
-                    } else if (p == 2) {
-                        infernalstacks = infernalMobsCore.getDropIdListUltra();
-                        mods = infernalMobsCore.getMinUltraModifiers();
-                    } else {
-                        infernalstacks = infernalMobsCore.getDropIdListInfernal();
-                        mods = infernalMobsCore.getMinInfernoModifiers();
-                    }
-                    if (infernalstacks != null) {
-                        ItemStack infernalstack = infernalstacks.get(rnd.nextInt(infernalstacks.size()))
-                            .copy();
-                        EnchantmentHelper.addRandomEnchantment(
-                            rnd,
-                            infernalstack,
-                            infernalstack.getItem()
-                                .getItemEnchantability());
-                        stacks.add(infernalstack);
-                        MTE.lEUt *= 8L;
-                        MTE.mMaxProgresstime *= mods * InfernalMobsCore.instance()
-                            .getMobModHealthFactor();
-                    }
                 }
+            } finally {
+                this.entityCopy.setWorld(null);
             }
 
             return stacks.toArray(new ItemStack[0]);
@@ -198,13 +198,11 @@ public class MobHandlerLoader {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onPreMobsRegistration(PreMobsRegistrationEvent event) {
         recipeMap.clear();
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
         if (!event.drops.isEmpty() && event.recipe.isUsableInVial) {
             for (MobDrop drop : event.drops) {
@@ -212,28 +210,22 @@ public class MobHandlerLoader {
                     drop.additionalInfo.add(
                         StatCollector.translateToLocalFormatted(
                             "kubatech.mobhandler.eec_chance",
-                            (((double) drop.chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
+                            formatNumber(drop.chance * Config.MobHandler.playerOnlyDropsModifier / 100d)));
                 }
             }
-            @SuppressWarnings("unchecked")
-            ArrayList<MobDrop> drops = (ArrayList<MobDrop>) event.drops.clone();
-            if (!drops.isEmpty()) {
-                recipeMap.put(event.currentMob, new MobEECRecipe(drops, event.recipe));
-            }
+            recipeMap.put(event.currentMob, new MobEECRecipe(new ArrayList<>(event.drops), event.recipe));
         }
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onMobNEIRegistration(MobNEIRegistrationEvent event) {
         MobEECRecipe recipe = recipeMap.get(event.mobName);
         if (recipe != null) {
-            event.additionalInformation.addAll(
-                Arrays.asList(
-                    StatCollector.translateToLocalFormatted("kubatech.gui.text.usage_line", formatNumber(recipe.mEUt)),
-                    StatCollector.translateToLocalFormatted(
-                        "kubatech.gui.text.time_line",
-                        formatNumber(recipe.mDuration / 20d))));
+            event.additionalInformation.add(
+                StatCollector.translateToLocalFormatted("kubatech.gui.text.usage_line", formatNumber(recipe.mEUt)));
+            event.additionalInformation.add(
+                StatCollector
+                    .translateToLocalFormatted("kubatech.gui.text.time_line", formatNumber(recipe.mDuration / 20d)));
         }
     }
 }

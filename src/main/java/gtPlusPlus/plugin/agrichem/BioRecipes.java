@@ -3,10 +3,13 @@ package gtPlusPlus.plugin.agrichem;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
@@ -19,9 +22,6 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -33,6 +33,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -226,6 +227,7 @@ public class BioRecipes {
         // Shapeless Recipe
         GTModHandler.addShapelessCraftingRecipe(
             GregtechItemList.WoodBrick.get(2),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { GregtechItemList.WoodPellet.get(1), GregtechItemList.WoodPellet.get(1),
                 GregtechItemList.WoodPellet.get(1), GregtechItemList.WoodPellet.get(1),
                 GregtechItemList.WoodPellet.get(1), GregtechItemList.WoodPellet.get(1),
@@ -233,7 +235,7 @@ public class BioRecipes {
 
         // Extruder Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CelluloseFiber.get(1), GregtechItemList.Pellet_Mold.get(0))
+            .itemInputs(GregtechItemList.CelluloseFiber.get(1), ItemList.Shape_Extruder_Pellet.get(0))
             .itemOutputs(GregtechItemList.WoodPellet.get(1))
             .duration(2 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -244,7 +246,7 @@ public class BioRecipes {
             .itemInputs(GregtechItemList.WoodPellet.get(8))
             .itemOutputs(GregtechItemList.WoodBrick.get(2))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
 
         // CO2
@@ -270,7 +272,7 @@ public class BioRecipes {
             .itemOutputs(Materials.Charcoal.getGems(3))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(6 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
     }
 
     private static void recipeWoodBricks() {
@@ -445,7 +447,7 @@ public class BioRecipes {
     private static void recipePelletMold() {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsAlloy.TUMBAGA.getBlock(1))
-            .itemOutputs(GregtechItemList.Pellet_Mold.get(1))
+            .itemOutputs(ItemList.Shape_Extruder_Pellet.get(1))
             .duration(7 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 4 * 3)
             .addTo(latheRecipes);
@@ -552,7 +554,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.CleanAluminiumMix.get(3), GregtechItemList.Pellet_Mold.get(0))
+            .itemInputs(GregtechItemList.CleanAluminiumMix.get(3), ItemList.Shape_Extruder_Pellet.get(0))
             .itemOutputs(GregtechItemList.AluminiumPellet.get(4))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)

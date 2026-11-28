@@ -5,11 +5,6 @@ plugins {
     id("com.gtnewhorizons.gtnhconvention")
 }
 
-// workaround an OOM on GH actions during the checkStyleMain task
-tasks.withType<Checkstyle>().configureEach {
-    maxHeapSize = "1g"
-}
-
 tasks.test.configure {
     useJUnitPlatform()
     testLogging {
@@ -84,4 +79,19 @@ tasks.named<RunMinecraftTask>("runServer").configure {
 tasks.named<RunMinecraftTask>("runClient").configure {
     dependsOn(functionalTest.jarTaskName)
     classpath(configurations.named(functionalTest.runtimeClasspathConfigurationName), tasks.named(functionalTest.jarTaskName))
+}
+
+val recipeLookupValidationProperty = "gt.recipe.lookup.validate"
+val runServer25RecipeLookupValidation = tasks.register("runServer25RecipeLookupValidation") {
+    group = "verification"
+    description = "Runs runServer25 with recipe lookup validation enabled."
+    dependsOn("runServer25")
+}
+
+tasks.named<RunMinecraftTask>("runServer25").configure {
+    if (gradle.startParameter.taskNames.any {
+        it == runServer25RecipeLookupValidation.name || it.endsWith(":${runServer25RecipeLookupValidation.name}")
+    }) {
+        jvmArgs("-D$recipeLookupValidationProperty=true")
+    }
 }

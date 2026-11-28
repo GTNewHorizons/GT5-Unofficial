@@ -32,7 +32,7 @@ public class ArtificialMicaLine {
             .itemOutputs(Materials.Magnesia.getDust(2))
             .fluidInputs(Materials.Oxygen.getGas(1_000))
             .duration(2 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
 
         // Si + 6HF = H2SiF6 + 4H
@@ -52,7 +52,7 @@ public class ArtificialMicaLine {
             .itemOutputs(Materials.RockSalt.getDust(2))
             .fluidInputs(Materials.Chlorine.getGas(1_000))
             .duration(20 * TICKS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
 
         // 2KCl + H2SiF6 = 2HCl + K2SiF6
@@ -62,7 +62,7 @@ public class ArtificialMicaLine {
             .fluidInputs(WerkstoffLoader.HexafluorosilicicAcid.getFluidOrGas(1_000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(2_000))
             .duration(1 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
 
         // 2K + CO2 + O = K2CO3
@@ -109,7 +109,6 @@ public class ArtificialMicaLine {
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 64),
                 WerkstoffLoader.RawFluorophlogopite.get(OrePrefixes.dust, 8))
-            .fluidInputs()
             .fluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)

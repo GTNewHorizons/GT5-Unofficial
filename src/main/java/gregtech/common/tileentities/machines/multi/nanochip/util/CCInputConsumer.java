@@ -1,24 +1,28 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 
 public class CCInputConsumer implements ParallelHelper.InputConsumer {
 
     private final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> inputConveyors;
-    private final MTENanochipAssemblyModuleBase<?> module;
+    private final byte color;
 
-    public CCInputConsumer(VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> inputConveyors,
-        MTENanochipAssemblyModuleBase<?> module) {
+    public CCInputConsumer(VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> inputConveyors) {
         this.inputConveyors = inputConveyors;
-        this.module = module;
+        this.color = -1;
+    }
+
+    public CCInputConsumer(VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> inputConveyors, byte color) {
+        this.inputConveyors = inputConveyors;
+        this.color = color;
     }
 
     @Override
@@ -30,27 +34,30 @@ public class CCInputConsumer implements ParallelHelper.InputConsumer {
             ItemStack toConsumeStack = input.copy();
             toConsumeStack.stackSize *= amountMultiplier;
 
-            for (ArrayList<MTEHatchVacuumConveyorInput> hatchList : inputConveyors.allHatches()) {
-                boolean done = false;
-                for (MTEHatchVacuumConveyorInput conveyor : hatchList) {
-                    int consumed = conveyor.tryConsume(toConsumeStack);
-                    toConsumeStack.stackSize -= consumed;
-                    if (toConsumeStack.stackSize <= 0) {
-                        // Break out of both loops... I hate this
-                        // Labeled loops when!
-                        done = true;
-                        break;
-                    }
+            // no color provided, go through all hatches
+            if (color == -1) {
+                for (ArrayList<MTEHatchVacuumConveyorInput> hatchList : inputConveyors.allHatches()) {
+                    if (consume(hatchList, toConsumeStack)) break;
                 }
-                if (done) break;
+            } else {
+                // otherwise go through only hatches of the specified color
+                consume(inputConveyors.findColoredHatches(color), toConsumeStack);
             }
         }
 
         // Consume fluid inputs in recipe
-        for (FluidStack fluid : recipe.mFluidInputs) {
-            FluidStack toConsume = fluid.copy();
-            toConsume.amount *= amountMultiplier;
-            module.depleteInput(toConsume);
+        recipe.consumeInput(amountMultiplier, aFluidInputs);
+    }
+
+    // Returns true if the stack was fully consumed
+    private boolean consume(List<MTEHatchVacuumConveyorInput> hatchList, ItemStack toConsumeStack) {
+        for (MTEHatchVacuumConveyorInput conveyor : hatchList) {
+            int consumed = conveyor.tryConsume(toConsumeStack, false);
+            toConsumeStack.stackSize -= consumed;
+            if (toConsumeStack.stackSize <= 0) {
+                return true;
+            }
         }
+        return toConsumeStack.stackSize <= 0;
     }
 }

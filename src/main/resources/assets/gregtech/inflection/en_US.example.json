@@ -1,0 +1,11 @@
+{
+    "type1": {
+        "regex pattern": "regex replace pattern",
+        "check the link": "https://wiki.gtnewhorizons.com/wiki/Inflection_Manager",
+        "pattern3": "replace3"
+    },
+    "type2": {
+        "pattern1": "replace1",
+        "pattern2": "replace2"
+    }
+}

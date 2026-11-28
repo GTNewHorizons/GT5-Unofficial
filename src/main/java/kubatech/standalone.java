@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 public class standalone {
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         JOptionPane.showMessageDialog(
             null,
             "Get some TEA",

@@ -125,9 +125,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (!this.ores.containsKey(stoneType)) return false;
 
         if (!(info.material instanceof Werkstoff w)) return false;
-        if (!w.hasItemType(OrePrefixes.ore)) return false;
-
-        return true;
+        return w.hasItemType(OrePrefixes.ore);
     }
 
     @Override
@@ -244,9 +242,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         // For Sake of god of balance!
 
         switch (oreDropMode) {
-            case Item -> {
-                drops.add(info.material.get(OrePrefixes.rawOre, info.stoneType.isRich() ? 2 : 1));
-            }
+            case Item -> drops.add(info.material.get(OrePrefixes.rawOre, info.stoneType.isRich() ? 2 : 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     // Max applicable fortune

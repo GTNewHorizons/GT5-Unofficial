@@ -6,9 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.config.Client;
 
@@ -46,14 +46,10 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
         if (werkstoff == null) {
-            return StatCollector.translateToLocalFormatted(
-                blockOre.getPrefix()
-                    .getOreprefixKey(),
-                StatCollector.translateToLocal("Material.empty"));
+            return blockOre.stoneType.getLocalizedOreName(Materials._NULL, blockOre.isSmall);
         }
 
-        return blockOre.getPrefix()
-            .getLocalizedNameForItem(werkstoff.getBridgeMaterial());
+        return blockOre.stoneType.getLocalizedOreName(werkstoff.getBridgeMaterial(), blockOre.isSmall);
     }
 
     @Override

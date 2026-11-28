@@ -6,6 +6,7 @@ uniform float u_Time;
 uniform float u_Scale;
 uniform float u_SpiralRadius;
 uniform vec3 u_Vertices[24];
+uniform mat4 u_ModelMatrix;
 
 const float PI = 3.14159265358979323846;
 
@@ -83,5 +84,5 @@ void main() {
             x_offset,y_offset,z_offset,1
     );
 
-    gl_Position = gl_ModelViewProjectionMatrix * (gravity * (scale*vec4(pos,1)));
+    gl_Position = gl_ModelViewProjectionMatrix * u_ModelMatrix * (gravity * (scale*vec4(pos,1)));
 }

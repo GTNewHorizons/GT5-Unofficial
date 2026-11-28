@@ -1,8 +1,7 @@
 package gregtech.common.gui.modularui.util;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.UpOrDown;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -26,14 +25,14 @@ public class StockingSlot extends PhantomItemSlot {
         itemTooltip().tooltipBuilder(
             tooltip -> tooltip.addLine(
                 IKey.dynamic(
-                    () -> translateToLocal(
+                    () -> StatCollector.translateToLocal(
                         isLocked.getBoolValue() ? "GT5U.machines.stocking_bus.cannot_set_slot"
                             : "modularui.phantom.single.clear"))));
         tooltipDynamic(tooltip -> {
             if (isLocked.getBoolValue())
-                tooltip.addLine(IKey.dynamic(() -> translateToLocal("GT5U.machines.stocking_bus.cannot_set_slot")));
-        });
-        background(
+                tooltip.addLine(StatCollector.translateToLocal("GT5U.machines.stocking_bus.cannot_set_slot"));
+        }).tooltipAutoUpdate(true);
+        backgroundOverlay(
             new DynamicDrawable(() -> isLocked.getBoolValue() ? GTGuiTextures.SLOT_ITEM_DARK : GuiTextures.SLOT_ITEM),
             GTGuiTextures.OVERLAY_SLOT_ARROW_ME);
     }

@@ -109,9 +109,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     int EUPerOperation = 1_638_400;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
 
         String aString1 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.1");
         String aString2 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.2");
@@ -179,7 +179,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                 + (!isShowing ? EnumChatFormatting.DARK_GREEN : EnumChatFormatting.DARK_RED)
                 + !isShowing
                 + EnumChatFormatting.GRAY);
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override
@@ -338,23 +338,6 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     public static void setShowMessages(final ItemStack aStack, final boolean aShow) {
         ItemStackNBT.setBoolean(aStack, "ShowMSG", aShow);
-    }
-
-    @Override
-    public boolean onItemUse(ItemStack p_77648_1_, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_,
-        int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-        // TODO Auto-generated method stub
-        return super.onItemUse(
-            p_77648_1_,
-            p_77648_2_,
-            p_77648_3_,
-            p_77648_4_,
-            p_77648_5_,
-            p_77648_6_,
-            p_77648_7_,
-            p_77648_8_,
-            p_77648_9_,
-            p_77648_10_);
     }
 
     @Override

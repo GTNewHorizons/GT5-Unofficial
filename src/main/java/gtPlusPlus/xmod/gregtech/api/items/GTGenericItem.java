@@ -26,9 +26,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IProjectileItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 
@@ -37,18 +35,12 @@ import gtPlusPlus.core.util.Utils;
  */
 public class GTGenericItem extends Item implements IProjectileItem {
 
-    private final String mName, mTooltip;
+    private final String mName;
     protected IIcon mIcon;
 
-    public GTGenericItem(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
+    public GTGenericItem(final String aUnlocalized) {
         super();
         this.mName = aUnlocalized;
-        GTLanguageManager.addStringLocalization(this.mName + ".name", aEnglish);
-        if (GTUtility.isStringValid(aEnglishTooltip)) {
-            GTLanguageManager.addStringLocalization(this.mTooltip = this.mName + ".tooltip_main", aEnglishTooltip);
-        } else {
-            this.mTooltip = null;
-        }
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GameRegistry.registerItem(this, this.mName, GTPlusPlus.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
@@ -91,16 +83,13 @@ public class GTGenericItem extends Item implements IProjectileItem {
     }
 
     @Override
-    public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList,
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
         final boolean aF3_H) {
         if ((this.getMaxDamage() > 0) && !this.getHasSubtypes()) {
-            aList.add((aStack.getMaxDamage() - this.getDamage(aStack)) + " / " + aStack.getMaxDamage());
+            tooltip.add((stack.getMaxDamage() - this.getDamage(stack)) + " / " + stack.getMaxDamage());
         }
-        if (this.mTooltip != null) {
-            aList.add(GTLanguageManager.getTranslation(this.mTooltip));
-        }
-        if (GTModHandler.isElectricItem(aStack)) {
-            aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(aStack)));
+        if (GTModHandler.isElectricItem(stack)) {
+            tooltip.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier", this.getTier(stack)));
         }
     }
 

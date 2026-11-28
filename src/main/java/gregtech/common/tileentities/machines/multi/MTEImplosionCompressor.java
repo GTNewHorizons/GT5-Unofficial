@@ -13,7 +13,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COM
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -24,18 +28,21 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEImplosionCompressor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEImplosionCompressor> STRUCTURE_DEFINITION = null;
     private int mCasing;
@@ -54,11 +61,15 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 16
-            && mMaintenanceHatches.size() == 1
-            && !mMufflerHatches.isEmpty();
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 16);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -95,18 +106,19 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor")
-            .addInfo("Explosions are fun")
+        final String anyCasing = StatCollector.translateToLocal("gt.mbtt.structure.any_casing");
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.implosion_compressor_basic"))
+            .addMarkdown(new ResourceLocation("gregtech", "implosion-compressor"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
-            .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("16-20", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", anyCasing, 1)
+            .addMaintenanceHatch("1", anyCasing, 1)
+            .addMufflerHatch("1", anyCasing, 1)
+            .addInputBus("1+", anyCasing, 1)
+            .addOutputBus("1+", anyCasing, 1)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         return tt;
     }
@@ -120,28 +132,20 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.SolidSteelMachineCasing.getCasingTexture();
     }
 
     @Override

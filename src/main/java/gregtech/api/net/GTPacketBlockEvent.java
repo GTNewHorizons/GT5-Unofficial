@@ -23,7 +23,7 @@ public class GTPacketBlockEvent extends GTPacket {
     private LongList packedCoordinates;
     private ShortList idsAndValues;
 
-    public GTPacketBlockEvent() {};
+    public GTPacketBlockEvent() {}
 
     public GTPacketBlockEvent(int worldID, int eventCount, LongList packedCoordinates, ShortList idsAndValues) {
         this.worldId = worldID;

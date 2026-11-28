@@ -7,10 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.BlockCasingsAbstract;
@@ -97,17 +94,9 @@ public class BlockGodforgeCasings extends BlockCasingsAbstract {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-        return getIcon(aSide, tMeta);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> aList) {
         for (int i = 0; i <= 8; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            aList.add(new ItemStack(item, 1, i));
         }
     }
 }

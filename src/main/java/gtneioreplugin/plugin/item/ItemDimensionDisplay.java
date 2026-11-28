@@ -1,10 +1,15 @@
 package gtneioreplugin.plugin.item;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.MinecraftForgeClient;
+
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -31,7 +36,7 @@ public class ItemDimensionDisplay extends ItemBlock {
             return new ItemStack(block);
         }
         if (dimension != null) {
-            GTNEIOrePlugin.LOG.warn("Unknown dimension queried for ItemDimensionDisplay: " + dimension);
+            GTNEIOrePlugin.LOG.warn("Unknown dimension queried for ItemDimensionDisplay: {}", dimension);
         }
         return null;
     }
@@ -59,9 +64,26 @@ public class ItemDimensionDisplay extends ItemBlock {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         String dimName = DimensionHelper.getFullName(getDimension(stack));
+        return DimensionHelper.getDimLocalizedName(dimName);
+    }
 
-        String i18nName = DimensionHelper.getDimLocalizedName(dimName);
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+        super.addInformation(stack, player, list, advanced);
 
-        return StatCollector.translateToLocalFormatted(DimensionHelper.getDimTier(dimName), i18nName);
+        BlockDimensionDisplay block = (BlockDimensionDisplay) Block.getBlockFromItem(stack.getItem());
+        list.add(StatCollector.translateToLocalFormatted("gtnop.gui.nei.tier.value", block.getDimensionRocketTier()));
+
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey("VeinChance")) {
+
+            double chance = stack.getTagCompound()
+                .getDouble("VeinChance");
+
+            list.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtnop.gui.nei.orechunkchance.value",
+                    NumberFormatUtil.formatNumber(100 * chance)));
+        }
     }
 }

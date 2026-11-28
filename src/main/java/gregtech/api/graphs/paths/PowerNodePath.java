@@ -20,8 +20,12 @@ public class PowerNodePath extends NodePath {
     int mTick = 0;
     boolean mCountUp = true;
 
+    // Retained for legacy addAmps callers; recursive transfers pass their own voltage explicitly.
+    private long mCurrentVoltageAfterLoss = 0;
+
     private final AveragePerTickCounter avgAmperageCounter = new AveragePerTickCounter(TickTime.SECOND);
     private final AveragePerTickCounter avgVoltageCounter = new AveragePerTickCounter(TickTime.SECOND);
+    private final AveragePerTickCounter avgEnergyCounter = new AveragePerTickCounter(TickTime.SECOND);
 
     public PowerNodePath(MetaPipeEntity[] aCables) {
         super(aCables);
@@ -33,7 +37,9 @@ public class PowerNodePath extends NodePath {
 
     public void applyVoltage(long aVoltage, boolean aCountUp) {
 
-        avgVoltageCounter.addValue(Math.max(aVoltage - mLoss, 0));
+        mCurrentVoltageAfterLoss = Math.max(aVoltage - mLoss, 0);
+        // a voltage does not add up when several packets go through in the same tick, unlike amps
+        avgVoltageCounter.addMaxValue(mCurrentVoltageAfterLoss);
 
         int tNewTime = MinecraftServer.getServer()
             .getTickCounter();
@@ -68,8 +74,13 @@ public class PowerNodePath extends NodePath {
     }
 
     public void addAmps(long aAmps) {
+        addAmps(aAmps, mCurrentVoltageAfterLoss);
+    }
+
+    public void addAmps(long aAmps, long aVoltageAfterLoss) {
 
         avgAmperageCounter.addValue(aAmps);
+        avgEnergyCounter.addValue(aAmps * Math.max(aVoltageAfterLoss, 0));
 
         this.mAmps += aAmps;
         if (this.mAmps > mMaxAmps * 40) {
@@ -89,16 +100,58 @@ public class PowerNodePath extends NodePath {
         return avgAmperageCounter.getLast();
     }
 
+    public long getMaxAmperage() {
+        return mMaxAmps;
+    }
+
     public double getAvgAmperage() {
         return avgAmperageCounter.getAverage();
     }
 
+    /**
+     * @return the highest voltage that went through on the previous tick, after the loss of the whole path segment
+     */
     public long getVoltage() {
         return avgVoltageCounter.getLast();
     }
 
+    public long getMaxVoltage() {
+        return mMaxVoltage;
+    }
+
     public double getAvgVoltage() {
         return avgVoltageCounter.getAverage();
+    }
+
+    /**
+     * @return the energy that went through on the previous tick, in EU/t
+     */
+    public long getEnergy() {
+        return avgEnergyCounter.getLast();
+    }
+
+    /**
+     * @return the energy that went through, averaged over the last 20 ticks, in EU/t
+     */
+    public double getAvgEnergy() {
+        return avgEnergyCounter.getAverage();
+    }
+
+    /**
+     * @return a consistent snapshot of what this path carries, for the Portable Scanner and Waila. Performs no
+     *         mutation, so it is safe to call on every Waila poll.
+     */
+    public CableReadout getReadout() {
+        final long maxVoltageAfterLoss = Math.max(0, mMaxVoltage - mLoss);
+        return new CableReadout(
+            getAmperage(),
+            mMaxAmps,
+            getVoltage(),
+            maxVoltageAfterLoss,
+            getEnergy(),
+            maxVoltageAfterLoss * mMaxAmps,
+            getAvgAmperage(),
+            getAvgEnergy());
     }
 
     @Override
@@ -106,6 +159,7 @@ public class PowerNodePath extends NodePath {
         super.processPipes();
         mMaxAmps = Integer.MAX_VALUE;
         mMaxVoltage = Integer.MAX_VALUE;
+        mLoss = 0;
         for (MetaPipeEntity tCable : mPipes) {
             if (tCable instanceof MTECable) {
                 mMaxAmps = Math.min(((MTECable) tCable).mAmperage, mMaxAmps);

@@ -18,9 +18,9 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksAbstract {
 
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 4; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 

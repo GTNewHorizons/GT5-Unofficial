@@ -13,6 +13,7 @@ import gregtech.api.graphs.consumers.EmptyPowerConsumer;
 import gregtech.api.graphs.consumers.NodeEnergyConnected;
 import gregtech.api.graphs.consumers.NodeEnergyReceiver;
 import gregtech.api.graphs.consumers.NodeEnergySink;
+import gregtech.api.graphs.consumers.NodeGCEnergyHandler;
 import gregtech.api.graphs.consumers.NodeGTBaseMetaTile;
 import gregtech.api.graphs.paths.NodePath;
 import gregtech.api.graphs.paths.PowerNodePath;
@@ -22,11 +23,18 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import ic2.api.energy.tile.IEnergySink;
+import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 
 // node map generator for power distribution
 public class GenerateNodeMapPower extends GenerateNodeMap {
 
     public GenerateNodeMapPower(BaseMetaPipeEntity aTileEntity) {
+        if (aTileEntity.getNode() != null) {
+            clearNodeMap(aTileEntity.getNode(), -1);
+        } else if (aTileEntity.getNodePath() != null) {
+            aTileEntity.getNodePath()
+                .invalidateNodeMap();
+        }
         generateNode(aTileEntity, null, 1, null, ForgeDirection.UNKNOWN, new ArrayList<>(), new HashSet<>());
     }
 
@@ -51,18 +59,13 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
                 aConsumers.add(tConsumerNode);
                 return true;
             }
+        } else if (aTileEntity instanceof IEnergyHandlerGC handler) {
+            ConsumerNode tConsumerNode = new NodeGCEnergyHandler(aNodeValue, handler, side, aConsumers);
+            aConsumers.add(tConsumerNode);
+            return true;
         } else if (aTileEntity instanceof IEnergySink sink) {
             // ic2 wants the tilentity next to it of that side not going to add a bunch of arguments just for ic2
-            // crossborder checks to not load chuncks just to make sure
-            int dX = aTileEntity.xCoord + side.offsetX;
-            int dY = aTileEntity.yCoord + side.offsetY;
-            int dZ = aTileEntity.zCoord + side.offsetZ;
-            boolean crossesChuncks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
-            TileEntity tNextTo = null;
-            if (!crossesChuncks || !aTileEntity.getWorldObj()
-                .blockExists(dX, dY, dZ))
-                tNextTo = aTileEntity.getWorldObj()
-                    .getTileEntity(dX, dY, dZ);
+            TileEntity tNextTo = getAdjacentTileEntityIfLoaded(aTileEntity, side);
 
             if (sink.acceptsEnergyFrom(tNextTo, side)) {
                 ConsumerNode tConsumerNode = new NodeEnergySink(
@@ -79,6 +82,17 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
             return true;
         }
         return false;
+    }
+
+    static TileEntity getAdjacentTileEntityIfLoaded(TileEntity tileEntity, ForgeDirection side) {
+        int x = tileEntity.xCoord + side.offsetX;
+        int y = tileEntity.yCoord + side.offsetY;
+        int z = tileEntity.zCoord + side.offsetZ;
+        boolean crossesChunks = x >> 4 != tileEntity.xCoord >> 4 || z >> 4 != tileEntity.zCoord >> 4;
+        if (crossesChunks && !tileEntity.getWorldObj()
+            .blockExists(x, y, z)) return null;
+        return tileEntity.getWorldObj()
+            .getTileEntity(x, y, z);
     }
 
     @Override

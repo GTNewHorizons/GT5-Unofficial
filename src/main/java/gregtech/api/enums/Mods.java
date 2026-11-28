@@ -50,6 +50,7 @@ public enum Mods implements IMod {
     BrandonsCore(ModIDs.BRANDONS_CORE),
     BuildCraftCore(ModIDs.BUILD_CRAFT_CORE),
     BuildCraftBuilders(ModIDs.BUILD_CRAFT_BUILDERS),
+    BuildCraftEnergy(ModIDs.BUILD_CRAFT_ENERGY),
     BuildCraftFactory(ModIDs.BUILD_CRAFT_FACTORY),
     BuildCraftRobotics(ModIDs.BUILD_CRAFT_ROBOTICS),
     BuildCraftSilicon(ModIDs.BUILD_CRAFT_SILICON),
@@ -65,12 +66,14 @@ public enum Mods implements IMod {
     Controlling(ModIDs.CONTROLLING),
     CookingForBlockheads(ModIDs.COOKING_FOR_BLOCKHEADS),
     CoreTweaks(ModIDs.CORE_TWEAKS),
+    CosmeticArmorReworked(ModIDs.COSMETIC_ARMOR_REWORKED),
     CraftTweaker(ModIDs.CRAFT_TWEAKER),
     MineTweaker(ModIDs.MINE_TWEAKER),
     CreativeCore(ModIDs.CREATIVE_CORE),
     CropsNH(ModIDs.CROPS_NH),
     CustomMainMenu(ModIDs.CUSTOM_MAIN_MENU),
     Darkerer(ModIDs.DARKERER),
+    Dashboard(ModIDs.DASHBOARD),
     DefaultConfigs(ModIDs.DEFAULT_CONFIGS),
     DefaultServerList(ModIDs.DEFAULT_SERVER_LIST),
     DefaultWorldGenerator(ModIDs.DEFAULT_WORLD_GENERATOR),
@@ -88,6 +91,7 @@ public enum Mods implements IMod {
     Fether(ModIDs.FETHER),
     FindIt(ModIDs.FIND_IT),
     FloodLights(ModIDs.FLOOD_LIGHTS),
+    LiquidLogged(ModIDs.LIQUID_LOGGED),
     ForbiddenMagic(ModIDs.FORBIDDEN_MAGIC),
     Forestry(ModIDs.FORESTRY),
     ForgeMicroblocks(ModIDs.FORGE_MICROBLOCKS),
@@ -217,7 +221,9 @@ public enum Mods implements IMod {
     ToroHealth(ModIDs.TORO_HEALTH),
     Translocator(ModIDs.TRANSLOCATOR),
     UniversalSingularities(ModIDs.UNIVERSAL_SINGULARITIES),
+    VariableHorizons(ModIDs.VARIABLE_HORIZONS),
     VendingMachine(ModIDs.VENDING_MACHINE),
+    VillageNames(ModIDs.VILLAGE_NAMES),
     VisualProspecting(ModIDs.VISUAL_PROSPECTING),
     WailaPlugins(ModIDs.WAILA_PLUGINS),
     WailaHarvestability(ModIDs.WAILA_HARVESTABILITY),
@@ -273,6 +279,7 @@ public enum Mods implements IMod {
     TinkersGregworks(ModIDs.TINKERS_GREGWORKS),
     UniLib(ModIDs.UNI_LIB),
     UniMixins(ModIDs.UNI_MIXINS),
+    UtilitiesInExcess(ModIDs.UTILITIES_IN_EXCESS),
     Witchery(ModIDs.WITCHERY),
     ZTones(ModIDs.Z_TONES),
 
@@ -390,6 +397,7 @@ public enum Mods implements IMod {
         public static final String BRANDONS_CORE = "BrandonsCore";
         public static final String BUILD_CRAFT_CORE = "BuildCraft|Core",
             BUILD_CRAFT_BUILDERS = "BuildCraft|Builders",
+            BUILD_CRAFT_ENERGY = "BuildCraft|Energy",
             BUILD_CRAFT_FACTORY = "BuildCraft|Factory",
             BUILD_CRAFT_ROBOTICS = "BuildCraft|Robotics",
             BUILD_CRAFT_SILICON = "BuildCraft|Silicon",
@@ -406,12 +414,14 @@ public enum Mods implements IMod {
         public static final String CONTROLLING = "controlling";
         public static final String COOKING_FOR_BLOCKHEADS = "cookingforblockheads";
         public static final String CORE_TWEAKS = "coretweaks";
+        public static final String COSMETIC_ARMOR_REWORKED = "cosmeticarmorreworked";
         public static final String CRAFT_TWEAKER = "MineTweaker3",
             MINE_TWEAKER = "MineTweaker3";
         public static final String CREATIVE_CORE = "creativecore";
         public static final String CROPS_NH = "cropsnh";
         public static final String CUSTOM_MAIN_MENU = "custommainmenu";
         public static final String DARKERER = "darkerer";
+        public static final String DASHBOARD = "dashboard";
         public static final String DEFAULT_CONFIGS = "defaultkeys";
         public static final String DEFAULT_SERVER_LIST = "defaultserverlist";
         public static final String DEFAULT_WORLD_GENERATOR = "defaultworldgenerator";
@@ -429,6 +439,7 @@ public enum Mods implements IMod {
         public static final String FETHER = "fether";
         public static final String FIND_IT = "findit";
         public static final String FLOOD_LIGHTS = "FloodLights";
+        public static final String LIQUID_LOGGED = "liquidlogged";
         public static final String FORBIDDEN_MAGIC = "ForbiddenMagic";
         public static final String FORESTRY = "Forestry";
         public static final String FORGE_MICROBLOCKS = "ForgeMicroblock";
@@ -558,7 +569,9 @@ public enum Mods implements IMod {
         public static final String TORO_HEALTH = "torohealthmod";
         public static final String TRANSLOCATOR = "Translocator";
         public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
+        public static final String VARIABLE_HORIZONS = "variablehorizons";
         public static final String VENDING_MACHINE = "vendingmachine";
+        public static final String VILLAGE_NAMES = "VillageNames";
         public static final String VISUAL_PROSPECTING = "visualprospecting";
         public static final String WAILA_PLUGINS = "wailaplugins";
         public static final String WAILA_HARVESTABILITY = "WailaHarvestability";
@@ -618,6 +631,7 @@ public enum Mods implements IMod {
         public static final String TINKERS_GREGWORKS = "TGregworks";
         public static final String UNI_LIB = "unilib";
         public static final String UNI_MIXINS = "unimixins";
+        public static final String UTILITIES_IN_EXCESS = "utilitiesinexcess";
         public static final String WITCHERY = "witchery";
         public static final String Z_TONES = "Ztones";
 

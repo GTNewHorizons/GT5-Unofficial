@@ -4,7 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -17,15 +16,6 @@ public class FluidSolidifier implements Runnable {
 
     @Override
     public void run() {
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.lapis_block))
-            .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0))
-            .fluidInputs(Materials.Iron.getMolten(9 * INGOTS))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(fluidSolidifierRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 1))
@@ -45,7 +35,7 @@ public class FluidSolidifier implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3))
-            .fluidInputs(WerkstoffLoader.LuVTierMaterial.getMolten(8 * INGOTS))
+            .fluidInputs(WerkstoffLoader.RhodiumPlatedPalladium.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidSolidifierRecipes);
@@ -68,7 +58,7 @@ public class FluidSolidifier implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
-            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 13))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
             .fluidInputs(Materials.Neutronium.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
@@ -76,26 +66,28 @@ public class FluidSolidifier implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
-            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 14))
-            .fluidInputs(Materials.CosmicNeutronium.getMolten(8 * INGOTS))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
+            .fluidInputs(Materials.Infinity.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
-            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 15))
-            .fluidInputs(Materials.Infinity.getMolten(8 * INGOTS))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
+            .fluidInputs(Materials.TranscendentMetal.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(fluidSolidifierRecipes);
 
+        // Hexanite Borosilicate Glass is in Forming Press Recipes
+
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 0))
-            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
-            .fluidInputs(Materials.TranscendentMetal.getMolten(8 * INGOTS))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
+            .fluidInputs(Materials.Universium.getMolten(8 * INGOTS))
             .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(fluidSolidifierRecipes);
 
     }

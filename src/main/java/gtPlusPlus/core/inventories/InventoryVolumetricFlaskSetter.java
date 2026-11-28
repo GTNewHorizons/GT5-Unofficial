@@ -10,8 +10,6 @@ import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 
 public class InventoryVolumetricFlaskSetter implements IInventory {
 
-    private final String name = "Volumetric Flask Setter";
-
     /** Defining your inventory size this way is handy */
     public static final int INV_SIZE = 9;
 
@@ -98,7 +96,7 @@ public class InventoryVolumetricFlaskSetter implements IInventory {
     // 1.7.2+ renamed to getInventoryName
     @Override
     public String getInventoryName() {
-        return this.name;
+        return "tile.blockVolumetricFlaskSetter.name";
     }
 
     // 1.7.2+ renamed to hasCustomInventoryName

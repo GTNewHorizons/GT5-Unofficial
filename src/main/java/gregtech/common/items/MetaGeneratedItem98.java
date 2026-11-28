@@ -15,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -27,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtil;
@@ -289,15 +289,26 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         FluidContainerRegistry
             .registerFluidContainer(new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
 
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName(aCell.mStack) + ".name",
-            cellType.prefix.getMaterialPrefix() + fluid.getLocalizedName(fluidStack)
-                + cellType.prefix.getMaterialPostfix());
+        String prefixKey = cellType.prefix.getOreprefixKey();
+        mNameLocalizationFunctions.put((short) id, stack -> getCellName(prefixKey, fluid, fluidStack));
 
         int color = fluid.getColor();
         short[] rgba = GTUtil.getRGBaArray(color);
 
         registeredFluidDataMap.put(id, new RegisteredFluidData(rgba, iconContainerMap.get(cellType)));
+    }
+
+    /** Builds a cell name from its oreprefix template the same way material items do, inflection included. */
+    private static String getCellName(String prefixKey, Fluid fluid, FluidStack fluidStack) {
+        String localizedName = fluid.getLocalizedName(fluidStack);
+        String nameKey = fluid.getUnlocalizedName(fluidStack);
+        // Some fluids override getLocalizedName or have no translatable key. For those, pass the localized name:
+        // translateToLocal returns an unknown key unchanged, so the template receives the shown name.
+        if (!StatCollector.canTranslate(nameKey) || !StatCollector.translateToLocal(nameKey)
+            .equals(localizedName)) {
+            nameKey = localizedName;
+        }
+        return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, nameKey);
     }
 
     private void registerOreDict() {

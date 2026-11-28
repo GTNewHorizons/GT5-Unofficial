@@ -19,10 +19,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
-import gtPlusPlus.core.util.Utils;
+import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
+import gtPlusPlus.core.lib.GTPPCore;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
@@ -47,10 +49,10 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_turbine.desc");
+        return GTSplit.splitLocalizedWithSuffix("gt.blockmachines.input_bus_turbine.desc", GTPPCore.GT_Tooltip.get());
     }
 
-    private MTELargeTurbine mParent = null;
+    private MTEMultiBlockBase mParent = null;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -71,7 +73,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (aMetaTileEntity == null) {
                     continue;
                 }
-                if (aMetaTileEntity instanceof MTELargeTurbine aTurb) {
+                if (aMetaTileEntity instanceof MTELargeTurbineBase aTurb) {
                     for (MTEHatchInputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;
@@ -109,7 +111,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     public boolean isItemStackTurbine(ItemStack aStack) {
-        if (aStack.getItem() instanceof MetaGeneratedTool) {
+        if (aStack != null && aStack.getItem() instanceof MetaGeneratedTool) {
             return aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176;
         }
         return false;
@@ -203,4 +205,8 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
         return false;
     }
 
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isItemStackTurbine(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
 }

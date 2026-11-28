@@ -5,7 +5,6 @@ import static gregtech.api.recipe.RecipeCategory.createIcon;
 
 import gregtech.api.enums.Mods;
 import gregtech.common.config.Client;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 @SuppressWarnings("unused")
 public final class RecipeCategories {
@@ -67,8 +66,8 @@ public final class RecipeCategories {
             .setDisplayImage(createIcon(GregTech.getResourcePath("textures/gui/picture/tic_bolt_molding.png"))));
 
     public static final RecipeCategory absNonAlloyRecipes = new RecipeCategory(
-        "gtpp.recipe.category.abs_non_alloy_recipes",
-        GTPPRecipeMaps.alloyBlastSmelterRecipes,
+        "gt.recipe.category.abs_non_alloy_recipes",
+        RecipeMaps.alloyBlastSmelterRecipes,
         () -> Client.nei.recipeCategories.absNonAlloyRecipes,
         builder -> builder.setDisplayImage(
             createIcon(Mods.GTPlusPlus.getResourcePath("textures/gui/picture/abs_non_alloy_recipes.png"))));

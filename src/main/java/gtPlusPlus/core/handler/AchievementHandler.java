@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -19,7 +20,6 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLog;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -52,13 +52,6 @@ public class AchievementHandler {
             "",
             true);
 
-        this.registerAchievement(
-            "hatch.dynamo.buffered",
-            2,
-            -2,
-            GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1),
-            aBaseAchievementName,
-            false);
         // First multi anyone really needs
         this.registerAchievement(
             "multi.abs",
@@ -127,22 +120,9 @@ public class AchievementHandler {
 
         // Multis (-4/-2/0)
         this.registerAchievement("multi.pss", -16, -7, GregtechItemList.PowerSubStation.get(1), "multi.abs", false);
-        this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
-        this.registerAchievement(
-            "multi.sifter",
-            -14,
-            -7,
-            GregtechItemList.Industrial_Sifter.get(1),
-            "dust.eglin",
-            false);
+        this.registerAchievement("multi.sifter", -14, -7, ItemList.LargeSifter.get(1), "dust.eglin", false);
         this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
-        this.registerAchievement(
-            "multi.boiler.thermal",
-            -12,
-            -7,
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
-            "multi.abs",
-            false);
+        this.registerAchievement("multi.boiler.thermal", -12, -7, ItemList.ThermalBoiler.get(1), "multi.abs", false);
         this.registerAchievement("multi.zhuhai", -11, -7, ItemList.FishingPort.get(1), aBaseAchievementName, false);
 
         // Casings
@@ -181,9 +161,9 @@ public class AchievementHandler {
             11,
             8,
             GregtechItemList.Neptunium238Dust.get(1),
-            "multi.cyclo",
+            "multi.abs",
             false);
-        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.cyclo", false);
+        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.abs", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(
@@ -211,8 +191,8 @@ public class AchievementHandler {
 
         achievement.registerStat();
         if (GTPPCore.DEVENV) {
-            GTLog.out.println("achievement." + textId + "=");
-            GTLog.out.println("achievement." + textId + ".desc=");
+            GT_FML_LOGGER.debug("achievement.{}=", textId);
+            GT_FML_LOGGER.debug("achievement.{}.desc=", textId);
         }
 
         this.achievementList.put(textId, achievement);
@@ -355,10 +335,6 @@ public class AchievementHandler {
                 else if (aUnlocalName.startsWith(aStartsWith + "transformer.ha.tier.")) {
                     this.issueAchievement(aPlayer, "hiampxform");
                 }
-                // Buffered Dynamos
-                else if (aUnlocalName.startsWith(aStartsWith + "hatch.dynamo.buffer.tier.")) {
-                    this.issueAchievement(aPlayer, "hatch.dynamo.buffered");
-                }
                 // Control Core Hatch
                 else if (aUnlocalName.startsWith(aStartsWith + "hatch.control.adv")) {
                     this.issueAchievement(aPlayer, "hatch.control");
@@ -375,10 +351,6 @@ public class AchievementHandler {
                 // PSS
                 else if (aUnlocalName.equals(aStartsWith + "substation.01.input.single")) {
                     this.issueAchievement(aPlayer, "multi.pss");
-                }
-                // Cyclotron
-                else if (aUnlocalName.startsWith(aStartsWith + "cyclotron.tier.single")) {
-                    this.issueAchievement(aPlayer, "multi.cyclo");
                 }
                 // Sifter
                 else if (aUnlocalName.equals(aStartsWith + "industrialsifter.controller.tier.single")) {

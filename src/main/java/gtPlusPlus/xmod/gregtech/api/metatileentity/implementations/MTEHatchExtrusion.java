@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -11,42 +12,26 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.ItemShapeExtruder;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
-import gregtech.common.items.ItemIntegratedCircuit;
 
+@IMetaTileEntity.SkipGenerateDescription
+@IMetaTileEntity.SkipGenerateName
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     public int shapeSlot = getSlots(mTier);
     public int circuitSlot = getSlots(mTier) + 1;
 
-    public static final ItemStack[] extruderShapes = {
-        // Tools
-        ItemList.Shape_Extruder_Axe.get(1), ItemList.Shape_Extruder_File.get(1), ItemList.Shape_Extruder_Hammer.get(1),
-        ItemList.Shape_Extruder_Hoe.get(1), ItemList.Shape_Extruder_Pickaxe.get(1), ItemList.Shape_Extruder_Saw.get(1),
-        ItemList.Shape_Extruder_Shovel.get(1), ItemList.Shape_Extruder_Sword.get(1),
-        ItemList.Shape_Extruder_ToolHeadDrill.get(1),
-        // Machine Components
-        ItemList.Shape_Extruder_Gear.get(1), ItemList.Shape_Extruder_Small_Gear.get(1),
-        ItemList.Shape_Extruder_Rotor.get(1), ItemList.Shape_Extruder_Turbine_Blade.get(1),
-        // Pipes
-        ItemList.Shape_Extruder_Pipe_Tiny.get(1), ItemList.Shape_Extruder_Pipe_Small.get(1),
-        ItemList.Shape_Extruder_Pipe_Medium.get(1), ItemList.Shape_Extruder_Pipe_Large.get(1),
-        ItemList.Shape_Extruder_Pipe_Huge.get(1),
-        // Materials
-        ItemList.Shape_Extruder_Block.get(1), ItemList.Shape_Extruder_Bolt.get(1), ItemList.Shape_Extruder_Ingot.get(1),
-        ItemList.Shape_Extruder_Plate.get(1), ItemList.Shape_Extruder_Ring.get(1), ItemList.Shape_Extruder_Rod.get(1),
-        // Containers, Misc
-        ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
-        ItemList.Shape_Extruder_Cell.get(1) };
-
-    public boolean oneStackLimit = false;
+    public static final ItemStack[] extruderShapes = ItemShapeExtruder.shapes.stream()
+        .map(shape -> new ItemStack(shape, 1))
+        .toArray(ItemStack[]::new);
 
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -57,7 +42,14 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     }
 
     public static int getSlots(int aTier) {
-        return (aTier - 4) * 18 + 9;
+        return MTEHatchInputBus.getSlots(aTier);
+    }
+
+    @Override
+    public String getLocalName() {
+        if (!hasOwnLocalName()) return super.getLocalName();
+        return StatCollector
+            .translateToLocalFormatted("gt.blockmachines.hatch.extrusion.name", GTUtility.getRomanNumeral(mTier - 4));
     }
 
     @Override
@@ -73,10 +65,11 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
-            "Capacity: " + formatNumber(getSlots(mTier)) + " Slots",
-            "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.hatch.extrusion.desc",
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("gt.blockmachines.hatch.extrusion.machine")
+                + EnumChatFormatting.RESET,
+            formatNumber(getSlots(mTier)));
     }
 
     public static ItemStack findMatchingShape(ItemStack stack) {
@@ -90,9 +83,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == shapeSlot) return findMatchingShape(aStack) != null;
-        if (aIndex == circuitSlot) return GTUtility.isStackValid(aStack) && aStack.stackSize == 1
-            && (aStack.getItem() instanceof ItemIntegratedCircuit
-                || GTUtility.areStacksEqual(aStack, ItemList.Circuit_Integrated.get(1), true));
         return super.isItemValidForSlot(aIndex, aStack);
     }
 
@@ -128,58 +118,30 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex != shapeSlot && aIndex != circuitSlot && super.isValidSlot(aIndex);
+        return aIndex != shapeSlot && super.isValidSlot(aIndex);
     }
 
     @Override
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++) {
-            if (i != shapeSlot && i != circuitSlot && mInventory[i] != null && mInventory[i].stackSize <= 0) {
-                mInventory[i] = null;
-            }
-        }
-        if (!disableSort) fillStacksIntoFirstSlots();
-        if (oneStackLimit) {
-            for (ItemStack itemStack : mInventory) {
-                if (itemStack != null) {
-                    itemStack.stackSize = Math.min(1, itemStack.stackSize);
-                }
-            }
-        }
+    protected void fillStacksIntoFirstSlots() {
+        // don't sort the ghost shape slot
+        GTUtility.compactInventory(this, 0, mInventory.length - 2);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot
-            && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
+        return aIndex != shapeSlot && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot
-            && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
-    }
-
-    @Override
-    protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
-        for (int i = 0; i < getSizeInventory(); i++) {
-            if (isValidSlot(i) && GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mInventory[i])) {
-                return i == aIndex;
-            }
-        }
-        return mInventory[aIndex] == null;
+        return aIndex != shapeSlot && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
     public int getCircuitSlot() {
         return circuitSlot;
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
     }
 
     @Override

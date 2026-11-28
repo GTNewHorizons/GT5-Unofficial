@@ -4,8 +4,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEOreDrillingPlant2 extends MTEOreDrillingPlantBase {
 
     public MTEOreDrillingPlant2(int aID, String aName, String aNameRegional) {
@@ -16,11 +16,6 @@ public class MTEOreDrillingPlant2 extends MTEOreDrillingPlantBase {
     public MTEOreDrillingPlant2(String aName) {
         super(aName);
         mTier = 2;
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        return createTooltip("II");
     }
 
     @Override

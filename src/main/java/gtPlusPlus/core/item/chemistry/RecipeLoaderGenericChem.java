@@ -2,6 +2,8 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -10,8 +12,6 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -27,6 +27,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -35,8 +36,6 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 public class RecipeLoaderGenericChem {
 
     public static void generate() {
-        recipeCatalystRed();
-        recipeCatalystYellow();
         recipeCatalystBlue();
         recipeCatalystOrange();
         recipeCatalystPurple();
@@ -179,10 +178,12 @@ public class RecipeLoaderGenericChem {
     }
 
     private static void recipeGrindingBallAlumina() {
+        ItemStack aluminaBallOutput = GregtechItemList.Milling_Ball_Alumina.get(8);
+        ItemGenericChemBase.createMillingBallNBT(aluminaBallOutput);
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.Alumina.get(OrePrefixes.dust, 64))
             .circuit(10)
-            .itemOutputs(GregtechItemList.Milling_Ball_Alumina.get(8))
+            .itemOutputs(aluminaBallOutput)
             .fluidInputs(new FluidStack(GTPPFluids.Aniline, 4_000))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_HV)
@@ -190,10 +191,12 @@ public class RecipeLoaderGenericChem {
     }
 
     private static void recipeGrindingBallSoapstone() {
+        ItemStack soapstoneBallOutput = GregtechItemList.Milling_Ball_Soapstone.get(8);
+        ItemGenericChemBase.createMillingBallNBT(soapstoneBallOutput);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Soapstone, 32))
             .circuit(10)
-            .itemOutputs(GregtechItemList.Milling_Ball_Soapstone.get(8))
+            .itemOutputs(soapstoneBallOutput)
             .fluidInputs(new FluidStack(GTPPFluids.LiquidResin, 2_500))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
@@ -233,34 +236,6 @@ public class RecipeLoaderGenericChem {
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
-    }
-
-    private static void recipeCatalystRed() {
-        // Assembler Recipe
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(10),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2))
-            .circuit(4)
-            .itemOutputs(GregtechItemList.RedMetalCatalyst.get(10))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-    }
-
-    private static void recipeCatalystYellow() {
-        // Assembler Recipe
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.EmptyCatalystCarrier.get(10),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4))
-            .circuit(12)
-            .itemOutputs(GregtechItemList.YellowMetalCatalyst.get(10))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
     }
 
     private static void recipeCatalystBlue() {

@@ -1,0 +1,76 @@
+package gregtech.common.blocks;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Textures;
+import gregtech.common.misc.GTStructureChannels;
+
+/**
+ * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
+ * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
+ */
+public class BlockCasings14 extends BlockCasingsAbstract {
+
+    public BlockCasings14() {
+        super(ItemCasings.class, "gt.blockcasings14", MaterialCasings.INSTANCE, 16);
+        // IDs 0 - 2 are currently reserved for the CGC
+        register(3, ItemList.CasingHearth);
+        register(4, ItemList.CasingFridge);
+        register(5, ItemList.CasingNaquadahReinforcedDistillation);
+        register(6, ItemList.ExtruderMachineCasing);
+        register(7, ItemList.TensionResistantMachineCasing);
+        register(8, ItemList.CasingPlasmaCollider);
+        register(9, ItemList.CasingQuadcellDriving);
+        register(10, ItemList.Casing_Pipe_NiobiumTitanium);
+        register(11, ItemList.Casing_Pipe_MysteriousCrystal);
+        register(12, ItemList.Casing_Pipe_Neutronium);
+        register(13, ItemList.Casing_Pipe_Infinity);
+        register(14, ItemList.Casing_Pipe_TranscendentMetal);
+        register(15, ItemList.Casing_Pipe_SpaceTime);
+
+        for (int i = 0; i < 6; i++) {
+            GTStructureChannels.PIPE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 5);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int ordinalSide, int aMeta) {
+        return switch (aMeta) {
+            case 3 -> {
+                if (ordinalSide == 0) yield Textures.BlockIcons.MACHINE_CASING_HEARTH_BOTTOM.getIcon();
+                if (ordinalSide == 1) yield Textures.BlockIcons.MACHINE_CASING_HEARTH_TOP.getIcon();
+                yield Textures.BlockIcons.MACHINE_CASING_HEARTH_SIDE.getIcon();
+            }
+            case 4 -> {
+                if (ordinalSide == 0) yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_BOTTOM.getIcon();
+                if (ordinalSide == 1) yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_TOP.getIcon();
+                yield Textures.BlockIcons.MACHINE_CASING_FRIDGE_SIDE.getIcon();
+            }
+            case 5 -> Textures.BlockIcons.MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION.getIcon();
+            case 6 -> Textures.BlockIcons.EXTRUDER_MACHINE_CASING.getIcon();
+            case 7 -> Textures.BlockIcons.TENSION_RESISTANT_MACHINE_CASING.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_PLASMA_COLLIDER.getIcon();
+            case 9 -> Textures.BlockIcons.MACHINE_CASING_QUADCELL_DRIVING.getIcon();
+            case 10 -> Textures.BlockIcons.MACHINE_CASING_PIPE_NIOBIUMTITANIUM.getIcon();
+            case 11 -> Textures.BlockIcons.MACHINE_CASING_PIPE_MYSTERIOUSCRYSTAL.getIcon();
+            case 12 -> Textures.BlockIcons.MACHINE_CASING_PIPE_NEUTRONIUM.getIcon();
+            case 13 -> Textures.BlockIcons.MACHINE_CASING_PIPE_INFINITY.getIcon();
+            case 14 -> Textures.BlockIcons.MACHINE_CASING_PIPE_TRANSCENDENTMETAL.getIcon();
+            case 15 -> Textures.BlockIcons.MACHINE_CASING_PIPE_SPACETIME.getIcon();
+
+            default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+        };
+    }
+
+    @Override
+    public int getTextureIndex(int aMeta) {
+        return (16 << 7) | (aMeta + 112);
+    }
+}

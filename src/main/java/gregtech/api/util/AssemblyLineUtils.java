@@ -3,10 +3,7 @@ package gregtech.api.util;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -17,12 +14,13 @@ import com.google.common.collect.MultimapBuilder;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility.ItemId;
 
 public class AssemblyLineUtils {
+
+    public static final String DEFAULT_DATA_STICK_AUTHOR = "Assembling Line Recipe Generator";
 
     private static boolean loadedALRecipes = false;
 
@@ -71,26 +69,6 @@ public class AssemblyLineUtils {
         ItemStack output = ItemStack.loadItemStackFromNBT(tag);
 
         return findALRecipeByOutput(output);
-    }
-
-    public static @Nullable RecipeAssemblyLine assertSingleRecipe(Collection<RecipeAssemblyLine> recipes) {
-        if (recipes.isEmpty()) return null;
-
-        if (recipes.size() > 1) {
-            if ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
-                throw new RuntimeException(
-                    "found too many assembly line recipes for output: '" + recipes.iterator()
-                        .next().mOutput.getDisplayName() + "', this method assumes this cannot happen");
-            } else {
-                GTMod.GT_FML_LOGGER.error(
-                    "found too many assembly line recipes for output: '" + recipes.iterator()
-                        .next().mOutput.getDisplayName() + "', this method assumes this cannot happen",
-                    new Exception());
-            }
-        }
-
-        return recipes.iterator()
-            .next();
     }
 
     /**
@@ -155,7 +133,7 @@ public class AssemblyLineUtils {
         if (ItemStackNBT.hasKey(aDataStick, "author", NBT.TAG_STRING)) {
             author = ItemStackNBT.getString(aDataStick, "author");
         } else {
-            author = "Assembling Line Recipe Generator";
+            author = DEFAULT_DATA_STICK_AUTHOR;
         }
 
         // remove possible old NBTTagCompound

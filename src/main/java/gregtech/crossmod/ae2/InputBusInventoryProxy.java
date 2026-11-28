@@ -120,7 +120,7 @@ public class InputBusInventoryProxy implements IInventory {
 
     @Override
     public String getInventoryName() {
-        return ""; // Not shown
+        return "gt.blockmachines.largemolecularassembler.name";
     }
 
     @Override

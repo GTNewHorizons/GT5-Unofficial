@@ -1,5 +1,7 @@
 package galacticgreg.schematics;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -87,25 +89,24 @@ public class SpaceSchematicHandler {
                     SpaceSchematic tSchematicObj = LoadSpaceSchematic(tSchematic);
                     if (tSchematicObj != null) tNewSpaceSchematics.add(tSchematicObj);
                     else {
-                        GalacticGreg.Logger.warn("Could not load Schematic %s. Please check the syntax", tSchematic);
+                        LOGGER.warn("Could not load Schematic {}. Please check the syntax", tSchematic);
                         tErrorsFound++;
                     }
                 } catch (Exception e) {
-                    GalacticGreg.Logger.error("Error while loading Schematic %s", tSchematic);
-                    e.printStackTrace();
+                    LOGGER.error("Error while loading Schematic {}", tSchematic);
+                    LOGGER.error(e);
                 }
 
             }
 
-            GalacticGreg.Logger.info("Successfully loaded %d Schematics", tNewSpaceSchematics.size());
+            LOGGER.info("Successfully loaded {} Schematics", tNewSpaceSchematics.size());
             boolean tDoReplace = true;
 
             if (tErrorsFound > 0) {
-                GalacticGreg.Logger.warn("Found %d errors while loading, not all schematics will be available");
-                if (pForceReload)
-                    GalacticGreg.Logger.info("Reload was forced, replacing currently active list with new one");
+                LOGGER.warn("Found errors while loading, not all schematics will be available");
+                if (pForceReload) LOGGER.info("Reload was forced, replacing currently active list with new one");
                 else {
-                    GalacticGreg.Logger.warn("Nothing was replaced. Fix any errors and reload again");
+                    LOGGER.warn("Nothing was replaced. Fix any errors and reload again");
                     tDoReplace = false;
                 }
             }
@@ -114,7 +115,7 @@ public class SpaceSchematicHandler {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e);
             return false;
         }
     }
@@ -139,7 +140,7 @@ public class SpaceSchematicHandler {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e);
             return false;
         }
     }
@@ -166,7 +167,7 @@ public class SpaceSchematicHandler {
         try {
             JAXBContext tJaxbCtx = JAXBContext.newInstance(SpaceSchematic.class);
             if (!pName.exists()) {
-                GalacticGreg.Logger.error("SchematicFile %s could not be found", pName);
+                LOGGER.error("SchematicFile {} could not be found", pName);
                 return null;
             }
 
@@ -174,7 +175,7 @@ public class SpaceSchematicHandler {
             tSchematic = (SpaceSchematic) jaxUnmarsh.unmarshal(pName);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
 
         return tSchematic;

@@ -117,7 +117,7 @@ public class SaplingBase extends BlockSapling {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List metaList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> metaList) {
         for (int i = 0; i < this.saplingTextures.length; ++i) {
             metaList.add(new ItemStack(item, 1, i));
         }

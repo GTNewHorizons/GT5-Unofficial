@@ -3,11 +3,11 @@ package kubatech.loaders;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +35,8 @@ import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HTGRLoader {
+
+    public static final int SHELL_RECYCLE_CHANCE = 9500;
 
     @SuppressWarnings("unchecked")
     public static final RecipeMetadataKey<Pair<ItemStack, Integer>[]> FUEL = SimpleRecipeMetadataKey
@@ -115,7 +117,10 @@ public class HTGRLoader {
             }
             int[] chances = new int[items.size() + 3];
             Arrays.fill(chances, 0, items.size(), 10000);
-            Arrays.fill(chances, items.size(), items.size() + 3, 9500);
+            if (builder.getOutputChances() != null) {
+                System.arraycopy(builder.getOutputChances(), 0, chances, 0, builder.getOutputChances().length);
+            }
+            Arrays.fill(chances, items.size(), items.size() + 3, SHELL_RECYCLE_CHANCE);
             items.addAll(Arrays.asList(shells));
 
             GTValues.RA.stdBuilder()
@@ -126,6 +131,21 @@ public class HTGRLoader {
                 .duration(300)
                 .nbtSensitive()
                 .addTo(centrifugeNonCellRecipes);
+
+            // for HTGR NEI frontend
+            int[] virtualChances = new int[6 + chances.length];
+            Arrays.fill(virtualChances, 0, 6, 10000);
+            System.arraycopy(chances, 0, virtualChances, 6, chances.length);
+            ItemStack ofuel = HTGRItem.createTRISOFuel(material);
+            ArrayList<ItemStack> virtualOutputs = new ArrayList<>();
+            virtualOutputs.add(HTGRItem.createTRISOMixture(material));
+            virtualOutputs.add(HTGRItem.createIncompleteBISOFuel(material));
+            virtualOutputs.add(HTGRItem.createIncompleteTRISOFuel(material));
+            virtualOutputs.add(ofuel);
+            virtualOutputs.add(ofuel.copy());
+            virtualOutputs.add(HTGRItem.createBurnedTRISOFuel(material));
+            virtualOutputs.addAll(items);
+            builder.itemOutputs(virtualOutputs.toArray(new ItemStack[0]), virtualChances);
         })
         .build();
 
@@ -183,7 +203,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
-            .metadata(FUEL_MODIFICATOR, Triple.of(1d, 1.1d, 1.1d))
+            .metadata(FUEL_MODIFICATOR, Triple.of(1.1d, 1.1d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);
@@ -335,7 +355,7 @@ public class HTGRLoader {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L) })
-            .metadata(FUEL_MODIFICATOR, Triple.of(2d, 1.2d, 1.1d))
+            .metadata(FUEL_MODIFICATOR, Triple.of(0.65d, 1.2d, 1.1d))
             .duration(1)
             .eut(1)
             .addTo(HTGRRecipes);

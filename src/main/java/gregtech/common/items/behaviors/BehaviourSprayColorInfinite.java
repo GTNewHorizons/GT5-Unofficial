@@ -1,12 +1,10 @@
 package gregtech.common.items.behaviors;
 
-import static gregtech.api.enums.GTAuthors.AuthorQuerns;
 import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,17 +16,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
-import com.gtnewhorizons.modularui.api.UIInfos;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaBaseItem;
@@ -36,13 +29,12 @@ import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
-import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
-    private static final byte REMOVE_COLOR = (byte) Dyes.VALUES.length;
+    public static final byte REMOVE_COLOR = (byte) Dyes.VALUES.length;
 
-    private static final List<ItemStack> COLOR_SELECTIONS;
+    public static final List<ItemStack> COLOR_SELECTIONS;
     public static final String COLOR_NBT_TAG = "current_color";
     public static final String LOCK_NBT_TAG = "is_locked";
     public static final String PREVENT_SHAKE_TAG = "prevent_shake";
@@ -98,8 +90,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     @Override
-    protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, aX, aY, aZ, side);
+    protected boolean colorize(ColoredBlockContainer block) {
         if (mCurrentColor == REMOVE_COLOR) {
             return block.removeColor();
         }
@@ -145,28 +136,29 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
                 GameSettings.getKeyDisplayString(GTMod.clientProxy().shakeLockKey.getKeyCode())));
         aList.add(" ");
-        aList.add(GTAuthors.buildAuthorsWithFormat(AuthorQuerns));
 
         return Optional.of(aList);
     }
 
-    @Override
-    public @Nullable String getNameOverride(final String oldName, final ItemStack stack) {
-        final boolean isLocked = isLocked(stack);
-        final char lBracket = isLocked ? '[' : '(';
-        final char rBracket = isLocked ? ']' : ')';
+    public static String getNameWithColor(ItemStack stack) {
+        final Dyes color = getSpraycanDye(stack);
+        final String state = isLocked(stack) ? ".locked" : ".unlocked";
 
-        if (mCurrentColor == REMOVE_COLOR) {
-            return StatCollector
-                .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
-        } else {
-            return StatCollector.translateToLocalFormatted(
-                "item.GT5U.infinite_spray_can.name.colored",
-                lBracket,
-                Dyes.get(mCurrentColor)
-                    .getLocalizedDyeName(),
-                rBracket);
+        if (color == Dyes.MACHINE_METAL) {
+            return StatCollector.translateToLocal("item.GT5U.infinite_spray_can.name.solvent" + state);
         }
+        return StatCollector.translateToLocalFormatted(
+            "item.GT5U.infinite_spray_can.name.colored" + state,
+            color.getLocalizedDyeName());
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        if (ItemStackNBT.hasKey(itemStack, COLOR_NBT_TAG)) {
+            return ItemStackNBT.getByte(itemStack, COLOR_NBT_TAG);
+        }
+
+        return -1;
     }
     // endregion
 
@@ -208,7 +200,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 }
             }
 
-            openGUI(player, itemStack);
+            sendPacket(GTPacketInfiniteSpraycan.Action.OPEN_GUI);
         }
 
         return true;
@@ -217,27 +209,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // endregion
 
     // region GUI
-    private void openGUI(final EntityPlayer player, final ItemStack itemStack) {
-        UIInfos.openClientUI(
-            player,
-            buildContext -> new DyeSelectGUI(
-                StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.header"),
-                itemStack,
-                selectedStack -> sendPacket(
-                    GTPacketInfiniteSpraycan.Action.SET_COLOR,
-                    selectedStack.getItem() == Items.dye ? selectedStack.getItemDamage() : REMOVE_COLOR),
-                COLOR_SELECTIONS,
-                getColor(itemStack),
-                true).createWindow(buildContext));
-    }
-
-    private byte getColor(ItemStack sprayCan) {
-        if (ItemStackNBT.hasKey(sprayCan, COLOR_NBT_TAG)) {
-            return ItemStackNBT.getByte(sprayCan, COLOR_NBT_TAG);
-        }
-        return REMOVE_COLOR;
-    }
-
     private static void displayLockedMessage() {
         GTNHLib.proxy.printMessageAboveHotbar(
             StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.lock_error"),
@@ -248,11 +219,11 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // endregion
 
     // region Networking
-    private static void sendPacket(GTPacketInfiniteSpraycan.Action action) {
+    public static void sendPacket(GTPacketInfiniteSpraycan.Action action) {
         GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(action));
     }
 
-    private static void sendPacket(@SuppressWarnings("SameParameterValue") GTPacketInfiniteSpraycan.Action action,
+    public static void sendPacket(@SuppressWarnings("SameParameterValue") GTPacketInfiniteSpraycan.Action action,
         int newColor) {
         GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(action, newColor));
     }
@@ -303,7 +274,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // endregion
 
     // region Static Methods
-    public static Dyes getDye(ItemStack itemStack) {
+    public static Dyes getSpraycanDye(ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
             final byte color = itemStack.getTagCompound()
                 .getByte(COLOR_NBT_TAG);
@@ -322,27 +293,4 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return ItemStackNBT.getBoolean(itemStack, PREVENT_SHAKE_TAG);
     }
     // endregion
-
-    private static class DyeSelectGUI extends ItemSelectBaseGui {
-
-        public DyeSelectGUI(final String header, final ItemStack headerItem, final Consumer<ItemStack> selectedCallback,
-            final List<ItemStack> stacks, final int selected, final boolean noDeselect) {
-            super(header, headerItem, selectedCallback, stacks, selected, noDeselect);
-        }
-
-        @Override
-        public void setSelected(final int selected, Widget widget) {
-            super.setSelected(selected, widget);
-            widget.getWindow()
-                .closeWindow();
-        }
-
-        @Override
-        protected List<String> getItemTooltips(final int index) {
-            return ImmutableList.of(
-                index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
-                    : Dyes.getOrDefault(index, Dyes.MACHINE_METAL).mName);
-        }
-    }
-
 }

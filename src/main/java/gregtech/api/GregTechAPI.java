@@ -1,5 +1,6 @@
 package gregtech.api;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
@@ -22,8 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import bartworks.common.loaders.FluidLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.loader.Loaders;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
@@ -37,13 +40,13 @@ import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTCreativeTab;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.covers.CoverPosition;
+import tectech.thing.casing.TTCasingsContainer;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
@@ -167,14 +170,17 @@ public class GregTechAPI {
     public static Block sBlockOres1,
         /* sBlockGem, */
         sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8,
-        sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced, sBlockSheetmetalGT, sBlockSheetmetalBW;
+        sBlockMetal9, sBlockMetal10, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced, sBlockSheetmetalGT,
+        sBlockSheetmetalBW, sBlockFramesBW;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
-        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsFoundry, sBlockCasingsSE, sBlockCasingsSEMotor,
-        sBlockCasingsDyson, sBlockCasingsSiphon;
+        sBlockCasings14, sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsFoundry, sBlockCasingsBEC, sBlockCasingsSE,
+        sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
+    public static Block sBlockFenceMetal;
+    public static Block sBlockPad;
     public static Block sBlockFrames;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;
@@ -200,9 +206,8 @@ public class GregTechAPI {
     /**
      * Getting assigned by the Mod loading
      */
-    public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
-        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
-        sFullLoadFinished = false;
+    public static boolean sPreloadStarted = false, sPreloadFinished = false, sLoadStarted = false,
+        sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false, sFullLoadFinished = false;
 
     @SuppressWarnings("unchecked")
     private static final IntFunction<TileEntity>[] teCreators = new IntFunction[16];
@@ -242,11 +247,10 @@ public class GregTechAPI {
      *         Null-Pointer into it.
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
-        if (!GregTechAPI.sPreloadFinished) GTLog.err.println(
-            "GregTechAPI ERROR: " + aOreStack.getItem()
-                + "."
-                + aOreStack.getItemDamage()
-                + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
+        if (!GregTechAPI.sPreloadFinished) GT_FML_LOGGER.error(
+            "GregTechAPI ERROR: {}.{} - OreDict Unification Entries are not registered now, please call it in the postload phase.",
+            aOreStack.getItem(),
+            aOreStack.getItemDamage());
         return GTOreDictUnificator.get(true, aOreStack);
     }
 
@@ -322,6 +326,18 @@ public class GregTechAPI {
     }
 
     /**
+     * if this Block is a TESR Render Block
+     */
+    public static boolean isGTRenderer(Block block) {
+        if (block == GregTechAPI.sWormholeRender) return true;
+        if (block == GregTechAPI.sBlackholeRender) return true;
+        if (block == TTCasingsContainer.eyeOfHarmonyRenderBlock) return true;
+        if (block == TTCasingsContainer.forgeOfGodsRenderBlock) return true;
+        if (block == FluidLoader.bioFluidBlock) return true;
+        return block == Loaders.antimatterRenderBlock;
+    }
+
+    /**
      * Provides a new BaseMetaTileEntity. Because some interfaces are not always loaded (Buildcraft, Universal
      * Electricity) we have to use invocation at the constructor of the BaseMetaTileEntity.
      */
@@ -329,8 +345,8 @@ public class GregTechAPI {
         try {
             return new BaseMetaTileEntity();
         } catch (Exception e) {
-            GTLog.err.println("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
+            GT_FML_LOGGER.error(e);
             throw new RuntimeException(e);
         }
     }

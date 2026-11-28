@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
@@ -45,6 +46,7 @@ import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -55,10 +57,13 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.render.GTRendererBlock;
+import gregtech.common.render.IIconTexture;
+import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 
@@ -154,7 +159,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0) ? 100 : 0;
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0 ? 100 : 0;
     }
 
     @Override
@@ -164,12 +170,20 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean isFireSource(World aWorld, int aX, int aY, int aZ, ForgeDirection side) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0);
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0;
     }
 
     @Override
     public boolean isFlammable(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection face) {
-        return GregTechAPI.sMachineFlammable && (aWorld.getBlockMetadata(aX, aY, aZ) == 0);
+        return !isHatchAt(aWorld, aX, aY, aZ) && GregTechAPI.sMachineFlammable
+            && aWorld.getBlockMetadata(aX, aY, aZ) == 0;
+    }
+
+    private static boolean isHatchAt(IBlockAccess aWorld, int aX, int aY, int aZ) {
+        if (!(aWorld instanceof World world)) return false;
+        TileEntity te = world.getTileEntity(aX, aY, aZ);
+        return te instanceof BaseMetaTileEntity bmte && bmte.getMetaTileEntity() instanceof MTEHatch;
     }
 
     @Override
@@ -256,7 +270,15 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
+    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int ordinalSide) {
+        final TileEntity tTileEntity = blockAccess.getTileEntity(x, y, z);
+        if (tTileEntity instanceof BaseMetaTileEntity tile) {
+            if (tile.getMetaTileEntity() instanceof ICasingTextureProvider textureProvider) {
+                if (textureProvider.getCasingTexture() instanceof IIconTexture texture) {
+                    return texture.getIcon(ordinalSide, null);
+                }
+            }
+        }
         return Textures.BlockIcons.MACHINE_LV_SIDE.getIcon();
     }
 
@@ -343,10 +365,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         if (!GregTechAPI.sPostloadFinished) return;
-        GTLog.out.println("GTMod: Setting up Icon Register for Blocks");
+        GT_FML_LOGGER.debug("GTMod: Setting up Icon Register for Blocks");
         GregTechAPI.setBlockIconRegister(aIconRegister);
 
-        GTLog.out.println("GTMod: Registering MetaTileEntity specific Textures");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntity specific Textures");
         try {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -354,18 +376,18 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Starting Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Starting Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Starting Block Icon Load Phase");
         try {
             for (Runnable tRunnable : GregTechAPI.sGTBlockIconload) {
                 tRunnable.run();
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Finished Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Finished Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Finished Block Icon Load Phase");
     }
 
@@ -509,7 +531,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, boolean aWillHarvest) {
-        if (aPlayer != null && aPlayer.isSneaking()) {
+        if (aPlayer != null && aPlayer.isSneaking() && !EnchantmentHelper.getSilkTouchModifier(aPlayer)) {
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity instanceof CoverableTileEntity coverableTE) {
                 for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -517,10 +539,16 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                         coverableTE.dropCover(side, side);
                     }
                 }
+                coverableTE.setStrongRedstone((byte) 0);
             }
 
             if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
                 baseTE.setColorization((byte) -1);
+            }
+
+            if (tTileEntity instanceof IGregTechTileEntity gtTE
+                && gtTE.getMetaTileEntity() instanceof MTEDigitalTankBase tankMTE) {
+                tankMTE.resetFluidLockOnShiftBreak();
             }
         }
         // This delays deletion of the block until after getDrops
@@ -677,20 +705,12 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     }
 
     @Override
-    public void onBlockPlacedBy(World aWorld, int aX, int aY, int aZ, EntityLivingBase aPlayer, ItemStack aStack) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
-        iGregTechTileEntity.setFrontFacing(
-            BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
-    }
-
-    @Override
-    public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
-        final TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
+    public void addDebugInfoComp(EntityPlayer player, int x, int y, int z, int logLevel,
+        ArrayList<IChatComponent> components) {
+        final TileEntity tTileEntity = player.worldObj.getTileEntity(x, y, z);
         if (tTileEntity instanceof IDebugableTileEntity) {
-            return ((IDebugableTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
+            ((IDebugableTileEntity) tTileEntity).addDebugInfoComp(player, logLevel, components);
         }
-        return new ArrayList<>();
     }
 
     @Override

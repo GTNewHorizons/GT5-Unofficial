@@ -1,5 +1,8 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,6 +25,8 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import appeng.api.crafting.ICraftingIconProvider;
+import appeng.api.crafting.IPatternTargetKey;
+import appeng.api.crafting.IPatternTargetKeyProvider;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.pathing.IPathingGrid;
@@ -33,11 +38,12 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ICleanroomReceiver;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTLanguageManager;
@@ -46,6 +52,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
+import gregtech.common.config.Client;
+import gregtech.common.gui.modularui.util.MTEItemStackHandler;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -64,7 +72,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
-public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
+public abstract class MetaTileEntity extends CommonMetaTileEntity
+    implements ICraftingIconProvider, IPatternTargetKeyProvider {
 
     /**
      * Inventory wrapper for ModularUI
@@ -114,15 +123,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
-        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
+        if (getClass().getAnnotation(IMetaTileEntity.SkipGenerateName.class) == null) {
+            GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
+        }
 
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
     }
 
     /**
@@ -130,13 +135,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
@@ -148,7 +147,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+    public final void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+        final IGregTechTileEntity oldBase = mBaseMetaTileEntity;
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
             mBaseMetaTileEntity.getMetaTileEntity()
                 .inValidate();
@@ -157,6 +157,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         mBaseMetaTileEntity = aBaseMetaTileEntity;
         if (mBaseMetaTileEntity != null) {
             mBaseMetaTileEntity.setMetaTileEntity(this);
+        }
+        if (oldBase != aBaseMetaTileEntity && oldBase instanceof CommonBaseMetaTileEntity oldMeta) {
+            oldMeta.refreshMetaTileEntityValidity();
         }
     }
 
@@ -178,7 +181,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         if (capability == ICleanroomReceiver.class) {
             return capability.cast(cleanroomReference);
         }
-        if (capability == ICraftingIconProvider.class) {
+        if (capability == ICraftingIconProvider.class || capability == IPatternTargetKeyProvider.class) {
             return capability.cast(this);
         }
         return super.getCapability(capability, side);
@@ -190,8 +193,21 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public String getLocalName() {
-        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
+    }
+
+    /**
+     * Whether this exact class builds its own name, as opposed to reading one key per instance.
+     * <p>
+     * Classes annotated with {@link IMetaTileEntity.SkipGenerateName} format their name from a key shared by the whole
+     * family, which does not fit their subclasses. The annotation is not inherited, so a subclass that does not build
+     * its own name reads its own key instead.
+     *
+     * @see #getLocalName()
+     */
+    protected final boolean hasOwnLocalName() {
+        return getClass().getAnnotation(IMetaTileEntity.SkipGenerateName.class) != null;
     }
 
     @Override
@@ -321,8 +337,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     /**
      * @return what type of texture does this machine use for GUI, i.e. Bronze, Steel, or Primitive
      */
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.NONE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STANDARD;
     }
 
     /**
@@ -551,10 +567,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     /**
      * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
-     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot, nor when items are inserted/extracted
+     * through {@link #getInventoryHandler()} (the path used by the GUI and AE). Marking the tile dirty here makes
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()} reliable across all of those paths, which input hatches
+     * rely on to trigger instant recipe checks.
      */
-    protected void onContentsChanged(int slot) {
-
+    public void onContentsChanged(int slot) {
+        markDirty();
     }
 
     /**
@@ -653,11 +672,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public void onColorChangeClient(byte aColor) {
-        // Do nothing apparently
-    }
-
-    @Override
     public void doExplosion(long aExplosionPower) {
         float tStrength = GTValues.getExplosionPowerForVoltage(aExplosionPower);
         final int tX = getBaseMetaTileEntity().getXCoord();
@@ -707,17 +721,25 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return getStackForm(1);
     }
 
+    @Nullable
+    @Override
+    public IPatternTargetKey getTargetKey() {
+        return null;
+    }
+
     // === Waila compat ===
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.facing",
-                getFacingNameLocalized(
-                    mBaseMetaTileEntity.getFrontFacing()
-                        .ordinal())));
+        if (Client.waila.showFacing) {
+            currenttip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.facing",
+                    getFacingNameLocalized(
+                        mBaseMetaTileEntity.getFrontFacing()
+                            .ordinal())));
+        }
 
         if (this instanceof IPowerChannelState state) {
             final NBTTagCompound tag = accessor.getNBTData();
@@ -769,7 +791,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);
         }
         return "";
     }
@@ -803,7 +825,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     final public byte getColor() {
-        return getBaseMetaTileEntity().getColorization();
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity == null) return UNCOLOURED;
+        return baseMetaTileEntity.getColorization();
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
@@ -831,5 +855,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     public int getColorTextRed() {
         return COLOR_TEXT_RED.get();
+    }
+
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return false;
     }
 }

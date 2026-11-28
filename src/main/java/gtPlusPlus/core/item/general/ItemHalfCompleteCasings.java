@@ -19,7 +19,7 @@ public class ItemHalfCompleteCasings extends BaseItemColourable {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 4; i++) {
             list.add(new ItemStack(item, 1, i));
         }

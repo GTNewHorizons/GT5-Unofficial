@@ -1,6 +1,9 @@
 package galacticgreg.api;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -141,7 +144,7 @@ public class ModDimensionDef {
                 else if (tLst.size() > 1) tGen = tLst.get(random.nextInt(tLst.size()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return tGen;
     }
@@ -187,8 +190,8 @@ public class ModDimensionDef {
         return this;
     }
 
-    public ModDimensionDef setGeneratesAsteroids() {
-        generatesAsteroids = true;
+    public ModDimensionDef setGeneratesAsteroids(boolean generate) {
+        generatesAsteroids = generate;
         return this;
     }
 
@@ -281,6 +284,10 @@ public class ModDimensionDef {
         } else {
             return specialBlocksForAsteroids.get(rng.nextInt(specialBlocksForAsteroids.size()));
         }
+    }
+
+    public @NotNull List<IStoneType> getAsteroidMaterials() {
+        return Collections.unmodifiableList(validAsteroidMaterials);
     }
 
     /**

@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
 
 import java.io.ByteArrayInputStream;
@@ -22,14 +23,21 @@ import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
+/**
+ * TODO: Please remove past 2.10.0!
+ */
+@Deprecated
 public class GlobalEnergyWorldSavedData extends WorldSavedData {
 
     public static GlobalEnergyWorldSavedData INSTANCE;
 
     private static final String DATA_NAME = "GregTech_WirelessEUWorldSavedData";
+    private static final String DEPRECATED = "deprecated";
 
     private static final String GlobalEnergyNBTTag = "GregTech_GlobalEnergy_MapNBTTag";
     private static final String GlobalEnergyTeamNBTTag = "GregTech_GlobalEnergyTeam_MapNBTTag";
+
+    private boolean deprecated = false;
 
     private static void loadInstance(World world) {
 
@@ -64,6 +72,11 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
     @Override
     @SuppressWarnings("unchecked")
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        deprecated = true;
+        if (nbtTagCompound.hasKey(DEPRECATED)) {
+            // only load data once for migration
+            return;
+        }
 
         try {
             byte[] ba = nbtTagCompound.getByteArray(GlobalEnergyNBTTag);
@@ -73,18 +86,17 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             HashMap<Object, BigInteger> hashData = (HashMap<Object, BigInteger>) data;
             for (Map.Entry<Object, BigInteger> entry : hashData.entrySet()) {
                 try {
-                    GlobalEnergy.put(
-                        UUID.fromString(
-                            entry.getKey()
-                                .toString()),
-                        entry.getValue());
+                    UUID leaderUUID = UUID.fromString(
+                        entry.getKey()
+                            .toString());
+                    WirelessNetworkManager.setUserEU(leaderUUID, entry.getValue());
                 } catch (RuntimeException ignored) {
                     // probably a malformed uuid. in any case, try carry on with the load
                 }
             }
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(GlobalEnergyNBTTag + " FAILED");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error(GlobalEnergyNBTTag + " FAILED");
+            GT_FML_LOGGER.error(exception);
         }
         try {
             if (!nbtTagCompound.hasKey(GlobalEnergyTeamNBTTag)) return;
@@ -102,14 +114,18 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
                 }
             }
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error("{} FAILED", GlobalEnergyTeamNBTTag);
+            GT_FML_LOGGER.error(exception);
         }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
-
+        if (deprecated) {
+            nbtTagCompound.setBoolean(DEPRECATED, true);
+            // stop saving data, not needed anymore after migration
+            return;
+        }
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
@@ -117,9 +133,10 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             objectOutputStream.flush();
             byte[] data = byteArrayOutputStream.toByteArray();
             nbtTagCompound.setByteArray(GlobalEnergyNBTTag, data);
+            nbtTagCompound.setBoolean(DEPRECATED, true);
         } catch (IOException exception) {
-            System.out.println(GlobalEnergyNBTTag + " SAVE FAILED");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error("{} SAVE FAILED", GlobalEnergyNBTTag);
+            GT_FML_LOGGER.error(exception);
         }
     }
 }

@@ -32,6 +32,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -41,6 +42,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -125,12 +127,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     protected MTEPurificationUnitBase(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean doRandomMaintenanceDamage() {
-        // The individual purification unit structures cannot have maintenance issues, so do nothing.
-        return true;
     }
 
     @Override
@@ -231,7 +227,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             long amountAvailable = 0;
             for (FluidStack fluid : this.storedFluids) {
                 if (fluid.isFluidEqual(waterInput)) {
-                    amountAvailable += fluid.amount;
+                    amountAvailable += GTUtility.getFluidAmount(fluid);
                 }
             }
 
@@ -296,8 +292,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public FluidStack getWaterBoostAmount(GTRecipe recipe) {
         // Recipes should always be constructed so that output water is always the first fluid output
         FluidStack outputWater = recipe.mFluidOutputs[0];
-        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
-        return new FluidStack(outputWater.getFluid(), amount);
+        long outputWaterAmount = GTUtility.getFluidAmount(outputWater);
+        long amount = Math.round(outputWaterAmount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
+        return GTUtility.createFluidStack(outputWater.getFluid(), amount);
     }
 
     /**
@@ -319,9 +316,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public void depleteRecipeInputs() {
         for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
             FluidStack input = this.currentRecipe.mFluidInputs[i];
-            FluidStack copyWithParallel = input.copy();
+            long inputAmount = GTUtility.getFluidAmount(input);
+            FluidStack copyWithParallel = GTUtility.createFluidStack(input.getFluid(), inputAmount);
             if (i == 0) {
-                copyWithParallel.amount = input.amount * effectiveParallel;
+                long waterAmount = effectiveParallel * GTUtility.getFluidAmount(input);
+                GTUtility.setFluidAmount(copyWithParallel, waterAmount);
             }
             this.depleteInput(copyWithParallel);
         }
@@ -361,9 +360,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
         for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
             fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
-            // Clamp the fluid output to max int to avoid overflow at extreme parallels
-            fluidOutputs[i].amount = (int) Math
-                .min((long) effectiveParallel * fluidOutputs[i].amount, Integer.MAX_VALUE);
+            long outputAmount = (long) effectiveParallel * GTUtility.getFluidAmount(fluidOutputs[i]);
+            GTUtility.setFluidAmount(fluidOutputs[i], outputAmount);
         }
 
         ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
@@ -437,7 +435,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
         if (mOutputFluids != null) {
             FluidStack outputWater = getDegradedOutputWater();
-            this.addOutput(outputWater);
+            this.addOutputPartial(outputWater);
         }
     }
 
@@ -456,10 +454,13 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             roll = random.nextInt(0, 2);
             if (roll == 1) {
                 // Rolled good, stop the loop and output water below current tier
-                int amount = mOutputFluids[0].amount;
+                long amount = GTUtility.getFluidAmount(mOutputFluids[0]);
                 // For tier 1, this is distilled water, so we cannot use the helper function!
                 if (waterTier == 1) {
-                    return GTModHandler.getDistilledWater(amount);
+                    FluidStack waterStack = GTUtility.createFluidStack(GTModHandler.getDistilledWater(1));
+                    GTUtility.setFluidAmount(waterStack, amount);
+
+                    return waterStack;
                 }
                 Materials water = PurifiedWaterHelpers.getPurifiedWaterTier(waterTier - 1);
                 return water.getFluid(amount);
@@ -477,18 +478,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     public long getActualPowerUsage() {
         return getBasePowerUsage() * effectiveParallel;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // The individual purification unit structures cannot have maintenance issues, so fix them all.
-        this.mCrowbar = true;
-        this.mWrench = true;
-        this.mHardHammer = true;
-        this.mSoftMallet = true;
-        this.mSolderingTool = true;
-        this.mScrewdriver = true;
-        return true;
     }
 
     @Override
@@ -650,52 +639,46 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.purification_unit_base.linked_at",
-                    controllerX,
-                    controllerY,
-                    controllerZ));
+                IGregTechDeviceInformation
+                    .encode("GT5U.infodata.purification_unit_base.linked_at", controllerX, controllerY, controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "GT5U.infodata.purification_unit_base.success_chance",
                         EnumChatFormatting.YELLOW + formatNumber(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }
 
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
+        } else ret.add("GT5U.infodata.purification_unit_base.not_linked");
         ret.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.parallel.current", "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
-            currenttip.add(
+            list.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.purification_unit_base.linked_to",
                     tag.getInteger("controllerX"),
                     tag.getInteger("controllerY"),
                     tag.getInteger("controllerZ")));
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
+            list.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
 
         tag.setBoolean("linked", getController() != null);
@@ -704,8 +687,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             tag.setInteger("controllerY", controllerY);
             tag.setInteger("controllerZ", controllerZ);
         }
-
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     public PurificationUnitStatus status() {
@@ -741,11 +722,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     public void setMaxParallel(int value) {
         maxParallel = value;
-    }
-
-    @Override
-    public boolean supportsMaintenanceIssueHoverable() {
-        return false;
     }
 
     @Override

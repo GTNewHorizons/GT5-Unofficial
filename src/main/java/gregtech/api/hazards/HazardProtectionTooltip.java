@@ -1,8 +1,5 @@
 package gregtech.api.hazards;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class HazardProtectionTooltip {
 
     public static String FULL_PROTECTION_TRANSLATION_KEY = "GT5U.providesfullhazmatprotection";
@@ -19,23 +16,5 @@ public class HazardProtectionTooltip {
             case GAS -> "GT5U.providesgashazmatprotection";
             case SPACE -> "tooltip.spacesuit";
         };
-    }
-
-    public static final Set<Hazard> CBRN_HAZARDS = cbrnHazards();
-    public static final Set<Hazard> TEMPERATURE_HAZARDS = temperatureHazards();
-
-    private static HashSet<Hazard> cbrnHazards() {
-        HashSet<Hazard> set = new HashSet<>();
-        set.add(Hazard.BIOLOGICAL);
-        set.add(Hazard.GAS);
-        set.add(Hazard.RADIOLOGICAL);
-        return set;
-    }
-
-    private static HashSet<Hazard> temperatureHazards() {
-        HashSet<Hazard> set = new HashSet<>();
-        set.add(Hazard.FROST);
-        set.add(Hazard.HEAT);
-        return set;
     }
 }
