@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
@@ -64,6 +65,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import appeng.api.crafting.IPatternTargetKey;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -103,6 +105,7 @@ import gregtech.client.GTSoundLoop;
 import gregtech.common.config.Client;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.crossmod.ae2.PatternTargetKey;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderBar;
@@ -1044,6 +1047,26 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return null;
     }
 
+    private static final Predicate<GTRecipe> PATTERN_RECIPE_FILTER = recipe -> recipe
+        .getMetadataOrDefault(COMPRESSION_TIER, 0) <= 0;
+
+    @Override
+    public IPatternTargetKey getTargetKey() {
+        final RecipeMap<?> map = getRecipeMap();
+        if (map == null) return null;
+        final List<ItemStack> items = new ArrayList<>(getNonConsumedInputDisplayItems());
+        for (int i = getInputSlot(); i < getInputSlot() + mInputSlotCount; i++) {
+            final ItemStack stack = getStackInSlot(i);
+            if (i != getCircuitSlot() && GTUtility.isAnyIntegratedCircuit(stack)) items.add(stack);
+        }
+        return PatternTargetKey.of(
+            map,
+            V[mTier],
+            Arrays.asList(appendSelectedCircuit(items.toArray(new ItemStack[0]))),
+            getSpecialSlot(),
+            PATTERN_RECIPE_FILTER);
+    }
+
     /**
      * Override this to check the Recipes yourself, super calls to this could be useful if you just want to add a
      * special case
@@ -1114,7 +1137,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             getBaseMetaTileEntity().setOnFire();
             return DID_NOT_FIND_RECIPE;
         }
-        if (tRecipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (!PATTERN_RECIPE_FILTER.test(tRecipe)) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (GTMod.proxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;

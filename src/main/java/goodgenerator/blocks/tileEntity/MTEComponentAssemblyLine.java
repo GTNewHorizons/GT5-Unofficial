@@ -52,6 +52,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.crossmod.ae2.PatternTargetKey.MaxSpecialValue;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
@@ -284,13 +285,18 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
+    protected MaxSpecialValue getPatternRecipeFilter() {
+        return new MaxSpecialValue(casingTier + 1);
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > casingTier + 1) {
+                if (!getPatternRecipeFilter().test(recipe)) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;

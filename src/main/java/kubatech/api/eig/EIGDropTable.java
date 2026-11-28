@@ -3,6 +3,8 @@ package kubatech.api.eig;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class EIGDropTable {
 
     private static final String NBT_DROP_TABLE_ITEM_KEY = "item";
     private static final String NBT_DROP_TABLE_COUNT_KEY = "count";
+    private static final ItemStack[] NO_DROPS = new ItemStack[0];
 
     private final @NotNull ItemStackMap<Double> dropTable;
 
@@ -196,31 +199,25 @@ public class EIGDropTable {
     }
 
     /**
-     * Consumes drops with drop counts above 1 and returns a list of the consumed item stacks.
+     * Consumes drops with drop counts above 1 and returns a list of the consumed item stacks
      *
-     * @return The list of consumed items;
+     * @return the list of consumed items
      */
     public ItemStack @NotNull [] getDrops() {
-        // doesn't need to filter for less than 0 so that the EIG displays the progress of incomplete items.
-        return this.dropTable.entrySet()
-            .parallelStream()
-            .map(EIGDropTable::computeDrops)
-            .toArray(ItemStack[]::new);
+        List<ItemStack> drops = new ArrayList<>();
+
+        for (Map.Entry<ItemStack, Double> entry : this.dropTable.entrySet()) {
+            double value = entry.getValue();
+
+            ItemStack copied = entry.getKey()
+                .copy();
+            copied.stackSize = (int) value;
+
+            entry.setValue(value % 1);
+            drops.add(copied);
+        }
+
+        return drops.isEmpty() ? NO_DROPS : drops.toArray(NO_DROPS);
     }
 
-    /**
-     * Consumes the items in the entry and returns the consumed item without removing partial items.
-     *
-     * @param entry The entry to consume from
-     * @return The item tha twas removed.
-     */
-    private static @NotNull ItemStack computeDrops(Map.@NotNull Entry<ItemStack, Double> entry) {
-        ItemStack copied = entry.getKey()
-            .copy();
-        copied.stackSize = (int) Math.floor(entry.getValue());
-        if (entry.getValue() >= 1.0d) {
-            entry.setValue(entry.getValue() % 1);
-        }
-        return copied;
-    }
 }

@@ -619,7 +619,32 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     public IChatComponent getInterfaceNameSuffix() {
         IChatComponent suffix = null;
 
-        // Ghost + physical circuit suffix
+        final List<Integer> circuitNumbers = getInterfaceCircuitNumbers();
+        if (!circuitNumbers.isEmpty()) {
+            suffix = new ChatComponentGhostCircuitSuffix(circuitNumbers);
+        }
+
+        // Non-consumed items suffix (e.g. molds in Extruder)
+        final List<ItemStack> items = getInterfaceNonConsumedItems();
+        if (!items.isEmpty()) {
+            IChatComponent itemSuffix = new ChatComponentNonConsumedItemsSuffix(items);
+            suffix = suffix == null ? itemSuffix : suffix.appendSibling(itemSuffix);
+        }
+
+        return suffix;
+    }
+
+    @Override
+    public List<ItemStack> getMachineConfigIcons() {
+        final List<ItemStack> icons = new ArrayList<>();
+        for (int circuit : getInterfaceCircuitNumbers()) {
+            icons.add(GTUtility.getIntegratedCircuit(circuit));
+        }
+        icons.addAll(getInterfaceNonConsumedItems());
+        return icons;
+    }
+
+    private List<Integer> getInterfaceCircuitNumbers() {
         List<Integer> circuitNumbers = new ArrayList<>();
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs != null && ccs.allowSelectCircuit()) {
@@ -631,20 +656,13 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IPhysicalCircuitDisplay provider) {
             circuitNumbers.addAll(provider.getPhysicalCircuitNumbers());
         }
-        if (!circuitNumbers.isEmpty()) {
-            suffix = new ChatComponentGhostCircuitSuffix(circuitNumbers);
-        }
+        return circuitNumbers;
+    }
 
-        // Non-consumed items suffix (e.g. molds in Extruder)
-        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider) {
-            List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
-            if (!items.isEmpty()) {
-                IChatComponent itemSuffix = new ChatComponentNonConsumedItemsSuffix(items);
-                suffix = suffix == null ? itemSuffix : suffix.appendSibling(itemSuffix);
-            }
-        }
-
-        return suffix;
+    private List<ItemStack> getInterfaceNonConsumedItems() {
+        return hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider
+            ? provider.getNonConsumedInputDisplayItems()
+            : Collections.emptyList();
     }
 
     /**
