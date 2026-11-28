@@ -36,6 +36,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.kuba6000.mobsinfo.api.IChanceModifier;
@@ -92,9 +93,9 @@ public class MobHandlerLoader {
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
 
             try {
-                this.entityCopy.setWorld(
-                    MTE.getBaseMetaTileEntity()
-                        .getWorld());
+                final World world = MTE.getBaseMetaTileEntity()
+                    .getWorld();
+                this.entityCopy.setWorld(world);
                 this.entityCopy.setPosition(
                     MTE.getBaseMetaTileEntity()
                         .getXCoord(),
@@ -108,13 +109,7 @@ public class MobHandlerLoader {
 
                     double dChance = (double) chance / 100d;
                     for (IChanceModifier chanceModifier : o.chanceModifiers) {
-                        dChance = chanceModifier.apply(
-                            dChance,
-                            MTE.getBaseMetaTileEntity()
-                                .getWorld(),
-                            stacks,
-                            MTE.EECPlayer,
-                            this.entityCopy);
+                        dChance = chanceModifier.apply(dChance, world, stacks, MTE.EECPlayer, this.entityCopy);
                     }
 
                     chance = (int) (dChance * 100d);
@@ -157,9 +152,7 @@ public class MobHandlerLoader {
                     InfernalMobsCore infernalMobsCore = InfernalMobsCore.instance();
                     if (recipe.infernalityAllowed && mEUt * 8 <= MTE.getMaxInputEu()
                         && !infernalMobsCore.getDimensionBlackList()
-                            .contains(
-                                MTE.getBaseMetaTileEntity()
-                                    .getWorld().provider.dimensionId)) {
+                            .contains(world.provider.dimensionId)) {
                         int p = 0;
                         int mods = 0;
                         if (recipe.alwaysinfernal
@@ -191,8 +184,7 @@ public class MobHandlerLoader {
                                     .getItemEnchantability());
                             stacks.add(infernalstack);
                             MTE.lEUt *= 8L;
-                            MTE.mMaxProgresstime *= mods * InfernalMobsCore.instance()
-                                .getMobModHealthFactor();
+                            MTE.mMaxProgresstime *= mods * infernalMobsCore.getMobModHealthFactor();
                         }
                     }
                 }
