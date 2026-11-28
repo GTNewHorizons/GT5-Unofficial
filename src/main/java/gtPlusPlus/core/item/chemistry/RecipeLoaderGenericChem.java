@@ -38,6 +38,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 public class RecipeLoaderGenericChem {
 
     public static void generate() {
+        recipeCatalystRed();
         recipeCatalystBlue();
         recipeCatalystOrange();
         recipeCatalystPurple();
@@ -248,6 +249,20 @@ public class RecipeLoaderGenericChem {
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
+    }
+
+    private static void recipeCatalystRed() {
+        // Assembler Recipe
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.EmptyCatalystCarrier.get(10),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 2))
+            .circuit(4)
+            .itemOutputs(GregtechItemList.RedMetalCatalyst.get(10))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
     }
 
     private static void recipeCatalystBlue() {

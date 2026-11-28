@@ -212,7 +212,8 @@ public final class ModItems {
 
         // Generic Chem Items
         Item genericChemItem = new ItemGenericChemBase();
-
+        GregtechItemList.RedMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1))
+            .registerOre("catalystIronCopper");
         GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2))
             .registerOre("catalystCobaltTitanium");
         GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3))

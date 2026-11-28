@@ -730,6 +730,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     static {
         registerChemplantCatalyst(GregtechItemList.BlueMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.RedMetalCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.BrownMetalCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.OrangeMetalCatalyst.get(1));
         registerChemplantCatalyst(GregtechItemList.PurpleMetalCatalyst.get(1));

@@ -16,17 +16,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import bartworks.system.material.WerkstoffLoader;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigItems;
@@ -40,8 +42,12 @@ public class KevlarRecipes {
         // Terephthalic Acid
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.BlueMetalCatalyst.get(0))
-            .fluidInputs(Materials.Dimethylbenzene.getFluid(1000), Materials.Oxygen.getGas(6000))
-            .fluidOutputs(Materials.TerephthalicAcid.getFluid(1000), Materials.Water.getFluid(2000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Dimethylbenzene, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 6000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.TerephthalicAcid, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.Water, FluidShapes.fluidLiquid, 2000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -49,8 +55,12 @@ public class KevlarRecipes {
 
         // Hexachloroxylene
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Chlorine.getGas(12000), Materials.IVDimethylbenzene.getFluid(1000))
-            .fluidOutputs(Materials.Hexachloroxylene.getFluid(1000), Materials.HydrochloricAcid.getFluid(6000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12000),
+                MaterialLibAPI.getFluidStack(Materials.IVDimethylbenzene, FluidShapes.fluidLiquid, 1000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.Hexachloroxylene, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 6000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -58,8 +68,12 @@ public class KevlarRecipes {
         // TerephthaloylChloride
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.RedMetalCatalyst.get(0))
-            .fluidInputs(Materials.Hexachloroxylene.getFluid(1000), Materials.TerephthalicAcid.getFluid(1000))
-            .fluidOutputs(Materials.TerephthaloylChloride.getFluid(2000), Materials.HydrochloricAcid.getFluid(2000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Hexachloroxylene, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.TerephthalicAcid, FluidShapes.fluidLiquid, 1000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.TerephthaloylChloride, FluidShapes.fluidLiquid, 2000),
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -67,17 +81,27 @@ public class KevlarRecipes {
 
         // Nitroaniline
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Nitrochlorobenzene.getFluid(1000), Materials.Ammonia.getGas(2000))
-            .fluidOutputs(Materials.IVNitroaniline.getFluid(1000), WerkstoffLoader.AmmoniumChloride.getFluidOrGas(1000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Nitrochlorobenzene, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 2000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.IVNitroaniline, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.AmmoniumChloride, FluidShapes.fluidLiquid, 1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // Paraphenylene Diamine
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.PinkMetalCatalyst.get(0), Materials.Iron.getDust(1))
-            .fluidInputs(Materials.Hydrogen.getGas(6000), Materials.IVNitroaniline.getFluid(1000))
-            .fluidOutputs(Materials.ParaPhenylenediamine.getFluid(1000), Materials.Water.getFluid(2000))
+            .itemInputs(
+                GregtechItemList.PinkMetalCatalyst.get(0),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 6000),
+                MaterialLibAPI.getFluidStack(Materials.IVNitroaniline, FluidShapes.fluidLiquid, 1000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.ParaPhenylenediamine, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.Water, FluidShapes.fluidLiquid, 2000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -86,8 +110,12 @@ public class KevlarRecipes {
         // Liquid Crystal Kevlar
         GTValues.RA.stdBuilder()
             .circuit(24)
-            .fluidInputs(Materials.ParaPhenylenediamine.getFluid(1000), Materials.TerephthaloylChloride.getFluid(1000))
-            .fluidOutputs(Materials.LiquidCrystalKevlar.getFluid(1000L), Materials.HydrochloricAcid.getFluid(2000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.ParaPhenylenediamine, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.TerephthaloylChloride, FluidShapes.fluidLiquid, 1000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, 1000),
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -99,17 +127,17 @@ public class KevlarRecipes {
             .fluidInputs(
                 new FluidStack(GTPPFluids.Aniline, 2000),
                 new FluidStack(GTPPFluids.Formaldehyde, 1000),
-                Materials.HydrochloricAcid.getFluid(1000))
-            .fluidOutputs(Materials.PhosgenatedMDIMixture.getFluid(4000))
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 1000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PhosgenatedMDIMixture, FluidShapes.fluidLiquid, 4000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // Methylene Diphenyl Diisocyanate
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.PhosgenatedMDIMixture.getFluid(1000))
-            .itemOutputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1))
-            .fluidOutputs(Materials.HydrochloricAcid.getFluid(250))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhosgenatedMDIMixture, FluidShapes.fluidLiquid, 1000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.MethyleneDiphenylDiisocyanate, Shapes.dust, 1))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 250))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
@@ -117,17 +145,19 @@ public class KevlarRecipes {
         // Polyurethane Resin
         GTValues.RA.stdBuilder()
             .circuit(24)
-            .itemInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1))
-            .fluidInputs(Materials.Ethyleneglycol.getFluid(1000))
-            .fluidOutputs(Materials.PolyurethaneResin.getFluid(1000))
+            .itemInputs(MaterialLibAPI.getStack(Materials.MethyleneDiphenylDiisocyanate, Shapes.dust, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethyleneglycol, FluidShapes.fluidLiquid, 1000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PolyurethaneResin, FluidShapes.fluidLiquid, 1000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .fluidInputs(Materials.Ethylene.getGas(1000), Materials.Water.getFluid(1000))
-            .fluidOutputs(Materials.Ethyleneglycol.getFluid(1000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1000),
+                MaterialLibAPI.getFluidStack(Materials.Water, FluidShapes.fluidLiquid, 1000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethyleneglycol, FluidShapes.fluidLiquid, 1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerNonCellRecipes);
@@ -136,7 +166,7 @@ public class KevlarRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Spinneret.get(0L))
             .itemOutputs(ItemList.DrawnKevlarFiber.get(8L))
-            .fluidInputs(Materials.LiquidCrystalKevlar.getFluid(500))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, 500))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidSolidifierRecipes);
@@ -145,42 +175,42 @@ public class KevlarRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DrawnKevlarFiber.get(8))
             .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade3PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DrawnKevlarFiber.get(8))
             .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade4PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DrawnKevlarFiber.get(8))
             .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade5PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DrawnKevlarFiber.get(8))
             .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade6PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DrawnKevlarFiber.get(16))
             .itemOutputs(ItemList.SpunKevlarFiber.get(16))
-            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade7PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DrawnKevlarFiber.get(32))
             .itemOutputs(ItemList.SpunKevlarFiber.get(32))
-            .fluidInputs(Materials.Grade8PurifiedWater.getFluid(1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(chemicalBathRecipes);
@@ -198,8 +228,9 @@ public class KevlarRecipes {
         // Byproduct Super Glue
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1))
-            .fluidOutputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1_000))
+            .itemInputs(MaterialLibAPI.getStack(Materials.MethyleneDiphenylDiisocyanate, Shapes.dust, 1))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(Materials.EthylCyanoacrylateSuperGlue, FluidShapes.fluidLiquid, 1_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(fluidHeaterRecipes);
@@ -219,10 +250,10 @@ public class KevlarRecipes {
             GTValues.RA.stdBuilder()
                 .circuit(23)
                 .itemInputs(
-                    Materials.MethyleneDiphenylDiisocyanate.getDust(1),
+                    MaterialLibAPI.getStack(Materials.MethyleneDiphenylDiisocyanate, Shapes.dust, 1),
                     GTBees.combs.getStackForType(CombType.KEVLAR, 16))
-                .fluidInputs(Materials.Ethyleneglycol.getFluid(1000))
-                .fluidOutputs(Materials.PolyurethaneResin.getFluid(2000))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethyleneglycol, FluidShapes.fluidLiquid, 1000))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PolyurethaneResin, FluidShapes.fluidLiquid, 2000))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(multiblockChemicalReactorRecipes);
@@ -242,9 +273,11 @@ public class KevlarRecipes {
                 .circuit(23)
                 .itemInputs(crystalGelum)
                 .fluidInputs(
-                    Materials.ParaPhenylenediamine.getFluid(1000),
-                    Materials.TerephthaloylChloride.getFluid(1000))
-                .fluidOutputs(Materials.LiquidCrystalKevlar.getFluid(2000L), Materials.HydrochloricAcid.getFluid(2000))
+                    MaterialLibAPI.getFluidStack(Materials.ParaPhenylenediamine, FluidShapes.fluidLiquid, 1000),
+                    MaterialLibAPI.getFluidStack(Materials.TerephthaloylChloride, FluidShapes.fluidLiquid, 1000))
+                .fluidOutputs(
+                    MaterialLibAPI.getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, 2000),
+                    MaterialLibAPI.getFluidStack(Materials.HydrochloricAcid, FluidShapes.fluidLiquid, 2000))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(multiblockChemicalReactorRecipes);
