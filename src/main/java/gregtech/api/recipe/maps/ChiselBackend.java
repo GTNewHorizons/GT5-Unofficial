@@ -91,21 +91,17 @@ public class ChiselBackend extends RecipeMapBackend {
 
     @Nullable
     private static GTRecipe generateChiselToTargetRecipe(ItemStack input, ItemStack target) {
-        List<ItemStack> results = getItemsForChiseling(input);
-        for (int i = 0; i < results.size(); i++) {
-            if (GTUtility.areStacksEqual(results.get(i), target, true)) {
-                return GTRecipeBuilder.builder()
-                    .itemInputs(GTUtility.copyAmount(1, input))
-                    .itemOutputs(GTUtility.copyAmount(1, target))
-                    .duration(20)
-                    .eut(TierEU.RECIPE_LV / 2)
-                    .specialValue(0)
-                    .noBuffer()
-                    .build()
-                    .orElse(null);
-            }
-        }
-        return null;
+        ItemStack result = tryChiselingInto(input, target);
+        if (result == null) return null;
+        return GTRecipeBuilder.builder()
+            .itemInputs(GTUtility.copyAmount(1, input))
+            .itemOutputs(GTUtility.copyAmount(1, result))
+            .duration(20)
+            .eut(TierEU.RECIPE_LV / 2)
+            .specialValue(0)
+            .noBuffer()
+            .build()
+            .orElse(null);
     }
 
     @Override
@@ -131,6 +127,11 @@ public class ChiselBackend extends RecipeMapBackend {
 
     private static boolean hasChiselResults(@Nullable ItemStack stack) {
         return stack != null && !getItemsForChiseling(stack).isEmpty();
+    }
+
+    @Nullable
+    private static ItemStack tryChiselingInto(ItemStack input, ItemStack target) {
+        return CarvingUtils.tryChiselingInto(input, target);
     }
 
     private static List<ItemStack> getItemsForChiseling(ItemStack stack) {
@@ -238,7 +239,7 @@ public class ChiselBackend extends RecipeMapBackend {
 
     @Nullable
     private static GTRecipe generateChiselRecipe(ItemStack input, int circuitConfiguration) {
-        if (input == null || circuitConfiguration < 1 || circuitConfiguration > MAX_CIRCUIT_CONFIGURATION) {
+        if (circuitConfiguration < 1 || circuitConfiguration > MAX_CIRCUIT_CONFIGURATION) {
             return null;
         }
         List<ItemStack> results = getItemsForChiseling(input);
@@ -247,12 +248,13 @@ public class ChiselBackend extends RecipeMapBackend {
     }
 
     @Nullable
-    private static GTRecipe buildChiselRecipe(ItemStack input, ItemStack output, int circuitConfiguration) {
-        if (input == null || output == null) return null;
+    private static GTRecipe buildChiselRecipe(ItemStack input, ItemStack target, int circuitConfiguration) {
+        ItemStack result = tryChiselingInto(input, target);
+        if (result == null) return null;
         return GTRecipeBuilder.builder()
             .itemInputs(GTUtility.copyAmount(1, input))
             .circuit(circuitConfiguration)
-            .itemOutputs(GTUtility.copyAmount(1, output))
+            .itemOutputs(GTUtility.copyAmount(1, result))
             .duration(20)
             .eut(TierEU.RECIPE_LV / 2)
             .specialValue(circuitConfiguration)

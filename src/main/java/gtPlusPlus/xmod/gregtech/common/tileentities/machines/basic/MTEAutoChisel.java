@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -9,6 +11,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cricketcraft.chisel.api.carving.CarvingUtils;
 
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -132,17 +135,6 @@ public class MTEAutoChisel extends MTEBasicMachine {
     }
 
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
-    private static boolean canBeMadeFrom(ItemStack from, ItemStack to) {
-        List<ItemStack> results = getItemsForChiseling(from);
-        for (ItemStack s : results) {
-            if (s.getItem() == to.getItem() && s.getItemDamage() == to.getItemDamage()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
     private static boolean hasChiselResults(ItemStack from) {
         List<ItemStack> results = getItemsForChiseling(from);
         return !results.isEmpty();
@@ -152,28 +144,31 @@ public class MTEAutoChisel extends MTEBasicMachine {
         return Carving.chisel.getItemsForChiseling(aStack);
     }
 
-    private static ItemStack getChiselOutput(ItemStack aInput, ItemStack aTarget) {
-        ItemStack tOutput = null;
-        if (aTarget != null && canBeMadeFrom(aInput, aTarget)) {
-            tOutput = aTarget;
-        } else if (aTarget != null && !canBeMadeFrom(aInput, aTarget)) {
-            tOutput = null;
-        } else {
-            tOutput = getItemsForChiseling(aInput).get(0);
+    private static ItemStack getChiselOutput(@Nonnull ItemStack aInput, ItemStack aTarget) {
+        ItemStack chiselTarget = aTarget;
+        if (chiselTarget == null) {
+            // No item in special slot, use the first item of chisel group
+            List<ItemStack> chiselItemGroup = getItemsForChiseling(aInput);
+            if (!chiselItemGroup.isEmpty()) {
+                chiselTarget = chiselItemGroup.getFirst();
+            }
         }
-        return tOutput;
+
+        if (chiselTarget == null) {
+            return null;
+        }
+
+        return CarvingUtils.tryChiselingInto(aInput, chiselTarget);
     }
 
     @Override
     public int checkRecipe() {
-        ItemStack tOutput = null;
         ItemStack aInput = getInputAt(0);
         ItemStack aTarget = getSpecialSlot();
         boolean tIsCached = hasValidCache(aInput, aTarget, true);
         if (aInput != null && hasChiselResults(aInput) && aInput.stackSize > 0) {
-            tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);
+            ItemStack tOutput = tIsCached ? mOutputCache.copy() : getChiselOutput(aInput, aTarget);
             if (tOutput != null) {
-                tOutput = tOutput.copy();
                 tOutput.stackSize = 1;
                 // We can chisel this
                 if (canOutput(tOutput)) {
