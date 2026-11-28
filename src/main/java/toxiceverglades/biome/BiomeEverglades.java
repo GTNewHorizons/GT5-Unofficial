@@ -35,6 +35,7 @@ public class BiomeEverglades {
             this.theBiomeDecorator = new CustomBiomeGenerator();
             this.theBiomeDecorator.treesPerChunk = 10;
             this.setBiomeName("Toxic Everglades");
+            this.setColor(0x005047);
             this.topBlock = DimensionEverglades.blockTopLayer;
             this.fillerBlock = DimensionEverglades.blockSecondLayer;
             this.enableRain = true;
