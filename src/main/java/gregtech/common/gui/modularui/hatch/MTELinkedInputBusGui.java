@@ -42,7 +42,7 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
 
         // channel label
         inputRow.child(
-            IKey.lang("ggfab.gui.linked_input_bus.channel")
+            IKey.lang("ggfab.gui.linked_inputs.channel")
                 .asWidget());
 
         // channel input field
@@ -53,7 +53,7 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
 
         // private label
         inputRow.child(
-            IKey.lang("ggfab.gui.linked_input_bus.private")
+            IKey.lang("ggfab.gui.linked_inputs.private")
                 .asWidget());
 
         // private toggle button
