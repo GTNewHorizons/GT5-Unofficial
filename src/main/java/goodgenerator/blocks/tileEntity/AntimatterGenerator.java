@@ -66,6 +66,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
     public static final String MAIN_NAME = "antimatterGenerator";
 
+    private static final int INPUT_CHECK_SECONDS = 5;
+
+    private static final double COPPER_BOOST = 1.00;
+    private static final double UIV_BOOST = 1.02;
+    private static final double UMV_BOOST = 1.03;
+
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
     private long lastCycleTick = 0;
@@ -285,9 +291,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.antimatter_generator"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "antimatter-generator"),
-                ImmutableMap.of(
-                    "max_output", GTUtility.scientificFormat(Long.MAX_VALUE),
-                    "fuel_value", GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE)))
+                ImmutableMap.<String, Object>builder()
+                    .put("max_output", GTUtility.scientificFormat(Long.MAX_VALUE))
+                    .put("fuel_value", GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE))
+                    .put("input_check_seconds", INPUT_CHECK_SECONDS)
+                    .put("copper_boost", COPPER_BOOST)
+                    .put("uiv_boost", UIV_BOOST)
+                    .put("umv_boost", UMV_BOOST)
+                    .build())
             .beginStructureBlock(35, 43, 35, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("4127-4128", new ItemStack(Loaders.magneticFluxCasing, 1).getDisplayName(), false)

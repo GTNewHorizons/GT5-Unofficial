@@ -1,22 +1,20 @@
 Annihilating Antimatter like it's 2205!
 {hr}
-Generates energy by reacting {aqua:Semi-Stable Antimatter} with {gold:Matter}
-Annihilation uses an equal amount of {aqua:Antimatter} and {gold:Matter}
-Consumes {gold:all inputs} every processing cycle
-{red:Voids any invalid fluid!}
-A cycle lasts 1 tick; {gold: inputs} are automatically checked every 5 seconds
-An imbalance between {aqua:Antimatter} and {gold:Matter}{red: decreases efficiency!}
-Efficiency formula: Min({aqua:Antimatter}/{gold:Matter}, {gold:Matter}/{aqua:Antimatter})
-Any excess {EU} generated will be {red:voided!}
-Cannot produce more than {green:{var:max_output}} {EU} per cycle
+Generates energy by annihilating {aqua:Semi-Stable Antimatter} with {gold:Matter}
+Consumes equal amounts of {dark_aqua:Antimatter} and {gold:Matter} every cycle
+Cycles every tick, checking inputs every {color_amount:{var:input_check_seconds}} seconds
+An imbalance between {dark_aqua:Antimatter} and {gold:Matter} {color_danger:reduces efficiency!}
+{color_eu_usage:Efficiency =} {white:Min({dark_aqua:Antimatter}/{gold:Matter}, {gold:Matter}/{dark_aqua:Antimatter})}
+Can output {color_eu_usage:{var:max_output}}/cycle at maximum
+{color_danger:Voids all inputs each cycle, including invalid fluids and excess {EU} generated!}
 {hr}
-Energy production formula: {green:{bold:{underline:A}}} * ({aqua:Antimatter} ^ {gold:{bold:{underline:E}}}) {EU}/Cycle
-{green:{bold:{underline:A}}}{green:ntimatter energy} base value: {green:{var:fuel_value}} {EU}/{L}
-{gold:{bold:{underline:E}}}{gold:nergy production boost}:
-1. {fluid:molten.copper}: {gold:1.00}
-2. {fluid:molten.superconductoruivbase}: {gold:1.02}
-3. {fluid:molten.superconductorumvbase}: {gold:1.03}
+{color_eu_usage:Energy production =} {white:{green:{bold:{underline:A}}} * ({dark_aqua:Antimatter}^{gold:{bold:{underline:E}}})} {EU}/cycle
+{green:{bold:{underline:A}}}ntimatter energy base value = {color_eu_usage:{var:fuel_value}} {EU}/{L}
+{gold:{bold:{underline:E}}}nergy production boost:
+1. {fluid:molten.copper} = {gold:1.00}
+2. {fluid:molten.superconductoruivbase} = {light_purple:1.02}
+3. {fluid:molten.superconductorumvbase} = {dark_purple:1.03}
 {hr}
-Switch the power destination to your wireless network with a screwdriver
-Wireless mode requires {fluid:molten.superconductorumvbase} to work
-Wireless mode is still limited by hatch capacity
+Use a {white:Screwdriver} to switch power output to wireless
+Wireless mode requires {dark_purple:{fluid:molten.superconductorumvbase}}
+{color_note:Hatch capacity limits output even when in wireless mode}

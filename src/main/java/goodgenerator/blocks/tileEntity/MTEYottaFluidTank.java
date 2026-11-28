@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -93,6 +94,11 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     protected final ArrayList<MTEYOTTAHatch> mYottaHatch = new ArrayList<>();
 
     private static final BigInteger ONE_HUNDRED = BigInteger.valueOf(100);
+
+    private static final int HV_TIER = 3;
+    private static final int EV_TIER = 4;
+    private static final int IV_TIER = 5;
+    private static final int MAX_CELL_HEIGHT = 15;
 
     /** Tank capacity */
     public BigInteger mStorage = BigInteger.ZERO;
@@ -447,7 +453,14 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.fluid_tank"))
-            .addMarkdown(new ResourceLocation("gregtech", "yottank"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "yottank"),
+                ImmutableMap.<String, Object>builder()
+                    .put("hv_tier", 3)
+                    .put("ev_tier", 4)
+                    .put("iv_tier", 5)
+                    .put("max_cell_height", 15)
+                    .build())
             .beginVariableStructureBlock(5, 5, 5, 19, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addMiscHatch("0-1", StatCollector.translateToLocal("gt.mbtt.structure.yot_hatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing_replaces_other_hatches"), 2)

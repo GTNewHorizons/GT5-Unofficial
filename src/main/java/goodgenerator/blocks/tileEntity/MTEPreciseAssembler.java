@@ -77,7 +77,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
@@ -105,6 +104,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected int energyHatchTier;
     private static final int CASING_INDEX = 1541;
     private int glassTier = -1;
+
+    private static final int TIER = 9;
 
     public MTEPreciseAssembler(String name) {
         super(name);
@@ -298,9 +299,13 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.precise_assembler"))
-            .addMarkdown(new ResourceLocation("gregtech", "precise-assembler"), ImmutableMap.of("speed", TooltipHelper.speedText(2f)))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "precise-assembler"),
+                ImmutableMap.<String, Object>builder()
+                    .put("speed", 200)
+                    .put("tier", TIER)
+                    .build())
             .addSupportAny()
-            .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 5, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))

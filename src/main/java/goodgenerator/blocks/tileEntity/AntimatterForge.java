@@ -82,10 +82,44 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private static final int PASSIVE_BASE_MULT = 1_000;
     private static final int ACTIVE_BASE_MULT = 10_000;
 
-    private static final float PASSIVE_BASE_EXP = 1.5f;
-    private static final float ACTIVE_BASE_EXP = 1.5f;
-    private static final float COEFFICIENT_BASE_EXP = 0.5f;
-    private static final float BASE_SKEW = 0.2f;
+    private static final float PASSIVE_EXPONENT = 1.5f;
+    private static final float ACTIVE_EXPONENT = 1.5f;
+    private static final float PRODUCTION_BASE_EXPONENT = 0.5f;
+    private static final float DISTRIBUTION_BASE_MEAN = 0.2f;
+    private static final float DISTRIBUTION_VARIANCE = 1.0f;
+
+    private static final float PASSIVE_BASE_EXP = PASSIVE_EXPONENT;
+    private static final float ACTIVE_BASE_EXP = ACTIVE_EXPONENT;
+    private static final float COEFFICIENT_BASE_EXP = PRODUCTION_BASE_EXPONENT;
+    private static final float BASE_SKEW = DISTRIBUTION_BASE_MEAN;
+
+    private static final int CYCLE_TICKS = 20;
+    private static final int TICKS_PER_SECOND = 20;
+    private static final int CYCLE_SECONDS = CYCLE_TICKS / TICKS_PER_SECOND;
+    private static final int HATCH_COUNT = 16;
+
+    private static final int DECAY_PERCENT = 1;
+    private static final int EXCESS_LOSS_PERCENT = 50;
+    private static final int FAILURE_VOID_PERCENT = 10;
+
+    private static final float MAGNETIC_FLUID_EXPONENT = 0.5f;
+    private static final float GRAVITY_FLUID_EXPONENT = 0.5f;
+    private static final float CONTAINMENT_FLUID_EXPONENT = 2.0f / 7.0f;
+    private static final float ACTIVATION_FLUID_EXPONENT = 1.0f / 3.0f;
+
+    private static final float MAGNETIC_TENGAM_BONUS = 0.1f;
+    private static final float MAGNETIC_TEMPORAL_BONUS = 0.2f;
+    private static final float MAGNETIC_MAGMATTER_BONUS = 0.3f;
+
+    private static final float GRAVITY_SPACETIME_BONUS = 0.05f;
+    private static final float GRAVITY_SPATIAL_BONUS = 0.10f;
+    private static final float GRAVITY_ETERNITY_BONUS = 0.15f;
+
+    private static final float CONTAINMENT_SHIRABON_BONUS = 0.05f;
+    private static final float CONTAINMENT_STARMATTER_BONUS = 0.10f;
+
+    private static final float ACTIVATION_MKV_BONUS = 0.05f;
+    private static final float ACTIVATION_MKVI_BONUS = 0.10f;
 
     private final float[] modifiers = { 0.0f, 0.0f, 0.0f, 0.0f };
     private final FluidStack[] upgradeFluids = { null, null, null, null };
@@ -188,9 +222,36 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.antimatter_forge"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "antimatter-forge"),
-                ImmutableMap.of(
-                    "base_consumption", formatNumber(BASE_CONSUMPTION),
-                    "active_base_mult", formatNumber(ACTIVE_BASE_MULT)))
+                ImmutableMap.<String, Object>builder()
+                    .put("base_consumption", BASE_CONSUMPTION)
+                    .put("active_base_mult", ACTIVE_BASE_MULT)
+                    .put("passive_base_mult", PASSIVE_BASE_MULT)
+                    .put("passive_exponent", PASSIVE_BASE_EXP)
+                    .put("active_exponent", ACTIVE_BASE_EXP)
+                    .put("decay_percent", DECAY_PERCENT)
+                    .put("cycle_seconds", CYCLE_SECONDS)
+                    .put("hatch_count", HATCH_COUNT)
+                    .put("excess_loss_percent", EXCESS_LOSS_PERCENT)
+                    .put("failure_void_percent", FAILURE_VOID_PERCENT)
+                    .put("production_divisor", 1.0 / HATCH_COUNT)
+                    .put("production_base_exponent", COEFFICIENT_BASE_EXP)
+                    .put("distribution_base_mean", BASE_SKEW)
+                    .put("distribution_variance", DISTRIBUTION_VARIANCE)
+                    .put("magnetic_fluid_exponent", MAGNETIC_FLUID_EXPONENT)
+                    .put("gravity_fluid_exponent", GRAVITY_FLUID_EXPONENT)
+                    .put("containment_fluid_exponent", CONTAINMENT_FLUID_EXPONENT)
+                    .put("activation_fluid_exponent", ACTIVATION_FLUID_EXPONENT)
+                    .put("magnetic_tengam_bonus", MAGNETIC_TENGAM_BONUS)
+                    .put("magnetic_temporal_bonus", MAGNETIC_TEMPORAL_BONUS)
+                    .put("magnetic_magmatter_bonus", MAGNETIC_MAGMATTER_BONUS)
+                    .put("gravity_spacetime_bonus", GRAVITY_SPACETIME_BONUS)
+                    .put("gravity_spatial_bonus", GRAVITY_SPATIAL_BONUS)
+                    .put("gravity_eternity_bonus", GRAVITY_ETERNITY_BONUS)
+                    .put("containment_shirabon_bonus", CONTAINMENT_SHIRABON_BONUS)
+                    .put("containment_starmatter_bonus", CONTAINMENT_STARMATTER_BONUS)
+                    .put("activation_mkv_bonus", ACTIVATION_MKV_BONUS)
+                    .put("activation_mkvi_bonus", ACTIVATION_MKVI_BONUS)
+                    .build())
             .beginStructureBlock(53, 53, 47, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_27th_layer"))
             .addCasing("2274", new ItemStack(Loaders.magneticFluxCasing, 1).getDisplayName(), false)

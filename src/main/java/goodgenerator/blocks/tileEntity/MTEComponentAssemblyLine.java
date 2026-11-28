@@ -220,8 +220,8 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.component_assembler_coal"))
             .addMarkdown(new ResourceLocation("gregtech", "component-assembly-line"))
-            .addSupportAny()
             .addUnlimitedTierSkips()
+            .addSupportAny()
             .beginStructureBlock(9, 10, 33, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_8th_layer"))
             .addCasing("516-646", StatCollector.translateToLocal("gt.blockcasings8.7.name"), false)

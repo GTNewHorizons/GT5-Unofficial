@@ -13,8 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -96,11 +94,12 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.geothermal_heat_pump"))
             .addMarkdown(
                 new ResourceLocation("gregtech", "deep-earth-heating-pump"),
-                ImmutableMap.of(
-                    "eu_usage", formatNumber(TierEU.RECIPE_HV),
-                    "water_rate", formatNumber(161),
-                    "steam_rate", formatNumber(25600),
-                    "coolant_rate", formatNumber(192)))
+                ImmutableMap.<String, Object>builder()
+                    .put("eu_usage", 480)
+                    .put("water_rate", 161)
+                    .put("steam_rate", 25600)
+                    .put("coolant_rate", 192)
+                    .build())
             .beginStructureBlock(3, 7, 3, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("15", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Tungsten), false)

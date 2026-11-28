@@ -1,4 +1,4 @@
-The max output speed is decided by the amount of stored liquid and the output hatch's capacity
-The max Fluid Cell Tier is limited by the Glass Tier
-HV glass for T1, EV glass for T2, IV glass for T3. . .
-The max height of the cell blocks is 15
+Maximum output speed depends on stored fluid volume and {color_name:Output Hatch} capacity
+{color_name:Fluid Cell} Tier limited by {color_name:Glass} Tier
+{VNF:hv_tier} Glass = T1 | {VNF:ev_tier} Glass = T2 | {VNF:iv_tier} Glass = T3...
+Maximum {color_name:Fluid Cell} height: {color_amount:15} blocks
