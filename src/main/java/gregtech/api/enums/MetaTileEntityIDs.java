@@ -2073,6 +2073,7 @@ public enum MetaTileEntityIDs {
     LargeFusionComputer4(32022),
     LargeFusionComputer5(32023),
     LargeEssentiaSmeltery(32024),
+    IndustrialCrucible(32670),
     CoolantTower(32025),
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
