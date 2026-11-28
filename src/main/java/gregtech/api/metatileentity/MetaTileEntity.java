@@ -671,6 +671,15 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity
         }
     }
 
+    /**
+     * Called when this machine receives a higher voltage than it accepts, before it explodes.
+     *
+     * @return Whether the overvoltage was absorbed, so the machine does not explode.
+     */
+    public boolean absorbOvervoltage(long aVoltage) {
+        return false;
+    }
+
     @Override
     public void doExplosion(long aExplosionPower) {
         float tStrength = GTValues.getExplosionPowerForVoltage(aExplosionPower);
