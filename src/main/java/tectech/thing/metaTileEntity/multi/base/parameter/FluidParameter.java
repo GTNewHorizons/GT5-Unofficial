@@ -44,7 +44,6 @@ public class FluidParameter extends Parameter<Fluid, FluidSlotSyncHandler> {
 
         Fluid fluid = this.getValue();
         tag.setString("value", fluid == null ? "" : fluid.getName());
-        tag.setString("displayName", fluid == null ? "" : fluid.getLocalizedName());
     }
 
     @Override

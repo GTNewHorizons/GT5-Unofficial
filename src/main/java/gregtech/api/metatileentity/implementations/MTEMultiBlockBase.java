@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.interfaces.tileentity.IGregTechDeviceInformation.encode;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.min;
@@ -41,6 +40,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -2877,13 +2877,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         boolean isLockedToRecipe = tag.getBoolean("isLockedToRecipe");
-        String lockedRecipe = tag.getString("lockedRecipeName");
-
-        if (!isActive && isLockedToRecipe && !lockedRecipe.isEmpty()) {
-            // Display locked recipe when the machine is idle
-            currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
-            String[] lines = lockedRecipe.split("\n");
-            currentTip.addAll(Arrays.asList(lines));
+        if (!isActive && isLockedToRecipe) {
+            List<String> lockedOutputs = GTWaila.getLockedRecipeOutputLines(tag);
+            if (!lockedOutputs.isEmpty()) {
+                currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
+                currentTip.addAll(lockedOutputs);
+            }
         } else if (isActive) {
             int outputItemLength = tag.getInteger("outputItemLength");
             int outputFluidLength = tag.getInteger("outputFluidLength");
@@ -2998,11 +2997,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
         tag.setInteger("maxParallelRecipes", localMaxParallel);
-        tag.setBoolean("isLockedToRecipe", isRecipeLockingEnabled());
+        boolean recipeLocked = isRecipeLockingEnabled();
+        tag.setBoolean("isLockedToRecipe", recipeLocked);
         SingleRecipeCheck lockedRecipe = getSingleRecipeCheck();
-        tag.setString(
-            "lockedRecipeName",
-            lockedRecipe != null ? getDisplayString(lockedRecipe.getRecipe(), false, true, false, true) : "");
+        if (recipeLocked && lockedRecipe != null) {
+            GTRecipe recipe = lockedRecipe.getRecipe();
+            NBTTagList lockedItems = new NBTTagList();
+            if (recipe.mOutputs != null) {
+                for (ItemStack stack : recipe.mOutputs) {
+                    if (stack != null) lockedItems.appendTag(stack.writeToNBT(new NBTTagCompound()));
+                }
+            }
+            tag.setTag("lockedRecipeItems", lockedItems);
+
+            NBTTagList lockedFluids = new NBTTagList();
+            if (recipe.mFluidOutputs != null) {
+                for (FluidStack fluid : recipe.mFluidOutputs) {
+                    if (fluid != null) lockedFluids.appendTag(fluid.writeToNBT(new NBTTagCompound()));
+                }
+            }
+            tag.setTag("lockedRecipeFluids", lockedFluids);
+        }
 
         if (localPowerPanelParallel != localMaxParallel) {
             tag.setInteger("powerPanelMaxParallel", localPowerPanelParallel);

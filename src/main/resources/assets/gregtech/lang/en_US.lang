@@ -7066,6 +7066,8 @@ GT5U.waila.multiblock.status.has_problem=** HAS PROBLEMS **
 GT5U.waila.multiblock.status.running_fine=Running Fine
 GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
 GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
+GT5U.waila.multiblock.locked_recipe.fluid_outputs=Fluid Outputs:
+GT5U.waila.multiblock.locked_recipe.item_outputs=Item Outputs:
 
 GT5U.waila.network=Network: %s
 GT5U.waila.mode=Mode: %s
