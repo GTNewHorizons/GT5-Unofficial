@@ -692,7 +692,7 @@ public class GTAchievements {
                     issueAchievement(player, "washing");
                 } else if (data.prefix == OrePrefixes.crushedCentrifuged) {
                     issueAchievement(player, "spinit");
-                } else if (data.material.material == Materials.Steel) {
+                } else if (data.material != null && data.material.material == Materials.Steel) {
                     if (data.prefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()) {
                         issueAchievement(player, "steel");
                     } else if (data.prefix == OrePrefixes.nugget && Thaumcraft.isModLoaded()
