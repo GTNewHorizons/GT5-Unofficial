@@ -11,17 +11,20 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -33,6 +36,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
@@ -95,25 +99,17 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("PCB Factory Upgrade")
-            .addInfo(EnumChatFormatting.GRAY + "Enables nanites to construct organic circuitry")
-            .addInfo(EnumChatFormatting.GRAY + "Unlocks the recipes for Wetware and Bioware circuit boards")
-            .addInfo(
-                EnumChatFormatting.GRAY + "Place the controller block within "
-                    + EnumChatFormatting.RED
-                    + MTEPCBFactory.UPGRADE_RANGE
-                    + EnumChatFormatting.GRAY
-                    + " blocks of the PCB Factory")
-            .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
-            .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
-            .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.pcb_factory_upgrade"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "pcb-bio-chamber"),
+                ImmutableMap.of("range", MTEPCBFactory.UPGRADE_RANGE))
             .beginStructureBlock(5, 7, 12, true)
-            .addController("Front bottom center")
-            .addCasing("72", "Any Tiered Glass", false)
-            .addCasing("67", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("40", "Damascus Steel Frame Box", false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("72", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), false)
+            .addCasing("67", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("40", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DamascusSteel), false)
             .addStructureInfo("")
-            .addStructureFooter("Does not require maintenance or power")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.no_maintenance_or_power"))
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.PCB"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

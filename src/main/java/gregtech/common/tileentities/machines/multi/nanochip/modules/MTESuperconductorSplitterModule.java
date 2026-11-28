@@ -7,22 +7,24 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,6 +43,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBase<MTESuperconductorSplitterModule> {
 
     protected static final int COOLANT_CONSUMED_PER_SEC = 1000;
@@ -188,17 +191,10 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
-            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.superconductor_splitter.action", TOOLTIP_CCs))
-            .addSeparator()
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.body.1")) // todo: maybe make
-                                                                                                 // this
-                                                                                                 // more interesting /
-                                                                                                 // use higher tier
-                                                                                                 // coolants for higher
-                                                                                                 // tier sc
-            .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "nanochip-superconductor-splitter"),
+                // todo: maybe make this more interesting / use higher tier coolants for higher tier sc
+                ImmutableMap.of("coolant", COOLANT_CONSUMED_PER_SEC))
             .beginStructureBlock(7, 10, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
@@ -208,7 +204,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             // Nanochip Complex Glass
             .addCasing("24", translateToLocal("gt.blockglass1.8.name"), false)
             // Naquadria Frame Box
-            .addCasing("24", "Naquadria Frame Box", false)
+            .addCasing("24", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Naquadria), false)
             // UEV Solenoid Superconductor Coil
             .addCasing("16", translateToLocal("gt.blockcasings.cyclotron_coils.8.name"), false)
             // UHV Solenoid Superconductor Coil

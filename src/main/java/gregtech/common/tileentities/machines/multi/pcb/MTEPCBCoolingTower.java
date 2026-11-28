@@ -11,18 +11,21 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -37,6 +40,7 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
@@ -147,56 +151,29 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("PCB Factory Upgrade")
-            .addInfo("The Cooling Tower enables overclocking of the PCB Factory")
-            .addInfo(
-                "Tier 1 unlocks " + EnumChatFormatting.GOLD
-                    + "imperfect "
-                    + EnumChatFormatting.GRAY
-                    + "overclocks at the cost of "
-                    + EnumChatFormatting.BLUE
-                    + COOLANT_CONSUMPTION_PER_SEC
-                    + " L/s Distilled Water "
-                    + EnumChatFormatting.GRAY
-                    + "while running")
-            .addInfo(
-                "Tier 2 unlocks " + EnumChatFormatting.GOLD
-                    + "perfect "
-                    + EnumChatFormatting.GRAY
-                    + "overclocks at the cost of "
-                    + EnumChatFormatting.BLUE
-                    + COOLANT_CONSUMPTION_PER_SEC
-                    + " L/s Super Coolant "
-                    + EnumChatFormatting.GRAY
-                    + "while running")
-            .addInfo(
-                EnumChatFormatting.GRAY + "Place the controller block within "
-                    + EnumChatFormatting.RED
-                    + MTEPCBFactory.UPGRADE_RANGE
-                    + EnumChatFormatting.GRAY
-                    + " blocks of the PCB Factory")
-            .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
-            .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
-            .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.pcb_factory_upgrade"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "pcb-cooling-tower"),
+                ImmutableMap.of("coolant", COOLANT_CONSUMPTION_PER_SEC, "range", MTEPCBFactory.UPGRADE_RANGE))
             .beginStructureBlock(5, 10, 5, false)
-            .addController("Front bottom center")
-            .addInputHatch("1", "Bottom center casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.bottom_center_casing"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
-            .addCasing("68", "Radiant Naquadah Alloy Casing", false)
-            .addCasing("40", "Damascus Steel Frame Box", false)
-            .addCasing("20", "Tungstensteel Pipe Casing", false)
-            .addCasing("19", "Reinforced Photolithographic Framework Casing", false)
-            .addCasing("12", "Extreme Engine Intake Casing", false)
+            .addCasing("68", Casings.RadiantNaquadahAlloyCasing.getLocalizedName(), false)
+            .addCasing("40", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.DamascusSteel), false)
+            .addCasing("20", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("19", Casings.ReinforcedPhotolithographicFrameworkCasing.getLocalizedName(), false)
+            .addCasing("12", Casings.ExtremeEngineIntakeCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
-            .addCasing("48", "Infinity Cooled Casing", false)
-            .addCasing("40", "Americium Frame Box", false)
-            .addCasing("39", "Reinforced Photolithographic Framework Casing", false)
-            .addCasing("20", "Tungstensteel Pipe Casing", false)
-            .addCasing("8", "Superconducting Coil Block", false)
+            .addCasing("48", Casings.InfinityCooledCasing.getLocalizedName(), false)
+            .addCasing("40", OrePrefixes.frameGt.getLocalizedNameForItem(Materials.Americium), false)
+            .addCasing("39", Casings.ReinforcedPhotolithographicFrameworkCasing.getLocalizedName(), false)
+            .addCasing("20", Casings.TungstensteelPipeCasing.getLocalizedName(), false)
+            .addCasing("8", Casings.SuperconductingCoilBlock.getLocalizedName(), false)
             .addStructureInfo("")
-            .addStructureFooter("Does not require maintenance or power")
+            .addStructureFooter(StatCollector.translateToLocal("gt.mbtt.structure.no_maintenance_or_power"))
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.PCB"))
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher();
