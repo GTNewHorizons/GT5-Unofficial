@@ -29,9 +29,11 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
+import gregtech.api.util.RecipeRegistrationDiagnostics.Report;
 import gregtech.api.util.extensions.ArrayExt;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
@@ -122,8 +124,10 @@ public class GTRecipeBuilder {
      */
     protected boolean skip = false;
     protected boolean valid = true;
+    @Nullable
+    protected Report nullReport;
 
-    GTRecipeBuilder() {}
+    public GTRecipeBuilder() {}
 
     private GTRecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
         FluidStack[][] altFluidInputs, int[] altOreIds, FluidStack[] fluidInputs, FluidStack[] fluidOutputs,
@@ -131,7 +135,7 @@ public class GTRecipeBuilder {
         int duration, int eut, int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe,
         boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
         RecipeCategory recipeCategory, @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision,
-        boolean skip, boolean valid) {
+        boolean skip, boolean valid, @Nullable Report nullReport) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -163,6 +167,7 @@ public class GTRecipeBuilder {
         this.checkForCollision = checkForCollision;
         this.skip = skip;
         this.valid = valid;
+        this.nullReport = nullReport;
     }
 
     // region helper methods
@@ -191,13 +196,88 @@ public class GTRecipeBuilder {
         return false;
     }
 
-    private static void handleNullRecipeComponents(String componentType) {
-        // place a breakpoint here to catch all these issues
-        GT_FML_LOGGER.error("null detected in {}", componentType);
-        GT_FML_LOGGER.error(new NullPointerException());
-        if (PANIC_MODE_NULL) {
-            throw new IllegalArgumentException("null in argument");
+    private boolean checkNullRecipeComponents(String path, Object[] arguments) {
+        if (!debugNull()) return false;
+        if (arguments == null) {
+            handleNullRecipeComponents(path, "argument array is null", null);
+            return true;
         }
+        if ((arguments instanceof ItemStack[] || arguments instanceof FluidStack[]) && !containsNull(arguments)) {
+            return false;
+        }
+        boolean found = false;
+        for (int i = 0; i < arguments.length; i++) {
+            Object value = arguments[i];
+            if (value == null) {
+                handleNullRecipeComponents(path + "[" + i + "]", "component is null", arguments);
+                found = true;
+            } else if (value instanceof Object[]alternatives) {
+                found |= checkNullRecipeComponents(path + "[" + i + "]", alternatives);
+            } else if (value instanceof ItemStack stack && stack.getItem() == null) {
+                handleNullRecipeComponents(path + "[" + i + "].item", "item is null", arguments);
+                found = true;
+            } else if (value instanceof FluidStack stack && stack.getFluid() == null) {
+                handleNullRecipeComponents(path + "[" + i + "].fluid", "fluid is null", arguments);
+                found = true;
+            } else if (value instanceof OreDictItemStack stack && stack.mOreName == null) {
+                handleNullRecipeComponents(path + "[" + i + "].oreName", "ore dictionary name is null", arguments);
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    private void handleNullRecipeComponents(String path, String problem, Object arguments) {
+        if (!debugNull()) return;
+        if (nullReport == null) nullReport = new Report(this::describeRecipe);
+        nullReport.addIssue(path, problem, arguments, this::describeRecipe);
+    }
+
+    private String describeRecipe() {
+        return "itemInputs="
+            + RecipeRegistrationDiagnostics.describe(inputsOreDict == null ? inputsBasic : inputsOreDict)
+            + ", itemOutputs="
+            + RecipeRegistrationDiagnostics.describe(outputs)
+            + ", fluidInputs="
+            + RecipeRegistrationDiagnostics.describe(fluidInputs)
+            + ", fluidAlternatives="
+            + RecipeRegistrationDiagnostics.describe(altFluidInputs)
+            + ", fluidOutputs="
+            + RecipeRegistrationDiagnostics.describe(fluidOutputs)
+            + ", duration="
+            + duration
+            + ", EU/t="
+            + eut
+            + ", specialValue="
+            + specialValue
+            + ", metadata="
+            + describeMetadata()
+            + ", category="
+            + (recipeCategory == null ? "<default>" : recipeCategory.unlocalizedName);
+    }
+
+    private String describeMetadata() {
+        if (metadataStorage == null) return "[]";
+        try {
+            StringBuilder text = new StringBuilder("[");
+            for (var entry : metadataStorage.getEntries()) {
+                if (text.length() > 1) text.append(", ");
+                text.append(RecipeRegistrationDiagnostics.describe(entry.getKey()))
+                    .append('=')
+                    .append(RecipeRegistrationDiagnostics.describe(entry.getValue()));
+            }
+            return text.append(']')
+                .toString();
+        } catch (RuntimeException | LinkageError exception) {
+            return "<unavailable metadata: " + exception.getClass()
+                .getSimpleName() + ">";
+        }
+    }
+
+    public boolean rejectInvalidComponents(String target) {
+        if (nullReport == null) return false;
+        nullReport.addTarget(target, this::describeRecipe);
+        return PANIC_MODE_NULL;
     }
 
     private static boolean debugNull() {
@@ -300,7 +380,13 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
-        if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
+        if (checkNullRecipeComponents("itemInputsUnified", inputs) && PANIC_MODE_NULL) {
+            inputsBasic = inputs;
+            inputsOreDict = null;
+            alts = null;
+            return this;
+        }
+        if (inputs == null) inputs = GTValues.emptyItemStackArray;
 
         ItemStack[] itemInputs = ArrayExt.removeTrailingNulls(inputs);
         inputsBasic = applyPendingCircuit(itemInputs);
@@ -325,7 +411,13 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
-        if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
+        if (checkNullRecipeComponents("itemInputs", inputs) && PANIC_MODE_NULL) {
+            inputsBasic = inputs;
+            inputsOreDict = null;
+            alts = null;
+            return this;
+        }
+        if (inputs == null) inputs = GTValues.emptyItemStackArray;
 
         ItemStack[] itemInputs = fixItemArray(inputs, false);
         inputsBasic = applyPendingCircuit(itemInputs);
@@ -350,7 +442,13 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
         if (skip) return this;
-        if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
+        if (checkNullRecipeComponents("itemInputsUnsafe", inputs) && PANIC_MODE_NULL) {
+            inputsBasic = inputs;
+            inputsOreDict = null;
+            alts = null;
+            return this;
+        }
+        if (inputs == null) inputs = GTValues.emptyItemStackArray;
 
         ItemStack[] itemInputs = fixItemArray(inputs, true);
         inputsBasic = applyPendingCircuit(itemInputs);
@@ -375,7 +473,12 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder itemInputs(Object... inputs) {
         if (skip) return this;
+        checkNullRecipeComponents("itemInputs", inputs);
         inputsOreDict = inputs;
+        if (inputs == null) {
+            inputsBasic = GTValues.emptyItemStackArray;
+            return this;
+        }
         alts = new ItemStack[inputs.length][];
         altOreIds = new int[inputs.length];
         Arrays.fill(altOreIds, -1);
@@ -384,16 +487,22 @@ public class GTRecipeBuilder {
             switch (input) {
                 case ItemStack stack -> alts[i] = new ItemStack[]{stack};
                 case ItemStack[] inputArr -> {
-                    if (debugNull() && containsNull(inputArr)) handleNullRecipeComponents("itemInputs");
+                    if (inputArr.length == 0) {
+                        handleNullRecipeComponents("itemInputs[" + i + "].alternatives", "item alternative group is empty", inputArr);
+                    }
                     alts[i] = inputArr.clone();
                 }
                 case OreDictItemStack ods -> {
+                    if (ods.mOreName == null) {
+                        alts[i] = GTValues.emptyItemStackArray;
+                        continue;
+                    }
                     altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
                     ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", ods.mOreName);
-                        if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                        handleNullRecipeComponents("itemInputs[" + i + "]", "ore dictionary entry is empty", ods);
                         continue;
                     }
                     ArrayList<ItemStack> list = new ArrayList<>(ores.size());
@@ -402,17 +511,25 @@ public class GTRecipeBuilder {
                         ItemStack itemStack = GTUtility.copyAmount(ods.mAmount, ores.get(j));
                         if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
                     }
-                    if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    if (list.isEmpty()) handleNullRecipeComponents("itemInputs[" + i + "]", "ore dictionary entry has no valid items", ods);
                     alts[i] = list.toArray(new ItemStack[0]);
                 }
                 case Object[] arr -> {
-                    if (arr.length != 2) continue;
+                    if (arr.length != 2) {
+                        handleNullRecipeComponents("itemInputs[" + i + "]", "ore dictionary descriptor must contain a name and amount", arr);
+                        alts[i] = GTValues.emptyItemStackArray;
+                        continue;
+                    }
+                    if (containsNull(arr)) {
+                        alts[i] = GTValues.emptyItemStackArray;
+                        continue;
+                    }
                     altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
                     ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
                         GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", arr[0]);
-                        if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                        handleNullRecipeComponents("itemInputs[" + i + "]", "ore dictionary entry is empty", arr);
                         continue;
                     }
                     int size = ((Number) arr[1]).intValue();
@@ -422,11 +539,10 @@ public class GTRecipeBuilder {
                         ItemStack itemStack = GTUtility.copyAmount(size, ores.get(j));
                         if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
                     }
-                    if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    if (list.isEmpty()) handleNullRecipeComponents("itemInputs[" + i + "]", "ore dictionary entry has no valid items", arr);
                     alts[i] = list.toArray(new ItemStack[0]);
                 }
                 case null -> {
-                    if (debugNull()) handleNullRecipeComponents("recipe oredict input");
                     alts[i] = GTValues.emptyItemStackArray;
                 }
                 default -> throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
@@ -452,8 +568,11 @@ public class GTRecipeBuilder {
 
     public GTRecipeBuilder itemOutputs(ItemStack... outputs) {
         if (skip) return this;
-        if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
-        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
+        if (checkNullRecipeComponents("itemOutputs", outputs) && PANIC_MODE_NULL) {
+            this.outputs = outputs;
+            return this;
+        }
+        this.outputs = outputs == null || ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
         checkLength(outputChances, this.outputs, "Item output");
         return this;
     }
@@ -469,7 +588,11 @@ public class GTRecipeBuilder {
 
     public GTRecipeBuilder fluidInputs(FluidStack... fluidInputs) {
         if (skip) return this;
-        if (debugNull() && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
+        if (checkNullRecipeComponents("fluidInputs", fluidInputs) && PANIC_MODE_NULL) {
+            this.fluidInputs = fluidInputs;
+            return this;
+        }
+        if (fluidInputs == null) fluidInputs = GTValues.emptyFluidStackArray;
         this.fluidInputs = ArrayExt.removeNullFluids(fluidInputs);
         checkLength(fluidInputChances, this.fluidInputs, "Fluid input");
         return this;
@@ -478,7 +601,7 @@ public class GTRecipeBuilder {
     /**
      *
      * For interchangeable fluid inputs.
-     * Each input can be satisfied by any of the {@link net.minecraftforge.fluids.FluidStack} in the corresponding
+     * Each input can be satisfied by any of the {@link FluidStack} in the corresponding
      * {@link SubstituteFluidStack}.
      *
      * <br>
@@ -509,20 +632,29 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder fluidInputs(Object... fluids) {
         if (skip) return this;
-        if (containsNull(fluids) || fluids.length == 0) {
+        checkNullRecipeComponents("fluidInputs", fluids);
+        if (fluids == null || fluids.length == 0) {
             this.fluidInputs = GTValues.emptyFluidStackArray;
             this.altFluidInputs = null;
-            if (debugNull()) handleNullRecipeComponents("SubstituteFluidStack");
             return this;
         }
 
         List<FluidStack> mainFluidList = new ArrayList<>();
         List<FluidStack[]> altFluidList = new ArrayList<>();
 
-        for (Object obj : fluids) {
+        for (int i = 0; i < fluids.length; i++) {
+            Object obj = fluids[i];
+            if (obj == null) continue;
             // man i wish we could use switch statements here, and specially in the itemInputs()
             if (obj instanceof SubstituteFluidStack group) {
                 FluidStack[] alts = group.fluidStacks.toArray(new FluidStack[0]);
+                checkNullRecipeComponents("fluidInputs[" + i + "].alternatives", alts);
+                if (alts.length == 0) {
+                    handleNullRecipeComponents(
+                        "fluidInputs[" + i + "].alternatives",
+                        "fluid substitute group is empty",
+                        group);
+                }
                 FluidStack main = (alts.length > 0) ? alts[0] : null;
 
                 mainFluidList.add(main);
@@ -555,7 +687,11 @@ public class GTRecipeBuilder {
 
     public GTRecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
         if (skip) return this;
-        if (debugNull() && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
+        if (checkNullRecipeComponents("fluidOutputs", fluidOutputs) && PANIC_MODE_NULL) {
+            this.fluidOutputs = fluidOutputs;
+            return this;
+        }
+        if (fluidOutputs == null) fluidOutputs = GTValues.emptyFluidStackArray;
         this.fluidOutputs = ArrayExt.removeNullFluids(fluidOutputs);
         checkLength(fluidOutputChances, this.fluidOutputs, "Fluid output");
         return this;
@@ -820,7 +956,8 @@ public class GTRecipeBuilder {
             metadataStorage,
             checkForCollision,
             skip,
-            valid);
+            valid,
+            nullReport);
     }
 
     /**
@@ -855,7 +992,8 @@ public class GTRecipeBuilder {
             null,
             checkForCollision,
             skip,
-            valid);
+            valid,
+            nullReport);
     }
 
     // region getter
@@ -955,6 +1093,7 @@ public class GTRecipeBuilder {
     }
 
     private void checkLength(int[] chances, Object[] contents, String type) {
+        if (nullReport != null && PANIC_MODE_NULL) return;
         if (chances != null && contents != null && chances.length != contents.length) {
             throw new IllegalArgumentException(type + " chances array and contents array length differs");
         }
@@ -1078,6 +1217,7 @@ public class GTRecipeBuilder {
         if (skip) {
             return Optional.empty();
         }
+        if (rejectInvalidComponents("<direct build>")) return Optional.empty();
         if (!valid) {
             handleInvalidRecipe();
             return Optional.empty();
@@ -1118,6 +1258,7 @@ public class GTRecipeBuilder {
         if (skip) {
             return Optional.empty();
         }
+        if (rejectInvalidComponents("<direct build with alternatives>")) return Optional.empty();
         if (inputsOreDict == null && altFluidInputs == null) {
             throw new UnsupportedOperationException();
         }
@@ -1203,6 +1344,7 @@ public class GTRecipeBuilder {
         if (skip) {
             return Collections.emptyList();
         }
+        if (nullReport != null && rejectInvalidComponents(describeRecipeMap(recipeMap))) return Collections.emptyList();
         return recipeMap.doAdd(this);
     }
 
@@ -1212,12 +1354,18 @@ public class GTRecipeBuilder {
         }
 
         Collection<GTRecipe> addedRecipes = new ArrayList<>();
-        for (IRecipeMap recipeMap : recipeMaps) addedRecipes.addAll(recipeMap.doAdd(this));
+        for (IRecipeMap recipeMap : recipeMaps) addedRecipes.addAll(addTo(recipeMap));
 
         return addedRecipes;
     }
 
+    private static String describeRecipeMap(IRecipeMap recipeMap) {
+        return recipeMap instanceof RecipeMap<?>map ? map.unlocalizedName
+            : RecipeRegistrationDiagnostics.describe(recipeMap);
+    }
+
     public GTRecipeBuilder reset() {
+        if (nullReport != null) nullReport.freezeDescription();
         metadataStorage = null;
         alts = null;
         altFluidInputs = null;
@@ -1245,6 +1393,7 @@ public class GTRecipeBuilder {
         skip = false;
         valid = true;
         pendingIntegratedCircuit = null;
+        nullReport = null;
         return this;
     }
 }

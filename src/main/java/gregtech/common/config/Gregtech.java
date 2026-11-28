@@ -361,7 +361,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public int cableMultiConnectLimit;
 
-        @Config.Comment("if true, crashes on null recipe input.")
+        @Config.Comment("If true, collects invalid recipe components and crashes with all diagnostics after recipe loading.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean crashOnNullRecipeInput;
