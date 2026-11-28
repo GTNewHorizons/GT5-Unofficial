@@ -20,7 +20,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -135,16 +134,14 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
                 if (DetravScannerMod.DEBUG_ENABLED) {
                     aPlayer.addChatMessage(
-                        new ChatComponentText(
-                            EnumChatFormatting.YELLOW + "Chunk at "
-                                + aX
-                                + "|"
-                                + aZ
-                                + " to "
-                                + (aX + 16)
-                                + "|"
-                                + (aZ + 16)
-                                + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex)));
+                        new ChatComponentTranslation(
+                            "GT5U.chat.prospector.chunk_bounds",
+                            aX,
+                            aZ,
+                            aX + 16,
+                            aZ + 16,
+                            new ChatComponentTranslation("detrav.scanner.distance.texts." + distTextIndex))
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
                 }
 
                 processOreProspecting(
@@ -284,8 +281,9 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             return;
         }
 
-        if (DetravScannerMod.DEBUG_ENABLED)
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
+        if (DetravScannerMod.DEBUG_ENABLED) aPlayer.addChatMessage(
+            new ChatComponentTranslation("GT5U.chat.prospector.chunk_failed")
+                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
         badluck++;
         if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts / 4);
     }
@@ -293,8 +291,9 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
     void addOreToHashMap(ItemStack ore, EntityPlayer aPlayer) {
         Map<String, ItemStack> group = ores.get(distTextIndex);
         String key = Item.getIdFromItem(ore.getItem()) + ":" + ore.getItemDamage();
-        if (DetravScannerMod.DEBUG_ENABLED && !group.containsKey(key))
-            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + " Adding to oremap " + key));
+        if (DetravScannerMod.DEBUG_ENABLED && !group.containsKey(key)) aPlayer.addChatMessage(
+            new ChatComponentTranslation("GT5U.chat.prospector.add_to_map", key)
+                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
         // stackSize holds the number of ore blocks found
         group.computeIfAbsent(key, k -> {
             ItemStack copy = ore.copy();

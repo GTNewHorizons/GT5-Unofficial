@@ -14,7 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -47,13 +48,13 @@ final class OreShowroom {
     static void process(EntityPlayerMP player, boolean confirm) {
         List<Aisle> aisles = collectAisles();
         if (aisles.isEmpty()) {
-            tell(player, EnumChatFormatting.RED + "No registered ore showroom displays were found.");
+            tell(player, EnumChatFormatting.RED, "GT5U.chat.ore_showroom.no_displays");
             return;
         }
 
         int floorY = MathHelper.floor_double(player.posY) - 1;
         if (floorY < 0 || floorY + DISPLAY_HEIGHT >= player.worldObj.getActualHeight()) {
-            tell(player, EnumChatFormatting.RED + "There is not enough vertical room at this Y level.");
+            tell(player, EnumChatFormatting.RED, "GT5U.chat.ore_showroom.no_vertical_room");
             return;
         }
 
@@ -74,25 +75,14 @@ final class OreShowroom {
 
             tell(
                 player,
-                EnumChatFormatting.YELLOW + "Ore showroom: "
-                    + aisles.size()
-                    + " aisles, "
-                    + displayCount
-                    + " displays, up to "
-                    + (maxLength + 2)
-                    + " x "
-                    + width
-                    + " blocks.");
-            tell(
-                player,
-                EnumChatFormatting.YELLOW + "It starts at "
-                    + originX
-                    + ", "
-                    + floorY
-                    + ", "
-                    + originZ
-                    + "; the aisles are centered around your Z position and build toward +X. The StoneType pads will be replaced and the entire four-block-high footprint cleared.");
-            tell(player, EnumChatFormatting.GOLD + "Run /gtdebug ore-showroom confirm without moving to generate it.");
+                EnumChatFormatting.YELLOW,
+                "GT5U.chat.ore_showroom.preview",
+                aisles.size(),
+                displayCount,
+                maxLength + 2,
+                width);
+            tell(player, EnumChatFormatting.YELLOW, "GT5U.chat.ore_showroom.position", originX, floorY, originZ);
+            tell(player, EnumChatFormatting.GOLD, "GT5U.chat.ore_showroom.confirm", "/gtdebug ore-showroom confirm");
             return;
         }
 
@@ -159,7 +149,7 @@ final class OreShowroom {
         int failedFrames = 0;
         int aisleIndex = 0;
 
-        tell(player, EnumChatFormatting.YELLOW + "Generating ore showroom...");
+        tell(player, EnumChatFormatting.YELLOW, "GT5U.chat.ore_showroom.generating");
 
         int maxLength = aisles.stream()
             .map(Aisle::materials)
@@ -226,24 +216,17 @@ final class OreShowroom {
             .map(Aisle::materials)
             .mapToInt(List::size)
             .sum();
-        tell(
-            player,
-            EnumChatFormatting.GREEN + "Generated " + aisles.size() + " aisles and " + displayCount + " displays.");
+        tell(player, EnumChatFormatting.GREEN, "GT5U.chat.ore_showroom.generated", aisles.size(), displayCount);
         if (missingSmallOres > 0 || missingRawOres > 0) {
             tell(
                 player,
-                EnumChatFormatting.YELLOW + "Used StoneType fillers for "
-                    + missingSmallOres
-                    + " missing small ores; omitted "
-                    + missingRawOres
-                    + " missing raw-ore frames.");
+                EnumChatFormatting.YELLOW,
+                "GT5U.chat.ore_showroom.missing_ores",
+                missingSmallOres,
+                missingRawOres);
         }
         if (failedFrames > 0) {
-            tell(
-                player,
-                EnumChatFormatting.RED + "Could not place "
-                    + failedFrames
-                    + " item frames, usually because another entity occupies the spot.");
+            tell(player, EnumChatFormatting.RED, "GT5U.chat.ore_showroom.failed_frames", failedFrames);
         }
     }
 
@@ -359,8 +342,8 @@ final class OreShowroom {
         return lines;
     }
 
-    private static void tell(EntityPlayerMP player, String message) {
-        player.addChatMessage(new ChatComponentText(message));
+    private static void tell(EntityPlayerMP player, EnumChatFormatting color, String key, Object... args) {
+        player.addChatMessage(new ChatComponentTranslation(key, args).setChatStyle(new ChatStyle().setColor(color)));
     }
 
     private record Aisle(StoneType stoneType, String name, List<IOreMaterial> materials) {}

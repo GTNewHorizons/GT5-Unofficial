@@ -259,10 +259,13 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
             .getStoredEU();
         final double c = ((double) tempStorage / this.maxEUStore()) * 100;
         final double roundOff = Math.round(c * 100.00) / 100.00;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             playerIn,
-            "Energy: " + formatNumber(tempStorage) + " EU at " + V[this.mTier] + "v (" + roundOff + "%)");
-        GTUtility.sendChatToPlayer(playerIn, "Amperage: " + formatNumber(maxAmperesOut()) + "A");
+            "GT5U.chat.energy_buffer.energy",
+            formatNumber(tempStorage),
+            V[this.mTier],
+            roundOff);
+        GTUtility.sendChatTrans(playerIn, "GT5U.nei.display.amperage", formatNumber(maxAmperesOut()));
     }
     // Utils.LOG_WARNING("Begin Show Energy");
     /*
@@ -375,6 +378,6 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
             aTest = 1;
         }
         aCurrentOutputAmperage = aTest;
-        GTUtility.sendChatToPlayer(aPlayer, "Now handling " + aCurrentOutputAmperage + " Amps.");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.energy_buffer.output_amperage", aCurrentOutputAmperage);
     }
 }

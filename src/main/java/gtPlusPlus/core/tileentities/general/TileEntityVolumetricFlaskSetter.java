@@ -359,7 +359,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     public boolean onScrewdriverRightClick(EntityPlayer player) {
         if (player.isSneaking()) {
-            GTUtility.sendChatToPlayer(player, "Value: " + this.getCustomValue());
+            GTUtility.sendChatTrans(player, "tt.gui.tooltip.full_led_desc.value", this.getCustomValue());
         }
         try {
             if (aCurrentMode == 7) {
@@ -367,7 +367,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             } else {
                 aCurrentMode++;
             }
-            GTUtility.sendChatToPlayer(player, "Slot " + aCurrentMode + " is now default.");
+            GTUtility.sendChatTrans(player, "GT5U.chat.flask_setter.default_slot", aCurrentMode);
             return true;
         } catch (Exception t) {
             return false;

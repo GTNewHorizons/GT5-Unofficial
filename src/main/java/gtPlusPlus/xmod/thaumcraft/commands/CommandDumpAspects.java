@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.thaumcraft.commands;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentTranslation;
 
 import gregtech.commands.GTBaseCommand;
 import gtPlusPlus.xmod.thaumcraft.objects.ThreadAspectScanner;
@@ -26,16 +27,11 @@ public class CommandDumpAspects extends GTBaseCommand {
         if (Z >= 30) {
             // Lets process this in the Background on a new Thread.
             Thread t = createNewThread();
-            sendChatToPlayer(sender, "Beginning to dump information about all items/blocks & their aspects to file.");
-            sendChatToPlayer(
-                sender,
-                "Please do not close your game during this process, you will be notified upon completion.");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.aspects.dump_start"));
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.aspects.dump_wait"));
             t.start();
         } else {
-            sendChatToPlayer(
-                sender,
-                "Your last run of DA was less than 30 seconds ago, please wait " + (30 - Z)
-                    + " seconds before trying again.");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.aspects.dump_cooldown", 30 - Z));
         }
     }
 

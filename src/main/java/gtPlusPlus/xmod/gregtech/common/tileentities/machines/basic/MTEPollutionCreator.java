@@ -133,7 +133,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         } else {
             pollutionMultiplier++;
         }
-        GTUtility.sendChatToPlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.pollution.multiplier", pollutionMultiplier);
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
@@ -214,11 +214,10 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
-            GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
+            GTUtility.sendChatTrans(playerIn, "GT5U.chat.pollution.disabled");
         } else {
             addPollution();
-            GTUtility
-                .sendChatToPlayer(playerIn, "This chunk now contains " + getCurrentChunkPollution() + " pollution.");
+            GTUtility.sendChatTrans(playerIn, "GT5U.chat.pollution.chunk_updated", getCurrentChunkPollution());
         }
     }
 

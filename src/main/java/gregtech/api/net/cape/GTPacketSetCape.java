@@ -5,7 +5,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.IBlockAccess;
 
@@ -54,7 +55,8 @@ public class GTPacketSetCape extends GTPacket {
         if (!GTCapesLoader.getAvailableCapes(this.player)
             .contains(this.cape)) {
             this.player.addChatMessage(
-                new ChatComponentText(EnumChatFormatting.RED + "You do not own \"" + this.cape + "\"!"));
+                new ChatComponentTranslation("GT5U.chat.cape.not_owned", this.cape)
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             return;
         }
 

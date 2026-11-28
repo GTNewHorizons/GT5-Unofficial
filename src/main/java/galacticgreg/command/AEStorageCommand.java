@@ -8,12 +8,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import appeng.api.util.WorldCoord;
 import appeng.items.storage.ItemSpatialStorageCell;
 import galacticgreg.GalacticGreg;
-import galacticgreg.auxiliary.PlayerChatHelper;
 import galacticgreg.schematics.SpaceSchematic;
 import galacticgreg.schematics.SpaceSchematicFactory;
 import gregtech.commands.GTBaseCommand;
@@ -54,7 +56,10 @@ public class AEStorageCommand extends GTBaseCommand {
 
                     // Check if SSC is filled
                     if (storedSize.x == 0 || storedSize.y == 0 || storedSize.z == 0) {
-                        PlayerChatHelper.SendError(sender, "Error: This spatial storage is empty");
+                        sendChatToPlayer(
+                            sender,
+                            new ChatComponentTranslation("GT5U.chat.spatial.empty")
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
                         return;
                     }
 
@@ -99,7 +104,10 @@ public class AEStorageCommand extends GTBaseCommand {
                                         if (!tTEWarningSend) {
                                             // Send a warning ingame, once per export command
                                             tTEWarningSend = true;
-                                            PlayerChatHelper.SendWarn(sender, "TileEntity states are not exported!");
+                                            sendChatToPlayer(
+                                                sender,
+                                                new ChatComponentTranslation("GT5U.chat.spatial.block_state")
+                                                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
                                         }
 
                                     }
@@ -115,19 +123,28 @@ public class AEStorageCommand extends GTBaseCommand {
                     // Save structure to disk
                     if (!GalacticGreg.SchematicHandler.SaveSpaceStructure(tSchematic)) {
                         // Something went wrong...
-                        PlayerChatHelper.SendError(sender, "Something went wrong. Structure not saved");
+                        sendChatToPlayer(
+                            sender,
+                            new ChatComponentTranslation("GT5U.chat.spatial.save_failed")
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
                     } else {
                         // All good, xml exported. Notify player that he needs to edit the file
-                        PlayerChatHelper.SendInfo(
+                        sendChatToPlayer(
                             sender,
-                            "Structure has been exported to " + tSchematic.getName()
-                                + ".xml. It contains "
-                                + tSchematic.coordInfo()
-                                    .size()
-                                + " Blocks");
-                        PlayerChatHelper.SendInfo(sender, "You have to edit the file before a reload will accept it!");
+                            new ChatComponentTranslation(
+                                "GT5U.chat.spatial.saved",
+                                tSchematic.getName() + ".xml",
+                                tSchematic.coordInfo()
+                                    .size()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+                        sendChatToPlayer(
+                            sender,
+                            new ChatComponentTranslation("GT5U.chat.spatial.edit_before_reload")
+                                .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
                     }
-                } else PlayerChatHelper.SendError(sender, "Error: Item in your hand is not a spatial storage drive!");
+                } else sendChatToPlayer(
+                    sender,
+                    new ChatComponentTranslation("GT5U.chat.spatial.wrong_item")
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             }
         } catch (Exception e) {
             LOGGER.error(e);

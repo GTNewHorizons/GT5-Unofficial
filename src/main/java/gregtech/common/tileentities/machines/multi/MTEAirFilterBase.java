@@ -31,7 +31,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -590,9 +590,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             mode = mode == 1 ? 0 : 1;
             if (mode == 0) {
                 chunkIndex = 0;
-                aPlayer.addChatMessage(new ChatComponentText("Electric air filter now running in normal mode"));
+                aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.air_filter.normal"));
             } else {
-                aPlayer.addChatMessage(new ChatComponentText("Electric air filter now running in random mode"));
+                aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.air_filter.random"));
             }
         } else { // change radius on sneak
             if (size == 1) {
@@ -601,8 +601,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                 size -= 2; // always get odd number
             }
             chunkIndex = 0;
-            aPlayer.addChatMessage(
-                new ChatComponentText("Electric air filter is now working in a " + size + "x" + size + " area"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.air_filter.area", size, size));
         }
     }
 

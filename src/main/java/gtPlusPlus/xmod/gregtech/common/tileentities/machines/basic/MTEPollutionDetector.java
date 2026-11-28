@@ -213,10 +213,10 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
 
     private void showPollution(final EntityPlayer playerIn) {
         if (!GTMod.proxy.mPollution) {
-            GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
+            GTUtility.sendChatTrans(playerIn, "GT5U.chat.pollution.disabled");
         } else {
-            GTUtility.sendChatToPlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");
-            GTUtility.sendChatToPlayer(playerIn, "Emit Redstone at pollution level: " + this.mRedstoneLevel);
+            GTUtility.sendChatTrans(playerIn, "GT5U.chat.pollution.chunk", getCurrentChunkPollution());
+            GTUtility.sendChatTrans(playerIn, "gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel);
         }
     }
 
@@ -365,7 +365,7 @@ public class MTEPollutionDetector extends MTETieredMachineBlock {
                 case 3 -> this.mRedstoneLevel += 50000;
             }
             this.markDirty();
-            GTUtility.sendChatToPlayer(aPlayer, "Emit Redstone at Pollution Level: " + this.mRedstoneLevel);
+            GTUtility.sendChatTrans(aPlayer, "gtpp.infodata.pollution_detector.redstone_level", this.mRedstoneLevel);
         }
 
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);

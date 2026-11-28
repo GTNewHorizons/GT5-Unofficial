@@ -48,7 +48,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -719,7 +719,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             if (data.isRenderActive()) destroyRenderer();
         }
         aPlayer.addChatMessage(
-            new ChatComponentText("Animations are now " + (data.isRendererDisabled() ? "disabled" : "enabled") + "."));
+            new ChatComponentTranslation(
+                data.isRendererDisabled() ? "GT5U.machines.animations.disabled" : "GT5U.machines.animations.enabled"));
     }
 
     @Override

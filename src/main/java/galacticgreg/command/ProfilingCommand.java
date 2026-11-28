@@ -1,6 +1,7 @@
 package galacticgreg.command;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentTranslation;
 
 import galacticgreg.GalacticGreg;
 import galacticgreg.api.ModContainer;
@@ -21,16 +22,20 @@ public class ProfilingCommand extends GTBaseCommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        sendChatToPlayer(sender, "Average OreGen times:");
+        sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.oregen.profiling"));
         for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
             for (ModDimensionDef mdd : mc.getDimensionList()) {
                 long tTime = GalacticGreg.Profiler.GetAverageTime(mdd);
-                String tInfo;
-                if (tTime == -1) tInfo = "N/A";
-                else tInfo = String.format("%d ms", tTime);
+                ChatComponentTranslation time = tTime == -1
+                    ? new ChatComponentTranslation("GT5U.gui.text.drone_no_data")
+                    : new ChatComponentTranslation("GT5U.chat.oregen.profiling.time", tTime);
                 sendChatToPlayer(
                     sender,
-                    String.format("%s (%s): %s", mdd.getDimIdentifier(), mdd.getDimensionName(), tInfo));
+                    new ChatComponentTranslation(
+                        "GT5U.chat.oregen.profiling.dimension",
+                        mdd.getDimIdentifier(),
+                        mdd.getDimensionName(),
+                        time));
             }
         }
     }

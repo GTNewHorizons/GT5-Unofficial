@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
 import codechicken.nei.NEIClientUtils;
 import gregtech.api.items.MetaGeneratedItem;
@@ -45,8 +45,8 @@ public class MetaItemDumper extends GregTechIDDumper {
     @Override
     public void dumpFile() {
         super.super$dumpFile();
-        NEIClientUtils.printChatMessage(
-            new ChatComponentText(String.format("mOffset: %s, mItemAmount: %s", item.mOffset, item.mItemAmount)));
+        NEIClientUtils
+            .printChatMessage(new ChatComponentTranslation("GT5U.chat.meta_item_dump", item.mOffset, item.mItemAmount));
         logWarn();
     }
 

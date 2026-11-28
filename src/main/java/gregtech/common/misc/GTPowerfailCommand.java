@@ -1,7 +1,5 @@
 package gregtech.common.misc;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +9,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
@@ -33,7 +34,7 @@ public class GTPowerfailCommand extends GTBaseCommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "Usage: /powerfails <subcommand>. Valid subcommands are: " + String.join(", ", SUBCOMMANDS) + ".";
+        return "/powerfails <subcommand>";
     }
 
     @Override
@@ -50,15 +51,15 @@ public class GTPowerfailCommand extends GTBaseCommand {
     protected List<IChatComponent> getHelpMessages() {
         // spotless:off
         List<IChatComponent> messages = new ArrayList<>();
-        messages.add(new ChatComponentText(getCommandUsage(null)));
-        messages.add(new ChatComponentText(" clear - Clears all powerfails for your team"));
-        messages.add(new ChatComponentText(" clear-dim - Clears all powerfails for your team in the current dimension"));
-        messages.add(new ChatComponentText(" list - Prints all uncleared powerfails for your team"));
-        messages.add(new ChatComponentText(" show - Enables in-world powerfail icons"));
-        messages.add(new ChatComponentText(" hide - Disables in-world powerfail icons"));
-        messages.add(new ChatComponentText(" help - Prints this help text"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.command.usage_with_subcommands", getCommandUsage(null), String.join(", ", SUBCOMMANDS)));
+        messages.add(new ChatComponentTranslation("GT5U.chat.powerfail.help.clear"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.powerfail.help.clear_dim"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.powerfail.help.list"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.powerfail.help.show"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.powerfail.help.hide"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.powerfail.help.help"));
         messages.add(new ChatComponentText(""));
-        messages.add(new ChatComponentText("Aliases: powerfails, powerfail, pf"));
+        messages.add(new ChatComponentTranslation("GT5U.chat.command.aliases", "powerfails, powerfail, pf"));
         return messages;
         // spotless:on
     }
@@ -129,7 +130,10 @@ public class GTPowerfailCommand extends GTBaseCommand {
                 }
             }
             default -> {
-                sendChatToPlayer(sender, RED + "Illegal subcommand: " + args[0]);
+                sendChatToPlayer(
+                    sender,
+                    new ChatComponentTranslation("GT5U.chat.command.invalid_subcommand", args[0])
+                        .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
                 sendHelpMessage(sender);
             }
         }

@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
 import gregtech.commands.GTBaseCommand;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
@@ -43,7 +45,16 @@ public class SPMCommand extends GTBaseCommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/" + this.getCommandName() + " <subCommand>. Available subCommands: reset, unlock, lock, list, copy";
+        return "/" + this.getCommandName() + " <subCommand>";
+    }
+
+    @Override
+    protected List<IChatComponent> getHelpMessages() {
+        return List.of(
+            new ChatComponentTranslation(
+                "GT5U.chat.command.usage_with_subcommands",
+                getCommandUsage(null),
+                String.join(", ", getSubCommands())));
     }
 
     @Override
@@ -55,18 +66,20 @@ public class SPMCommand extends GTBaseCommand {
         switch (arguments[0]) {
             case RESET:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
+                    sendChatToPlayer(sender, new ChatComponentTranslation("commands.generic.permission"));
                     return;
                 }
                 processReset(sender, arguments.length >= 2 ? arguments[1] : sender.getCommandSenderName());
                 break;
             case UNLOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
+                    sendChatToPlayer(sender, new ChatComponentTranslation("commands.generic.permission"));
                     return;
                 }
                 if (arguments.length < 3) {
-                    sendChatToPlayer(sender, "Not enough arguments. Needs to mention a project and a location");
+                    sendChatToPlayer(
+                        sender,
+                        new ChatComponentTranslation("GT5U.chat.space_project.arguments.project_location"));
                     return;
                 }
                 processUnlock(
@@ -77,13 +90,11 @@ public class SPMCommand extends GTBaseCommand {
                 break;
             case UNLOCK_UPGRADE:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
+                    sendChatToPlayer(sender, new ChatComponentTranslation("commands.generic.permission"));
                     return;
                 }
                 if (arguments.length < 4) {
-                    sendChatToPlayer(
-                        sender,
-                        "Not enough arguments. Needs to mention a project a location and an upgrade name");
+                    sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.arguments.upgrade"));
                     return;
                 }
                 processUnlock(
@@ -95,11 +106,13 @@ public class SPMCommand extends GTBaseCommand {
                 break;
             case LOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
+                    sendChatToPlayer(sender, new ChatComponentTranslation("commands.generic.permission"));
                     return;
                 }
                 if (arguments.length < 3) {
-                    sendChatToPlayer(sender, "Not enough arguments. Needs to mention a project and a location");
+                    sendChatToPlayer(
+                        sender,
+                        new ChatComponentTranslation("GT5U.chat.space_project.arguments.project_location"));
                     return;
                 }
                 processLock(
@@ -111,18 +124,20 @@ public class SPMCommand extends GTBaseCommand {
                 if (arguments.length < 2) {
                     sendChatToPlayer(
                         sender,
-                        "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked");
+                        new ChatComponentTranslation(
+                            "commands.generic.usage",
+                            "/spm list <-all|-available|-unlocked>"));
                     return;
                 }
                 processList(sender, arguments[1], arguments.length >= 3 ? arguments[2] : sender.getCommandSenderName());
                 break;
             case COPY:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
-                    sendChatToPlayer(sender, "You don't have the permissions to execute this command");
+                    sendChatToPlayer(sender, new ChatComponentTranslation("commands.generic.permission"));
                     return;
                 }
                 if (arguments.length < 3) {
-                    sendChatToPlayer(sender, "Not enough arguments. Needs to mention 2 players");
+                    sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.arguments.players"));
                     return;
                 }
                 processCopy(sender, arguments[1], arguments[2]);
@@ -204,13 +219,13 @@ public class SPMCommand extends GTBaseCommand {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         SpaceProjectManager.spaceTeamProjects.put(tID, null);
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
-        sendChatToPlayer(sender, "Cleared away map");
+        sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.map_cleared"));
     }
 
     private void processLock(ICommandSender sender, String projectName, String location, String playerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, null);
-        sendChatToPlayer(sender, "Project locked");
+        sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.locked"));
     }
 
     private void processUnlock(ICommandSender sender, String projectName, String location, String playerName) {
@@ -219,9 +234,9 @@ public class SPMCommand extends GTBaseCommand {
         if (tProject != null) {
             tProject.setProjectCurrentStage(tProject.getTotalStages());
             SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
-            sendChatToPlayer(sender, "Project unlocked");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.unlocked"));
         } else {
-            sendChatToPlayer(sender, "Incorrect internal project name. Try again");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.invalid_name"));
         }
     }
 
@@ -232,7 +247,7 @@ public class SPMCommand extends GTBaseCommand {
         if (tProject != null) {
             ISpaceProject.ISP_Upgrade upgrade = tProject.getUpgrade(upgradeName);
             if (upgrade == null) {
-                sendChatToPlayer(sender, "Incorrect internal project upgrade name. Try again");
+                sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.invalid_upgrade"));
                 return;
             }
             if (!tProject.isFinished()) {
@@ -240,9 +255,9 @@ public class SPMCommand extends GTBaseCommand {
                 SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
             }
             tProject.setBuiltUpgrade(upgrade);
-            sendChatToPlayer(sender, "Project Upgrade unlocked");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.upgrade_unlocked"));
         } else {
-            sendChatToPlayer(sender, "Incorrect internal project name. Try again");
+            sendChatToPlayer(sender, new ChatComponentTranslation("GT5U.chat.space_project.invalid_name"));
         }
     }
 

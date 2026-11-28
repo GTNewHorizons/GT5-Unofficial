@@ -348,23 +348,18 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         int aLayerIndex = 0;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            "Trying to clear " + mOutputHatchesByLayer.size() + " layers of output hatches.");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.output_hatch.clear_layers", mOutputHatchesByLayer.size());
         for (List<MTEHatchOutput> layer : this.mOutputHatchesByLayer) {
             int aHatchIndex = 0;
             for (MTEHatchOutput hatch : layer) {
                 if (hatch.mFluid != null) {
-                    GTUtility.sendChatToPlayer(
+                    GTUtility.sendChatTrans(
                         aPlayer,
-                        "Clearing " + hatch.mFluid.amount
-                            + "L of "
-                            + hatch.mFluid.getLocalizedName()
-                            + " from hatch "
-                            + aHatchIndex
-                            + " on layer "
-                            + aLayerIndex
-                            + ".");
+                        "GT5U.chat.output_hatch.clear_layer_fluid",
+                        hatch.mFluid.amount,
+                        hatch.mFluid.getLocalizedName(),
+                        aHatchIndex,
+                        aLayerIndex);
                     hatch.mFluid = null;
                 }
                 aHatchIndex++;

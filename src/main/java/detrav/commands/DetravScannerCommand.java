@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.chunk.Chunk;
 
@@ -75,7 +76,7 @@ public class DetravScannerCommand extends GTBaseCommand {
             .getChunkFromChunkCoords(aX, aZ);
 
         if (c == null) {
-            sender.addChatMessage(new ChatComponentText("ERROR"));
+            sender.addChatMessage(new ChatComponentTranslation("GT5U.chat.detrav_scanner.error"));
             return;
         }
 
@@ -102,11 +103,11 @@ public class DetravScannerCommand extends GTBaseCommand {
             }
         }
 
-        sender.addChatMessage(new ChatComponentText("*** Detrav Scanner Begin"));
+        sender.addChatMessage(new ChatComponentTranslation("GT5U.chat.detrav_scanner.begin"));
         for (String key : ores.keySet()) {
             sender.addChatMessage(new ChatComponentText(String.format("%s : %d", key, ores.get(key))));
         }
-        sender.addChatMessage(new ChatComponentText("*** Detrav Scanner End"));
+        sender.addChatMessage(new ChatComponentTranslation("GT5U.chat.detrav_scanner.end"));
     }
 
     @Override

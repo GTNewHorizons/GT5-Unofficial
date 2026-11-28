@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -95,7 +95,7 @@ public class PacketTeleportPlayer extends GTPacket {
         if (this.dim == player.dimension) {
             player.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, yaw, pitch);
         } else {
-            player.addChatMessage(new ChatComponentText("Cannot highlight because you're not in the same dimension!"));
+            player.addChatMessage(new ChatComponentTranslation("gt.item.redstone_sniffer.wrong_dim_message"));
         }
 
     }

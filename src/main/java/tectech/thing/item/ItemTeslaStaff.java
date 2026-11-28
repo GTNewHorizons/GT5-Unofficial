@@ -32,7 +32,7 @@ public final class ItemTeslaStaff extends Item {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer aPlayer, Entity entity) {
-        GTUtility.sendChatToPlayer(aPlayer, "Zapperoni!");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.tesla_staff.zap");
         if (!(aPlayer instanceof EntityPlayerMP)) {
             double aX = aPlayer.posX;
             double aY = aPlayer.posY;

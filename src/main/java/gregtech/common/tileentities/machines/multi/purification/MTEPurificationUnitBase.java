@@ -16,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -582,11 +582,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Try to link, and report the result back to the player.
         LinkResult result = trySetControllerFromCoord(x, y, z);
         if (result == LinkResult.SUCCESS) {
-            aPlayer.addChatMessage(new ChatComponentText("Link successful"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.link.success"));
         } else if (result == LinkResult.TOO_FAR) {
-            aPlayer.addChatMessage(new ChatComponentText("Link failed: Out of range."));
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.link.out_of_range"));
         } else if (result == LinkResult.NO_VALID_PLANT) {
-            aPlayer.addChatMessage(new ChatComponentText("Link failed: No Purification Plant found at link location"));
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.chat.link.no_purification_plant"));
         }
 
         return true;

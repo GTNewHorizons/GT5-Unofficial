@@ -799,7 +799,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     removal = 8 * (int) GTUtility.powInt(4, aTier);
                 }
                 if (!canUse(aStack, removal) && aTier > 0 && aTier < 4) {
-                    GTUtility.sendChatToPlayer(aPlayer, "Not enough power.");
+                    GTUtility.sendChatTrans(aPlayer, "GT5U.chat.pump.insufficient_power");
                     return false;
                 }
 
@@ -862,9 +862,11 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                                 (IGregTechTileEntity) tTileEntity,
                                 newStackRemainingInTank);
                             if (b) {
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     aPlayer,
-                                    "Drained " + mAmountInserted + "L of " + aStored.getLocalizedName() + ".");
+                                    "GT5U.chat.pump.drained",
+                                    mAmountInserted,
+                                    aStored.getLocalizedName());
                             } else {
                                 drain(aStack, mAmountInserted);
                             }
