@@ -28,6 +28,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(5, ItemList.Casing_Strengthened_Inanimate);
         register(6, ItemList.Casing_Precise_Stationary);
         register(7, ItemList.Casing_Ultimately_Static);
+        register(8, ItemList.SCP_Casing);
         register(9, ItemList.Spinmatron_Casing);
         register(10, ItemList.CasingThaumium);
         register(11, ItemList.CasingVoid);
@@ -76,6 +77,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
             case 5 -> Textures.BlockIcons.MACHINE_CASING_STRENGTHENED_INANIMATE.getIcon();
             case 6 -> Textures.BlockIcons.MACHINE_CASING_PRECISE_STATIONARY.getIcon();
             case 7 -> Textures.BlockIcons.MACHINE_CASING_ULTIMATELY_STATIC.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_SCP.getIcon();
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
