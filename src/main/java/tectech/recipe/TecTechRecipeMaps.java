@@ -71,10 +71,10 @@ public class TecTechRecipeMaps {
             EyeOfHarmonyFrontend.maxFluidOutputs)
         .minInputs(1, 0)
         .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-        .progressBarPos(75, 24 + 2)
+        .progressBarPos(78, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
-            builder -> builder.setHeight(326)
+            builder -> builder.setHeight(309)
                 .setMultipleWidgetsAllowed(false))
         .frontend(EyeOfHarmonyFrontend::new)
         .build();

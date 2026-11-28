@@ -29,9 +29,12 @@ public abstract class ScrollableOutputFrontend extends RecipeMapFrontend {
     public static final int FLUID_COLUMNS = 8;
 
     protected static final int ORIGIN_Y = 8;
-    private static final int ITEM_GRID_X = (170 - ITEM_COLUMNS * 18) / 2;
-    private static final int FLUID_GRID_X = (170 - FLUID_COLUMNS * 18) / 2;
-    private static final int TRIGGER_X = 85 - 9;
+    // The background is drawn this far inside the coordinates slots are placed in, which the centering has to include
+    private static final int BACKGROUND_OFFSET = 3;
+    private static final int BACKGROUND_WIDTH = 170;
+    private static final int ITEM_GRID_X = centeredX(ITEM_COLUMNS * 18);
+    private static final int FLUID_GRID_X = centeredX(FLUID_COLUMNS * 18);
+    private static final int TRIGGER_X = centeredX(18);
     private static final int ITEM_GRID_Y = ORIGIN_Y + 36;
 
     private final int itemRows;
@@ -45,9 +48,16 @@ public abstract class ScrollableOutputFrontend extends RecipeMapFrontend {
         NEIRecipePropertiesBuilder neiPropertiesBuilder, int itemRows, int fluidRows) {
         super(
             uiPropertiesBuilder.logoPos(new Pos2d(8, ORIGIN_Y)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 115 + (itemRows + fluidRows - 4) * 18)));
+            neiPropertiesBuilder.recipeBackgroundSize(
+                new Size(
+                    BACKGROUND_WIDTH,
+                    ITEM_GRID_Y + (itemRows + fluidRows) * 18 + ORIGIN_Y - 2 * BACKGROUND_OFFSET)));
         this.itemRows = itemRows;
         this.fluidRows = fluidRows;
+    }
+
+    protected static int centeredX(int width) {
+        return BACKGROUND_OFFSET + (BACKGROUND_WIDTH - width) / 2;
     }
 
     @Override

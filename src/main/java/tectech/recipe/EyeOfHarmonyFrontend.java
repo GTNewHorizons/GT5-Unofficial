@@ -14,6 +14,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import appeng.util.ReadableNumberConverter;
 import codechicken.nei.PositionedStack;
@@ -21,6 +22,7 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.maps.ScrollableOutputFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.NEIScrollArea;
 import gregtech.nei.RecipeDisplayInfo;
@@ -33,8 +35,10 @@ import tectech.util.CommonValues;
 public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
 
     private static final int itemRows = 8, fluidRows = 3;
-    public static final int maxItemInputs = 1, maxItemOutputs = ITEM_COLUMNS * itemRows, maxFluidInputs = 0,
+    public static final int maxItemInputs = 1, maxItemOutputs = ITEM_COLUMNS * itemRows, maxFluidInputs = 2,
         maxFluidOutputs = FLUID_COLUMNS * fluidRows;
+
+    private static final int INPUT_X = centeredX(18 * (maxItemInputs + maxFluidInputs));
 
     public EyeOfHarmonyFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
@@ -43,6 +47,22 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
             neiPropertiesBuilder.neiSpecialInfoFormatter(new EyeOfHarmonySpecialValueFormatter()),
             itemRows,
             fluidRows);
+    }
+
+    @Override
+    public List<Pos2d> getItemInputPositions(int itemInputCount) {
+        return UIHelper.getGridPositions(itemInputCount, INPUT_X, ORIGIN_Y, 1, 1);
+    }
+
+    @Override
+    public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
+        // The recipe also has raw star matter, which is not shown
+        return UIHelper.getGridPositions(
+            Math.min(fluidInputCount, maxFluidInputs),
+            INPUT_X + 18 * maxItemInputs,
+            ORIGIN_Y,
+            maxFluidInputs,
+            1);
     }
 
     @Override
@@ -120,13 +140,6 @@ public class EyeOfHarmonyFrontend extends ScrollableOutputFrontend {
             EyeOfHarmonyRecipe recipe = (EyeOfHarmonyRecipe) recipeInfo.recipe.mSpecialItems;
             List<String> result = new ArrayList<>();
 
-            result.add(
-                StatCollector.translateToLocalFormatted(
-                    "EOH.Recipe.Hydrogen.In",
-                    formatNumber(recipe.getHydrogenRequirement())));
-            result.add(
-                StatCollector
-                    .translateToLocalFormatted("EOH.Recipe.Helium.In", formatNumber(recipe.getHydrogenRequirement())));
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.SpacetimeTier",

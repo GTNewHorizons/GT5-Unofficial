@@ -2221,10 +2221,10 @@ public final class RecipeMaps {
         .maxIO(1, VoidMinerFrontend.MAX_ITEM_OUTPUTS, 0, 0)
         .minInputs(1, 0)
         .progressBar(GTUITextures.PROGRESSBAR_HAMMER, ProgressBar.Direction.DOWN)
-        .progressBarPos(75, 26)
+        .progressBarPos(78, 26)
         .logoPos(10, 10)
         .neiHandlerInfo(
-            builder -> builder.setHeight(240)
+            builder -> builder.setHeight(243)
                 .setMultipleWidgetsAllowed(false))
         .frontend(VoidMinerFrontend::new)
         .build();

@@ -129,8 +129,8 @@ public class EyeOfHarmonyRecipeStorage {
                 .itemInputs(planetItem)
                 .itemOutputs(outputItems.toArray(new ItemStack[0]))
                 .fluidInputs(
-                    Materials.Hydrogen.getGas(0),
-                    Materials.Helium.getGas(0),
+                    Materials.Hydrogen.getGas(recipe.getHydrogenRequirement()),
+                    Materials.Helium.getGas(recipe.getHeliumRequirement()),
                     Materials.RawStarMatter.getFluid(0))
                 .fluidOutputs(outputFluids.toArray(new FluidStack[0]))
                 .duration(recipe.getRecipeTimeInTicks())
