@@ -30,6 +30,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
+import appeng.api.crafting.IPatternTargetKey;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -271,6 +272,11 @@ public class MTEHatchInputBus extends MTEHatch
     @Override
     public int getCircuitSlot() {
         return getSlots(mTier);
+    }
+
+    @Override
+    public IPatternTargetKey getTargetKey() {
+        return getOwnerPatternTargetKey();
     }
 
     @Override

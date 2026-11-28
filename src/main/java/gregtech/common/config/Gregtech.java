@@ -579,13 +579,11 @@ public class Gregtech {
         @Config.Comment("Format template for the ghost circuit suffix in AE2 terminal display names. Use %s as placeholder for the circuit number. Applies to all GT machines and Crafting Input Bus/Buffer.")
         @Config.DefaultString(" [%s]")
         @Config.Name("Ghost Circuit Suffix Format")
-        @Config.RequiresMcRestart
         public String ghostCircuitSuffixFormat = " [%s]";
 
         @Config.Comment("Format template for the item slots suffix in AE2 terminal display names. Use %s as placeholder for comma-separated item names. Applies to Crafting Input Bus/Buffer manual slots and non-consumed recipe inputs (e.g. molds).")
         @Config.DefaultString(" {%s}")
         @Config.Name("Item Slots Suffix Format")
-        @Config.RequiresMcRestart
         public String itemSlotsSuffixFormat = " {%s}";
     }
 

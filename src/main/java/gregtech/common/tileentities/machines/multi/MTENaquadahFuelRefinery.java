@@ -50,6 +50,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.crossmod.ae2.PatternTargetKey.MaxSpecialValue;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -260,13 +261,18 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase
     }
 
     @Override
+    protected MaxSpecialValue getPatternRecipeFilter() {
+        return new MaxSpecialValue(tier);
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > tier) {
+                if (!getPatternRecipeFilter().test(recipe)) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
