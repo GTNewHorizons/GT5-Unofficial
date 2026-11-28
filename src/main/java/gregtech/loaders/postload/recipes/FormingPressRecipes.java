@@ -332,5 +332,14 @@ public class FormingPressRecipes implements Runnable {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 16))
+            .itemOutputs(ItemList.Diamond_Infused_Wire_Saw.get(16))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(formingPressRecipes);
     }
 }

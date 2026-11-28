@@ -142,6 +142,7 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAlgaePond;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
+import gregtech.common.tileentities.machines.multi.MTECZPuller;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
@@ -152,6 +153,7 @@ import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEElectricImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.MTEElectrochemicalCutter;
 import gregtech.common.tileentities.machines.multi.MTEEndothermicFridge;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExothermicHearth;
@@ -160,6 +162,7 @@ import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
+import gregtech.common.tileentities.machines.multi.MTEHatchDopingControl;
 import gregtech.common.tileentities.machines.multi.MTEHatchToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
@@ -197,11 +200,13 @@ import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 import gregtech.common.tileentities.machines.multi.MTELargeNaquadahReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
+import gregtech.common.tileentities.machines.multi.MTELaserCutter;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTEMegaDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEMegaOilCracker;
+import gregtech.common.tileentities.machines.multi.MTEMicrowaveInducedPlasmaReactor;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -230,7 +235,9 @@ import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gregtech.common.tileentities.machines.multi.MTEUniversalChemicalFuelEngine;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
+import gregtech.common.tileentities.machines.multi.MTEWaferDopingFacility;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.MTEZoneMelter;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
@@ -396,6 +403,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "hatch.degasifiercontrol",
                 "Degasser Control Hatch",
                 8).getStackForm(1L));
+        ItemList.Hatch_DopingControl.set(
+            new MTEHatchDopingControl(DopingControlHatch.ID, "hatch.dopingcontrol", "Doping Control Hatch", 8)
+                .getStackForm(1L));
         ItemList.FusionComputer_LuV.set(
             new MTEFusionComputer1(FUSION_CONTROLLER_MKI.ID, "fusioncomputer.tier.06", "Fusion Control Computer Mark I")
                 .getStackForm(1L));
@@ -9249,6 +9259,44 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe").getStackForm(1L));
     }
 
+    private static void registerCZPuller() {
+        ItemList.CZPuller.set(new MTECZPuller(CZPuller.ID, "multimachine.czpuller", "CZ Puller").getStackForm(1L));
+    }
+
+    private static void registerZoneMelter() {
+        ItemList.ZoneMelter
+            .set(new MTEZoneMelter(ZoneMelter.ID, "multimachine.zonemelter", "Zone Melter").getStackForm(1L));
+    }
+
+    private static void registerLaserCutter() {
+        ItemList.LaserCutter
+            .set(new MTELaserCutter(LaserCutter.ID, "multimachine.lasercutter", "Laser Cutter").getStackForm(1L));
+    }
+
+    private static void registerElectrochemicalCutter() {
+        ItemList.ElectrochemicalCutter.set(
+            new MTEElectrochemicalCutter(
+                ElectrochemicalCutter.ID,
+                "multimachine.electrochemicalcutter",
+                "Electrochemical Cutter").getStackForm(1L));
+    }
+
+    private static void registerWaferDopingFacility() {
+        ItemList.WaferDopingFacility.set(
+            new MTEWaferDopingFacility(
+                WaferDopingFacility.ID,
+                "multimachine.waferdopingfacility",
+                "Wafer Doping Facility").getStackForm(1L));
+    }
+
+    private static void registerMicrowaveInducedPlasmaReactor() {
+        ItemList.MicrowaveInducedPlasmaReactor.set(
+            new MTEMicrowaveInducedPlasmaReactor(
+                MicrowaveInducedPlasmaReactor.ID,
+                "multimachine.microwaveinducedplasmareactor",
+                "Microwave Induced Plasma Reactor").getStackForm(1L));
+    }
+
     @Override
     public void run() {
         GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
@@ -9367,6 +9415,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerAirFilters();
         registerNacHatches();
         registerDrawerFramer();
+        registerCZPuller();
+        registerZoneMelter();
+        registerLaserCutter();
+        registerElectrochemicalCutter();
+        registerWaferDopingFacility();
+        registerMicrowaveInducedPlasmaReactor();
 
         ItemList.DebugStructureWriter.set(
             new MTEDebugStructureWriter(DEBUG_STRUCTURE_WRITER.ID, "debugstructurewriter", "Debug Structure Writer", 5)

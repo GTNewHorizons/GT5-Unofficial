@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
+import static gregtech.api.util.GTRecipeConstants.STRUCTURE_TIER;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
 import static gregtech.api.util.GTUtility.clamp;
@@ -86,6 +87,7 @@ import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeCentrifugeFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
+import gregtech.api.recipe.maps.MIPRRecipeFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
 import gregtech.api.recipe.maps.MillingFrontend;
 import gregtech.api.recipe.maps.NACMatrixFrontend;
@@ -109,6 +111,11 @@ import gregtech.api.recipe.maps.ThermalBoilerFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.maps.ZhuhaiFrontend;
+import gregtech.api.recipe.maps.boules.CZPullerRecipeFrontend;
+import gregtech.api.recipe.maps.boules.ElectrochemicalCutterRecipeFrontend;
+import gregtech.api.recipe.maps.boules.LaserCutterRecipeFrontend;
+import gregtech.api.recipe.maps.boules.WaferDopingFacilityRecipeFrontend;
+import gregtech.api.recipe.maps.boules.ZoneMelterRecipeFrontend;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
@@ -2233,6 +2240,60 @@ public final class RecipeMaps {
         .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .build();
+
+    public static final RecipeMetadataKey<Integer> WAFER_DOPING_PARTICLE_MODE = SimpleRecipeMetadataKey
+        .create(Integer.class, "wafer_doping_particle_mode");
+    public static final int WAFER_DOPING_PARTICLE_MODE_NONE = 0;
+    public static final int WAFER_DOPING_PARTICLE_MODE_PARTICLES = 1;
+    public static final int WAFER_DOPING_PARTICLE_MODE_ANOMALY = 2;
+
+    public static final RecipeMap<RecipeMapBackend> czPullerRecipes = RecipeMapBuilder.of("gt.recipe.cz_puller")
+        .maxIO(2, 1, 1, 0)
+        .minInputs(2, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(CZPullerRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> zoneMelterRecipes = RecipeMapBuilder.of("gt.recipe.zone_melter")
+        .maxIO(2, 3, 0, 0)
+        .minInputs(2, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(ZoneMelterRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> laserCutterRecipes = RecipeMapBuilder.of("gt.recipe.laser_cutter")
+        .maxIO(1, 2, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(LaserCutterRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> electrochemicalCutterRecipes = RecipeMapBuilder
+        .of("gt.recipe.electrochemical_cutter")
+        .maxIO(1, 2, 0, 0)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(ElectrochemicalCutterRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> waferDopingFacilityRecipes = RecipeMapBuilder
+        .of("gt.recipe.wafer_doping_facility")
+        .maxIO(4, 1, 0, 0)
+        .minInputs(2, 0)
+        .neiRecipeComparator(
+            Comparator.<GTRecipe>comparingInt(recipe -> recipe.getMetadataOrDefault(STRUCTURE_TIER, 1))
+                .thenComparing(GTRecipe::compareTo))
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .neiHandlerInfo(builder -> builder.setHeight(190))
+        .frontend(WaferDopingFacilityRecipeFrontend::new)
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> miprRecipes = RecipeMapBuilder.of("gt.recipe.mipr")
+        .maxIO(0, 1, 1, 1)
+        .minInputs(0, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .frontend(MIPRRecipeFrontend::new)
         .build();
 
     private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {

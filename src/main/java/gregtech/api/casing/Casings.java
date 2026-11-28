@@ -544,6 +544,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockReinforced,3,211),
     NaquadahReinforcedBlock
         (() -> GregTechAPI.sBlockReinforced,10,218),
+    PlascreteBlock
+        (() -> GregTechAPI.sBlockReinforced, 2, -1),
 
     // Block Casings Foundry
     PrimaryExoFoundryCasing
@@ -1089,6 +1091,10 @@ public enum Casings implements ICasing {
 
     ShieldedAcceleratorCasing
         (() -> LanthItemList.SHIELDED_ACCELERATOR_CASING, 0,gt(12,126)),
+    ElectrodeCasing
+        (() -> LanthItemList.ELECTRODE_CASING, 0, -1),
+    ShieldedAcceleratorGlass
+        (() -> LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0, -1),
     // other lanth casings need to be registered manually
 
 
