@@ -89,6 +89,7 @@ import gregtech.common.blocks.BlockSheetMetal;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
 import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.hydrodam.BlockDamWater;
 import gregtech.common.items.ItemAdvancedSensorCard;
 import gregtech.common.items.ItemDepletedCell;
 import gregtech.common.items.ItemFluidDisplay;
@@ -756,6 +757,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockStones = new BlockStones();
         GregTechAPI.sBlockOres1 = new BlockOresLegacy();
         GregTechAPI.sBlockPad = new BlockPad();
+        GregTechAPI.sBlockDamWater = new BlockDamWater();
         GregTechAPI.sBlockFenceMetal = new BlockFenceMetal();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();

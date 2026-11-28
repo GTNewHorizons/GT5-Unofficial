@@ -5,6 +5,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.blocks.BlockCasings5;
+import gregtech.common.hydrodam.BlockDamWater;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 
@@ -25,6 +26,8 @@ public class Waila {
         final IWailaDataProvider blockProvider = new GregtechBlockWailaDataProvider();
 
         register.registerStackProvider(blockProvider, BlockCasings5.class);
+
+        register.registerBodyProvider(new DamWaterWailaDataProvider(), BlockDamWater.class);
     }
 
     public static void init() {

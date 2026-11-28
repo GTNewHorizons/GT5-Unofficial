@@ -181,6 +181,7 @@ public class GregTechAPI {
     public static Block sDroneRender;
     public static Block sBlockFenceMetal;
     public static Block sBlockPad;
+    public static Block sBlockDamWater;
     public static Block sBlockFrames;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;

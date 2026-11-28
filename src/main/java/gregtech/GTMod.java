@@ -98,6 +98,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.hydrodam.HydroDamCommand;
 import gregtech.common.misc.GTDebugCommand;
 import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
@@ -800,6 +801,7 @@ public class GTMod {
         event.registerServerCommand(new SPMCommand());
         event.registerServerCommand(new SpaceProjectCommand());
         event.registerServerCommand(new GTPowerfailCommand());
+        event.registerServerCommand(new HydroDamCommand());
     }
 
     @Mod.EventHandler

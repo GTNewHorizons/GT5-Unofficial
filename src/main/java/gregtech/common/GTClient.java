@@ -112,6 +112,7 @@ import gregtech.common.config.Client;
 import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
+import gregtech.common.hydrodam.DamWaterRenderer;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.misc.GTCapeCommand;
@@ -221,6 +222,7 @@ public class GTClient extends GTProxy {
         super.onInitialization(event);
         RenderingRegistry.registerBlockHandler(new GTRendererBlock());
         RenderingRegistry.registerBlockHandler(new GTRendererCasing());
+        DamWaterRenderer.register();
 
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityWormhole.class, new WormholeRenderer());
