@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Variants;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -28,6 +29,26 @@ public class TTRecipeAdder extends RecipeAdder {
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+        return addResearchableAssemblylineRecipeLong(
+            aResearchItem,
+            totalComputationRequired,
+            computationRequiredPerSec,
+            researchEUt,
+            researchAmperage,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
+    }
+
+    @Deprecated
+    public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
+        int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
+        FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt, Variants... variants) {
+        if (Variants.checkIfActive(variants)) {
+            return false;
+        }
         return addResearchableAssemblylineRecipeLong(
             aResearchItem,
             totalComputationRequired,
@@ -117,6 +138,27 @@ public class TTRecipeAdder extends RecipeAdder {
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
+        return addResearchableAssemblylineRecipeLong(
+            aResearchItem,
+            totalComputationRequired,
+            computationRequiredPerSec,
+            researchEUt,
+            researchAmperage,
+            aInputs,
+            aFluidInputs,
+            aOutput,
+            assDuration,
+            assEUt);
+    }
+
+    @Deprecated
+    public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
+        int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
+        FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt, Variants... variants) {
+        if (Variants.checkIfActive(variants)) {
+            return false;
+        }
+
         return addResearchableAssemblylineRecipeLong(
             aResearchItem,
             totalComputationRequired,

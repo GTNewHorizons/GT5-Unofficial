@@ -14,6 +14,8 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Variants.AlteredPricing;
+import static gregtech.api.enums.Variants.WirelessPower;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -50,6 +52,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.Variants;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -68,11 +71,13 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     @Override
     public void run() {
-        itemPartsUHVAsslineRecipes();
-        itemPartsUEVAsslineRecipes();
-        itemPartsUIVAsslineRecipes();
-        itemPartsUMVAsslineRecipes();
-        itemPartsUXVAsslineRecipes();
+        if (!Variants.checkIfActive(AlteredPricing)) {
+            itemPartsUHVAsslineRecipes();
+            itemPartsUEVAsslineRecipes();
+            itemPartsUIVAsslineRecipes();
+            itemPartsUMVAsslineRecipes();
+            itemPartsUXVAsslineRecipes();
+        }
         addWirelessEnergyRecipes();
         addGodforgeRecipes();
         addBeamcraftingRecipes();
@@ -116,7 +121,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.DraconiumAwakened.getMolten(576), },
             ItemList.Casing_Coil_Infinity.get(1),
             60 * 20,
-            (int) TierEU.RECIPE_UEV);
+            (int) TierEU.RECIPE_UEV,
+            AlteredPricing);
 
         // Hypogen Coil
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -131,7 +137,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { Materials.Infinity.getMolten(576), },
             ItemList.Casing_Coil_Hypogen.get(1),
             60 * 20,
-            (int) TierEU.RECIPE_UIV);
+            (int) TierEU.RECIPE_UIV,
+            AlteredPricing);
 
         // Eternal coil
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -148,7 +155,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
             ItemList.Casing_Coil_Eternal.get(1),
             60 * 20,
-            (int) TierEU.RECIPE_UMV);
+            (int) TierEU.RECIPE_UMV,
+            AlteredPricing);
 
         // EOH Controller Recipe.
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -449,7 +457,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTModHandler.getIC2Coolant(10_000), Materials.Radon.getGas(2_500), },
             ItemList.Circuit_Wetwaremainframe.get(1L),
             2000,
-            300000);
+            300000,
+            AlteredPricing);
 
         // Bioware SuperComputer
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -473,7 +482,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 Materials.BioMediumSterilized.getFluid(10 * INGOTS), Materials.SuperCoolant.getFluid(10_000), },
             ItemList.Circuit_Biowaresupercomputer.get(1L),
             4000,
-            (int) TierEU.RECIPE_UV);
+            (int) TierEU.RECIPE_UV,
+            AlteredPricing);
 
         // Bio Mainframe
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -504,7 +514,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 Materials.BioMediumSterilized.getFluid(20 * INGOTS), Materials.SuperCoolant.getFluid(20_000L), },
             ItemList.Circuit_Biomainframe.get(1L),
             6000,
-            (int) TierEU.RECIPE_UHV);
+            (int) TierEU.RECIPE_UHV,
+            AlteredPricing);
 
         // Optical Assembly
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -526,7 +537,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 500) },
             ItemList.Circuit_OpticalAssembly.get(1L),
             20 * 20,
-            (int) TierEU.RECIPE_UHV);
+            (int) TierEU.RECIPE_UHV,
+            AlteredPricing);
 
         // Optical Computer
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -549,7 +561,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 1_000) },
             ItemList.Circuit_OpticalComputer.get(1L),
             200 * 20,
-            (int) TierEU.RECIPE_UHV);
+            (int) TierEU.RECIPE_UHV,
+            AlteredPricing);
 
         // Optical Mainframe
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -575,7 +588,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("oganesson"), 2_000) },
             ItemList.Circuit_OpticalMainframe.get(1L),
             300 * 20,
-            (int) TierEU.RECIPE_UEV);
+            (int) TierEU.RECIPE_UEV,
+            AlteredPricing);
 
         // Laser Vacuum Mirror
         TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -2751,98 +2765,99 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.eM_energyWirelessTunnel8_UXV.get(1), CustomItemList.eM_energyWirelessTunnel9_UXV.get(1) };
 
         // ------------------------ Wireless EU hatches ------------------------
+        if (!Variants.checkIfActive(WirelessPower)) {
+            for (int i = 0; i < wirelessHatches.length; i++) {
 
-        for (int i = 0; i < wirelessHatches.length; i++) {
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    (i == 0) ? ItemList.Tesseract.get(1) : wirelessHatches[i - 1],
+                    totalComputation,
+                    compPerSecond,
+                    researchEuPerTick,
+                    researchAmperage,
+                    new Object[] { energyHatches[i], new ItemStack(compactFusionCoil, 1),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2),
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusOne[i],
+                        ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
+                        Materials.ExcitedDTEC.getFluid(500) },
+                    wirelessHatches[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
 
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                (i == 0) ? ItemList.Tesseract.get(1) : wirelessHatches[i - 1],
-                totalComputation,
-                compPerSecond,
-                researchEuPerTick,
-                researchAmperage,
-                new Object[] { energyHatches[i], new ItemStack(compactFusionCoil, 1),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 2),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 1), circuitsTierPlusOne[i],
-                    ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
-                    Materials.ExcitedDTEC.getFluid(500) },
-                wirelessHatches[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
-        }
+            // ------------------------ 4A Wireless EU hatches ------------------------
 
-        // ------------------------ 4A Wireless EU hatches ------------------------
+            for (int i = 0; i < wirelessHatches_4A.length; i++) {
 
-        for (int i = 0; i < wirelessHatches_4A.length; i++) {
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_4A[i],
+                    totalComputation * 4,
+                    compPerSecond * 4,
+                    researchEuPerTick,
+                    researchAmperage * 2,
+                    new Object[] { energyHatches_4A[i], new ItemStack(compactFusionCoil, 1, 1),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(4),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
+                        GTOreDictUnificator.get("plateTripleShirabon", 4L),
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 4),
+                        circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * INGOTS),
+                        Materials.ExcitedDTEC.getFluid(2_000) },
+                    wirelessHatches_4A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
 
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                energyHatches_4A[i],
-                totalComputation * 4,
-                compPerSecond * 4,
-                researchEuPerTick,
-                researchAmperage * 2,
-                new Object[] { energyHatches_4A[i], new ItemStack(compactFusionCoil, 1, 1),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
-                    GTOreDictUnificator.get("plateTripleShirabon", 4L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 4), circuitsTierPlusOne[i + 4],
-                    ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(36 * INGOTS),
-                    Materials.ExcitedDTEC.getFluid(2_000) },
-                wirelessHatches_4A[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
-        }
+            // ------------------------ 16A Wireless EU hatches ------------------------
 
-        // ------------------------ 16A Wireless EU hatches ------------------------
+            for (int i = 0; i < wirelessHatches_16A.length; i++) {
 
-        for (int i = 0; i < wirelessHatches_16A.length; i++) {
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_16A[i],
+                    totalComputation * 16,
+                    compPerSecond * 16,
+                    researchEuPerTick,
+                    researchAmperage * 4,
+                    new Object[] { energyHatches_16A[i], new ItemStack(compactFusionCoil, 1, 2),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(16),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 16),
+                        GTOreDictUnificator.get("plateTripleShirabon", 16L),
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 4),
+                        circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS + 16 * INGOTS),
+                        Materials.ExcitedDTEC.getFluid(8_000) },
+                    wirelessHatches_16A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
 
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                energyHatches_16A[i],
-                totalComputation * 16,
-                compPerSecond * 16,
-                researchEuPerTick,
-                researchAmperage * 4,
-                new Object[] { energyHatches_16A[i], new ItemStack(compactFusionCoil, 1, 2),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(16),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 16),
-                    GTOreDictUnificator.get("plateTripleShirabon", 16L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 4),
-                    circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2 * STACKS + 16 * INGOTS),
-                    Materials.ExcitedDTEC.getFluid(8_000) },
-                wirelessHatches_16A[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
-        }
+            // ------------------------ 64A Wireless EU hatches ------------------------
 
-        // ------------------------ 64A Wireless EU hatches ------------------------
+            for (int i = 0; i < wirelessHatches_64A.length; i++) {
 
-        for (int i = 0; i < wirelessHatches_64A.length; i++) {
-
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                energyHatches_64A[i],
-                totalComputation * 64,
-                compPerSecond * 64,
-                researchEuPerTick,
-                researchAmperage * 8,
-                new Object[] { energyHatches_64A[i], new ItemStack(compactFusionCoil, 1, 3),
-                    ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
-                    CustomItemList.eM_Power.get(64),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 64),
-                    GTOreDictUnificator.get("plateTripleShirabon", 64L),
-                    GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusOne[i + 4],
-                    ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * STACKS),
-                    Materials.ExcitedDTEC.getFluid(32_000) },
-                wirelessHatches_64A[i],
-                recipeDurationTicks,
-                recipeEuPerTick);
+                TTRecipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_64A[i],
+                    totalComputation * 64,
+                    compPerSecond * 64,
+                    researchEuPerTick,
+                    researchAmperage * 8,
+                    new Object[] { energyHatches_64A[i], new ItemStack(compactFusionCoil, 1, 3),
+                        ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Power.get(64),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 64),
+                        GTOreDictUnificator.get("plateTripleShirabon", 64L),
+                        GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusOne[i + 4],
+                        ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * STACKS),
+                        Materials.ExcitedDTEC.getFluid(32_000) },
+                    wirelessHatches_64A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+            }
         }
 
         // ------------------------ Wireless UXV Lasers ------------------------
@@ -3004,10 +3019,10 @@ public class ResearchStationAssemblyLine implements Runnable {
         // Input
         {
             // UHV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hatch_Input_Bus_MAX.get(1),
-                240_000L,
-                24_000L,
+                240_000,
+                24_000,
                 (int) TierEU.RECIPE_UV,
                 4,
                 new Object[] { ItemList.Hatch_Input_Bus_MAX.get(1), ItemList.Electric_Piston_UHV.get(2),
@@ -3020,10 +3035,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UHV);
 
             // UEV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UEV.get(1),
-                300_000L,
-                30_000L,
+                300_000,
+                30_000,
                 (int) TierEU.RECIPE_UHV,
                 4,
                 new Object[] { ItemList.Hull_UEV.get(1), getModItem(AvaritiaAddons.ID, "CompressedChest", 8),
@@ -3037,10 +3052,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UEV);
 
             // UIV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UIV.get(1),
-                600_000L,
-                60_000L,
+                600_000,
+                60_000,
                 (int) TierEU.RECIPE_UEV,
                 4,
                 new Object[] { ItemList.Hull_UIV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 4, 0),
@@ -3055,10 +3070,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UIV);
 
             // UMV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UMV.get(1),
-                1_200_000L,
-                120_000L,
+                1_200_000,
+                120_000,
                 (int) TierEU.RECIPE_UIV,
                 1024,
                 new Object[] { ItemList.Hull_UMV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 6, 0),
@@ -3072,10 +3087,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UMV);
 
             // UXV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Casing_UXV.get(1),
-                2_400_000L,
-                240_000L,
+                2_400_000,
+                240_000,
                 (int) TierEU.RECIPE_UXV,
                 4096,
                 new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 8, 0),
@@ -3094,10 +3109,10 @@ public class ResearchStationAssemblyLine implements Runnable {
         // Output
         {
             // UHV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hatch_Output_Bus_MAX.get(1),
-                240_000L,
-                24_000L,
+                240_000,
+                24_000,
                 (int) TierEU.RECIPE_UV,
                 4,
                 new Object[] { ItemList.Hatch_Output_Bus_MAX.get(1), ItemList.Electric_Piston_UHV.get(2),
@@ -3110,10 +3125,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UHV);
 
             // UEV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UEV.get(1),
-                300_000L,
-                30_000L,
+                300_000,
+                30_000,
                 (int) TierEU.RECIPE_UHV,
                 4,
                 new Object[] { ItemList.Hull_UEV.get(1), getModItem(AvaritiaAddons.ID, "CompressedChest", 8),
@@ -3127,10 +3142,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UEV);
 
             // UIV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UIV.get(1),
-                600_000L,
-                60_000L,
+                600_000,
+                60_000,
                 (int) TierEU.RECIPE_UEV,
                 4,
                 new Object[] { ItemList.Hull_UIV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 4, 0),
@@ -3145,10 +3160,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UIV);
 
             // UMV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UMV.get(1),
-                1_200_000L,
-                120_000L,
+                1_200_000,
+                120_000,
                 (int) TierEU.RECIPE_UIV,
                 1024,
                 new Object[] { ItemList.Hull_UMV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 6, 0),
@@ -3162,10 +3177,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 (int) TierEU.UMV);
 
             // UXV Tier
-            TTRecipeAdder.addResearchableAssemblylineRecipeLong(
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.Hull_UXV.get(1),
-                2_400_000L,
-                240_000L,
+                2_400_000,
+                240_000,
                 (int) TierEU.RECIPE_UXV,
                 4096,
                 new Object[] { ItemList.Hull_UXV.get(1), getModItem(DraconicEvolution.ID, "draconiumChest", 8, 0),

@@ -11,6 +11,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainFluidPipeCasings;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -80,6 +81,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.crossmod.ae2.PatternTargetKey.MaxSpecialValue;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -91,10 +93,10 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> implements ISurvivalConstructable {
 
     private static final int PARALLELS_PER_PIPE_TIER = 2;
-    private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.2D;
+    private static final double CATALYST_SAVE_PER_PIPE_TIER = 0.15D;
     private static final float SPEED_BONUS_PER_COIL_TIER = 0.5f;
     private static final int UNBREAKABLE_COIL_TIER = 10;
-    private static final int UNBREAKABLE_PIPE_TIER = 4;
+    private static final int UNBREAKABLE_PIPE_TIER = 7;
     private static final int MAX_CATALYST_DURABILITY = 50;
 
     private int mSolidCasingTier = 0;
@@ -121,13 +123,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     public MTEChemicalPlant(final String aName) {
         super(aName);
-    }
-
-    @Nullable
-    private static Integer getPipeTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings2) return null;
-        if (metaID < 12 || metaID > 15) return null;
-        return metaID - 11;
     }
 
     @Nullable
@@ -295,17 +290,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                         .use(activeCoils(ofCoil(MTEChemicalPlant::setCoilMeta, MTEChemicalPlant::getCoilMeta))))
                 .addElement(
                     'P',
-                    GTStructureChannels.PIPE_CASING.use(
-                        ofBlocksTiered(
-                            MTEChemicalPlant::getPipeTierFromMeta,
-                            ImmutableList.of(
-                                Pair.of(GregTechAPI.sBlockCasings2, 12),
-                                Pair.of(GregTechAPI.sBlockCasings2, 13),
-                                Pair.of(GregTechAPI.sBlockCasings2, 14),
-                                Pair.of(GregTechAPI.sBlockCasings2, 15)),
-                            -1,
-                            MTEChemicalPlant::setPipeMeta,
-                            MTEChemicalPlant::getPipeMeta)))
+                    chainFluidPipeCasings(-1, MTEChemicalPlant::setPipeMeta, MTEChemicalPlant::getPipeMeta))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -596,7 +581,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
      * @return if the catalyst item is fully destroyed as a result of the damage applied.
      */
     private boolean damageCatalyst(@Nonnull ItemStack aStack, int minParallel) {
-        // Awakened Draconium Coils with Tungstensteel Pipe Casings (or above) no longer consume catalysts.
+        // Awakened Draconium Coils with Neutronium Pipe Casings (or above) no longer consume catalysts.
         if (!isCatalystDamageable()) return false;
         for (int i = 0; i < minParallel; i++) {
             if (MathUtils.randFloat(0, 10000000) / 10000000f
@@ -619,6 +604,11 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     }
 
     @Override
+    protected MaxSpecialValue getPatternRecipeFilter() {
+        return new MaxSpecialValue(mSolidCasingTier);
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -627,7 +617,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > mSolidCasingTier) {
+                if (!getPatternRecipeFilter().test(recipe)) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue + 1);
                 }
                 // checks if it has a catalyst
